@@ -1,0 +1,35 @@
+@page "/"
+@using Assigment_1.Data
+@inject IAdultService AdultService
+@inject NavigationManager NavigationManager;
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+@if (Adults == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <p>@SearchPhrase</p>
+}
+
+
+@code
+{
+    public string SearchPhrase;
+    public IList<String> Adults { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        Console.WriteLine("2str");
+        Adults = AdultService.AdultsList;
+        SearchPhrase = Adults[0];
+    }
+}
