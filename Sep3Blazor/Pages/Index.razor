@@ -1,13 +1,14 @@
 @page "/"
-@using Assigment_1.Data
+@using Sep3Blazor.Data
 @inject IAdultService AdultService
 @inject NavigationManager NavigationManager;
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+<input type="submit" value="Submit edited" @onclick="Edit">
 
-@if (Adults == null)
+@if (SearchPhrase == null)
 {
     <p>
         <em>Loading...</em>
@@ -27,9 +28,18 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+       // base.OnInitialized();
         Console.WriteLine("2str");
-        Adults = AdultService.AdultsList;
+        Adults = await AdultService.Connect("1");
         SearchPhrase = Adults[0];
+    }
+
+    
+
+    public async Task Edit()
+    {
+        Adults = await AdultService.Connect("2");
+        SearchPhrase = Adults[0];
+
     }
 }

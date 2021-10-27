@@ -84,7 +84,7 @@ using Sep3Blazor.Shared;
 #nullable disable
 #nullable restore
 #line 2 "C:\Users\krzys\RiderProjects\Sep3Blazor\Sep3Blazor\Pages\Index.razor"
-using Assigment_1.Data;
+using Sep3Blazor.Data;
 
 #line default
 #line hidden
@@ -98,7 +98,7 @@ using Assigment_1.Data;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 23 "C:\Users\krzys\RiderProjects\Sep3Blazor\Sep3Blazor\Pages\Index.razor"
+#line 24 "C:\Users\krzys\RiderProjects\Sep3Blazor\Sep3Blazor\Pages\Index.razor"
  
     public string SearchPhrase;
     public IList<String> Adults { get; set; }
@@ -106,10 +106,19 @@ using Assigment_1.Data;
 
     protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+       // base.OnInitialized();
         Console.WriteLine("2str");
-        Adults = AdultService.AdultsList;
+        Adults = await AdultService.Connect("1");
         SearchPhrase = Adults[0];
+    }
+
+    
+
+    public async Task Edit()
+    {
+        Adults = await AdultService.Connect("2");
+        SearchPhrase = Adults[0];
+
     }
 
 #line default
