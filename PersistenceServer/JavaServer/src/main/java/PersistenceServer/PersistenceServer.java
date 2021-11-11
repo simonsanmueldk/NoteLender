@@ -1,13 +1,13 @@
-package com.example.javaserver;
+package PersistenceServer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class JavaServerApplication {
+public class PersistenceServer {
 
     public static void main(String[] args) {
-        SpringApplication.run(JavaServerApplication.class, args);
+        SpringApplication.run(PersistenceServer.class, args);
     }
 
 }

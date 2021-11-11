@@ -1,24 +1,25 @@
 syntax = "proto3";
+import "google/protobuf/any.proto";
 
 option csharp_namespace = "GrpcService";
 
-package BusinessServ;
+package greet;
 
 // The greeting service definition.
-service BusinessServer {
+service Greeter {
   // Sends a greeting
-  rpc GetGroup (GroupRequest) returns (GroupReply);
-  rpc PostGroup (GroupRequest) returns (GroupReply);
+  rpc SayHello (HelloRequest) returns (HelloReply);
+  rpc PostHello (HelloRequest) returns (HelloReply);
 }
 
 
 // The request message containing the user's name.
-message GroupRequest {
+message HelloRequest {
   string name = 1;
   string type = 2;
 }
 
 // The response message containing the greetings.
-message GroupReply {
+message HelloReply {
   string message = 1;
 }
