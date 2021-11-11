@@ -8,6 +8,7 @@ package BusinessServ;
 service BusinessServer {
   // Sends a greeting
   rpc GetGroup (Request) returns (Reply);
+  rpc GetNote (Request) returns (Reply);
   rpc PostGroup (Request) returns (Reply);
 }
 

@@ -1,5 +1,6 @@
 @page "/"
 @using Sep3Blazor.Data
+@using Sep3Blazor.Model
 @inject IGroupService _groupService
 @inject NavigationManager NavigationManager;
 
@@ -17,30 +18,35 @@ Welcome to your new app.
 else
 {
     <p>@SearchPhrase</p>
+    <p>@SearchPhrase2</p>
 }
 
 
 @code
 {
     public string SearchPhrase;
-    public IList<String> Adults { get; set; }
+    public string SearchPhrase2;
+    public IList<Note> NoteList { get; set; }
+    public IList<Group> GroupList { get; set; }
 
 
     protected override async Task OnInitializedAsync()
     {
        // base.OnInitialized();
         Console.WriteLine("2str");
-        Adults = await _groupService.GetGroups("3");
-        SearchPhrase = Adults[0];
+        NoteList = await _groupService.GetNoteList("3");
+        GroupList = await _groupService.GetGroupList("1");
+        SearchPhrase = NoteList[0].text;
+        SearchPhrase2 = GroupList[0].name;
     }
 
     
 
     public async Task Get()
     {
-        Adults =await _groupService.AddGroup("Dorin Smart");
+        NoteList =await _groupService.AddNote("Dorin Smart");
         // Adults = await AdultService.Connect("5");
-        SearchPhrase = Adults[0];
+        SearchPhrase = NoteList[0].text;
 
     }
 }

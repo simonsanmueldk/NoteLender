@@ -12,30 +12,42 @@ using Microsoft.Extensions.Logging;
 
 namespace GrpcService
 {
-    public class GreeterService : Greeter.GreeterBase
+    public class BusinessServerService : BusinessServer.BusinessServerBase
     {
         private string uri = "http://localhost:8080";
         private readonly HttpClient client;
-        private readonly ILogger<GreeterService> _logger;
+        private readonly ILogger<BusinessServerService> _logger;
 
-        public GreeterService(ILogger<GreeterService> logger)
+        public BusinessServerService(ILogger<BusinessServerService> logger)
         {
             client = new HttpClient();
             _logger = logger;
+            //HEY
         }
 
-        public override async Task<HelloReply> SayHello(HelloRequest request, ServerCallContext context)
+        public override async Task<Reply> GetGroup(Request request, ServerCallContext context)
         {
             Console.WriteLine(request);
             Task<string> stringAsync = client.GetStringAsync(uri + "/Group/" + request.Name);
             string message = await stringAsync;
-            return await Task.FromResult(new HelloReply
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+        
+        public override async Task<Reply> GetNote(Request request, ServerCallContext context)
+        {
+            Console.WriteLine(request);
+            Task<string> stringAsync = client.GetStringAsync(uri + "/NoteList/" + request.Name);
+            string message = await stringAsync;
+            return await Task.FromResult(new Reply
             {
                 Message = message
             });
         }
 
-        public override async Task<HelloReply> PostHello(HelloRequest request, ServerCallContext context)
+        public override async Task<Reply> PostGroup(Request request, ServerCallContext context)
         {
             HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
             Console.WriteLine(2);
@@ -45,7 +57,7 @@ namespace GrpcService
             Task<string> stringAsync = client.GetStringAsync(uri + "/Group/" + "5");
             string message = await stringAsync;
             Console.WriteLine(message);
-            return await Task.FromResult(new HelloReply
+            return await Task.FromResult(new Reply
             {
                 Message = message
             });
