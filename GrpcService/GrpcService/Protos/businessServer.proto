@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcService";
+
+package BusinessServ;
+
+// The greeting service definition.
+service BusinessServer {
+  // Sends a greeting
+  rpc GetGroup (GroupRequest) returns (GroupReply);
+  rpc PostGroup (GroupRequest) returns (GroupReply);
+}
+
+
+// The request message containing the user's name.
+message GroupRequest {
+  string name = 1;
+  string type = 2;
+}
+
+// The response message containing the greetings.
+message GroupReply {
+  string message = 1;
+}
