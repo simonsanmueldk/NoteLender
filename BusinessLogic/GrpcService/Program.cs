@@ -12,6 +12,7 @@ namespace GrpcService
     {
         public static void Main(string[] args)
         {
+            //dorin
             CreateHostBuilder(args).Build().Run();
         }
 
