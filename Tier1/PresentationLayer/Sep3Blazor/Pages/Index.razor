@@ -1,0 +1,46 @@
+@page "/"
+@using Sep3Blazor.Data
+@inject IGroupService _groupService
+@inject NavigationManager NavigationManager;
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+<input type="submit" value="Get the second object from database" @onclick="Get">
+
+@if (SearchPhrase == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <p>@SearchPhrase</p>
+}
+
+
+@code
+{
+    public string SearchPhrase;
+    public IList<String> Adults { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+       // base.OnInitialized();
+        Console.WriteLine("2str");
+        Adults = await _groupService.GetGroups("3");
+        SearchPhrase = Adults[0];
+    }
+
+    
+
+    public async Task Get()
+    {
+        Adults =await _groupService.AddGroup("Dorin Smart");
+        // Adults = await AdultService.Connect("5");
+        SearchPhrase = Adults[0];
+
+    }
+}
