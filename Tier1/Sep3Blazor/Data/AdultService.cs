@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 
 namespace Sep3Blazor.Data
@@ -19,6 +21,7 @@ namespace Sep3Blazor.Data
         {
             tcpClient = new TcpClient("127.0.0.1", 2910);
             stream = tcpClient.GetStream();
+          
         }
 
 
