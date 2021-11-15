@@ -7,6 +7,10 @@ public class Note
 {
 
     public int id{ get; set; }
+
+    public int user_id { get; set; };
+
+    public int group_id { get; set; };
     
     public int week{ get; set; }
  
@@ -18,9 +22,11 @@ public class Note
 
     public string text{ get; set; }
 
-    public Note(int id, int week, int year, string name, string status, string text)
+    public Note(int id, int userId, int groupId, int week, int year, string name, string status, string text)
     {
         this.id = id;
+        this.user_id = userId;
+        this.group_id = groupId;
         this.week = week;
         this.year = year;
         this.name = name;
