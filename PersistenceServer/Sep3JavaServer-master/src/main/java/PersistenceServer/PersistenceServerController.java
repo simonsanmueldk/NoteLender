@@ -1,8 +1,8 @@
 package PersistenceServer;
 
 
-
 import com.google.gson.Gson;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.*;
@@ -21,7 +21,6 @@ public class PersistenceServerController {
 
     public PersistenceServerController() throws SQLException {
     }
-
 
 
     @GetMapping("/Group/{id}")
@@ -43,19 +42,17 @@ public class PersistenceServerController {
         List<Group> GroupList = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate("INSERT INTO notelender.groups (name) VALUES ('"+  json+"')", Statement.RETURN_GENERATED_KEYS);
+            statement.executeUpdate("INSERT INTO notelender.groups (name) VALUES ('" + json + "')", Statement.RETURN_GENERATED_KEYS);
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    Group groupToAdd = new Group(generatedKeys.getInt(1),generatedKeys.getString(2));
+                    Group groupToAdd = new Group(generatedKeys.getInt(1), generatedKeys.getString(2));
                     GroupList.add(groupToAdd);
                     return gson.toJson(GroupList);
-                }
-                else {
+                } else {
                     throw new SQLException("Creating failed, no ID obtained.");
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Connection failure.");
             e.printStackTrace();
         }
@@ -76,7 +73,7 @@ public class PersistenceServerController {
             return temp;
         } catch (SQLException e) {
             System.out.println("Connection failure.");
-           return null;
+            return null;
         }
 
     }
@@ -109,5 +106,21 @@ public class PersistenceServerController {
         List<String> AdultsList = new ArrayList<>();
         AdultsList.add(text);
         return gson.toJson(AdultsList);
+    }
+
+    @DeleteMapping("/Group/{id}")
+    public synchronized String deleteGroup(@PathVariable(value = "id") int id) throws SQLException {
+        System.out.println("It's working Delete");
+        PreparedStatement statement = connection.prepareStatement
+                ("DELETE FROM notelender.groups WHERE id='" + id + "'");
+        int deleted = statement.executeUpdate();
+        if (deleted == 0) {
+
+            return "Fail";
+        } else {
+            return "Success";
+        }
+
+
     }
 }
