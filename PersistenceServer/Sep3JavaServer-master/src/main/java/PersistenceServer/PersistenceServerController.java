@@ -38,9 +38,11 @@ public class PersistenceServerController {
         return persistenceService.createGroup(json);
 
     }
-    @GetMapping("/User")
-    public synchronized String ValidateUser(@RequestBody String username,@RequestBody String password ) throws SQLException {
-       return persistenceService.validateUser(username,password);
+
+    @GetMapping("/User?userName={username}&passWord={password}")
+    public synchronized String ValidateUser(@PathVariable(value = "username") String username,@PathVariable(value = "password") String password ) throws SQLException {
+        System.out.println("It's working Validate");
+        return persistenceService.validateUser(username,password);
     }
 
 
