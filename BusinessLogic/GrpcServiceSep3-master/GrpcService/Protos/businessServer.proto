@@ -13,6 +13,8 @@ service BusinessServer {
   rpc PostGroup (Request) returns (Reply);
   rpc AddNote (Request) returns (Reply);
    rpc DeleteGroup  (Request) returns (Reply);
+   rpc RegisterUser(Request) returns (Reply);
+   rpc ValidateUser(Request) returns (Reply);
 }
 
 

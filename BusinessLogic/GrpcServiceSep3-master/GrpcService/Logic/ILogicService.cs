@@ -10,7 +10,9 @@ namespace GrpcService.Logic
         public Task<Reply> GetNote(Request request, ServerCallContext context);
         public Task<Reply> AddNote(Request request, ServerCallContext context);
         public Task<Reply> PostGroup(Request request, ServerCallContext context);
-        
+
         public Task<Reply> DeleteGroup(Request request, ServerCallContext context);
+        public Task<Reply> RegisterUser(Request request, ServerCallContext context);
+        public Task<Reply> ValidateUser(Request request, ServerCallContext context);
     }
 }

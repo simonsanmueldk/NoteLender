@@ -29,6 +29,7 @@ namespace GrpcService
             //HEY
         }
 
+        
         public override async Task<Reply> GetGroup(Request request, ServerCallContext context)
         {
             return await _logicService.GetGroup(request, context);
@@ -55,6 +56,19 @@ namespace GrpcService
                 Message = message
             });
         }
+
+
+        public override async Task<Reply> RegisterUser(Request request, ServerCallContext context)
+        {
+            return await _logicService.RegisterUser(request, context);
+        }
+        
+        public override async Task<Reply> ValidateUser(Request request, ServerCallContext context)
+        {
+            return await _logicService.ValidateUser(request, context);
+        }
+
+        
 
         public override async Task<Reply> AddNote(Request request, ServerCallContext context)
         {

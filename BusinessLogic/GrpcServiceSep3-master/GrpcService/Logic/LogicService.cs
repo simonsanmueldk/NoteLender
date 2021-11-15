@@ -80,5 +80,28 @@ namespace GrpcService.Logic
                 Message = responseMessage.Content.ToString()
             });
         }
+
+        public async Task<Reply> RegisterUser(Request request, ServerCallContext context)
+        {
+            HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
+            HttpResponseMessage responseMessage = await client.PostAsync(uri + "/User", content);
+            string message = await responseMessage.Content.ReadAsStringAsync();
+            Console.WriteLine(message);
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+
+        public async Task<Reply> ValidateUser(Request request, ServerCallContext context)
+        {
+            
+            Task<string> stringAsync = client.GetStringAsync(uri + "/User" + request.Name);
+            string message = await stringAsync;
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
     }
 }
