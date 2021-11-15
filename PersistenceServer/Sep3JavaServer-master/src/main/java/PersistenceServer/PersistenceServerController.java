@@ -39,9 +39,7 @@ public class PersistenceServerController {
 
     @PutMapping("/Group")
     public synchronized String createGroup(@RequestBody String json) {
-        System.out.println("Dorin sexy");
         System.out.println("It's working Post");
-        System.out.println(json);
         List<Group> GroupList = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
