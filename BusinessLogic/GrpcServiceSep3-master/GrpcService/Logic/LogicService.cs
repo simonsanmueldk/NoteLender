@@ -96,8 +96,9 @@ namespace GrpcService.Logic
 
         public async Task<Reply> ValidateUser(Request request, ServerCallContext context)
         {
-            
+            Console.WriteLine("aleo");
             Task<string> stringAsync = client.GetStringAsync(uri + "/User" + request.Name);
+            Console.WriteLine("aleo x2");
             string message = await stringAsync;
             return await Task.FromResult(new Reply
             {
