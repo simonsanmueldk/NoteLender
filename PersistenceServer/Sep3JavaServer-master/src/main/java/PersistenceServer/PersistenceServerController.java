@@ -3,7 +3,6 @@ package PersistenceServer;
 
 import PersistenceService.IPersistenceService;
 import PersistenceService.PersistenceService;
-import com.google.gson.Gson;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.*;
@@ -79,7 +78,7 @@ public class PersistenceServerController {
     }
 
     @GetMapping("/InvitationList/{id}")
-    public synchronized Invitation getInvitationList(@PathVariable(value = "id") int id) throws SQLException {
+    public synchronized String getInvitationList(@PathVariable(value = "id") int id) throws SQLException {
         return persistenceService.getInvitation(id);
     }
 }

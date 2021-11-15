@@ -150,41 +150,41 @@ public class PersistenceService implements IPersistenceService {
         return null;
     }
 
-    @Override public Invitation addInvitation(Invitation id)
-        throws SQLException
+    @Override public Invitation addInvitation(int id) throws SQLException
     {
-        //In progress
-        List<Invitation> invitationList = new ArrayList<>();
-        try {
-            Statement statement = connection.createStatement();
-            statement.executeUpdate("INSERT INTO notelender.invitation (id) VALUES ('" + json + "')", Statement.RETURN_GENERATED_KEYS);
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    Invitation invitationToAdd = new Invitation(generatedKeys.getInt(id));
-                    invitationList.add(invitationToAdd);
-                    return gson.toJson(invitationList);
-                } else {
-                    throw new SQLException("Creating failed, no ID obtained.");
-                }
+        {
+            Invitation temp = null;
+            Invitation invitation = null;
+            Group group = null;
+
+            String sqlQuery = "INSERT INTO notelender.invitation(id, invitor_id, invitee_id, group_id) VALUES (" +
+               //will show nullpointerexception
+                invitation.getId() + "," + invitation.getInvitorId() + "," + invitation.getInviteeId() + "," +  group.getId() + ")";
+            PreparedStatement statement = connection.prepareStatement(sqlQuery);
+            statement.executeUpdate();
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                temp = new Invitation(resultSet.getInt("id"),resultSet.getInt("invitee_id"),resultSet.getInt("invitor_id"));
             }
-        } catch (SQLException e) {
-            System.out.println("Connection failure.");
-            e.printStackTrace();
+            return temp;
         }
-        return null;
     }
 
-    @Override public Invitation getInvitation(int id)
+
+    @Override public String getInvitation(int id)
         throws SQLException
     {
-        List<Invitation> invitationList = new ArrayList<>();
+        String text = "";
         ResultSet resultSet = connection.createStatement().executeQuery
-            ("SELECT * FROM notelender.invitations WHERE id = " + id);
+            ("SELECT * FROM sep3.notelendar.invitations WHERE id = " + id);
         while (resultSet.next()) {
-            Invitation invitationsToAdd = new Invitation(id);
-            invitationList.add(invitationsToAdd);
+            text = resultSet.getString(2);
+            System.out.println(text);
         }
-        return gson.toJson(invitationList);
+        List<String> invitationsList = new ArrayList<>();
+        invitationsList.add(text);
+        return gson.toJson(invitationsList);
     }
 
 }
