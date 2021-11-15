@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.HttpSys;
 using Microsoft.Extensions.Logging;
 
 namespace GrpcService
@@ -36,15 +37,32 @@ namespace GrpcService
             });
         }
         
+        
+        
         public override async Task<Reply> GetNote(Request request, ServerCallContext context)
         {
             Console.WriteLine(request);
             Task<string> stringAsync = client.GetStringAsync(uri + "/NoteList/" + request.Name);
             string message = await stringAsync;
+            Console.WriteLine("lalalalala"+message);
             return await Task.FromResult(new Reply
             {
                 Message = message
             });
+        }
+
+        public override async Task<Reply> AddNote(Request request, ServerCallContext context)
+        {
+            HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
+            HttpResponseMessage responseMessage = await client.PostAsync(uri + "/Note", content);
+            Console.WriteLine(responseMessage.Content);
+            Task<string> task = client.GetStringAsync(uri + "/NoteList" + request.Name);
+            string message = await task;
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+
         }
 
         public override async Task<Reply> PostGroup(Request request, ServerCallContext context)

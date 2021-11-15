@@ -28,6 +28,7 @@ namespace Sep3Blazor
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            
             services.AddScoped<IGroupService, GroupService>();
         }
 

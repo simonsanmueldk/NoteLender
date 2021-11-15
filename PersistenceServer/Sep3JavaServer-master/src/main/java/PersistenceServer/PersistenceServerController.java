@@ -31,7 +31,7 @@ public class PersistenceServerController {
         ResultSet resultSet = connection.createStatement().executeQuery
                 ("SELECT * FROM notelender.groups WHERE id = " + id);
         while (resultSet.next()) {
-            Group groupToAdd = new Group(resultSet.getInt(1),resultSet.getString(2));
+            Group groupToAdd = new Group(resultSet.getInt(1), resultSet.getString(2));
             GroupList.add(groupToAdd);
         }
         return gson.toJson(GroupList);
@@ -39,6 +39,7 @@ public class PersistenceServerController {
 
     @PutMapping("/Group")
     public synchronized String createGroup(@RequestBody String json) {
+        System.out.println("Dorin sexy");
         System.out.println("It's working Post");
         System.out.println(json);
         List<Group> GroupList = new ArrayList<>();
@@ -61,6 +62,25 @@ public class PersistenceServerController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @PostMapping("/Note")
+    public synchronized Note addNote(@RequestBody Note note) {
+        try {
+            Note temp = null;
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO notelender.note(week,year,name,status,text) VALUES (" +
+                    note.getWeek() + "," + note.getYear() + "," + note.getName() + "," + note.getStatus() + "," + note.getText() + ")");
+            statement.executeUpdate();
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                temp = new Note(resultSet.getInt("id"), resultSet.getInt("week"), resultSet.getInt("year"), resultSet.getString("name"), resultSet.getString("status"), resultSet.getString("text"));
+            }
+            return temp;
+        } catch (SQLException e) {
+            System.out.println("Connection failure.");
+           return null;
+        }
+
     }
 
     @GetMapping("/NoteList/{id}")
