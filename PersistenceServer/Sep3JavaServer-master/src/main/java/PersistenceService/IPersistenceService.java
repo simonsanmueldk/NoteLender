@@ -1,5 +1,6 @@
 package PersistenceService;
 
+import PersistenceServer.Invitation;
 import PersistenceServer.Note;
 import PersistenceServer.User;
 
@@ -14,4 +15,7 @@ public interface IPersistenceService {
     public Note addNote(Note note) throws SQLException;
     public String validateUser(String username, String password) throws SQLException;
     public String registerUser(String json) throws SQLException;
+    public Invitation addInvitation(int id) throws  SQLException;
+    public Invitation getInvitation(int id) throws SQLException;
+
 }

@@ -1,6 +1,7 @@
 package PersistenceService;
 
 import PersistenceServer.Group;
+import PersistenceServer.Invitation;
 import PersistenceServer.Note;
 import PersistenceServer.User;
 import com.google.gson.Gson;
@@ -146,4 +147,44 @@ public class PersistenceService implements IPersistenceService {
         }
         return null;
     }
+
+    @Override public Invitation addInvitation(Invitation id)
+        throws SQLException
+    {
+        //In progress
+        List<Invitation> invitationList = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("INSERT INTO notelender.invitation (id) VALUES ('" + json + "')", Statement.RETURN_GENERATED_KEYS);
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    Invitation invitationToAdd = new Invitation(generatedKeys.getInt(id));
+                    invitationList.add(invitationToAdd);
+                    return gson.toJson(invitationList);
+                } else {
+                    throw new SQLException("Creating failed, no ID obtained.");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection failure.");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override public Invitation getInvitation(int id)
+        throws SQLException
+    {
+        List<Invitation> invitationList = new ArrayList<>();
+        ResultSet resultSet = connection.createStatement().executeQuery
+            ("SELECT * FROM notelender.invitations WHERE id = " + id);
+        while (resultSet.next()) {
+            Invitation invitationsToAdd = new Invitation(id);
+            invitationList.add(invitationsToAdd);
+        }
+        return gson.toJson(invitationList);
+    }
+
 }
+
+

@@ -7,9 +7,6 @@ import com.google.gson.Gson;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-
 
 @RestController
 public class PersistenceServerController {
@@ -76,6 +73,15 @@ public class PersistenceServerController {
         System.out.println("It's working Delete");
         return persistenceService.deleteGroup(id);
 
+    }
+    @PostMapping("/Invitation")
+    public synchronized  Invitation addInvitation(@PathVariable(value = "id") int id) throws SQLException
+    {
+        return  persistenceService.addInvitation(id);
+    }
 
+    @GetMapping("/InvitationList/{id}")
+    public synchronized Invitation getInvitationList(@PathVariable(value = "id") int id) throws SQLException {
+        return persistenceService.getInvitation(id);
     }
 }

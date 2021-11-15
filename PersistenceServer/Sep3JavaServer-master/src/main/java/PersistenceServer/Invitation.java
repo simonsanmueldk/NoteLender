@@ -14,5 +14,8 @@ public class Invitation
     this.id = id;
   }
 
-
+  public Invitation(int id)
+  {
+    this.id = id;
+  }
 }
