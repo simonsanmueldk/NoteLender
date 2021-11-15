@@ -12,6 +12,6 @@ namespace Sep3Blazor.Data
         
         public Task<IList<Group>> GetGroupList(String s);
         
-        public Task<IList<Note>> AddNote(String s);
+        public Task<IList<Group>> AddGroup(String s);
     }
 }

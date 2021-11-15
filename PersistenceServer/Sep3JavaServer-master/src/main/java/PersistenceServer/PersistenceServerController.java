@@ -1,13 +1,11 @@
 package PersistenceServer;
 
 
+
 import com.google.gson.Gson;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,30 +23,40 @@ public class PersistenceServerController {
     }
 
 
+
     @GetMapping("/Group/{id}")
     public synchronized String getGroup(@PathVariable(value = "id") int id) throws SQLException {
         System.out.println("It's working Get");
-        List<Group> AdultsList = new ArrayList<>();
+        List<Group> GroupList = new ArrayList<>();
         ResultSet resultSet = connection.createStatement().executeQuery
                 ("SELECT * FROM notelender.groups WHERE id = " + id);
         while (resultSet.next()) {
             Group groupToAdd = new Group(resultSet.getInt(1),resultSet.getString(2));
-            AdultsList.add(groupToAdd);
+            GroupList.add(groupToAdd);
         }
-
-
-        return gson.toJson(AdultsList);
+        return gson.toJson(GroupList);
     }
 
     @PutMapping("/Group")
     public synchronized String createGroup(@RequestBody String json) {
         System.out.println("It's working Post");
         System.out.println(json);
+        List<Group> GroupList = new ArrayList<>();
         try {
-            connection.createStatement().execute("INSERT INTO sep3.notes (id,string) VALUES ("
-                    + '5' + ",'" + json + "')");
-            return getGroup(5);
-        } catch (SQLException e) {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("INSERT INTO notelender.groups (name) VALUES ('"+  json+"')", Statement.RETURN_GENERATED_KEYS);
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    Group groupToAdd = new Group(generatedKeys.getInt(1),generatedKeys.getString(2));
+                    GroupList.add(groupToAdd);
+                    return gson.toJson(GroupList);
+                }
+                else {
+                    throw new SQLException("Creating failed, no ID obtained.");
+                }
+            }
+        }
+        catch (SQLException e) {
             System.out.println("Connection failure.");
             e.printStackTrace();
         }

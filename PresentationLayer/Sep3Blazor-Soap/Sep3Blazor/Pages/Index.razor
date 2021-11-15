@@ -7,7 +7,7 @@
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
-<input type="submit" value="Get the second object from database" @onclick="Get">
+<input type="submit" value="Get the second object from database" @onclick="AddGroup">
 
 @if (SearchPhrase == null)
 {
@@ -32,9 +32,9 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-       // base.OnInitialized();
+    // base.OnInitialized();
         Console.WriteLine("2str");
-        NoteList = await _groupService.GetNoteList("3");
+        NoteList = await _groupService.GetNoteList("1");
         GroupList = await _groupService.GetGroupList("1");
         SearchPhrase = NoteList[0].text;
         SearchPhrase2 = GroupList[0].name;
@@ -42,11 +42,10 @@ else
 
     
 
-    public async Task Get()
+    public async Task AddGroup()
     {
-        NoteList =await _groupService.AddNote("Dorin Smart");
-        // Adults = await AdultService.Connect("5");
-        SearchPhrase = NoteList[0].text;
+        GroupList =await _groupService.AddGroup("Dorin Smarto");
+        SearchPhrase2 = GroupList[0].name;
 
     }
 }

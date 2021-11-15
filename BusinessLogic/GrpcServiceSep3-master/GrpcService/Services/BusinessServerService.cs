@@ -52,10 +52,8 @@ namespace GrpcService
             HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
             Console.WriteLine(2);
             HttpResponseMessage responseMessage = await client.PutAsync(uri + "/Group", content);
-            Console.WriteLine(responseMessage.Content);
-
-            Task<string> stringAsync = client.GetStringAsync(uri + "/Group/" + "5");
-            string message = await stringAsync;
+            Console.WriteLine("1"+responseMessage.Content);
+            string message = await responseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(message);
             return await Task.FromResult(new Reply
             {

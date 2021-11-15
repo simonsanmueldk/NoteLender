@@ -22,13 +22,13 @@ namespace Sep3Blazor.Data
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
             var reply = await client.GetNoteAsync(
-                new Request {Name = "1"});
+                new Request {Name = s});
             Console.WriteLine("Greeting: " + reply.Message);
             NoteList = JsonSerializer.Deserialize<List<Note>>(reply.Message);
             return NoteList;
         }
 
-        public async Task<IList<Note>> AddNote(string s)
+        public async Task<IList<Group>> AddGroup(string s)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
@@ -36,9 +36,9 @@ namespace Sep3Blazor.Data
             var reply = await client.PostGroupAsync(
                 new Request {Name = s});
             Console.WriteLine("Greeting: " + reply.Message);
-            NoteList = JsonSerializer.Deserialize<List<Note>>(reply.Message);
-            Console.WriteLine(NoteList[0]);
-            return NoteList;
+            GroupList = JsonSerializer.Deserialize<List<Group>>(reply.Message);
+            Console.WriteLine(GroupList[0]);
+            return GroupList;
         }
         
         public async Task<IList<Group>> GetGroupList(string s)
