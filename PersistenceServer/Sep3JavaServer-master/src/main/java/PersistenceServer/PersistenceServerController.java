@@ -1,8 +1,8 @@
 package PersistenceServer;
 
 
+
 import com.google.gson.Gson;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.*;
@@ -23,6 +23,7 @@ public class PersistenceServerController {
     }
 
 
+
     @GetMapping("/Group/{id}")
     public synchronized String getGroup(@PathVariable(value = "id") int id) throws SQLException {
         System.out.println("It's working Get");
@@ -38,21 +39,25 @@ public class PersistenceServerController {
 
     @PutMapping("/Group")
     public synchronized String createGroup(@RequestBody String json) {
+        System.out.println("Dorin sexy");
         System.out.println("It's working Post");
+        System.out.println(json);
         List<Group> GroupList = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate("INSERT INTO notelender.groups (name) VALUES ('" + json + "')", Statement.RETURN_GENERATED_KEYS);
+            statement.executeUpdate("INSERT INTO notelender.groups (name) VALUES ('"+  json+"')", Statement.RETURN_GENERATED_KEYS);
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    Group groupToAdd = new Group(generatedKeys.getInt(1), generatedKeys.getString(2));
+                    Group groupToAdd = new Group(generatedKeys.getInt(1),generatedKeys.getString(2));
                     GroupList.add(groupToAdd);
                     return gson.toJson(GroupList);
-                } else {
+                }
+                else {
                     throw new SQLException("Creating failed, no ID obtained.");
                 }
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println("Connection failure.");
             e.printStackTrace();
         }
@@ -63,17 +68,17 @@ public class PersistenceServerController {
     public synchronized Note addNote(@RequestBody Note note) {
         try {
             Note temp = null;
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO notelender.note(week,year,name,status,text) VALUES (" +
-                    note.getWeek() + "," + note.getYear() + "," + note.getName() + "," + note.getStatus() + "," + note.getText() + ")");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO notelender.note(user_id,group_id,week,year,name,status,text) VALUES (" +
+                    note.getUserId() + ","+ note.getGroupId() + "," + note.getWeek() + "," + note.getYear() + "," + note.getName() + "," + note.getStatus() + "," + note.getText() + ")");
             statement.executeUpdate();
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                temp = new Note(resultSet.getInt("id"), resultSet.getInt("week"), resultSet.getInt("year"), resultSet.getString("name"), resultSet.getString("status"), resultSet.getString("text"));
+                temp = new Note(resultSet.getInt("id"), resultSet.getInt("user_id"), resultSet.getInt("group_id"), resultSet.getInt("week"), resultSet.getInt("year"), resultSet.getString("name"), resultSet.getString("status"), resultSet.getString("text"));
             }
             return temp;
         } catch (SQLException e) {
             System.out.println("Connection failure.");
-            return null;
+           return null;
         }
 
     }
@@ -86,8 +91,9 @@ public class PersistenceServerController {
                 ("SELECT * FROM notelender.note WHERE group_id = " + id);
         while (resultSet.next()) {
             Note noteToAdd = new Note(resultSet.getInt(1), resultSet.getInt(2),
-                    resultSet.getInt(3), resultSet.getString(4),
-                    resultSet.getString(5), resultSet.getString(6));
+                    resultSet.getInt(3), resultSet.getInt(4),
+                    resultSet.getInt(5), resultSet.getString(6),
+                    resultSet.getString(7), resultSet.getString(8));
             NoteList.add(noteToAdd);
         }
         return gson.toJson(NoteList);
@@ -106,19 +112,5 @@ public class PersistenceServerController {
         List<String> AdultsList = new ArrayList<>();
         AdultsList.add(text);
         return gson.toJson(AdultsList);
-    }
-
-    @DeleteMapping("/Group/{id}")
-    public synchronized String deleteGroup(@PathVariable(value = "id") int id) throws SQLException {
-        System.out.println("It's working Delete");
-        PreparedStatement statement = connection.prepareStatement
-                ("DELETE FROM notelender.groups WHERE id='" + id + "'");
-        int deleted = statement.executeUpdate();
-        if (deleted == 0) {
-            return "Fail";
-        } else {
-            return "Success";
-        }
-
     }
 }
