@@ -51,5 +51,17 @@ namespace Sep3Blazor.Data
             GroupList = JsonSerializer.Deserialize<List<Group>>(reply.Message);
             return GroupList;
         }
+        
+        
+        public async  Task DeleteGroup(string s)
+        {
+            using var channel = GrpcChannel.ForAddress(URL);
+            var client = new BusinessServer.BusinessServerClient(channel);
+            var reply = await client.DeleteGroupAsync(
+                new Request {Name = s});
+            Console.WriteLine("Greeting: " + reply.Message);
+            // GroupList = JsonSerializer.Deserialize<List<Group>>(reply.Message);
+            // return GroupList;
+        }
     }
 }

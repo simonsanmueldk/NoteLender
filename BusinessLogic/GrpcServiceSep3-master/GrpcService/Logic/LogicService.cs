@@ -66,5 +66,19 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
+
+        public async Task<Reply> DeleteGroup(Request request, ServerCallContext context)
+        {
+            Console.WriteLine(request);
+            HttpResponseMessage responseMessage = await client.DeleteAsync(uri + "/Group/" + request.Name);
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                throw new Exception(@"Error : (responseMessage.Status), (responseMessage.ReasonPhrase");
+            }
+            return await Task.FromResult(new Reply
+            {
+                Message = responseMessage.Content.ToString()
+            });
+        }
     }
 }

@@ -11,6 +11,7 @@ service BusinessServer {
   rpc GetNote (Request) returns (Reply);
   rpc PostGroup (Request) returns (Reply);
   rpc AddNote  (Request) returns (Reply);
+  rpc DeleteGroup  (Request) returns (Reply);
 }
 
 

@@ -85,5 +85,10 @@ namespace GrpcService
                 Message = message
             });
         }
+
+        public  override async Task<Reply> DeleteGroup(Request request, ServerCallContext context)
+        {
+            return await _logicService.DeleteGroup(request, context);
+        }
     }
 }

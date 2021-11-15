@@ -34,9 +34,9 @@ else
     {
     // base.OnInitialized();
         Console.WriteLine("2str");
-        NoteList = await _groupService.GetNoteList("1");
+        // NoteList = await _groupService.GetNoteList("1");
         GroupList = await _groupService.GetGroupList("1");
-        SearchPhrase = NoteList[0].text;
+        // SearchPhrase = NoteList[0].text;
         SearchPhrase2 = GroupList[0].name;
     }
 
@@ -44,7 +44,7 @@ else
 
     public async Task AddGroup()
     {
-        GroupList =await _groupService.AddGroup("Dorin Smarto");
+        await _groupService.DeleteGroup("6");
         SearchPhrase2 = GroupList[0].name;
 
     }
