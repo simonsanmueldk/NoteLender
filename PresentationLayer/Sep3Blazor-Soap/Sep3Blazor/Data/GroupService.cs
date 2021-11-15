@@ -73,7 +73,7 @@ namespace Sep3Blazor.Data
                 new Request {Name = username});
             Console.WriteLine("Greeting: " + reply.Message);
             User user = JsonSerializer.Deserialize<User>(reply.Message);
-            Console.WriteLine(GroupList[0]);
+            Console.WriteLine(user);
             return user;
         }
 
