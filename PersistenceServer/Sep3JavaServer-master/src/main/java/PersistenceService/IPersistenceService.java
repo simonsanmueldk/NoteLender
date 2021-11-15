@@ -12,6 +12,6 @@ public interface IPersistenceService {
     public String getNoteList(int id) throws SQLException;
     public String getUserList(int id) throws SQLException;
     public Note addNote(Note note) throws SQLException;
-    public String validateUser(String username, String password) throws SQLException;
+    public String validateUser(String nameuser, String password) throws SQLException;
     public String registerUser(String json) throws SQLException;
 }

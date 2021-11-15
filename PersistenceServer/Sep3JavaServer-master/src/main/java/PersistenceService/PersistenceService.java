@@ -113,11 +113,12 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public String validateUser(String username, String password) throws SQLException {
+    public String validateUser(String nameuser, String password) throws SQLException {
         System.out.println("Login is working");
         User user=null;
+        System.out.println(user);
         ResultSet resultSet = connection.createStatement().executeQuery
-                ("SELECT * FROM notelender.users WHERE username = " + username);
+                ("SELECT * FROM notelender.users WHERE username ='" + nameuser + "'");
         while (resultSet.next()) {
             user=new User(resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5));
         }
