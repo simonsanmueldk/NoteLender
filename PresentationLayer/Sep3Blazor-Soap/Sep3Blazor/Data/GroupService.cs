@@ -63,5 +63,23 @@ namespace Sep3Blazor.Data
             // GroupList = JsonSerializer.Deserialize<List<Group>>(reply.Message);
             // return GroupList;
         }
+
+        public async Task<User> ValidateLogin(string username, string password)
+        {
+            using var channel = GrpcChannel.ForAddress(URL);
+            var client = new BusinessServer.BusinessServerClient(channel);
+
+            var reply = await client.ValidateUserAsync(
+                new Request {Name = username});
+            Console.WriteLine("Greeting: " + reply.Message);
+            User user = JsonSerializer.Deserialize<User>(reply.Message);
+            Console.WriteLine(user);
+            return user;
+        }
+
+        public Task<User> RegisterUser(User user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

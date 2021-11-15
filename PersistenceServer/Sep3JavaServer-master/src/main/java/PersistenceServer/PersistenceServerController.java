@@ -11,10 +11,6 @@ import java.sql.*;
 @RestController
 public class PersistenceServerController {
 
-    private static final Gson gson = new Gson();
-    private final Connection connection =
-            DriverManager.getConnection("jdbc:postgresql://tai.db.elephantsql.com:5432/seitjdhj",
-                    "seitjdhj", "9LEmAjua_Uo0YR5sGqAFHn0Kgm9DDKu1");
     private IPersistenceService persistenceService;
 
 
@@ -35,9 +31,11 @@ public class PersistenceServerController {
         return persistenceService.createGroup(json);
 
     }
-    @GetMapping("/User")
-    public synchronized String ValidateUser(@RequestBody String username,@RequestBody String password ) throws SQLException {
-       return persistenceService.validateUser(username,password);
+
+    @GetMapping("/User/{username}/{password}")
+    public synchronized String ValidateUser(@PathVariable(value = "username") String username,@PathVariable(value = "password") String password ) throws SQLException {
+        System.out.println("It's working Validate");
+        return persistenceService.validateUser(username,password);
     }
 
 

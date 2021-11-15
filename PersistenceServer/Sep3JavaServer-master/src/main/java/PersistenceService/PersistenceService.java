@@ -74,8 +74,9 @@ public class PersistenceService implements IPersistenceService {
                 ("SELECT * FROM notelender.note WHERE group_id = " + id);
         while (resultSet.next()) {
             Note noteToAdd = new Note(resultSet.getInt(1), resultSet.getInt(2),
-                    resultSet.getInt(3), resultSet.getString(4),
-                    resultSet.getString(5), resultSet.getString(6));
+                    resultSet.getInt(3), resultSet.getInt(4),
+                    resultSet.getInt(5), resultSet.getString(6),
+                    resultSet.getString(7), resultSet.getString(8));
             NoteList.add(noteToAdd);
         }
         return gson.toJson(NoteList);
@@ -105,7 +106,7 @@ public class PersistenceService implements IPersistenceService {
         statement.executeUpdate();
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
-            temp = new Note(resultSet.getInt("id"), resultSet.getInt("week"), resultSet.getInt("year"), resultSet.getString("name"), resultSet.getString("status"), resultSet.getString("text"));
+            temp = new Note(resultSet.getInt("id"), resultSet.getInt("user_id"), resultSet.getInt("group_id"), resultSet.getInt("week"), resultSet.getInt("year"), resultSet.getString("name"), resultSet.getString("status"), resultSet.getString("text"));
         }
         return temp;
 
@@ -113,11 +114,12 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public String validateUser(String username, String password) throws SQLException {
+    public String validateUser(String nameuser, String password) throws SQLException {
         System.out.println("Login is working");
         User user=null;
+        System.out.println(user);
         ResultSet resultSet = connection.createStatement().executeQuery
-                ("SELECT * FROM notelender.users WHERE username = " + username);
+                ("SELECT * FROM notelender.users WHERE username ='" + nameuser + "'");
         while (resultSet.next()) {
             user=new User(resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5));
         }
