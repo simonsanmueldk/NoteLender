@@ -63,5 +63,15 @@ namespace Sep3Blazor.Data
             // GroupList = JsonSerializer.Deserialize<List<Group>>(reply.Message);
             // return GroupList;
         }
+
+        public Task<User> ValidateLogin(string username, string password)
+        {
+            
+        }
+
+        public Task<User> RegisterUser(User user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
