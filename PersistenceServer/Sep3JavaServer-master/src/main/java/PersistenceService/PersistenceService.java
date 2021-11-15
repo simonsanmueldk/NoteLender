@@ -2,6 +2,7 @@ package PersistenceService;
 
 import PersistenceServer.Group;
 import PersistenceServer.Note;
+import PersistenceServer.User;
 import com.google.gson.Gson;
 
 import java.sql.*;
@@ -108,5 +109,41 @@ public class PersistenceService implements IPersistenceService {
         return temp;
 
 
+    }
+
+    @Override
+    public String validateUser(String username, String password) throws SQLException {
+        System.out.println("Login is working");
+        User user=null;
+        ResultSet resultSet = connection.createStatement().executeQuery
+                ("SELECT * FROM notelender.users WHERE username = " + username);
+        while (resultSet.next()) {
+            user=new User(resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5));
+        }
+        return gson.toJson(user);
+    }
+
+    @Override
+    public String registerUser(String json) throws SQLException {
+        System.out.println("register User is working");
+        User user = gson.fromJson(json, User.class);
+        List<User> userList = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("INSERT INTO notelender.users (firstname,lastname,username,password) VALUES ('" + user.getFirstName() + "," + user.getLastName() + "," + user.getUsername() + "," + user.getPassword() + "')", Statement.RETURN_GENERATED_KEYS);
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    User userToAdd = new User(generatedKeys.getInt(1), generatedKeys.getString(2), generatedKeys.getString(3), generatedKeys.getString(4), generatedKeys.getString(5));
+                    userList.add(userToAdd);
+                    return gson.toJson(userList);
+                } else {
+                    throw new SQLException("Creating failed, no ID obtained.");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection failure.");
+            e.printStackTrace();
+        }
+        return null;
     }
 }
