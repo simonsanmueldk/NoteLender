@@ -2,11 +2,13 @@ package PersistenceServer;
 
 public class Note {
 
-   private int id,week,year;
+   private int id,user_id, group_id,week,year;
    private  String name, status, text;
 
-    public Note(int id, int week, int year, String name, String status, String text) {
+    public Note(int id, int user_id, int group_id, int week, int year, String name, String status, String text) {
         this.id = id;
+        this.user_id = user_id;
+        this.group_id = group_id;
         this.week = week;
         this.year = year;
         this.name = name;
@@ -18,7 +20,19 @@ public class Note {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(int id) {this.id = id;}
+
+    public int getUserId() {return user_id;}
+
+    public void setUserId(int userId) {
+        this.id = id;
+    }
+
+    public int getGroupId() {
+        return group_id;
+    }
+
+    public void setGroupId(int groupId) {
         this.id = id;
     }
 

@@ -10,12 +10,12 @@ namespace GrpcService.Logic
     {
         private string uri = "http://localhost:8080";
         private readonly HttpClient client;
-        
+
         public LogicService()
         {
-            client = new HttpClient();;
+            client = new HttpClient();
         }
-        
+
         public async Task<Reply> GetGroup(Request request, ServerCallContext context)
         {
             Console.WriteLine(request);
@@ -26,13 +26,12 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
-        
+
         public async Task<Reply> GetNote(Request request, ServerCallContext context)
         {
             Console.WriteLine(request);
             Task<string> stringAsync = client.GetStringAsync(uri + "/NoteList/" + request.Name);
             string message = await stringAsync;
-            Console.WriteLine("lalalalala"+message);
             return await Task.FromResult(new Reply
             {
                 Message = message
@@ -50,7 +49,6 @@ namespace GrpcService.Logic
             {
                 Message = message
             });
-
         }
 
         public async Task<Reply> PostGroup(Request request, ServerCallContext context)
@@ -58,7 +56,7 @@ namespace GrpcService.Logic
             HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
             Console.WriteLine(2);
             HttpResponseMessage responseMessage = await client.PutAsync(uri + "/Group", content);
-            Console.WriteLine("1"+responseMessage.Content);
+            Console.WriteLine("1" + responseMessage.Content);
             string message = await responseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(message);
             return await Task.FromResult(new Reply
@@ -75,9 +73,12 @@ namespace GrpcService.Logic
             {
                 throw new Exception(@"Error : (responseMessage.Status), (responseMessage.ReasonPhrase");
             }
+
+            string message = await responseMessage.Content.ReadAsStringAsync();
+            Console.WriteLine(message);
             return await Task.FromResult(new Reply
             {
-                Message = responseMessage.Content.ToString()
+                Message = message
             });
         }
 
