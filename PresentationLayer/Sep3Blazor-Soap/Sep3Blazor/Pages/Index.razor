@@ -18,6 +18,15 @@ Welcome to your new app.
 else
 {
     <p>@SearchPhrase</p>
+}
+@if (SearchPhrase2 == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
     <p>@SearchPhrase2</p>
 }
 
@@ -44,7 +53,7 @@ else
 
     public async Task AddGroup()
     {
-        await _groupService.DeleteGroup("6");
+        await _groupService.DeleteGroup("8");
         SearchPhrase2 = GroupList[0].name;
 
     }

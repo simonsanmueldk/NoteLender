@@ -75,9 +75,11 @@ namespace GrpcService.Logic
             {
                 throw new Exception(@"Error : (responseMessage.Status), (responseMessage.ReasonPhrase");
             }
+            string message = await responseMessage.Content.ReadAsStringAsync();
+            Console.WriteLine(message);
             return await Task.FromResult(new Reply
             {
-                Message = responseMessage.Content.ToString()
+                Message = message
             });
         }
     }

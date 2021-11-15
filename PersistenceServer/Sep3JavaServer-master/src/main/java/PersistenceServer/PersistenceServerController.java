@@ -115,12 +115,10 @@ public class PersistenceServerController {
                 ("DELETE FROM notelender.groups WHERE id='" + id + "'");
         int deleted = statement.executeUpdate();
         if (deleted == 0) {
-
             return "Fail";
         } else {
             return "Success";
         }
-
-
+        
     }
 }
