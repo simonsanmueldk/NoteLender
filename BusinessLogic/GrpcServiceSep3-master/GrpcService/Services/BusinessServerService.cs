@@ -38,8 +38,6 @@ namespace GrpcService
             return await _logicService.ValidateUser(request, context);
         }
 
-        
-
         public override async Task<Reply> AddNote(Request request, ServerCallContext context)
         {
             return await _logicService.AddNote(request, context);
@@ -55,15 +53,16 @@ namespace GrpcService
             return await _logicService.DeleteGroup(request, context);
         }
         
-        public  async Task<Reply> PostInvitation(Request request, ServerCallContext context)
+        public override async Task<Reply> PostInvitation(Request request, ServerCallContext context)
         {
             return await _logicService.PostInvitation(request, context);
         }
 
-        public  async Task<Reply> GetInvitation(Request request, ServerCallContext context)
+        public override async Task<Reply> GetInvitation(Request request, ServerCallContext context)
         {
             return await _logicService.GetInvitation(request, context);
         }
+       
         
         
         

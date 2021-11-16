@@ -10,13 +10,22 @@ namespace Sep3Blazor.Data
     public class InvitationService: IInvitationService
     {
         private readonly String URL = "https://localhost:5004";
+        public IList<Invitation> InvitationList { get; set; }
 
-        public Task<IList<Invitation>> GetInvitations(int userId)
+
+        public async Task<IList<Invitation>> GetInvitations(int userId)
         {
+            using var channel = GrpcChannel.ForAddress(URL);
+            var client = new BusinessServer.BusinessServerClient(channel);
             
+            var reply = await client.GetInvitationAsync(
+                new Request {Name = s});
+            Console.WriteLine(reply.Message);
+            InvitationList = JsonSerializer.Deserialize<List<Invitation>>(reply.Message);
+            return InvitationList;
         }
 
-        public Task AddInvitations(Invitation invitation)
+        public async Task<IList<Invitation>> AddInvitations(Invitation invitation)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
@@ -24,14 +33,10 @@ namespace Sep3Blazor.Data
             var reply = await client.PostInvitationAsync(
                 new Request {Name = s});
             Console.WriteLine("Greeting: " + reply.Message);
-            GroupList = JsonSerializer.Deserialize<List<Group>>(reply.Message);
-            Console.WriteLine(GroupList[0]);
-            return GroupList;
+            InvitationList = JsonSerializer.Deserialize<List<Invitation>>(reply.Message);
+            Console.WriteLine(InvitationList[0]);
+            return InvitationList;
         }
-
-        public Task RemoveInvitations(Invitation invitation)
-        {
-            
-        }
+        
     }
 }
