@@ -112,5 +112,29 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
+
+        public async Task<Reply> GetInvitation(Request request, ServerCallContext context)
+        {
+            Console.WriteLine(request);
+            Task<string> stringAsync = client.GetStringAsync(uri + "/Invitation/" + request.Name);
+            string message = await stringAsync;
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+
+        public async Task<Reply> PostInvitation(Request request, ServerCallContext context)
+        {
+            HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
+            HttpResponseMessage responseMessage = await client.PostAsync(uri + "/Invitation", content);
+            Console.WriteLine(responseMessage.Content);
+            string message = await responseMessage.Content.ReadAsStringAsync();
+            Console.WriteLine(message);
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
     }
 }

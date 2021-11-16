@@ -54,5 +54,19 @@ namespace GrpcService
         {
             return await _logicService.DeleteGroup(request, context);
         }
+        
+        public  async Task<Reply> PostInvitation(Request request, ServerCallContext context)
+        {
+            return await _logicService.PostInvitation(request, context);
+        }
+
+        public  async Task<Reply> GetInvitation(Request request, ServerCallContext context)
+        {
+            return await _logicService.GetInvitation(request, context);
+        }
+        
+        
+        
+        
     }
 }
