@@ -96,10 +96,13 @@ public class PersistenceService implements IPersistenceService {
         return gson.toJson(AdultsList);
     }
 
-    @Override
-    public Note addNote(Note note) throws SQLException {
+    /*
+        Note section
+     */
 
-        Note temp = null;
+    @Override
+    public String addNote(String json) throws SQLException {
+        /*Note temp = null;
         String sqlQuery = "INSERT INTO notelender.note(week,year,name,status,text) VALUES (" +
                 note.getWeek() + "," + note.getYear() + "," + note.getName() + "," + note.getStatus() + "," + note.getText() + ")";
         PreparedStatement statement = connection.prepareStatement(sqlQuery);
@@ -108,21 +111,22 @@ public class PersistenceService implements IPersistenceService {
         while (resultSet.next()) {
             temp = new Note(resultSet.getInt("id"), resultSet.getInt("user_id"), resultSet.getInt("group_id"), resultSet.getInt("week"), resultSet.getInt("year"), resultSet.getString("name"), resultSet.getString("status"), resultSet.getString("text"));
         }
-        return temp;
+        return gson.toJson(temp);*/
+        return null;
     }
 
     @Override
-    public Note getNote(int id) throws SQLException {
+    public String getNote(int groupId, int noteId) throws SQLException {
         Note temp = null;
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM sep3.notes WHERE id = " + id);
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM notes WHERE notes.group_Id = " + groupId + " AND notes.id = " + noteId);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
-            temp = new Note(id, resultSet.getInt(2),
-                    resultSet.getInt(3),resultSet.getInt(4),
+            temp = new Note(noteId, resultSet.getInt(2),
+                    groupId,resultSet.getInt(4),
                     resultSet.getInt(5),resultSet.getString(6),
                     resultSet.getString(7), resultSet.getString(8));
         }
-        return temp;
+        return gson.toJson(temp);
     }
 
     @Override

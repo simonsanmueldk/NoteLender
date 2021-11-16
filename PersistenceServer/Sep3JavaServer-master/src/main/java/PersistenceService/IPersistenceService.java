@@ -11,8 +11,8 @@ public interface IPersistenceService {
      String deleteGroup(int id) throws SQLException;
      String getNoteList(int id) throws SQLException;
      String getUserList(int id) throws SQLException;
-     Note getNote(int id) throws SQLException;
-     Note addNote(Note note) throws SQLException;
+     String getNote(int groupId, int noteId) throws SQLException;
+     String addNote(String json) throws SQLException;
      String validateUser(String json) throws SQLException;
      String registerUser(String json) throws SQLException;
      Invitation addInvitation(int id) throws  SQLException;
