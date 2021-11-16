@@ -69,12 +69,12 @@ namespace GrpcService
         /*
          * Invitation Methods
          */
-        public  async Task<Reply> PostInvitation(Request request, ServerCallContext context)
+        public override async Task<Reply> PostInvitation(Request request, ServerCallContext context)
         {
             return await _logicService.PostInvitation(request, context);
         }
 
-        public  async Task<Reply> GetInvitation(Request request, ServerCallContext context)
+        public override async Task<Reply> GetInvitation(Request request, ServerCallContext context)
         {
             return await _logicService.GetInvitation(request, context);
         }
