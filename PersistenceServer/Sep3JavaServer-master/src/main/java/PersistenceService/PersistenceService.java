@@ -10,6 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class PersistenceService implements IPersistenceService {
 
     private static final Gson gson = new Gson();
@@ -160,7 +161,7 @@ public class PersistenceService implements IPersistenceService {
             Invitation invitation = null;
             Group group = null;
 
-            String sqlQuery = "INSERT INTO notelender.invitation(id, invitor_id, invitee_id, group_id) VALUES (" +
+            String sqlQuery = "INSERT INTO notelender.invitations(id, invitor_id, invitee_id, group_id) VALUES (" +
                 invitation.getId() + "," + invitation.getInvitorId() + "," + invitation.getInviteeId() + "," +  group.getId() + ")";
             PreparedStatement statement = connection.prepareStatement(sqlQuery);
             statement.executeUpdate();
@@ -188,7 +189,6 @@ public class PersistenceService implements IPersistenceService {
         invitationsList.add(text);
         return gson.toJson(invitationsList);
     }
-
 }
 
 
