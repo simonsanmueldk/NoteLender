@@ -15,17 +15,14 @@ namespace GrpcService
             _logicService = new LogicService();
             _logger = logger;
         }
-
-        public override async Task<Reply> PostNote(Request request, ServerCallContext context)
-        {
-            return await _logicService.PostGroup(request, context);
-        }
-
-
         /*
          *  Note methods
          */
         
+        public override async Task<Reply> PostNote(Request request, ServerCallContext context)
+        {
+            return await _logicService.PostGroup(request, context);
+        }
         public override async Task<Reply> GetNote(Request request, ServerCallContext context)
         {
             return await _logicService.GetNote(request, context);
@@ -36,12 +33,28 @@ namespace GrpcService
             return await _logicService.DeleteGroup(request, context);
         }
 
+        /*
+         *  Group methods
+         */
+        
+        public override async Task<Reply> PostGroup(Request request, ServerCallContext context)
+        {
+            return await _logicService.PostGroup(request, context);
+        }
         
         public override async Task<Reply> GetGroup(Request request, ServerCallContext context)
         {
             return await _logicService.GetGroup(request, context);
         }
+        
+        public override async Task<Reply> DeleteGroup(Request request, ServerCallContext context)
+        {
+            return await _logicService.DeleteGroup(request, context);
+        }
 
+        /*
+         *  User methods
+         */
 
         public async Task<Reply> RegisterUser(Request request, ServerCallContext context)
         {
@@ -53,15 +66,5 @@ namespace GrpcService
             return await _logicService.ValidateUser(request, context);
         }
         
-
-        public override async Task<Reply> PostGroup(Request request, ServerCallContext context)
-        {
-            return await _logicService.PostGroup(request, context);
-        }
-
-        public override async Task<Reply> DeleteGroup(Request request, ServerCallContext context)
-        {
-            return await _logicService.DeleteGroup(request, context);
-        }
     }
 }
