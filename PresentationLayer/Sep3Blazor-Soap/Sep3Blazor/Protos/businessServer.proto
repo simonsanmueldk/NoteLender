@@ -10,10 +10,11 @@ service BusinessServer {
   rpc GetGroup (Request) returns (Reply);
   rpc GetNote (Request) returns (Reply);
   rpc PostGroup (Request) returns (Reply);
-  rpc AddNote  (Request) returns (Reply);
+  rpc PostNoteAsync  (Request) returns (Reply);
+  rpc DeleteNoteAsync (Request) returns (Reply);
   rpc DeleteGroup  (Request) returns (Reply);
-   rpc RegisterUser(Request) returns (Reply);
-     rpc ValidateUser(Request) returns (Reply);
+  rpc RegisterUser(Request) returns (Reply);
+  rpc ValidateUser(Request) returns (Reply);
 }
 
 

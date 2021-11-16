@@ -27,10 +27,10 @@ namespace GrpcService.Logic
             });
         }
 
-        public async Task<Reply> GetNoteList(Request request, ServerCallContext context)
+        public async Task<Reply> GetNote(Request request, ServerCallContext context)
         {
-            Console.WriteLine(request);
-            Task<string> stringAsync = client.GetStringAsync(uri + "/NoteList/" + request.Name);
+            Console.WriteLine(request.Name);
+            Task<string> stringAsync = client.GetStringAsync(uri + "/Group/" + request.Name);
             string message = await stringAsync;
             return await Task.FromResult(new Reply
             {
@@ -38,7 +38,7 @@ namespace GrpcService.Logic
             });
         }
 
-        public async Task<Reply> AddNote(Request request, ServerCallContext context)
+        public async Task<Reply> PostNote(Request request, ServerCallContext context)
         {
             HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await client.PostAsync(uri + "/Note", content);

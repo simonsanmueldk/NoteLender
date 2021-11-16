@@ -8,7 +8,7 @@ namespace GrpcService.Logic
     {
         public Task<Reply> GetGroup(Request request, ServerCallContext context);
         public Task<Reply> GetNote(Request request, ServerCallContext context);
-        public Task<Reply> AddNote(Request request, ServerCallContext context);
+        public Task<Reply> PostNote(Request request, ServerCallContext context);
         public Task<Reply> PostGroup(Request request, ServerCallContext context);
 
         public Task<Reply> DeleteGroup(Request request, ServerCallContext context);
