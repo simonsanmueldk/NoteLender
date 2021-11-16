@@ -17,22 +17,11 @@ namespace GrpcService.Logic
         {
             client = new HttpClient();
         }
-
-        public async Task<Reply> GetGroup(Request request, ServerCallContext context)
-        {
-            Console.WriteLine(request);
-            Task<string> stringAsync = client.GetStringAsync(uri + "/Group/" + request.Name);
-            string message = await stringAsync;
-            return await Task.FromResult(new Reply
-            {
-                Message = message
-            });
-        }
-
+        
         public async Task<Reply> GetNote(Request request, ServerCallContext context)
         {
-            Console.WriteLine(request);
-            Task<string> stringAsync = client.GetStringAsync(uri + "/NoteList/" + request.Name);
+            Console.WriteLine(request.Name);
+            Task<string> stringAsync = client.GetStringAsync(uri + "/Note/" + request.Name);
             string message = await stringAsync;
             return await Task.FromResult(new Reply
             {
@@ -40,13 +29,40 @@ namespace GrpcService.Logic
             });
         }
 
-        public async Task<Reply> AddNote(Request request, ServerCallContext context)
+        public async Task<Reply> PostNote(Request request, ServerCallContext context)
         {
             HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await client.PostAsync(uri + "/Note", content);
             Console.WriteLine(responseMessage.Content);
             Task<string> task = client.GetStringAsync(uri + "/NoteList" + request.Name);
             string message = await task;
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+
+        public async Task<Reply> DeleteNote(Request request, ServerCallContext context)
+        {
+            Console.WriteLine(request);
+            HttpResponseMessage responseMessage = await client.DeleteAsync(uri + "/Note/" + request.Name);
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                throw new Exception(@"Error : (responseMessage.Status), (responseMessage.ReasonPhrase");
+            }
+            string message = await responseMessage.Content.ReadAsStringAsync();
+            Console.WriteLine(message);
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+
+        public async Task<Reply> GetGroup(Request request, ServerCallContext context)
+        {
+            Console.WriteLine(request);
+            Task<string> stringAsync = client.GetStringAsync(uri + "/Group/" + request.Name);
+            string message = await stringAsync;
             return await Task.FromResult(new Reply
             {
                 Message = message

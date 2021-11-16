@@ -110,8 +110,20 @@ public class PersistenceService implements IPersistenceService {
             temp = new Note(resultSet.getInt("id"), resultSet.getInt("user_id"), resultSet.getInt("group_id"), resultSet.getInt("week"), resultSet.getInt("year"), resultSet.getString("name"), resultSet.getString("status"), resultSet.getString("text"));
         }
         return temp;
+    }
 
-
+    @Override
+    public Note getNote(int id) throws SQLException {
+        Note temp = null;
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM sep3.notes WHERE id = " + id);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            temp = new Note(id, resultSet.getInt(2),
+                    resultSet.getInt(3),resultSet.getInt(4),
+                    resultSet.getInt(5),resultSet.getString(6),
+                    resultSet.getString(7), resultSet.getString(8));
+        }
+        return temp;
     }
 
     @Override

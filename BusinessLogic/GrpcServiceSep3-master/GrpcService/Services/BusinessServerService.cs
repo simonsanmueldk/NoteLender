@@ -15,57 +15,56 @@ namespace GrpcService
             _logicService = new LogicService();
             _logger = logger;
         }
+        /*
+         *  Note methods
+         */
+        
+        public override async Task<Reply> PostNote(Request request, ServerCallContext context)
+        {
+            return await _logicService.PostGroup(request, context);
+        }
+        public override async Task<Reply> GetNote(Request request, ServerCallContext context)
+        {
+            return await _logicService.GetNote(request, context);
+        }
 
+        public override async Task<Reply> DeleteNote(Request request, ServerCallContext context)
+        {
+            return await _logicService.DeleteGroup(request, context);
+        }
+
+        /*
+         *  Group methods
+         */
+        
+        public override async Task<Reply> PostGroup(Request request, ServerCallContext context)
+        {
+            return await _logicService.PostGroup(request, context);
+        }
         
         public override async Task<Reply> GetGroup(Request request, ServerCallContext context)
         {
             return await _logicService.GetGroup(request, context);
         }
         
-        public override async Task<Reply> GetNote(Request request, ServerCallContext context)
-        {
-            return await _logicService.GetNote(request, context);
-        }
-
-
-        public override async Task<Reply> RegisterUser(Request request, ServerCallContext context)
-        {
-            return await _logicService.RegisterUser(request, context);
-        }
-        
-        public override async Task<Reply> ValidateUser(Request request, ServerCallContext context)
-        {
-            return await _logicService.ValidateUser(request, context);
-        }
-
-        public override async Task<Reply> AddNote(Request request, ServerCallContext context)
-        {
-            return await _logicService.AddNote(request, context);
-        }
-
-        public override async Task<Reply> PostGroup(Request request, ServerCallContext context)
-        {
-            return await _logicService.PostGroup(request, context);
-        }
-
         public override async Task<Reply> DeleteGroup(Request request, ServerCallContext context)
         {
             return await _logicService.DeleteGroup(request, context);
         }
-        
-        public override async Task<Reply> PostInvitation(Request request, ServerCallContext context)
-        {
-            return await _logicService.PostInvitation(request, context);
-        }
 
-        public override async Task<Reply> GetInvitation(Request request, ServerCallContext context)
+        /*
+         *  User methods
+         */
+
+        public async Task<Reply> RegisterUser(Request request, ServerCallContext context)
         {
-            return await _logicService.GetInvitation(request, context);
+            return await _logicService.RegisterUser(request, context);
         }
-       
         
-        
-        
+        public async Task<Reply> ValidateUser(Request request, ServerCallContext context)
+        {
+            return await _logicService.ValidateUser(request, context);
+        }
         
     }
 }
