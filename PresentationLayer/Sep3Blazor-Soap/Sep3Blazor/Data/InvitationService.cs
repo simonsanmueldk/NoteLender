@@ -19,7 +19,7 @@ namespace Sep3Blazor.Data
             var client = new BusinessServer.BusinessServerClient(channel);
             
             var reply = await client.GetInvitationAsync(
-                new Request {Name = s});
+                new Request {Name = userId});
             Console.WriteLine(reply.Message);
             InvitationList = JsonSerializer.Deserialize<List<Invitation>>(reply.Message);
             return InvitationList;
@@ -31,7 +31,7 @@ namespace Sep3Blazor.Data
             var client = new BusinessServer.BusinessServerClient(channel);
 
             var reply = await client.PostInvitationAsync(
-                new Request {Name = s});
+                new Request {Name = invitation});
             Console.WriteLine("Greeting: " + reply.Message);
             InvitationList = JsonSerializer.Deserialize<List<Invitation>>(reply.Message);
             Console.WriteLine(InvitationList[0]);
