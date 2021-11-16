@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Grpc.Core;
 
@@ -85,7 +87,7 @@ namespace GrpcService.Logic
         public async Task<Reply> RegisterUser(Request request, ServerCallContext context)
         {
             HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await client.PostAsync(uri + "/User", content);
+            HttpResponseMessage responseMessage = await client.PostAsync(uri + "/UnregisterUser", content);
             string message = await responseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(message);
             return await Task.FromResult(new Reply
@@ -97,10 +99,14 @@ namespace GrpcService.Logic
         public async Task<Reply> ValidateUser(Request request, ServerCallContext context)
         {
             Console.WriteLine("aleo");
-            String password = "123";
-            Task<string> stringAsync = client.GetStringAsync(uri + $"/User/{request.Name}/{password}");
+            ArrayList list = new ArrayList();
+            list.Add(request.Name);
+            list.Add(request.Type);
+            string str = JsonSerializer.Serialize(list);
+            HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
+            HttpResponseMessage responseMessage = await client.PostAsync(uri + "/User", content);
             Console.WriteLine("aleo x2");
-            string message = await stringAsync;
+            string message = await responseMessage.Content.ReadAsStringAsync();
             return await Task.FromResult(new Reply
             {
                 Message = message

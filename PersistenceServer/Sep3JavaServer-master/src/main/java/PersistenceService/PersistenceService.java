@@ -114,12 +114,15 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public String validateUser(String nameuser, String password) throws SQLException {
+    public String validateUser(String json) throws SQLException {
         System.out.println("Login is working");
         User user=null;
-        System.out.println(user);
+
+        System.out.println(json.toString() + "allalalalala");
+        ArrayList<String> list=gson.fromJson(json,ArrayList.class);
+
         ResultSet resultSet = connection.createStatement().executeQuery
-                ("SELECT * FROM notelender.users WHERE username ='" + nameuser + "'");
+                ("SELECT * FROM notelender.users WHERE username ='" + list.get(0) + "'");
         while (resultSet.next()) {
             user=new User(resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5));
         }
