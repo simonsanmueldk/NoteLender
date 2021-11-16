@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Sep3Blazor;
 
 namespace GrpcService.Logic
 {
@@ -12,7 +13,7 @@ namespace GrpcService.Logic
         public Task<Reply> PostGroup(Request request, ServerCallContext context);
 
         public Task<Reply> DeleteGroup(Request request, ServerCallContext context);
-        public Task<Reply> RegisterUser(Request request, ServerCallContext context);
+        public Task<RegisterReply> RegisterUser(RegisterRequest request, ServerCallContext context);
         public Task<Reply> ValidateUser(Request request, ServerCallContext context);
     }
 }

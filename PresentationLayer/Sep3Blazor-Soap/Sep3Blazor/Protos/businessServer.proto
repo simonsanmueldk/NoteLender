@@ -12,7 +12,7 @@ service BusinessServer {
   rpc PostGroup (Request) returns (Reply);
   rpc AddNote  (Request) returns (Reply);
   rpc DeleteGroup  (Request) returns (Reply);
-   rpc RegisterUser(Request) returns (Reply);
+   rpc RegisterUser(RegisterRequest) returns (RegisterReply);
      rpc ValidateUser(Request) returns (Reply);
 }
 
@@ -22,9 +22,27 @@ message Request {
   string name = 1;
   string type = 2;
 }
-
 // The response message containing the greetings.
 message Reply {
   string message = 1;
   string type = 2;
 }
+
+// The request message containing the user's name.
+message RegisterRequest {
+  string firstName = 1;
+  string lastName = 2;
+   string username = 3;
+    string password = 4;
+    
+}
+// The request message containing the user's name.
+message RegisterReply {
+string message=1;
+  string firstName = 2;
+  string lastName = 3;
+   string username = 4;
+    string password = 5;
+    
+}
+

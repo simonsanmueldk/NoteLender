@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Sep3Blazor;
 
 namespace GrpcService.Logic
 {
@@ -84,13 +85,21 @@ namespace GrpcService.Logic
             });
         }
 
-        public async Task<Reply> RegisterUser(Request request, ServerCallContext context)
+        public async Task<RegisterReply> RegisterUser(RegisterRequest request, ServerCallContext context)
         {
-            HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
+            Console.WriteLine("Aleooo");
+            ArrayList list = new ArrayList();
+            list.Add(request.Username);
+            list.Add(request.Password);
+            list.Add(request.FirstName);
+            list.Add(request.LastName);
+            string str = JsonSerializer.Serialize(list);
+            HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await client.PostAsync(uri + "/UnregisterUser", content);
+            Console.WriteLine("Aleooox2312312");
             string message = await responseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(message);
-            return await Task.FromResult(new Reply
+            return await Task.FromResult(new RegisterReply
             {
                 Message = message
             });

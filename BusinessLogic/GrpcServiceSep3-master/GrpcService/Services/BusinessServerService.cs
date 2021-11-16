@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using GrpcService.Logic;
 using Microsoft.Extensions.Logging;
+using Sep3Blazor;
 
 namespace GrpcService
 {
@@ -28,7 +29,7 @@ namespace GrpcService
         }
 
 
-        public override async Task<Reply> RegisterUser(Request request, ServerCallContext context)
+        public override async Task<RegisterReply> RegisterUser(RegisterRequest request, ServerCallContext context)
         {
             return await _logicService.RegisterUser(request, context);
         }

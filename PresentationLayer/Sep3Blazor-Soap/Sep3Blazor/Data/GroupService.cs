@@ -15,7 +15,7 @@ namespace Sep3Blazor.Data
         private readonly String URL = "https://localhost:5004";
         public IList<Note> NoteList { get; set; }
         public IList<Group> GroupList { get; set; }
-       
+
 
         public async Task<IList<Note>> GetNoteList(string s)
         {
@@ -40,7 +40,7 @@ namespace Sep3Blazor.Data
             Console.WriteLine(GroupList[0]);
             return GroupList;
         }
-        
+
         public async Task<IList<Group>> GetGroupList(string s)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -51,9 +51,9 @@ namespace Sep3Blazor.Data
             GroupList = JsonSerializer.Deserialize<List<Group>>(reply.Message);
             return GroupList;
         }
-        
-        
-        public async  Task DeleteGroup(string s)
+
+
+        public async Task DeleteGroup(string s)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
@@ -76,9 +76,19 @@ namespace Sep3Blazor.Data
             return user;
         }
 
-        public Task<User> RegisterUser(User user)
+        public async Task<User> RegisterUser(User user)
         {
-            throw new NotImplementedException();
+            using var channel = GrpcChannel.ForAddress(URL);
+            var client = new BusinessServer.BusinessServerClient(channel);
+
+            Console.WriteLine(user.Username + "lalala");
+            var reply = await client.RegisterUserAsync(
+                new RegisterRequest{Username = user.Username, Password = user.Password,FirstName = user.FirstName,LastName = user.LastName});
+
+            Console.WriteLine("Greeting: " + reply);
+            User temp = JsonSerializer.Deserialize<User>(reply.Message);
+
+            return null;
         }
     }
 }
