@@ -153,21 +153,20 @@ public class PersistenceService implements IPersistenceService {
     @Override public Invitation addInvitation(int id) throws SQLException
     {
         {
-            Invitation temp = null;
+//            Invitation temp = null;
             Invitation invitation = null;
             Group group = null;
 
             String sqlQuery = "INSERT INTO notelender.invitation(id, invitor_id, invitee_id, group_id) VALUES (" +
-               //will show nullpointerexception
                 invitation.getId() + "," + invitation.getInvitorId() + "," + invitation.getInviteeId() + "," +  group.getId() + ")";
             PreparedStatement statement = connection.prepareStatement(sqlQuery);
             statement.executeUpdate();
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                temp = new Invitation(resultSet.getInt("id"),resultSet.getInt("invitee_id"),resultSet.getInt("invitor_id"));
+                invitation = new Invitation(resultSet.getInt("id"),resultSet.getInt("invitee_id"),resultSet.getInt("invitor_id"));
             }
-            return temp;
+            return invitation;
         }
     }
 
