@@ -1,19 +1,21 @@
 syntax = "proto3";
+import "google/protobuf/any.proto";
 
-option csharp_namespace = "Sep3Blazor";
+option csharp_namespace = "GrpcService";
 
 package BusinessServ;
 
 // The greeting service definition.
 service BusinessServer {
   // Sends a greeting
-  rpc GetGroup (Request) returns (Reply);
+ rpc PostNote (Request) returns (Reply);
   rpc GetNote (Request) returns (Reply);
+  rpc DeleteNote (Request) returns (Reply);
+  rpc GetGroup (Request) returns (Reply);
   rpc PostGroup (Request) returns (Reply);
-  rpc AddNote  (Request) returns (Reply);
   rpc DeleteGroup  (Request) returns (Reply);
-   rpc RegisterUser(RegisterRequest) returns (RegisterReply);
-     rpc ValidateUser(Request) returns (Reply);
+  rpc RegisterUser(RegisterRequest) returns (RegisterReply);
+  rpc ValidateUser(Request) returns (Reply);
 }
 
 
@@ -22,12 +24,12 @@ message Request {
   string name = 1;
   string type = 2;
 }
+
 // The response message containing the greetings.
 message Reply {
   string message = 1;
   string type = 2;
 }
-
 // The request message containing the user's name.
 message RegisterRequest {
   string firstName = 1;

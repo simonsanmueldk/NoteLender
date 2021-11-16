@@ -3,7 +3,6 @@ using Grpc.Core;
 using GrpcService.Logic;
 using Microsoft.Extensions.Logging;
 using Sep3Blazor;
-
 namespace GrpcService
 {
     public class BusinessServerService : BusinessServer.BusinessServerBase
@@ -16,44 +15,56 @@ namespace GrpcService
             _logicService = new LogicService();
             _logger = logger;
         }
+        /*
+         *  Note methods
+         */
+        
+        public override async Task<Reply> PostNote(Request request, ServerCallContext context)
+        {
+            return await _logicService.PostGroup(request, context);
+        }
+        public override async Task<Reply> GetNote(Request request, ServerCallContext context)
+        {
+            return await _logicService.GetNote(request, context);
+        }
 
+        public override async Task<Reply> DeleteNote(Request request, ServerCallContext context)
+        {
+            return await _logicService.DeleteGroup(request, context);
+        }
+
+        /*
+         *  Group methods
+         */
+        
+        public override async Task<Reply> PostGroup(Request request, ServerCallContext context)
+        {
+            return await _logicService.PostGroup(request, context);
+        }
         
         public override async Task<Reply> GetGroup(Request request, ServerCallContext context)
         {
             return await _logicService.GetGroup(request, context);
         }
         
-        public override async Task<Reply> GetNote(Request request, ServerCallContext context)
-        {
-            return await _logicService.GetNote(request, context);
-        }
-
-
-        public override async Task<RegisterReply> RegisterUser(RegisterRequest request, ServerCallContext context)
-        {
-            return await _logicService.RegisterUser(request, context);
-        }
-        
-        public override async Task<Reply> ValidateUser(Request request, ServerCallContext context)
-        {
-            return await _logicService.ValidateUser(request, context);
-        }
-
-        
-
-        public override async Task<Reply> AddNote(Request request, ServerCallContext context)
-        {
-            return await _logicService.AddNote(request, context);
-        }
-
-        public override async Task<Reply> PostGroup(Request request, ServerCallContext context)
-        {
-            return await _logicService.PostGroup(request, context);
-        }
-
         public override async Task<Reply> DeleteGroup(Request request, ServerCallContext context)
         {
             return await _logicService.DeleteGroup(request, context);
         }
+
+        /*
+         *  User methods
+         */
+
+        public async Task<RegisterReply> RegisterUser(RegisterRequest request, ServerCallContext context)
+        {
+            return await _logicService.RegisterUser(request, context);
+        }
+        
+        public async Task<Reply> ValidateUser(Request request, ServerCallContext context)
+        {
+            return await _logicService.ValidateUser(request, context);
+        }
+        
     }
 }
