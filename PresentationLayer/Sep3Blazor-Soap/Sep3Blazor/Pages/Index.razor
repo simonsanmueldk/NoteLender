@@ -28,6 +28,7 @@ else
 else
 {
     <p>@SearchPhrase2</p>
+  
 }
 
 
@@ -35,6 +36,7 @@ else
 {
     public string SearchPhrase;
     public string SearchPhrase2;
+  
 
     public IList<Note> NoteList { get; set; }
     public IList<Group> GroupList { get; set; }
@@ -45,11 +47,13 @@ else
     // base.OnInitialized();
         Console.WriteLine("2str");
     // NoteList = await _groupService.GetNoteList("1");
-    GroupList = await _groupService.GetGroupList("1");
+   // GroupList = await _groupService.GetGroupList("1");
     //SearchPhrase = NoteList[0].text;
-    SearchPhrase2 = GroupList[0].name;
+    //SearchPhrase2 = GroupList[0].name;
+        await _groupService.RegisterUser(new User(0, "Test", "Test", "test1", "test"));
+    
 
-        await _groupService.ValidateLogin("dorin", "123");
+        //await _groupService.ValidateLogin("dorin", "123");
     }
 
 

@@ -56,12 +56,12 @@ namespace GrpcService
          *  User methods
          */
 
-        public async Task<Reply> RegisterUser(Request request, ServerCallContext context)
+        public override async Task<RegisterReply> RegisterUser(RegisterRequest request, ServerCallContext context)
         {
             return await _logicService.RegisterUser(request, context);
         }
         
-        public async Task<Reply> ValidateUser(Request request, ServerCallContext context)
+        public override async Task<Reply> ValidateUser(Request request, ServerCallContext context)
         {
             return await _logicService.ValidateUser(request, context);
         }

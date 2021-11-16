@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Grpc.Core;
 
+
 namespace GrpcService.Logic
 {
     public interface ILogicService
@@ -17,7 +18,7 @@ namespace GrpcService.Logic
 
         public Task<Reply> DeleteGroup(Request request, ServerCallContext context);
         // User
-        public Task<Reply> RegisterUser(Request request, ServerCallContext context);
+        public Task<RegisterReply> RegisterUser(RegisterRequest request, ServerCallContext context);
         public Task<Reply> ValidateUser(Request request, ServerCallContext context);
         public Task<Reply> GetInvitation(Request request, ServerCallContext context);
         public Task<Reply> PostInvitation(Request request, ServerCallContext context);
