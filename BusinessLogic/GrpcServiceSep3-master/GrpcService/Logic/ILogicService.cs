@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Grpc.Core;
 
+
 namespace GrpcService.Logic
 {
     public interface ILogicService
