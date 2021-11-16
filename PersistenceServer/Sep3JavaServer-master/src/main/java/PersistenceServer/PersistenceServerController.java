@@ -35,14 +35,14 @@ public class PersistenceServerController {
 
     }
 
-    @GetMapping("/User/{username}/{password}")
-    public synchronized String ValidateUser(@PathVariable(value = "username") String username,@PathVariable(value = "password") String password ) throws SQLException {
+    @PostMapping("/User")
+    public synchronized String ValidateUser(@RequestBody String json )  throws SQLException {
         System.out.println("It's working Validate");
-        return persistenceService.validateUser(username,password);
+        return persistenceService.validateUser(json);
     }
 
 
-    @PostMapping("/User")
+    @PostMapping("/UnregisterUser")
     public synchronized String registerUser(@RequestBody String json) throws SQLException {
       return persistenceService.registerUser(json);
     }

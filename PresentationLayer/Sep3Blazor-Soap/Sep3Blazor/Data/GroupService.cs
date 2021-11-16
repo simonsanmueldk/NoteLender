@@ -70,10 +70,9 @@ namespace Sep3Blazor.Data
             var client = new BusinessServer.BusinessServerClient(channel);
 
             var reply = await client.ValidateUserAsync(
-                new Request {Name = username});
+                new Request {Name = username, Type = password});
             Console.WriteLine("Greeting: " + reply.Message);
             User user = JsonSerializer.Deserialize<User>(reply.Message);
-            Console.WriteLine(user);
             return user;
         }
 

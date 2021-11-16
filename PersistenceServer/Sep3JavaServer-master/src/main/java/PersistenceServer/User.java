@@ -2,18 +2,18 @@ package PersistenceServer;
 
 public class User {
     private int id;
-    private String firstName;
-    private String lastName;
-    private String username;
-    private String password;
+    private String FirstName;
+    private String LastName;
+    private String Username;
+    private String Password;
 
 
     public User(int id, String firstName, String lastName, String username, String password) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
-        this.password = password;
+        FirstName = firstName;
+        LastName = lastName;
+        Username = username;
+        Password = password;
     }
 
     public int getId() {
@@ -25,35 +25,35 @@ public class User {
     }
 
     public String getFirstName() {
-        return firstName;
+        return FirstName;
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.FirstName = firstName;
     }
 
     public String getLastName() {
-        return lastName;
+        return LastName;
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.LastName = lastName;
     }
 
     public String getUsername() {
-        return username;
+        return Username;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.Username = username;
     }
 
     public String getPassword() {
-        return password;
+        return Password;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.Password = password;
     }
 
 
