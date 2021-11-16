@@ -16,8 +16,7 @@ namespace Sep3Blazor.Data
 
         public  Task DeleteGroup(string s);
 
-        public Task<User> ValidateLogin(string username, string password);
-        public Task<User> RegisterUser(User user);
+      
 
 
 
