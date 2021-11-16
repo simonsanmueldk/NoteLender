@@ -27,7 +27,7 @@ namespace GrpcService.Logic
             });
         }
 
-        public async Task<Reply> GetNote(Request request, ServerCallContext context)
+        public async Task<Reply> GetNoteList(Request request, ServerCallContext context)
         {
             Console.WriteLine(request);
             Task<string> stringAsync = client.GetStringAsync(uri + "/NoteList/" + request.Name);

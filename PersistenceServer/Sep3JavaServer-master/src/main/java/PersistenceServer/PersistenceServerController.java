@@ -15,6 +15,10 @@ public class PersistenceServerController {
 
     public PersistenceServerController() throws SQLException {
         persistenceService = new PersistenceService();
+
+
+        System.out.println("Hello");
+
     }
 
 
