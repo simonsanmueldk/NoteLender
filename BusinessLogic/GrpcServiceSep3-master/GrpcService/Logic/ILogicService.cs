@@ -20,5 +20,9 @@ namespace GrpcService.Logic
         // User
         public Task<RegisterReply> RegisterUser(RegisterRequest request, ServerCallContext context);
         public Task<Reply> ValidateUser(Request request, ServerCallContext context);
+        public Task<Reply> GetInvitation(Request request, ServerCallContext context);
+        public Task<Reply> PostInvitation(Request request, ServerCallContext context);
+        
+        
     }
 }

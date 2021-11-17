@@ -48,14 +48,19 @@ public class PersistenceServerController {
     }
 
 
-    @PostMapping("/Note")
-    public synchronized Note addNote(@RequestBody Note note) throws SQLException {
+    @PostMapping("/Note/{groupId}/")
+    public synchronized String addNote(@RequestBody String json) throws SQLException {
         System.out.println("It's working AddNote");
-        return persistenceService.addNote(note);
+        return persistenceService.addNote(json);
 
     }
 
-    @GetMapping("/NoteList/{id}")
+    @GetMapping("/Note/{groupId}/{noteId}")
+    public synchronized String getNote(@PathVariable(value = "groupId") int groupId, @PathVariable(value = "noteId") int noteId) throws SQLException{
+        return persistenceService.getNote(groupId, noteId);
+    }
+
+    @GetMapping("/Note/{groupId/{noteId}")
     public synchronized String getNoteList(@PathVariable(value = "id") int id) throws SQLException {
         System.out.println("It's working GetNoteList");
         return persistenceService.getNoteList(id);
@@ -76,7 +81,7 @@ public class PersistenceServerController {
 
     }
     @PostMapping("/Invitation")
-    public synchronized  Invitation addInvitation(@PathVariable(value = "id") int id) throws SQLException
+    public synchronized  String addInvitation(@PathVariable(value = "id") int id) throws SQLException
     {
         return  persistenceService.addInvitation(id);
     }

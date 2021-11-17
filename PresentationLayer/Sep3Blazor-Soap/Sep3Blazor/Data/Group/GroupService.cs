@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net.Sockets;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Grpc.Net.Client;
@@ -15,8 +13,7 @@ namespace Sep3Blazor.Data
         private readonly String URL = "https://localhost:5004";
         public IList<Note> NoteList { get; set; }
         public IList<Group> GroupList { get; set; }
-
-
+        
         public async Task<IList<Note>> GetNoteList(string s)
         {
             using var channel = GrpcChannel.ForAddress(URL);

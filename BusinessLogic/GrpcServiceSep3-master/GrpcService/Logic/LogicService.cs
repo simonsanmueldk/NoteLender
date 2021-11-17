@@ -18,18 +18,8 @@ namespace GrpcService.Logic
         {
             client = new HttpClient();
         }
-
-        public async Task<Reply> GetNote(Request request, ServerCallContext context)
-        {
-            Console.WriteLine(request.Name);
-            Task<string> stringAsync = client.GetStringAsync(uri + "/Note/" + request.Name);
-            string message = await stringAsync;
-            return await Task.FromResult(new Reply
-            {
-                Message = message
-            });
-        }
-
+        
+     
         public async Task<Reply> PostNote(Request request, ServerCallContext context)
         {
             HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
@@ -37,6 +27,17 @@ namespace GrpcService.Logic
             Console.WriteLine(responseMessage.Content);
             Task<string> task = client.GetStringAsync(uri + "/NoteList" + request.Name);
             string message = await task;
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+        
+        public async Task<Reply> GetNote(Request request, ServerCallContext context)
+        {
+            Console.WriteLine(request.Name);
+            Task<string> stringAsync = client.GetStringAsync(uri + "/Note/" + request.Name);
+            string message = await stringAsync;
             return await Task.FromResult(new Reply
             {
                 Message = message
@@ -51,7 +52,21 @@ namespace GrpcService.Logic
             {
                 throw new Exception(@"Error : (responseMessage.Status), (responseMessage.ReasonPhrase");
             }
+            string message = await responseMessage.Content.ReadAsStringAsync();
+            Console.WriteLine(message);
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
 
+   
+        public async Task<Reply> PostGroup(Request request, ServerCallContext context)
+        {
+            HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
+            Console.WriteLine(2);
+            HttpResponseMessage responseMessage = await client.PutAsync(uri + "/Group", content);
+            Console.WriteLine("1" + responseMessage.Content);
             string message = await responseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(message);
             return await Task.FromResult(new Reply
@@ -65,20 +80,6 @@ namespace GrpcService.Logic
             Console.WriteLine(request);
             Task<string> stringAsync = client.GetStringAsync(uri + "/Group/" + request.Name);
             string message = await stringAsync;
-            return await Task.FromResult(new Reply
-            {
-                Message = message
-            });
-        }
-
-        public async Task<Reply> PostGroup(Request request, ServerCallContext context)
-        {
-            HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
-            Console.WriteLine(2);
-            HttpResponseMessage responseMessage = await client.PutAsync(uri + "/Group", content);
-            Console.WriteLine("1" + responseMessage.Content);
-            string message = await responseMessage.Content.ReadAsStringAsync();
-            Console.WriteLine(message);
             return await Task.FromResult(new Reply
             {
                 Message = message
@@ -103,7 +104,8 @@ namespace GrpcService.Logic
         }
 
         public async Task<RegisterReply> RegisterUser(RegisterRequest request, ServerCallContext context)
-        { 
+        {
+            Console.WriteLine("Aleooo");
             ArrayList list = new ArrayList();
             list.Add(request.Username);
             list.Add(request.Password);
@@ -112,6 +114,7 @@ namespace GrpcService.Logic
             string str = JsonSerializer.Serialize(list);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await client.PostAsync(uri + "/UnregisterUser", content);
+            Console.WriteLine("Aleooox2312312");
             string message = await responseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(message);
             return await Task.FromResult(new RegisterReply
@@ -129,12 +132,36 @@ namespace GrpcService.Logic
             string str = JsonSerializer.Serialize(list);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await client.PostAsync(uri + "/User", content);
-            Console.WriteLine(responseMessage.Content.ReadAsStringAsync().Result);
+            Console.WriteLine("aleo x2");
             string message = await responseMessage.Content.ReadAsStringAsync();
             return await Task.FromResult(new Reply
             {
                 Message = message
             });
         }
+
+        public async Task<Reply> GetInvitation(Request request, ServerCallContext context)
+        {
+            Task<string> stringAsync = client.GetStringAsync(uri + "/InvitationList/" + request.Name);
+            string message = await stringAsync;
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+
+        public async Task<Reply> PostInvitation(Request request, ServerCallContext context)
+        {
+
+            HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
+            HttpResponseMessage responseMessage = await client.PostAsync(uri + "/Invitation", content);
+            string message = await responseMessage.Content.ReadAsStringAsync();
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+        
+            
     }
 }

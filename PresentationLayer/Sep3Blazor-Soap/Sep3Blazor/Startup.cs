@@ -4,15 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Sep3Blazor.Authentication;
 using Sep3Blazor.Data;
-
 
 namespace Sep3Blazor
 {
@@ -34,6 +31,7 @@ namespace Sep3Blazor
             services.AddScoped<AuthenticationStateProvider,CustomAuthenticationStateProvider>();
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<INoteService, NoteService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
