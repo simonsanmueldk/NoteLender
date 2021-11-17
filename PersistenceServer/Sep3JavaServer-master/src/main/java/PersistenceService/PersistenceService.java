@@ -118,7 +118,7 @@ public class PersistenceService implements IPersistenceService {
     @Override
     public String getNote(int groupId, int noteId) throws SQLException {
         Note temp = null;
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM notes WHERE notes.group_Id = " + groupId + " AND notes.id = " + noteId);
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM notelender.notes WHERE notes.group_Id = " + groupId + " AND notes.id = " + noteId);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
             temp = new Note(noteId, resultSet.getInt(2),
