@@ -5,7 +5,7 @@
 @inject NavigationManager NavigationManager;
 
 <h1>Hello, world!</h1>
-
+<AuthorizeView>
 Welcome to your new app.
 <input type="submit" value="Get the second object from database" @onclick="AddGroup">
 
@@ -30,7 +30,7 @@ else
     <p>@SearchPhrase2</p>
   
 }
-
+</AuthorizeView>
 
 @code
 {

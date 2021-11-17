@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Grpc.Net.Client;
@@ -29,11 +30,11 @@ namespace Sep3Blazor.Data
             Console.WriteLine(user.Username + "lalala");
             var reply = await client.RegisterUserAsync(
                 new RegisterRequest{Username = user.Username, Password = user.Password,FirstName = user.FirstName,LastName = user.LastName});
-
             Console.WriteLine("Greeting: " + reply);
             User temp = JsonSerializer.Deserialize<User>(reply.Message);
 
             return null;
+           
         }
     }
 }

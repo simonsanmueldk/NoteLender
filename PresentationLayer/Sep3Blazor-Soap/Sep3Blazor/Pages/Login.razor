@@ -1,0 +1,57 @@
+﻿@page "/Login"
+@namespace LoginComponent
+@using Sep3Blazor.Authentication
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+
+<AuthorizeView>
+    <NotAuthorized>
+        <div class="d-flex flex-column align-items-center">
+            <div >
+                <img src="images/IMG_1551.JPG" width="650" height="500"id="image">
+            </div>
+
+            <div style="color:red">@errorMessage</div>
+
+            <div id="usernamediv" class="form-group">
+                <label id="loginlabel">Username:</label>
+                <input id="input"type="text" placeholder="Username" @bind-value="username"/>
+            </div>
+            <div id="passworddiv">
+                <label id="loginlabel">Password: </label>
+                <input id="input" type="password" placeholder="Password" @bind-value="password"/>
+            </div>
+
+            <div >
+                <button id="button-one"@onclick="PerformLogin">Login</button>
+            </div>
+        </div>
+    </NotAuthorized>
+
+</AuthorizeView>
+
+@code {
+    private string username;
+    private string password;
+    private string errorMessage;
+
+    public async Task PerformLogin()
+    {
+        errorMessage = "";
+        try
+        {
+            await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateLogin(username, password);
+            NavigationManager.NavigateTo("/");
+            username = "";
+            password = "";
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message.Contains('U') ? "UserName not found" : "Incorrect Password";
+        }
+    }
+
+
+}

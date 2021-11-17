@@ -18,7 +18,7 @@ namespace GrpcService.Logic
         {
             client = new HttpClient();
         }
-        
+
         public async Task<Reply> GetNote(Request request, ServerCallContext context)
         {
             Console.WriteLine(request.Name);
@@ -51,6 +51,7 @@ namespace GrpcService.Logic
             {
                 throw new Exception(@"Error : (responseMessage.Status), (responseMessage.ReasonPhrase");
             }
+
             string message = await responseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(message);
             return await Task.FromResult(new Reply
@@ -102,8 +103,7 @@ namespace GrpcService.Logic
         }
 
         public async Task<RegisterReply> RegisterUser(RegisterRequest request, ServerCallContext context)
-        {
-            Console.WriteLine("Aleooo");
+        { 
             ArrayList list = new ArrayList();
             list.Add(request.Username);
             list.Add(request.Password);
@@ -112,7 +112,6 @@ namespace GrpcService.Logic
             string str = JsonSerializer.Serialize(list);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await client.PostAsync(uri + "/UnregisterUser", content);
-            Console.WriteLine("Aleooox2312312");
             string message = await responseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(message);
             return await Task.FromResult(new RegisterReply
@@ -130,7 +129,7 @@ namespace GrpcService.Logic
             string str = JsonSerializer.Serialize(list);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await client.PostAsync(uri + "/User", content);
-            Console.WriteLine("aleo x2");
+            Console.WriteLine(responseMessage.Content.ReadAsStringAsync().Result);
             string message = await responseMessage.Content.ReadAsStringAsync();
             return await Task.FromResult(new Reply
             {

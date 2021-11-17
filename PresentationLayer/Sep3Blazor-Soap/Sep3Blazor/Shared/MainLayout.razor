@@ -1,4 +1,8 @@
+@inject AuthenticationStateProvider AuthenticationStateProvider;
+@inject NavigationManager NavigationManager
+@using Sep3Blazor.Authentication
 @inherits LayoutComponentBase
+@using LoginComponent
 
 <div class="page">
     <div class="sidebar">
@@ -7,11 +11,28 @@
 
     <div class="main">
         <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+             <AuthorizeView>
+                          <button  id="button-one" href="" @onclick="PerformLogout">
+                               Log out
+                        </button>
+                       </AuthorizeView>
         </div>
 
         <div class="content px-4">
             @Body
+            <Login/>
+            
         </div>
     </div>
 </div>
+
+@code
+{
+   
+    public async Task PerformLogout() {
+        try {
+            ((CustomAuthenticationStateProvider) AuthenticationStateProvider).LogOut();
+            NavigationManager.NavigateTo("/");
+        } catch (Exception e) { }
+    }
+}

@@ -118,8 +118,8 @@ public class PersistenceService implements IPersistenceService {
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
             temp = new Note(id, resultSet.getInt(2),
-                    resultSet.getInt(3),resultSet.getInt(4),
-                    resultSet.getInt(5),resultSet.getString(6),
+                    resultSet.getInt(3), resultSet.getInt(4),
+                    resultSet.getInt(5), resultSet.getString(6),
                     resultSet.getString(7), resultSet.getString(8));
         }
         return temp;
@@ -142,14 +142,14 @@ public class PersistenceService implements IPersistenceService {
     @Override
     public String registerUser(String json) throws SQLException {
         System.out.println("register User is working");
-        System.out.println(json + "lalalalalaa");
+
         ArrayList<User> temp = gson.fromJson(json, ArrayList.class);
         User user;
 
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate("INSERT INTO notelender.users (firstname,lastname,username,password) VALUES ('" + temp.get(2) + "','" + temp.get(3) + "','" + temp.get(0) + "','" + temp.get(1) + "')", Statement.RETURN_GENERATED_KEYS);
-            System.out.println("ahahahaha");
+
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     user = new User(generatedKeys.getInt(1), generatedKeys.getString(2), generatedKeys.getString(3), generatedKeys.getString(4), generatedKeys.getString(5));
