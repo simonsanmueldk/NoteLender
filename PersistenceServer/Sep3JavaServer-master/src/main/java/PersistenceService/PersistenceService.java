@@ -170,8 +170,9 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public Invitation addInvitation(int id) throws SQLException {
+    public String addInvitation(int id) throws SQLException {
         {
+            /*
 //            Invitation temp = null;
             Invitation invitation = null;
             Group group = null;
@@ -186,6 +187,30 @@ public class PersistenceService implements IPersistenceService {
                 invitation = new Invitation(resultSet.getInt("id"), resultSet.getInt("invitee_id"), resultSet.getInt("invitor_id"));
             }
             return invitation;
+             */
+
+            List<Invitation> InvitationList = new ArrayList<>();
+            Invitation invitation = null;
+            Group group = null;
+
+            try {
+                Statement statement = connection.createStatement();
+                statement.executeUpdate("INSERT INTO notelender.invitation(id, invitor_id, invitee_id, group_id) VALUES (" +
+                    invitation.getId() + "," + invitation.getInvitorId() + "," + invitation.getInviteeId() + "," + group.getId() + ")");
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        Invitation invitationToAdd = new Invitation(generatedKeys.getInt(1), generatedKeys.getInt(2),generatedKeys.getInt(3));
+                        InvitationList.add(invitationToAdd);
+                        return gson.toJson(InvitationList);
+                    } else {
+                        throw new SQLException("Creating failed, no ID obtained.");
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println("Connection failure.");
+                e.printStackTrace();
+            }
+            return null;
         }
     }
 

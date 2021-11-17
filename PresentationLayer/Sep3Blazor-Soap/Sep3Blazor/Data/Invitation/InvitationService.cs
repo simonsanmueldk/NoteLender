@@ -31,7 +31,7 @@ namespace Sep3Blazor.Data
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
 
-            var reply =  client.PostInvitationAsync(
+            var reply =  await client.PostInvitationAsync(
                 new Request {Name = invitation});
             InvitationList = JsonSerializer.Deserialize<List<Invitation>>(reply.Message);
             return InvitationList;

@@ -28,7 +28,7 @@ namespace Sep3Blazor.Data
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
 
-            var reply = await client.PostNoteAsyncAsync(
+            var reply = await client.PostNoteAsync(
                 new Request {Name = path});
             Console.WriteLine("Greeting: " + reply.Message);
             Note note = JsonSerializer.Deserialize<Note>(reply.Message);
@@ -40,7 +40,7 @@ namespace Sep3Blazor.Data
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
-            var reply = await client.DeleteNoteAsyncAsync(
+            var reply = await client.DeleteNoteAsync(
                 new Request {Name = path});
             Console.WriteLine("Greeting: " + reply.Message);
         }
