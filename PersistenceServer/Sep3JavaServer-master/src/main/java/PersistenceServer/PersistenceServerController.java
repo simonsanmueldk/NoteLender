@@ -81,7 +81,7 @@ public class PersistenceServerController {
 
     }
     @PostMapping("/Invitation")
-    public synchronized  Invitation addInvitation(@PathVariable(value = "id") int id) throws SQLException
+    public synchronized  String addInvitation(@PathVariable(value = "id") int id) throws SQLException
     {
         return  persistenceService.addInvitation(id);
     }
