@@ -2,81 +2,130 @@
 @using Sep3Blazor.Data
 @using Sep3Blazor.Model
 @using Microsoft.AspNetCore.Components
-@using Microsoft.Extensions.Logging
-@using System.Text.Json
 @inject INoteService _noteService
 @inject NavigationManager NavigationManager;
 
 <h1>Note Testing</h1>
-@if (SearchPhrase == null)
-{
-    <p>
-        <em>Loading...</em>
-    </p>
-}
-else
-{
-    <p>@SearchPhrase</p>
-}
-    
-    <EditForm Model="@Note" OnValidSubmit="@HandleValidSubmit">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <h2>Add Note</h2>
-        <p>
-            <label>
-                NoteId:
-                <InputNumber @bind-Value="Note.id" />
-            </label>
-        </p>
-        <p>
-            <label>
-                UserId:
-                <InputNumber @bind-Value="Note.userId" />
-            </label>
-        </p>
-        <p>
-            <label>
-                GroupId:
-                <InputNumber @bind-Value="Note.groupId" />
-            </label>
-        </p>
-        <p>
-            <label>
-                Week:
-                <InputNumber @bind-Value="Note.week" />
-            </label>
-        </p>
-        <p>
-            <label>
-                Year:
-                <InputNumber @bind-Value="Note.year" />
-            </label>
-        </p>
-        <p>
-            <label>
-                Name:
-                <InputText @bind-Value="Note.name"/>
-            </label>
-        </p>
-        <p>
-            <label>
-                Status:
-                <InputSelect @bind-Value="Note.status">
-                    <option value="">Not started</option>
-                    <option value="Started">Started</option>
-                    <option value="Finished">Finished</option>
-                </InputSelect>
-            </label>
-        </p>
-        <p>
-            <label>
-                Text
-                <InputTextArea @bind-Value="Note.text" />
-            </label>
-        </p>
-        <button type="submit">Submit</button>
-    </EditForm>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+        <h3>Get Note</h3>
+        <EditForm Model="@Note" OnValidSubmit="@SubmitGetNote">
+            <DataAnnotationsValidator/>
+            <ValidationSummary/>
+            <p>
+                <label>
+                    Group ID:
+                    <InputNumber @bind-Value="Note.groupId"/>
+                    @if (SearchPhrase == null)
+                    {
+                        <p>
+                            <em>Loading...</em>
+                        </p>
+                    }
+                    else
+                    {
+                        <table class='table'>
+                                <thead>
+                                    <tr>
+                                        <th>Note ID</th>
+                                        <th>User ID</th>
+                                        <th>Group ID</th>
+                                        <th>Week</th>
+                                        <th>Year</th>
+                                        <th>Name</th>
+                                        <th>Status</th>
+                                        <th>Text</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var Note in NoteList)
+                                    {
+                                        <tr>
+                                            <td>@Note.id</td>
+                                            <td>@Note.userId</td>
+                                            <td>@Note.groupId</td>
+                                            <td>@Note.week</td>
+                                            <td>@Note.year</td>
+                                            <td>@Note.name</td>
+                                            <td>@Note.status</td>
+                                            <td>@Note.text</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                    }
+                </label>
+            </p>
+            <button type="submit">GET</button>
+        </EditForm>
+        </div>
+    <div class="col-sm-6">
+        <h3>Add Note</h3>
+        <EditForm Model="@Note" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <p>
+                <label>
+                    NoteId:
+                    <InputNumber @bind-Value="Note.id" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    UserId:
+                    <InputNumber @bind-Value="Note.userId" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    GroupId:
+                    <InputNumber @bind-Value="Note.groupId" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    Week:
+                    <InputNumber @bind-Value="Note.week" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    Year:
+                    <InputNumber @bind-Value="Note.year" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    Name:
+                    <InputText @bind-Value="Note.name"/>
+                </label>
+            </p>
+            <p>
+                <label>
+                    Status:
+                    <InputSelect @bind-Value="Note.status">
+                        <option value="">Not started</option>
+                        <option value="Started">Started</option>
+                        <option value="Finished">Finished</option>
+                    </InputSelect>
+                </label>
+            </p>
+            <p>
+                <label>
+                    Text
+                    <InputTextArea @bind-Value="Note.text" />
+                </label>
+            </p>
+            <button type="submit">ADD</button>
+        </EditForm>
+    </div>
+    <div class="col-sm-6">
+      <h3>Delete Note</h3>
+    </div>
+  </div>
+</div>
 
 @code
 {
@@ -87,6 +136,20 @@ else
     protected override async Task OnInitializedAsync()
     {
         
+    }
+
+    private async void SubmitGetNote()
+    {
+        try
+        {
+            NoteList = await _noteService.GetNoteList(Note.groupId.ToString());
+            SearchPhrase = NoteList[0].text;
+
+        }
+        catch (ArgumentOutOfRangeException indexOutOfRangeException)
+        {
+            SearchPhrase = "Out of range";
+        }
     }
 
     private async void HandleValidSubmit()
@@ -106,7 +169,7 @@ else
             Note.text);
         
         //NoteList.Add(noteToAdd);
-        //NoteList = await _noteService.GetNoteList(noteToAdd.groupId.ToString());
+        NoteList = await _noteService.AddNote(noteToAdd);
         //await AddNote(noteToAdd);
     }
 

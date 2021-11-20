@@ -1,4 +1,5 @@
 syntax = "proto3";
+import "google/protobuf/any.proto";
 
 option csharp_namespace = "Sep3Blazor";
 
@@ -10,7 +11,7 @@ service BusinessServer {
   rpc GetGroup (Request) returns (Reply);
   rpc GetNote (Request) returns (Reply);
   rpc PostGroup (Request) returns (Reply);
-  rpc PostNote  (Request) returns (Reply);
+  rpc PostNote  (RegisterNoteRequest) returns (Reply);
   rpc DeleteNote (Request) returns (Reply);
   rpc DeleteGroup  (Request) returns (Reply);
   rpc RegisterUser(RegisterRequest) returns (RegisterReply);
@@ -18,7 +19,6 @@ service BusinessServer {
   rpc GetInvitation(Request) returns (Reply);
   rpc PostInvitation(Request) returns (Reply);   
 }
-
 
 // The request message containing the user's name.
 message Request {
@@ -31,8 +31,6 @@ message Reply {
   string message = 1;
   string type = 2;
 }
-
-
 
 // The request message containing the user's name.
 message RegisterRequest {
@@ -49,6 +47,26 @@ string message=1;
   string lastName = 3;
    string username = 4;
     string password = 5;
-    
 }
 
+message RegisterNoteRequest {
+    int32 noteId = 3;
+    int32 userId = 4;
+    int32 groupId = 5;
+    int32 week = 6;
+    int32 year = 7;
+    string name = 8;
+    string status = 9;
+    string text = 10;
+}
+
+message RegisterNoteReply {
+    int32 noteId = 3;
+    int32 userId = 4;
+    int32 groupId = 5;
+    int32 week = 6;
+    int32 year = 7;
+    string name = 8;
+    string status = 9;
+    string text = 10;
+}

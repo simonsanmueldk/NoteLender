@@ -8,7 +8,7 @@ namespace GrpcService.Logic
     public interface ILogicService
     {
         // Note
-        public Task<Reply> PostNote(Request request, ServerCallContext context);
+        public Task<Reply> PostNote(RegisterNoteRequest request, ServerCallContext context);
         public Task<Reply> GetNote(Request request, ServerCallContext context);
         public Task<Reply> DeleteNote(Request request, ServerCallContext context);
         

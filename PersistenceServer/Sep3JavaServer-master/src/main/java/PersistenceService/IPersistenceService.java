@@ -1,6 +1,7 @@
 package PersistenceService;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public interface IPersistenceService {
      String getGroup(int id) throws SQLException;

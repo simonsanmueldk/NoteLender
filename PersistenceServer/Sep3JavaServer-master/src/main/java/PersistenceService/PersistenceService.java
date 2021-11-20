@@ -45,15 +45,38 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public String addNote(String json) throws SQLException {
-        System.out.println("Not add: " + json);
         List<Note> NoteList = new ArrayList<>();
+        System.out.println("RAW JSON: " + json);
+        json = json.substring(1, json.length()-1);
+        System.out.println("NEW JSON: " + json);
+        String[] arrOfString = json.split(",");
+
+        for(int i = 5 ; i < 8 ; i++) {
+            StringBuilder sb = new StringBuilder(arrOfString[i]);
+            sb.deleteCharAt(arrOfString[i].length() - 1);
+            sb.deleteCharAt(0);
+            arrOfString[i] = sb.toString();
+            System.out.println(arrOfString[i]);
+        }
+
+        Note noteToAdd = new Note(Integer.valueOf(arrOfString[0]),
+                Integer.valueOf(arrOfString[1]),Integer.valueOf(arrOfString[2]),
+                Integer.valueOf(arrOfString[3]),Integer.valueOf(arrOfString[4]),
+                arrOfString[5],arrOfString[6],arrOfString[7]);
+        System.out.println(noteToAdd.getText());
+
         try{
-            String sqlQuery = "INSERT INTO notelender.notes(week,year,name,status,text) VALUES (" + json + ")";
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.executeUpdate(String.valueOf(Statement.RETURN_GENERATED_KEYS));
+            Statement statement = connection.createStatement();
+            String sql = "INSERT INTO notelender.notes (id,user_id,group_id,week,year,name,status,text) VALUES ("
+                    + noteToAdd.getId() + "," + noteToAdd.getUserId() + ","
+                    + noteToAdd.getGroupId() + "," + noteToAdd.getWeek() + ","
+                    + noteToAdd.getYear() + ",'" + noteToAdd.getName() + "','"
+                    + noteToAdd.getStatus() + "','" + noteToAdd.getText() + "')";
+            System.out.println(sql);
+            statement.executeUpdate( sql, Statement.RETURN_GENERATED_KEYS);
             try (ResultSet generatedKeys = statement.getGeneratedKeys()){
                 if(generatedKeys.next()){
-                    Note noteToAdd = new Note(generatedKeys.getInt(1), generatedKeys.getInt(2),
+                    noteToAdd = new Note(generatedKeys.getInt(1), generatedKeys.getInt(2),
                             generatedKeys.getInt(3), generatedKeys.getInt(4),
                             generatedKeys.getInt(5), generatedKeys.getString(6),
                             generatedKeys.getString(7),generatedKeys.getString(8));

@@ -19,7 +19,7 @@ namespace GrpcService
          *  Note methods
          */
         
-        public override async Task<Reply> PostNote(Request request, ServerCallContext context)
+        public override async Task<Reply> PostNote(RegisterNoteRequest request, ServerCallContext context)
         {
             return await _logicService.PostNote(request, context);
         }

@@ -8,7 +8,7 @@ package BusinessServ;
 // The greeting service definition.
 service BusinessServer {
   // Sends a greeting
-  rpc PostNote (Request) returns (Reply);
+  rpc PostNote (RegisterNoteRequest) returns (Reply);
   rpc GetNote (Request) returns (Reply);
   rpc DeleteNote (Request) returns (Reply);
   rpc GetGroup (Request) returns (Reply);
@@ -16,8 +16,8 @@ service BusinessServer {
   rpc DeleteGroup  (Request) returns (Reply);
   rpc RegisterUser(RegisterRequest) returns (RegisterReply);
   rpc ValidateUser(Request) returns (Reply);
-    rpc GetInvitation(Request) returns (Reply);
-    rpc PostInvitation(Request) returns (Reply);
+  rpc GetInvitation(Request) returns (Reply);
+  rpc PostInvitation(Request) returns (Reply);
 }
 
 
@@ -36,17 +36,36 @@ message Reply {
 message RegisterRequest {
   string firstName = 1;
   string lastName = 2;
-   string username = 3;
-    string password = 4;
-    
+  string username = 3;
+  string password = 4;
 }
 // The request message containing the user's name.
 message RegisterReply {
 string message=1;
   string firstName = 2;
   string lastName = 3;
-   string username = 4;
-    string password = 5;
-    
+  string username = 4;
+  string password = 5;
 }
 
+message RegisterNoteRequest {
+    int32 noteId = 3;
+    int32 userId = 4;
+    int32 groupId = 5;
+    int32 week = 6;
+    int32 year = 7;
+    string name = 8;
+    string status = 9;
+    string text = 10;
+}
+
+message RegisterNoteReply {
+    int32 noteId = 3;
+    int32 userId = 4;
+    int32 groupId = 5;
+    int32 week = 6;
+    int32 year = 7;
+    string name = 8;
+    string status = 9;
+    string text = 10;
+}

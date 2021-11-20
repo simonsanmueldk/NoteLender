@@ -29,7 +29,17 @@ namespace Sep3Blazor.Data
             var client = new BusinessServer.BusinessServerClient(channel);
 
             var reply = await client.PostNoteAsync(
-                new Request {Name = JsonSerializer.Serialize<Note>(note)});
+                new RegisterNoteRequest
+                {
+                    NoteId = note.id,
+                    UserId = note.userId,
+                    GroupId = note.groupId,
+                    Week = note.week,
+                    Year = note.year,
+                    Name = note.name,
+                    Status = note.status,
+                    Text = note.text
+                });
             Console.WriteLine("Greeting: " + reply.Message);
             NoteList = JsonSerializer.Deserialize<List<Note>>(reply.Message);
             Console.WriteLine(NoteList[0]);

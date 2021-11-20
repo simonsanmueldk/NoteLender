@@ -18,22 +18,7 @@ namespace GrpcService.Logic
         {
             client = new HttpClient();
         }
-        
-     
-        public async Task<Reply> PostNote(Request request, ServerCallContext context)
-        {
-            HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
-            Console.WriteLine(2);
-            HttpResponseMessage responseMessage = await client.PutAsync(uri + "/Note", content);
-            Console.WriteLine("1" + responseMessage.Content);
-            string message = await responseMessage.Content.ReadAsStringAsync();
-            Console.WriteLine(message);
-            return await Task.FromResult(new Reply
-            {
-                Message = message
-            });
-        }
-        
+
         public async Task<Reply> PostGroup(Request request, ServerCallContext context)
         {
             HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
@@ -47,7 +32,33 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
-        
+
+        public async Task<Reply> PostNote(RegisterNoteRequest request, ServerCallContext context)
+        {
+            
+            ArrayList list = new ArrayList();
+            list.Add(request.NoteId);
+            list.Add(request.UserId);
+            list.Add(request.GroupId);
+            list.Add(request.Week);
+            list.Add(request.Year);
+            list.Add(request.Name);
+            list.Add(request.Status);
+            list.Add(request.Text);
+            string str = JsonSerializer.Serialize(list);
+            Console.WriteLine("POSTNOTE LIST JSON = " + str);
+            HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
+            Console.WriteLine("POSTNOTE CONTENT = " + content);
+            HttpResponseMessage responseMessage = await client.PostAsync(uri + "/Note", content);
+            Console.WriteLine("POSTNOTE RESPONSEMESSAGE = " + responseMessage.Content);
+            string message = await responseMessage.Content.ReadAsStringAsync();
+            Console.WriteLine(message);
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+
         public async Task<Reply> GetNote(Request request, ServerCallContext context)
         {
             Console.WriteLine(request.Name);
