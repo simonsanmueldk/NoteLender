@@ -7,9 +7,7 @@ namespace Sep3Blazor.Data
 {
     public interface IGroupService
     {
-        
-        public Task<IList<Note>> GetNoteList(String s);
-        
+
         public Task<IList<Group>> GetGroupList(String s);
         
         public Task<IList<Group>> AddGroup(String s);

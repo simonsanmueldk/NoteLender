@@ -9,40 +9,31 @@ namespace Sep3Blazor.Data
 {
     public class NoteService : INoteService
     {
+        
         private readonly String URL = "https://localhost:5004";
-
-
-        public async Task<Note> GetNote(int groupId, int noteId)
+        public IList<Note> NoteList { get; set; }
+        public async Task<IList<Note>> GetNoteList(string s)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
             var reply = await client.GetNoteAsync(
-                new Request {Name = groupId + "/" + noteId});
+                new Request {Name = s});
             Console.WriteLine("Greeting: " + reply.Message);
-            Note note = JsonSerializer.Deserialize<Note>(reply.Message);
-            return note;
+            NoteList = JsonSerializer.Deserialize<List<Note>>(reply.Message);
+            return NoteList;
         }
-
-        public async Task<Note> AddNote(string path)
+        
+        public async Task<IList<Note>> AddNote(Note note)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
 
             var reply = await client.PostNoteAsync(
-                new Request {Name = path});
+                new Request {Name = JsonSerializer.Serialize<Note>(note)});
             Console.WriteLine("Greeting: " + reply.Message);
-            Note note = JsonSerializer.Deserialize<Note>(reply.Message);
-            Console.WriteLine(note.text);
-            return note;
-        }
-
-        public async Task DeleteNote(string path)
-        {
-            using var channel = GrpcChannel.ForAddress(URL);
-            var client = new BusinessServer.BusinessServerClient(channel);
-            var reply = await client.DeleteNoteAsync(
-                new Request {Name = path});
-            Console.WriteLine("Greeting: " + reply.Message);
+            NoteList = JsonSerializer.Deserialize<List<Note>>(reply.Message);
+            Console.WriteLine(NoteList[0]);
+            return NoteList;
         }
     }
 }

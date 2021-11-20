@@ -22,18 +22,6 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public String getGroup(int id) throws SQLException {
-        List<Group> GroupList = new ArrayList<>();
-        ResultSet resultSet = connection.createStatement().executeQuery
-                ("SELECT * FROM notelender.groups WHERE id = " + id);
-        while (resultSet.next()) {
-            Group groupToAdd = new Group(resultSet.getInt(1), resultSet.getString(2));
-            GroupList.add(groupToAdd);
-        }
-        return gson.toJson(GroupList);
-    }
-
-    @Override
     public String createGroup(String json) throws SQLException {
         List<Group> GroupList = new ArrayList<>();
         try {
@@ -44,6 +32,33 @@ public class PersistenceService implements IPersistenceService {
                     Group groupToAdd = new Group(generatedKeys.getInt(1), generatedKeys.getString(2));
                     GroupList.add(groupToAdd);
                     return gson.toJson(GroupList);
+                } else {
+                    throw new SQLException("Creating failed, no ID obtained.");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection failure.");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public String addNote(String json) throws SQLException {
+        System.out.println("Not add: " + json);
+        List<Note> NoteList = new ArrayList<>();
+        try{
+            String sqlQuery = "INSERT INTO notelender.notes(week,year,name,status,text) VALUES (" + json + ")";
+            PreparedStatement statement = connection.prepareStatement(sqlQuery);
+            statement.executeUpdate(String.valueOf(Statement.RETURN_GENERATED_KEYS));
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()){
+                if(generatedKeys.next()){
+                    Note noteToAdd = new Note(generatedKeys.getInt(1), generatedKeys.getInt(2),
+                            generatedKeys.getInt(3), generatedKeys.getInt(4),
+                            generatedKeys.getInt(5), generatedKeys.getString(6),
+                            generatedKeys.getString(7),generatedKeys.getString(8));
+                    NoteList.add(noteToAdd);
+                    return gson.toJson(NoteList);
                 } else {
                     throw new SQLException("Creating failed, no ID obtained.");
                 }
@@ -68,10 +83,10 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public String getNoteList(int id) throws SQLException {
+    public String getNote(int id) throws SQLException {
         List<Note> NoteList = new ArrayList<>();
         ResultSet resultSet = connection.createStatement().executeQuery
-                ("SELECT * FROM notelender.note WHERE group_id = " + id);
+                ("SELECT * FROM notelender.notes WHERE group_id = " + id);
         while (resultSet.next()) {
             Note noteToAdd = new Note(resultSet.getInt(1), resultSet.getInt(2),
                     resultSet.getInt(3), resultSet.getInt(4),
@@ -80,6 +95,18 @@ public class PersistenceService implements IPersistenceService {
             NoteList.add(noteToAdd);
         }
         return gson.toJson(NoteList);
+    }
+
+    @Override
+    public String getGroup(int id) throws SQLException {
+        List<Group> GroupList = new ArrayList<>();
+        ResultSet resultSet = connection.createStatement().executeQuery
+                ("SELECT * FROM notelender.groups WHERE id = " + id);
+        while (resultSet.next()) {
+            Group groupToAdd = new Group(resultSet.getInt(1), resultSet.getString(2));
+            GroupList.add(groupToAdd);
+        }
+        return gson.toJson(GroupList);
     }
 
     @Override
@@ -99,35 +126,6 @@ public class PersistenceService implements IPersistenceService {
     /*
         Note section
      */
-
-    @Override
-    public String addNote(String json) throws SQLException {
-        /*Note temp = null;
-        String sqlQuery = "INSERT INTO notelender.note(week,year,name,status,text) VALUES (" +
-                note.getWeek() + "," + note.getYear() + "," + note.getName() + "," + note.getStatus() + "," + note.getText() + ")";
-        PreparedStatement statement = connection.prepareStatement(sqlQuery);
-        statement.executeUpdate();
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            temp = new Note(resultSet.getInt("id"), resultSet.getInt("user_id"), resultSet.getInt("group_id"), resultSet.getInt("week"), resultSet.getInt("year"), resultSet.getString("name"), resultSet.getString("status"), resultSet.getString("text"));
-        }
-        return gson.toJson(temp);*/
-        return null;
-    }
-
-    @Override
-    public String getNote(int groupId, int noteId) throws SQLException {
-        Note temp = null;
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM notelender.notes WHERE notes.group_Id = " + groupId + " AND notes.id = " + noteId);
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            temp = new Note(noteId, resultSet.getInt(2),
-                    groupId,resultSet.getInt(4),
-                    resultSet.getInt(5),resultSet.getString(6),
-                    resultSet.getString(7), resultSet.getString(8));
-        }
-        return gson.toJson(temp);
-    }
 
     @Override
     public String validateUser(String json) throws SQLException {

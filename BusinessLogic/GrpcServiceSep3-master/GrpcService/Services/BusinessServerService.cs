@@ -21,13 +21,8 @@ namespace GrpcService
         
         public override async Task<Reply> PostNote(Request request, ServerCallContext context)
         {
-            return await _logicService.PostGroup(request, context);
+            return await _logicService.PostNote(request, context);
         }
-        public override async Task<Reply> GetNote(Request request, ServerCallContext context)
-        {
-            return await _logicService.GetNote(request, context);
-        }
-
         public override async Task<Reply> DeleteNote(Request request, ServerCallContext context)
         {
             return await _logicService.DeleteGroup(request, context);
@@ -45,6 +40,10 @@ namespace GrpcService
         public override async Task<Reply> GetGroup(Request request, ServerCallContext context)
         {
             return await _logicService.GetGroup(request, context);
+        }
+        public override async Task<Reply> GetNote(Request request, ServerCallContext context)
+        {
+            return await _logicService.GetNote(request, context);
         }
         
         public override async Task<Reply> DeleteGroup(Request request, ServerCallContext context)

@@ -23,10 +23,25 @@ namespace GrpcService.Logic
         public async Task<Reply> PostNote(Request request, ServerCallContext context)
         {
             HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await client.PostAsync(uri + "/Note", content);
-            Console.WriteLine(responseMessage.Content);
-            Task<string> task = client.GetStringAsync(uri + "/NoteList" + request.Name);
-            string message = await task;
+            Console.WriteLine(2);
+            HttpResponseMessage responseMessage = await client.PutAsync(uri + "/Note", content);
+            Console.WriteLine("1" + responseMessage.Content);
+            string message = await responseMessage.Content.ReadAsStringAsync();
+            Console.WriteLine(message);
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+        
+        public async Task<Reply> PostGroup(Request request, ServerCallContext context)
+        {
+            HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
+            Console.WriteLine(2);
+            HttpResponseMessage responseMessage = await client.PutAsync(uri + "/Group", content);
+            Console.WriteLine("1" + responseMessage.Content);
+            string message = await responseMessage.Content.ReadAsStringAsync();
+            Console.WriteLine(message);
             return await Task.FromResult(new Reply
             {
                 Message = message
@@ -37,6 +52,17 @@ namespace GrpcService.Logic
         {
             Console.WriteLine(request.Name);
             Task<string> stringAsync = client.GetStringAsync(uri + "/Note/" + request.Name);
+            string message = await stringAsync;
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+        
+        public async Task<Reply> GetGroup(Request request, ServerCallContext context)
+        {
+            Console.WriteLine(request);
+            Task<string> stringAsync = client.GetStringAsync(uri + "/Group/" + request.Name);
             string message = await stringAsync;
             return await Task.FromResult(new Reply
             {
@@ -54,32 +80,6 @@ namespace GrpcService.Logic
             }
             string message = await responseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(message);
-            return await Task.FromResult(new Reply
-            {
-                Message = message
-            });
-        }
-
-   
-        public async Task<Reply> PostGroup(Request request, ServerCallContext context)
-        {
-            HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
-            Console.WriteLine(2);
-            HttpResponseMessage responseMessage = await client.PutAsync(uri + "/Group", content);
-            Console.WriteLine("1" + responseMessage.Content);
-            string message = await responseMessage.Content.ReadAsStringAsync();
-            Console.WriteLine(message);
-            return await Task.FromResult(new Reply
-            {
-                Message = message
-            });
-        }
-
-        public async Task<Reply> GetGroup(Request request, ServerCallContext context)
-        {
-            Console.WriteLine(request);
-            Task<string> stringAsync = client.GetStringAsync(uri + "/Group/" + request.Name);
-            string message = await stringAsync;
             return await Task.FromResult(new Reply
             {
                 Message = message

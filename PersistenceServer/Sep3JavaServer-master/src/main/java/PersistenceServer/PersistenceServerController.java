@@ -21,13 +21,6 @@ public class PersistenceServerController {
 
     }
 
-
-    @GetMapping("/Group/{id}")
-    public synchronized String getGroup(@PathVariable(value = "id") int id) throws SQLException {
-        System.out.println("It's working Get");
-        return persistenceService.getGroup(id);
-    }
-
     @PutMapping("/Group")
     public synchronized String createGroup(@RequestBody String json) throws SQLException {
         System.out.println("It's working Post");
@@ -48,23 +41,22 @@ public class PersistenceServerController {
     }
 
 
-    @PostMapping("/Note/{groupId}/")
+    @PostMapping("/Note")
     public synchronized String addNote(@RequestBody String json) throws SQLException {
         System.out.println("It's working AddNote");
         return persistenceService.addNote(json);
 
     }
 
-    @GetMapping("/Note/{groupId}/{noteId}")
-    public synchronized String getNote(@PathVariable(value = "groupId") int groupId, @PathVariable(value = "noteId") int noteId) throws SQLException{
-        return persistenceService.getNote(groupId, noteId);
+    @GetMapping("/Note/{groupId}")
+    public synchronized String getNote(@PathVariable(value = "groupId") int groupId) throws SQLException{
+        return persistenceService.getNote(groupId);
     }
 
-    @GetMapping("/Note/{groupId/{noteId}")
-    public synchronized String getNoteList(@PathVariable(value = "id") int id) throws SQLException {
-        System.out.println("It's working GetNoteList");
-        return persistenceService.getNoteList(id);
-
+    @GetMapping("/Group/{id}")
+    public synchronized String getGroup(@PathVariable(value = "id") int id) throws SQLException {
+        System.out.println("It's working Get");
+        return persistenceService.getGroup(id);
     }
 
     @GetMapping("/UserList/{id}")

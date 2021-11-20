@@ -52,10 +52,10 @@ else
         //await AddGroup();
     //Note = await _noteService.GetNote(9,1);
     //SearchPhrase = Note.text;
-    // NoteList = await _groupService.GetNoteList("1");
-    // GroupList = await _groupService.GetGroupList("1");
-    //SearchPhrase = NoteList[0].text;
-    //SearchPhrase2 = GroupList[0].name;
+        GroupList = await _groupService.GetGroupList("1");
+        NoteList = await _noteService.GetNoteList("9");
+        SearchPhrase2 = GroupList[0].name;
+        SearchPhrase = NoteList[0].name;
     // await _groupService.RegisterUser(new User(0, "Test", "Test", "test2", "test"));
 
 
@@ -68,4 +68,8 @@ else
         await _groupService.AddGroup("newGroupName");
         SearchPhrase2 = GroupList.Last().name;
     }
+    
+    
+    
+    
 }
