@@ -33,6 +33,34 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
+        
+        public async Task<Reply> GetGroup(Request request, ServerCallContext context)
+        {
+            Console.WriteLine(request);
+            Task<string> stringAsync = client.GetStringAsync(uri + "/Group/" + request.Name);
+            string message = await stringAsync;
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+        
+        public async Task<Reply> DeleteGroup(Request request, ServerCallContext context)
+        {
+            Console.WriteLine(request);
+            HttpResponseMessage responseMessage = await client.DeleteAsync(uri + "/Group/" + request.Name);
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                throw new Exception(@"Error : (responseMessage.Status), (responseMessage.ReasonPhrase");
+            }
+
+            string message = await responseMessage.Content.ReadAsStringAsync();
+            Console.WriteLine(message);
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
 
         public async Task<Reply> PostNote(RegisterNoteRequest request, ServerCallContext context)
         {
@@ -71,16 +99,7 @@ namespace GrpcService.Logic
             });
         }
         
-        public async Task<Reply> GetGroup(Request request, ServerCallContext context)
-        {
-            Console.WriteLine(request);
-            Task<string> stringAsync = client.GetStringAsync(uri + "/Group/" + request.Name);
-            string message = await stringAsync;
-            return await Task.FromResult(new Reply
-            {
-                Message = message
-            });
-        }
+        
 
         public async Task<Reply> DeleteNote(Request request, ServerCallContext context)
         {
@@ -99,22 +118,7 @@ namespace GrpcService.Logic
             });
         }
 
-        public async Task<Reply> DeleteGroup(Request request, ServerCallContext context)
-        {
-            Console.WriteLine(request);
-            HttpResponseMessage responseMessage = await client.DeleteAsync(uri + "/Group/" + request.Name);
-            if (!responseMessage.IsSuccessStatusCode)
-            {
-                throw new Exception(@"Error : (responseMessage.Status), (responseMessage.ReasonPhrase");
-            }
-
-            string message = await responseMessage.Content.ReadAsStringAsync();
-            Console.WriteLine(message);
-            return await Task.FromResult(new Reply
-            {
-                Message = message
-            });
-        }
+     
 
         public async Task<RegisterReply> RegisterUser(RegisterRequest request, ServerCallContext context)
         {

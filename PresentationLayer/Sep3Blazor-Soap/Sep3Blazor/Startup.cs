@@ -30,7 +30,7 @@ namespace Sep3Blazor
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-          //  services.AddScoped<AuthenticationStateProvider,CustomAuthenticationStateProvider>();
+            services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<INoteService, NoteService>();
             services.AddScoped<IUserService, UserService>();
@@ -54,7 +54,7 @@ namespace Sep3Blazor
             app.UseStaticFiles();
 
             app.UseRouting();
-            
+
 
             app.UseEndpoints(endpoints =>
             {
