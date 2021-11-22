@@ -27,6 +27,10 @@
             <div >
                 <button id="button-one"@onclick="PerformLogin">Login</button>
             </div>
+            <div>
+                <p ><a href @onclick="Register"> Sign up</a></p>
+                
+            </div>
         </div>
     </NotAuthorized>
 
@@ -49,8 +53,13 @@
         }
         catch (Exception e)
         {
-            errorMessage = e.Message.Contains('U') ? "UserName not found" : "Incorrect Password";
+            errorMessage = e.Message.Contains('U') ? "UserName not found" : "Invalid Login";
         }
+    }
+
+    public async Task Register()
+    {
+        NavigationManager.NavigateTo("/Register");
     }
 
 

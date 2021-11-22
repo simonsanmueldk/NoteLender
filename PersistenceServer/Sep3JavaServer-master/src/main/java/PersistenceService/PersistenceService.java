@@ -156,12 +156,20 @@ public class PersistenceService implements IPersistenceService {
         User user = null;
         System.out.println(json.toString() + "allalalalala");
         ArrayList<String> list = gson.fromJson(json, ArrayList.class);
-        ResultSet resultSet = connection.createStatement().executeQuery
-                ("SELECT * FROM notelender.users WHERE username ='" + list.get(0) + "'");
-        while (resultSet.next()) {
-            user = new User(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5));
+        try {
+
+            ResultSet resultSet = connection.createStatement().executeQuery
+                    ("SELECT * FROM notelender.users WHERE username ='" + list.get(0) + "'");
+            while (resultSet.next()) {
+                user = new User(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5));
+            }
+            return gson.toJson(user);
         }
-        return gson.toJson(user);
+        catch (Exception e)
+        {
+            return null;
+        }
+
     }
 
     @Override

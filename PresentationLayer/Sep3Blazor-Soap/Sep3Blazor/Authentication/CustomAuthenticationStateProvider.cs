@@ -51,6 +51,7 @@ namespace Sep3Blazor.Authentication
         {
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.Name,user.Username));
+            claims.Add(new Claim("id",user.id.ToString()));
             ClaimsIdentity identity = new ClaimsIdentity(claims, "apiauth_type");
             return identity;
         }

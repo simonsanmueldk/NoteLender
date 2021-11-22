@@ -17,9 +17,18 @@ namespace Sep3Blazor.Data
 
             var reply = await client.ValidateUserAsync(
                 new Request {Name = username, Type = password});
-            Console.WriteLine("Greeting: " + reply.Message);
-            User user = JsonSerializer.Deserialize<User>(reply.Message);
-            return user;
+            if (reply!=null)
+            {
+                Console.WriteLine("Greeting: " + reply.Message);
+                User user = JsonSerializer.Deserialize<User>(reply.Message);
+                return user;  
+            }
+            else
+            {
+                return null;
+                
+            }
+          
         }
 
         public async Task<User> RegisterUser(User user)

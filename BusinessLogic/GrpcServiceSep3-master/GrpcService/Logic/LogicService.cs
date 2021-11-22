@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Grpc.Core;
+using GrpcService.Model;
 
 
 namespace GrpcService.Logic
@@ -126,13 +127,20 @@ namespace GrpcService.Logic
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await client.PostAsync(uri + "/UnregisterUser", content);
             Console.WriteLine("Aleooox2312312");
-            string message = await responseMessage.Content.ReadAsStringAsync();
-            Console.WriteLine(message);
-            return await Task.FromResult(new RegisterReply
+            if (responseMessage.IsSuccessStatusCode)
             {
-                Message = message
-            });
+                string message = await responseMessage.Content.ReadAsStringAsync();
+                Console.WriteLine(message);
+                return await Task.FromResult(new RegisterReply
+                {
+                    Message = message
+                });
+            }
+
+            return null;
         }
+          
+        
 
         public async Task<Reply> ValidateUser(Request request, ServerCallContext context)
         {
@@ -143,12 +151,33 @@ namespace GrpcService.Logic
             string str = JsonSerializer.Serialize(list);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await client.PostAsync(uri + "/User", content);
-            Console.WriteLine("aleo x2");
-            string message = await responseMessage.Content.ReadAsStringAsync();
-            return await Task.FromResult(new Reply
+            try
             {
-                Message = message
-            });
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("aleox2");
+                    string message = await responseMessage.Content.ReadAsStringAsync();
+                    User user = JsonSerializer.Deserialize<User>(message);
+                    Console.WriteLine("aleox3");
+                    if (request.Type.Equals(user.Password))
+                    {
+                        Console.WriteLine("aleox4");
+                    
+                        return await Task.FromResult(new Reply
+                        {
+                            Message = message
+                        });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+
+            return null;
+
         }
 
         public async Task<Reply> GetInvitation(Request request, ServerCallContext context)

@@ -4,12 +4,16 @@
 @inject IGroupService _groupService
 @inject INoteService _noteService
 @inject NavigationManager NavigationManager;
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@using LoginComponent
 
 <h1>Hello, world!</h1>
+<Login/>
 <AuthorizeView>
-Welcome to your new app.
-<input type="submit" value="Get the second object from database" @onclick="AddGroup">
-
+    Welcome to your new app
+    @context.User.FindFirst(claim => claim.Type.Equals("id")).Value
+    <input type="submit" value="Get the second object from database" @onclick="AddGroup">
+ 
 @if (SearchPhrase == null)
 {
     <p>
@@ -55,7 +59,7 @@ else
         GroupList = await _groupService.GetGroupList("1");
         NoteList = await _noteService.GetNoteList("9");
         SearchPhrase2 = GroupList[0].name;
-        SearchPhrase = NoteList[0].name;
+        //SearchPhrase = ;
     // await _groupService.RegisterUser(new User(0, "Test", "Test", "test2", "test"));
 
 
