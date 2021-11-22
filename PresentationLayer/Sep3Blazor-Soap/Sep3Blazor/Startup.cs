@@ -34,6 +34,7 @@ namespace Sep3Blazor
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<INoteService, NoteService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IInvitationService, InvitationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

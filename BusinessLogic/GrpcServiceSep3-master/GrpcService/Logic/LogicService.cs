@@ -21,6 +21,12 @@ namespace GrpcService.Logic
             client = new HttpClient();
         }
 
+
+        public Task<Reply> GetNoteList(Request request, ServerCallContext context)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Reply> PostGroup(Request request, ServerCallContext context)
         {
             HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
