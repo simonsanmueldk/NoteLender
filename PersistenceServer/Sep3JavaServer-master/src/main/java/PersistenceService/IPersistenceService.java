@@ -12,7 +12,7 @@ public interface IPersistenceService {
      String addNote(String json) throws SQLException;
      String validateUser(String json) throws SQLException;
      String registerUser(String json) throws SQLException;
-     String addInvitation(int id) throws  SQLException;
+     String addInvitation(String json) throws  SQLException;
      String getInvitation(int id) throws SQLException;
 
 }
