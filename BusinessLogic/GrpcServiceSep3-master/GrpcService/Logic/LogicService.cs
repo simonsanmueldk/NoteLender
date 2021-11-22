@@ -20,12 +20,7 @@ namespace GrpcService.Logic
         {
             client = new HttpClient();
         }
-
-
-        public Task<Reply> GetNoteList(Request request, ServerCallContext context)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public async Task<Reply> PostGroup(Request request, ServerCallContext context)
         {
@@ -191,7 +186,16 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
-        
-            
+
+        public async Task<Reply> GetNoteList(Request request, ServerCallContext context)
+        {
+            Console.WriteLine(request.Name);
+            Task<string> stringAsync = client.GetStringAsync(uri + "/NoteList/" + request.Name);
+            string message = await stringAsync;
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
     }
 }
