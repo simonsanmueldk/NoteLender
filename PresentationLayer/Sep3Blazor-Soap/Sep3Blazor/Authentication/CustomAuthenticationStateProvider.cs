@@ -35,7 +35,7 @@ namespace Sep3Blazor.Authentication
                 if (!string.IsNullOrEmpty(userAsJson))
                 {
                     User temp = JsonSerializer.Deserialize<User>(userAsJson);
-                    ValidateLogin(temp.Username, temp.Password);
+                    await ValidateLogin(temp.Username, temp.Password);
                 }
             }
             else
