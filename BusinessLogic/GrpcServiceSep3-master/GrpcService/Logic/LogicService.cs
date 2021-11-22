@@ -118,16 +118,10 @@ namespace GrpcService.Logic
 
         public async Task<RegisterReply> RegisterUser(RegisterRequest request, ServerCallContext context)
         {
-            Console.WriteLine("Aleooo");
-            ArrayList list = new ArrayList();
-            list.Add(request.Username);
-            list.Add(request.Password);
-            list.Add(request.FirstName);
-            list.Add(request.LastName);
-            string str = JsonSerializer.Serialize(list);
+            User temp = new User(0,request.FirstName,request.LastName,request.Username,request.Password);
+            string str = JsonSerializer.Serialize(temp);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await client.PostAsync(uri + "/UnregisterUser", content);
-            Console.WriteLine("Aleooox2312312");
             if (responseMessage.IsSuccessStatusCode)
             {
                 string message = await responseMessage.Content.ReadAsStringAsync();
@@ -145,25 +139,18 @@ namespace GrpcService.Logic
 
         public async Task<Reply> ValidateUser(Request request, ServerCallContext context)
         {
-            Console.WriteLine("aleo");
-            ArrayList list = new ArrayList();
-            list.Add(request.Name);
-            list.Add(request.Type);
-            string str = JsonSerializer.Serialize(list);
+            User temp = new User(0,"","",request.Name,request.Type);
+            string str = JsonSerializer.Serialize(temp);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await client.PostAsync(uri + "/User", content);
             try
             {
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    Console.WriteLine("aleox2");
                     string message = await responseMessage.Content.ReadAsStringAsync();
                     User user = JsonSerializer.Deserialize<User>(message);
-                    Console.WriteLine("aleox3");
                     if (request.Type.Equals(user.Password))
                     {
-                        Console.WriteLine("aleox4");
-                    
                         return await Task.FromResult(new Reply
                         {
                             Message = message

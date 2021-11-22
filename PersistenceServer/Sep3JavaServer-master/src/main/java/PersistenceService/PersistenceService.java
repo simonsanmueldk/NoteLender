@@ -152,17 +152,17 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public String validateUser(String json) throws SQLException {
-        System.out.println("Login is working");
+
         User user = null;
-        System.out.println(json.toString() + "allalalalala");
-        ArrayList<String> list = gson.fromJson(json, ArrayList.class);
+        User temp=gson.fromJson(json,User.class);
         try {
 
             ResultSet resultSet = connection.createStatement().executeQuery
-                    ("SELECT * FROM notelender.users WHERE username ='" + list.get(0) + "'");
+                    ("SELECT * FROM notelender.users WHERE username ='" + temp.getUsername() + "'");
             while (resultSet.next()) {
                 user = new User(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5));
             }
+            System.out.println("Login is working");
             return gson.toJson(user);
         } catch (Exception e) {
             return null;
@@ -172,18 +172,15 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public String registerUser(String json) throws SQLException {
-        System.out.println("register User is working");
-        System.out.println(json + "lalalalalaa");
-        ArrayList<User> temp = gson.fromJson(json, ArrayList.class);
+        User temp=gson.fromJson(json,User.class);
         User user;
-
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate("INSERT INTO notelender.users (firstname,lastname,username,password) VALUES ('" + temp.get(2) + "','" + temp.get(3) + "','" + temp.get(0) + "','" + temp.get(1) + "')", Statement.RETURN_GENERATED_KEYS);
-            System.out.println("ahahahaha");
+            statement.executeUpdate("INSERT INTO notelender.users (firstname,lastname,username,password) VALUES ('" + temp.getFirstName() + "','" + temp.getLastName() + "','" + temp.getUsername()+ "','" + temp.getPassword() + "')", Statement.RETURN_GENERATED_KEYS);
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     user = new User(generatedKeys.getInt(1), generatedKeys.getString(2), generatedKeys.getString(3), generatedKeys.getString(4), generatedKeys.getString(5));
+                    System.out.println("register User is working");
                     return gson.toJson(user);
                 } else {
                     throw new SQLException("Creating failed, no ID obtained.");
