@@ -27,6 +27,11 @@ namespace GrpcService
         {
             return await _logicService.DeleteGroup(request, context);
         }
+        
+        public override async Task<Reply> GetNoteList(Request request, ServerCallContext context)
+        {
+            return await _logicService.GetNoteList(request, context);
+        }
 
         /*
          *  Group methods

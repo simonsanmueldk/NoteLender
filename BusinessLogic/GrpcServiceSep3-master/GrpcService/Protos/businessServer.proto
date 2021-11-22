@@ -1,5 +1,5 @@
 syntax = "proto3";
-import "google/protobuf/any.proto";
+
 
 option csharp_namespace = "GrpcService";
 
@@ -10,6 +10,7 @@ service BusinessServer {
   // Sends a greeting
   rpc PostNote (RegisterNoteRequest) returns (Reply);
   rpc GetNote (Request) returns (Reply);
+  rpc GetNoteList (Request) returns (Reply);
   rpc DeleteNote (Request) returns (Reply);
   rpc GetGroup (Request) returns (Reply);
   rpc PostGroup (Request) returns (Reply);

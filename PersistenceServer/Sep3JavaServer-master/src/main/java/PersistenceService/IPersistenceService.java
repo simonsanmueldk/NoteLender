@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public interface IPersistenceService {
      String getGroup(int id) throws SQLException;
-     String createGroup(String json) throws SQLException;
+     String postGroup(String json) throws SQLException;
      String deleteGroup(int id) throws SQLException;
      String getUserList(int id) throws SQLException;
      String getNote(int groupId) throws SQLException;

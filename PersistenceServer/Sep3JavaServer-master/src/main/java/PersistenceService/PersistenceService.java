@@ -196,35 +196,43 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public String addInvitation(String json) throws SQLException
-    {
+    public String addInvitation(int id) throws SQLException {
         {
+            /*
+//            Invitation temp = null;
+            Invitation invitation = null;
+            Group group = null;
+
+            String sqlQuery = "INSERT INTO notelender.invitation(id, invitor_id, invitee_id, group_id) VALUES (" +
+                    invitation.getId() + "," + invitation.getInvitorId() + "," + invitation.getInviteeId() + "," + group.getId() + ")";
+            PreparedStatement statement = connection.prepareStatement(sqlQuery);
+            statement.executeUpdate();
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                invitation = new Invitation(resultSet.getInt("id"), resultSet.getInt("invitee_id"), resultSet.getInt("invitor_id"));
+            }
+            return invitation;
+             */
+
             List<Invitation> InvitationList = new ArrayList<>();
-            try
-            {
+            Invitation invitation = null;
+            Group group = null;
+
+            try {
                 Statement statement = connection.createStatement();
-                statement.executeUpdate(
-                    "INSERT INTO notelender.invitations (name) VALUES (" + json
-                        + ")", Statement.RETURN_GENERATED_KEYS);
-                try (ResultSet generatedKeys = statement.getGeneratedKeys())
-                {
-                    if (generatedKeys.next())
-                    {
-                        Invitation invitationToAdd = new Invitation(
-                            generatedKeys.getInt(1), generatedKeys.getInt(2),
-                            generatedKeys.getInt(3));
+                statement.executeUpdate("INSERT INTO notelender.invitation(id, invitor_id, invitee_id, group_id) VALUES (" +
+                    invitation.getId() + "," + invitation.getInvitorId() + "," + invitation.getInviteeId() + "," + group.getId() + ")");
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        Invitation invitationToAdd = new Invitation(generatedKeys.getInt(1), generatedKeys.getInt(2),generatedKeys.getInt(3));
                         InvitationList.add(invitationToAdd);
                         return gson.toJson(InvitationList);
-                    }
-                    else
-                    {
-                        throw new SQLException(
-                            "Creating failed, no ID obtained.");
+                    } else {
+                        throw new SQLException("Creating failed, no ID obtained.");
                     }
                 }
-            }
-            catch (SQLException e)
-            {
+            } catch (SQLException e) {
                 System.out.println("Connection failure.");
                 e.printStackTrace();
             }
@@ -233,11 +241,12 @@ public class PersistenceService implements IPersistenceService {
     }
 
 
-    @Override public String getInvitation(int id) throws SQLException
-    {
+    @Override
+    public String getInvitation(int id)
+            throws SQLException {
         String text = "";
         ResultSet resultSet = connection.createStatement().executeQuery
-            ("SELECT * FROM sep3.notelendar.invitations WHERE id = " + id);
+                ("SELECT * FROM sep3.notelendar.invitations WHERE id = " + id);
         while (resultSet.next()) {
             text = resultSet.getString(2);
             System.out.println(text);
@@ -246,6 +255,7 @@ public class PersistenceService implements IPersistenceService {
         invitationsList.add(text);
         return gson.toJson(invitationsList);
     }
+
 }
 
 

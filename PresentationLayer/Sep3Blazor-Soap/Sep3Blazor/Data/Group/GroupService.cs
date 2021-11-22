@@ -11,14 +11,12 @@ namespace Sep3Blazor.Data
     public class GroupService : IGroupService
     {
         private readonly String URL = "https://localhost:5004";
-        public IList<Note> NoteList { get; set; }
         public IList<Group> GroupList { get; set; }
 
         public async Task<IList<Group>> AddGroup(string s)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
-
             var reply = await client.PostGroupAsync(
                 new Request {Name = s});
             Console.WriteLine("Greeting: " + reply.Message);
@@ -48,7 +46,5 @@ namespace Sep3Blazor.Data
             // GroupList = JsonSerializer.Deserialize<List<Group>>(reply.Message);
             // return GroupList;
         }
-
-       
     }
 }
