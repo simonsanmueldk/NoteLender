@@ -1,0 +1,53 @@
+@page "/Invitation"
+@using Sep3Blazor.Model
+@using Sep3Blazor.Data
+@inject Invitation _invitation
+@inject InvitationService _invitationService
+@inject Group _group
+@inject User _user
+<h3>Invitation</h3>
+<div class="col-sm-6">
+        <h3>Add Note</h3>
+        <EditForm Model="@_invitation" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <p>
+                <label>
+                    Invitation Id:
+                    <InputNumber @bind-Value="_invitation.id" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    Invite to (group id):
+                    <InputNumber @bind-Value="_group.id" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    Invite (user id):
+                    <InputNumber @bind-Value="_user.id" />
+                </label>
+            </p>
+            <button type="submit">ADD</button>
+        </EditForm>
+    </div>
+@code {
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("InvitationID: " + _invitation.id);
+        Console.WriteLine("GroupId: " + _group.id);
+        Console.WriteLine("Invitee: " + _user.id);
+
+
+      //  Invitation invitationToAdd = new Invitation(_invitation.id);
+
+        
+        
+    //NoteList.Add(noteToAdd);
+    //Console.WriteLine(temp.text);
+    //await AddNote(noteToAdd);
+    }
+
+}

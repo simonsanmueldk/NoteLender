@@ -17,7 +17,7 @@ service BusinessServer {
   rpc RegisterUser(RegisterRequest) returns (RegisterReply);
   rpc ValidateUser(Request) returns (Reply);
   rpc GetInvitation(Request) returns (Reply);
-  rpc PostInvitation(Request) returns (Reply);   
+  rpc PostInvitation(RegisterInvitationRequest) returns (Reply);   
 }
 
 // The request message containing the user's name.
@@ -69,4 +69,20 @@ message RegisterNoteReply {
     string name = 8;
     string status = 9;
     string text = 10;
+}
+
+message RegisterInvitationRequest {
+    int32 id = 3;
+    int32 invitorId = 4;
+    int32 inviteeId = 5;
+    int32 groupId = 6;
+
+}
+
+message RegisterInvitationReply {
+    int32 id = 3;
+    int32 invitorId = 4;
+    int32 inviteeId = 5;
+    int32 groupId = 6;
+
 }

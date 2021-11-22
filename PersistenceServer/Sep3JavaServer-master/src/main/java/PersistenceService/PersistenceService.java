@@ -212,13 +212,37 @@ public class PersistenceService implements IPersistenceService {
     @Override
     public String addInvitation(String json) throws SQLException {
         {
+            System.out.println("JSON: " + json);
+            Invitation invitation = gson.fromJson(json, Invitation.class);
+            System.out.println("Note: " + invitation.getId());
+
+            try {
+                Statement statement = connection.createStatement();
+                statement.executeUpdate("INSERT INTO notelender.invitations (id,invitor_id,invitee_id,group_id) VALUES ("
+                    + invitation.getId() + "," + invitation.getInvitor_id() + ","
+                    + invitation.getInvitee_id() + "," + invitation.getGroup_id() + "')", Statement.RETURN_GENERATED_KEYS);
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        Invitation invitationToAdd = new Invitation(generatedKeys.getInt(1),generatedKeys.getInt(2),generatedKeys.getInt(3),generatedKeys.getInt(4));
+                        return gson.toJson(invitationToAdd);
+                    } else {
+                        throw new SQLException("Creating failed, no ID obtained.");
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println("Connection failure.");
+                e.printStackTrace();
+            }
+            return null;
+        }
+            /*
             List<Invitation> InvitationList = new ArrayList<>();
             try {
                 Statement statement = connection.createStatement();
-                statement.executeUpdate("INSERT INTO notelender.invitations (name) VALUES (" + json + ")", Statement.RETURN_GENERATED_KEYS);
+                statement.executeUpdate("INSERT INTO notelender.invitations (invitationName) VALUES (" + json + ")", Statement.RETURN_GENERATED_KEYS);
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        Invitation invitationToAdd = new Invitation(generatedKeys.getInt(1), generatedKeys.getInt(2), generatedKeys.getInt(3));
+                        Invitation invitationToAdd = new Invitation(generatedKeys.getInt(1));
                         InvitationList.add(invitationToAdd);
                         return gson.toJson(InvitationList);
                     } else {
@@ -231,6 +255,7 @@ public class PersistenceService implements IPersistenceService {
             }
             return null;
         }
+             */
     }
 
 
@@ -247,7 +272,9 @@ public class PersistenceService implements IPersistenceService {
         List<String> invitationsList = new ArrayList<>();
         invitationsList.add(text);
         return gson.toJson(invitationsList);
+
     }
+
 
 }
 
