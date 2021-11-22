@@ -69,7 +69,7 @@ else
 
     public async Task AddGroup()
     {
-        await _groupService.AddGroup("newnewGroupName");
+        GroupList = await _groupService.AddGroup("newGroupName");
         SearchPhrase2 = GroupList.Last().name;
     }
     
