@@ -8,6 +8,6 @@ namespace Sep3Blazor.Data
     public interface INoteService
     {
         public Task<IList<Note>> GetNoteList(String s);
-        public Task<IList<Note>> AddNote(Note note);
+        public Task<Note> AddNote(Note note);
     }
 }

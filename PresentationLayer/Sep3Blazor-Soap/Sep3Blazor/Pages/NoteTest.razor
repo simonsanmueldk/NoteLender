@@ -169,7 +169,8 @@
             Note.text);
         
         //NoteList.Add(noteToAdd);
-        NoteList = await _noteService.AddNote(noteToAdd);
+        Note temp = await _noteService.AddNote(noteToAdd);
+        //Console.WriteLine(temp.text);
         //await AddNote(noteToAdd);
     }
 

@@ -23,11 +23,12 @@ namespace Sep3Blazor.Data
             return NoteList;
         }
         
-        public async Task<IList<Note>> AddNote(Note note)
+        public async Task<Note> AddNote(Note note)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
 
+            // Send note to GRPC service.
             var reply = await client.PostNoteAsync(
                 new RegisterNoteRequest
                 {
@@ -41,9 +42,10 @@ namespace Sep3Blazor.Data
                     Text = note.text
                 });
             Console.WriteLine("Greeting: " + reply.Message);
-            NoteList = JsonSerializer.Deserialize<List<Note>>(reply.Message);
-            Console.WriteLine(NoteList[0]);
-            return NoteList;
+            
+            // Return message from GRPC.
+            //Note temp = JsonSerializer.Deserialize<Note>(reply.Message);
+            return null;
         }
         
     }
