@@ -46,7 +46,8 @@ public class PersistenceService implements IPersistenceService {
     @Override
     public String addNote(String json) throws SQLException {
         List<Note> NoteList = new ArrayList<>();
-        System.out.println("RAW JSON: " + json);
+        Note temp = gson.fromJson(json,Note.class);
+        System.out.println("RAW JSON: " + temp);
         json = json.substring(1, json.length() - 1);
         System.out.println("NEW JSON: " + json);
         String[] arrOfString = json.split(",");
