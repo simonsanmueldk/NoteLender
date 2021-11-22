@@ -28,5 +28,9 @@
       <Content Remove="Pages\Counter.razor" />
       <Content Include="obj\project.nuget.cache" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\images\IMG_1551.JPG" />
+    </ItemGroup>
 
 </Project>
