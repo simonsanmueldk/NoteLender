@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Grpc.Core;
 using GrpcService.Model;
+using Sep3Blazor.Model;
 
 
 namespace GrpcService.Logic
@@ -64,24 +65,12 @@ namespace GrpcService.Logic
 
         public async Task<Reply> PostNote(RegisterNoteRequest request, ServerCallContext context)
         {
-            
-            ArrayList list = new ArrayList();
-            list.Add(request.NoteId);
-            list.Add(request.UserId);
-            list.Add(request.GroupId);
-            list.Add(request.Week);
-            list.Add(request.Year);
-            list.Add(request.Name);
-            list.Add(request.Status);
-            list.Add(request.Text);
-            string str = JsonSerializer.Serialize(list);
-            Console.WriteLine("POSTNOTE LIST JSON = " + str);
+            Note note = new Note(request.NoteId, request.UserId, request.GroupId, 
+                request.Week, request.Year, request.Name, request.Status, request.Text);
+            string str = JsonSerializer.Serialize(note);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
-            Console.WriteLine("POSTNOTE CONTENT = " + content);
             HttpResponseMessage responseMessage = await client.PostAsync(uri + "/Note", content);
-            Console.WriteLine("POSTNOTE RESPONSEMESSAGE = " + responseMessage.Content);
             string message = await responseMessage.Content.ReadAsStringAsync();
-            Console.WriteLine(message);
             return await Task.FromResult(new Reply
             {
                 Message = message
@@ -143,14 +132,18 @@ namespace GrpcService.Logic
 
         public async Task<Reply> ValidateUser(Request request, ServerCallContext context)
         {
+            Console.WriteLine("aleo");
             User temp = new User(0,"","",request.Name,request.Type);
             string str = JsonSerializer.Serialize(temp);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
+            Console.WriteLine("aleox2");
             HttpResponseMessage responseMessage = await client.PostAsync(uri + "/User", content);
+            Console.WriteLine("aleox3");
             try
             {
                 if (responseMessage.IsSuccessStatusCode)
                 {
+                    Console.WriteLine("aleo");
                     string message = await responseMessage.Content.ReadAsStringAsync();
                     User user = JsonSerializer.Deserialize<User>(message);
                     if (request.Type.Equals(user.Password))

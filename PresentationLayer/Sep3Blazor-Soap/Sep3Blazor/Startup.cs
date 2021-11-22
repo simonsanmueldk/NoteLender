@@ -54,7 +54,7 @@ namespace Sep3Blazor
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            
 
             app.UseEndpoints(endpoints =>
             {
