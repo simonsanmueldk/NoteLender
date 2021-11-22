@@ -33,6 +33,9 @@
                         <div class="form-group">
                             <button class="btn btn-primary btn-block" type="submit">Sign in</button>
                         </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block" @onclick="Back">Back</button>
+                        </div>
                     </div>
                 </article>
                 <header class="card-header">
@@ -47,13 +50,18 @@
 
 
 @code {
-    private User user = new User(0,"","","","");
+    private User user = new User(0, "", "", "", "");
     private IUserService _userService = new UserService();
 
     private async Task RegisterUser()
     {
         await _userService.RegisterUser(user);
         NavigationManager.NavigateTo("/");
+    }
+
+    private async Task Back()
+    {
+        NavigationManager.NavigateTo("/Login");
     }
 
 }
