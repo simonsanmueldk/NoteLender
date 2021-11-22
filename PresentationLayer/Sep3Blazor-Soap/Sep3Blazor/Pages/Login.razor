@@ -42,7 +42,9 @@
         errorMessage = "";
         try
         {
+            Console.WriteLine("hahaha");
             await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateLogin(username, password);
+            Console.WriteLine("hahahax22");
             NavigationManager.NavigateTo("/");
             username = "";
             password = "";
@@ -50,6 +52,7 @@
         catch (Exception e)
         {
             errorMessage = e.Message.Contains('U') ? "UserName not found" : "Invalid Login";
+            Console.WriteLine(e.Message);
         }
     }
 

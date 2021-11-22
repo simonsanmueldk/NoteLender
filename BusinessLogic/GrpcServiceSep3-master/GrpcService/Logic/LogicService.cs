@@ -128,14 +128,18 @@ namespace GrpcService.Logic
 
         public async Task<Reply> ValidateUser(Request request, ServerCallContext context)
         {
+            Console.WriteLine("aleo");
             User temp = new User(0,"","",request.Name,request.Type);
             string str = JsonSerializer.Serialize(temp);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
+            Console.WriteLine("aleox2");
             HttpResponseMessage responseMessage = await client.PostAsync(uri + "/User", content);
+            Console.WriteLine("aleox3");
             try
             {
                 if (responseMessage.IsSuccessStatusCode)
                 {
+                    Console.WriteLine("aleo");
                     string message = await responseMessage.Content.ReadAsStringAsync();
                     User user = JsonSerializer.Deserialize<User>(message);
                     if (request.Type.Equals(user.Password))

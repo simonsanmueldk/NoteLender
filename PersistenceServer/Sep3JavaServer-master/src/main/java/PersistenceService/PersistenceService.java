@@ -136,6 +136,7 @@ public class PersistenceService implements IPersistenceService {
     public String validateUser(String json) throws SQLException {
 
         User user = null;
+        System.out.println("aleo");
         User temp=gson.fromJson(json,User.class);
         try {
 
