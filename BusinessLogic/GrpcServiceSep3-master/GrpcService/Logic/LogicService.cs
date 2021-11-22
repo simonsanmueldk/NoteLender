@@ -90,6 +90,7 @@ namespace GrpcService.Logic
             {
                 throw new Exception(@"Error : (responseMessage.Status), (responseMessage.ReasonPhrase");
             }
+
             string message = await responseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(message);
             return await Task.FromResult(new Reply
@@ -179,7 +180,6 @@ namespace GrpcService.Logic
 
         public async Task<Reply> PostInvitation(Request request, ServerCallContext context)
         {
-
             HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await client.PostAsync(uri + "/Invitation", content);
             string message = await responseMessage.Content.ReadAsStringAsync();
@@ -188,7 +188,16 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
-        
-            
+
+        public async Task<Reply> GetNoteList(Request request, ServerCallContext context)
+        {
+            Console.WriteLine(request.Name);
+            Task<string> stringAsync = client.GetStringAsync(uri + "/NoteList/" + request.Name);
+            string message = await stringAsync;
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
     }
 }

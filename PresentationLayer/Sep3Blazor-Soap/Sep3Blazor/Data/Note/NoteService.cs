@@ -45,5 +45,6 @@ namespace Sep3Blazor.Data
             Console.WriteLine(NoteList[0]);
             return NoteList;
         }
+        
     }
 }
