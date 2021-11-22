@@ -23,9 +23,6 @@ namespace Sep3Blazor.Authentication
         }
         
         
-        
-        
-        
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var identity = new ClaimsIdentity();
@@ -65,7 +62,9 @@ namespace Sep3Blazor.Authentication
 
             ClaimsIdentity identity = new ClaimsIdentity();
             try {
+                Console.WriteLine("aleo");
                 User user = await userService.ValidateLogin(tempUserName, tempPassword);
+                Console.WriteLine("aleox2");
                 identity = SetupClaimsForUser(user);
                 string serialisedData = JsonSerializer.Serialize(user);
                 await jsRunTime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
