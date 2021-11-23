@@ -3,9 +3,9 @@ package PersistenceServer;
 public class Invitation
 {
   private int id;
-  private int invitor_id;
-  private int invitee_id;
-  private int group_id;
+  private int invitorId;
+  private int inviteeId;
+  private int groupId;
 
   public int getId()
   {
@@ -16,41 +16,41 @@ public class Invitation
     this.id = id;
   }
 
-  public int getInvitor_id()
+  public int getInvitorId()
   {
-    return invitor_id;
+    return invitorId;
   }
 
-  public void setInvitor_id(int invitor_id)
+  public void setInvitorId(int invitorId)
   {
-    this.invitor_id = invitor_id;
+    this.invitorId = invitorId;
   }
 
-  public int getInvitee_id()
+  public int getInviteeId()
   {
-    return invitee_id;
+    return inviteeId;
   }
 
-  public void setInvitee_id(int invitee_id)
+  public void setInviteeId(int inviteeId)
   {
-    this.invitee_id = invitee_id;
+    this.inviteeId = inviteeId;
   }
 
-  public int getGroup_id()
+  public int getGroupId()
   {
-    return group_id;
+    return groupId;
   }
 
-  public void setGroup_id(int group_id)
+  public void setGroupId(int groupId)
   {
-    this.group_id = group_id;
+    this.groupId = groupId;
   }
 
   public Invitation(int id, int invitor_id, int invitee_id, int group_id)
   {
     this.id = id;
-    this.invitor_id = invitor_id;
-    this.invitee_id = invitee_id;
-    this.group_id = group_id;
+    this.invitorId = invitor_id;
+    this.inviteeId = invitee_id;
+    this.groupId = group_id;
   }
 }

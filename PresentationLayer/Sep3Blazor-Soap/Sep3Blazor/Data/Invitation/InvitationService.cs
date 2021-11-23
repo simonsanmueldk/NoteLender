@@ -19,10 +19,10 @@ namespace Sep3Blazor.Data
 
             var reply = await client.PostInvitationAsync(new RegisterInvitationRequest
             {
-                GroupId = invitation.group_id,
+                GroupId = invitation.groupId,
                 Id = invitation.id,
-                InviteeId = invitation.invitee_id,
-                InvitorId = invitation.invitor_id
+                InviteeId = invitation.inviteeId,
+                InvitorId = invitation.invitorId
                 
             }
             );

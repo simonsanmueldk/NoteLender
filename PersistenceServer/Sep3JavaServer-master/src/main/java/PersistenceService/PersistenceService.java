@@ -219,8 +219,8 @@ public class PersistenceService implements IPersistenceService {
             try {
                 Statement statement = connection.createStatement();
                 statement.executeUpdate("INSERT INTO notelender.invitations (id,invitor_id,invitee_id,group_id) VALUES ("
-                    + invitation.getId() + "," + invitation.getInvitor_id() + ","
-                    + invitation.getInvitee_id() + "," + invitation.getGroup_id() + "')", Statement.RETURN_GENERATED_KEYS);
+                    + invitation.getId() + "," + invitation.getInvitorId() + ","
+                    + invitation.getInviteeId() + "," + invitation.getGroupId() + ")", Statement.RETURN_GENERATED_KEYS);
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         Invitation invitationToAdd = new Invitation(generatedKeys.getInt(1),generatedKeys.getInt(2),generatedKeys.getInt(3),generatedKeys.getInt(4));
