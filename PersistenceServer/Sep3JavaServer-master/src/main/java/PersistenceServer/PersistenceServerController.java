@@ -76,6 +76,7 @@ public class PersistenceServerController {
     @PostMapping("/Invitation")
     public synchronized  String addInvitation(@RequestBody String json) throws SQLException
     {
+        System.out.println("its working post invitation");
         return  persistenceService.addInvitation(json);
     }
 

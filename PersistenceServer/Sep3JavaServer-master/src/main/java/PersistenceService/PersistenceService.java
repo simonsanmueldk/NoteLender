@@ -222,8 +222,8 @@ public class PersistenceService implements IPersistenceService {
             try {
                 Statement statement = connection.createStatement();
                 statement.executeUpdate("INSERT INTO notelender.invitations (id,invitor_id,invitee_id,group_id) VALUES ("
-                    + invitation.getId() + "," + invitation.getInvitorId() + ","
-                    + invitation.getInviteeId() + "," + invitation.getGroupId() + ")", Statement.RETURN_GENERATED_KEYS);
+                    + invitation.getId() + "," + invitation.getGroupId() + ","
+                    + invitation.getInviteeId() + "," + invitation.getInvitorId() + ")", Statement.RETURN_GENERATED_KEYS);
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         Invitation invitationToAdd = new Invitation(generatedKeys.getInt(1),generatedKeys.getInt(2),generatedKeys.getInt(3),generatedKeys.getInt(4));
@@ -238,27 +238,7 @@ public class PersistenceService implements IPersistenceService {
             }
             return null;
         }
-            /*
-            List<Invitation> InvitationList = new ArrayList<>();
-            try {
-                Statement statement = connection.createStatement();
-                statement.executeUpdate("INSERT INTO notelender.invitations (invitationName) VALUES (" + json + ")", Statement.RETURN_GENERATED_KEYS);
-                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        Invitation invitationToAdd = new Invitation(generatedKeys.getInt(1));
-                        InvitationList.add(invitationToAdd);
-                        return gson.toJson(InvitationList);
-                    } else {
-                        throw new SQLException("Creating failed, no ID obtained.");
-                    }
-                }
-            } catch (SQLException e) {
-                System.out.println("Connection failure.");
-                e.printStackTrace();
-            }
-            return null;
-        }
-             */
+
     }
 
 
