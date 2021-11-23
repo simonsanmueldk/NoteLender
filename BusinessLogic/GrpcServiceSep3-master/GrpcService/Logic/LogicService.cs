@@ -179,6 +179,8 @@ namespace GrpcService.Logic
         {
             Invitation invitation = new Invitation(request.Id, request.GroupId, request.InviteeId, request.InvitorId);
             string str = JsonSerializer.Serialize(invitation);
+            Console.WriteLine(invitation);
+            Console.WriteLine(str);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await client.PostAsync(uri + "/Invitation", content);
             string message = await responseMessage.Content.ReadAsStringAsync();

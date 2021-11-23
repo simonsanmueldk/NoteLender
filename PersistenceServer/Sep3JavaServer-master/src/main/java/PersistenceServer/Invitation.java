@@ -46,11 +46,11 @@ public class Invitation
     this.groupId = groupId;
   }
 
-  public Invitation(int id, int invitor_id, int invitee_id, int group_id)
+  public Invitation(int id, int invitorId, int inviteeId, int groupId)
   {
     this.id = id;
-    this.invitorId = invitor_id;
-    this.inviteeId = invitee_id;
-    this.groupId = group_id;
+    this.invitorId = invitorId;
+    this.inviteeId = inviteeId;
+    this.groupId = groupId;
   }
 }

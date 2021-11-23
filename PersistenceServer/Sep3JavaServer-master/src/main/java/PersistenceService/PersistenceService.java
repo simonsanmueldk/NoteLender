@@ -214,7 +214,10 @@ public class PersistenceService implements IPersistenceService {
         {
             System.out.println("JSON: " + json);
             Invitation invitation = gson.fromJson(json, Invitation.class);
-            System.out.println("Note: " + invitation.getId());
+            System.out.println("ID: " + invitation.getId());
+            System.out.println("InvitorId: " + invitation.getInvitorId());
+            System.out.println("InviteeId: " + invitation.getInviteeId());
+            System.out.println("GroupId: " + invitation.getGroupId());
 
             try {
                 Statement statement = connection.createStatement();
