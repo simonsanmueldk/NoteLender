@@ -1,4 +1,4 @@
-package PersistenceServer;
+package Model;
 
 public class Group {
 

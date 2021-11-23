@@ -11,6 +11,7 @@ namespace Sep3Blazor.Data
     public class UserService : IUserService
     {
         private readonly String URL = "https://localhost:5004";
+        
         public async Task<User> ValidateLogin(string username, string password)
         {
             using var channel = GrpcChannel.ForAddress(URL);

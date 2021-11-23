@@ -1,9 +1,9 @@
 package PersistenceService;
 
-import PersistenceServer.Group;
-import PersistenceServer.Invitation;
-import PersistenceServer.Note;
-import PersistenceServer.User;
+import Model.Group;
+import Model.Invitation;
+import Model.Note;
+import Model.User;
 import com.google.gson.Gson;
 
 import java.sql.*;
@@ -249,7 +249,7 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public String addInvitation(String json) throws SQLException {
+    public String addInvitation(String json) {
         {
             System.out.println("JSON: " + json);
             Invitation invitation = gson.fromJson(json, Invitation.class);
