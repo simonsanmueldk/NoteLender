@@ -54,19 +54,25 @@ else
     {
      base.OnInitialized();
         Console.WriteLine("2str");
-        
-        //await AddGroup();
+
+        //await AddInvitation();
+    //await AddGroup();
     //Note = await _noteService.GetNote(9,1);
     //SearchPhrase = Note.text;
-        /*GroupList = await _groupService.GetGroupList("1");
+    /*GroupList = await _groupService.GetGroupList("1");
         NoteList = await _noteService.GetNoteList("9");
         SearchPhrase2 = GroupList[0].name;*/
-        //SearchPhrase = ;
+    //SearchPhrase = ;
     // await _groupService.RegisterUser(new User(0, "Test", "Test", "test2", "test"));
 
-        //await _invitationService.AddInvitations("1");
-        //await _invitationService.AddInvitations("2");
+    //await _invitationService.AddInvitations("1");
+    //await _invitationService.AddInvitations("2");
     //await _groupService.ValidateLogin("dorin", "123");
+    }
+
+    private async Task AddInvitation()
+    {
+        Invitation temp = new Invitation(2, 2, 2, 2);
     }
 
 
