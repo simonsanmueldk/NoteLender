@@ -1,9 +1,9 @@
 package PersistenceService;
 
-import PersistenceServer.Group;
-import PersistenceServer.Invitation;
-import PersistenceServer.Note;
-import PersistenceServer.User;
+import Model.Group;
+import Model.Invitation;
+import Model.Note;
+import Model.User;
 import com.google.gson.Gson;
 
 import java.sql.*;
