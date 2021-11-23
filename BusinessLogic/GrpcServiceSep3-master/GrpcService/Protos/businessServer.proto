@@ -50,39 +50,39 @@ string message=1;
 }
 
 message RegisterNoteRequest {
-    int32 noteId = 3;
-    int32 userId = 4;
-    int32 groupId = 5;
-    int32 week = 6;
-    int32 year = 7;
-    string name = 8;
-    string status = 9;
-    string text = 10;
+    int32 noteId = 1;
+    int32 userId = 2;
+    int32 groupId = 3;
+    int32 week = 4;
+    int32 year = 5;
+    string name = 6;
+    string status = 7;
+    string text = 8;
 }
 
 message RegisterNoteReply {
-    int32 noteId = 3;
-    int32 userId = 4;
-    int32 groupId = 5;
-    int32 week = 6;
-    int32 year = 7;
-    string name = 8;
-    string status = 9;
-    string text = 10;
+    int32 noteId = 1;
+    int32 userId = 2;
+    int32 groupId = 3;
+    int32 week = 4;
+    int32 year = 5;
+    string name = 6;
+    string status = 7;
+    string text = 8;
 }
 
 message RegisterInvitationRequest {
-    int32 id = 3;
-    int32 invitorId = 4;
-    int32 inviteeId = 5;
-    int32 groupId = 6;
+    int32 id = 1;
+    int32 invitorId = 2;
+    int32 inviteeId = 3;
+    int32 groupId = 4;
 
 }
 
 message RegisterInvitationReply {
-    int32 id = 3;
-    int32 invitorId = 4;
-    int32 inviteeId = 5;
-    int32 groupId = 6;
+    int32 id = 1;
+    int32 invitorId = 2;
+    int32 inviteeId = 3;
+    int32 groupId = 4;
 
 }
