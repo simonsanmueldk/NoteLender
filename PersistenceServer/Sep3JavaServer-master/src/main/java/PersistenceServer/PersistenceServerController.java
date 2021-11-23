@@ -34,6 +34,11 @@ public class PersistenceServerController {
         System.out.println("It's working Validate");
         return persistenceService.validateUser(json);
     }
+    @PostMapping("/User/{user_id}")
+    public synchronized String ValidateUser(@RequestBody String json,@PathVariable(value = "user_id") int user_id )  throws SQLException {
+        System.out.println("It's working Validate");
+        return persistenceService.editUser(json,user_id);
+    }
 
 
     @PostMapping("/UnregisterUser")

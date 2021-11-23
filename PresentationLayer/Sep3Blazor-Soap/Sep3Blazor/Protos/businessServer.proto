@@ -1,5 +1,4 @@
 syntax = "proto3";
-import "google/protobuf/any.proto";
 
 option csharp_namespace = "Sep3Blazor";
 
@@ -18,6 +17,7 @@ service BusinessServer {
   rpc RegisterUser(RegisterRequest) returns (RegisterReply);
   rpc ValidateUser(Request) returns (Reply);
   rpc GetInvitation(Request) returns (Reply);
+  rpc EditUser(EditUserRequest) returns (Reply);
   rpc PostInvitation(RegisterInvitationRequest) returns (Reply);
 }
 
@@ -26,6 +26,12 @@ service BusinessServer {
 message Request {
   string name = 1;
   string type = 2;
+}
+
+message EditUserRequest {
+  int32 id = 1;
+  string newPassword = 2;
+  string message = 3;
 }
 
 // The response message containing the greetings.
@@ -42,7 +48,7 @@ message RegisterRequest {
 }
 // The request message containing the user's name.
 message RegisterReply {
-string message=1;
+  string message = 1;
   string firstName = 2;
   string lastName = 3;
   string username = 4;
@@ -50,39 +56,37 @@ string message=1;
 }
 
 message RegisterNoteRequest {
-    int32 noteId = 1;
-    int32 userId = 2;
-    int32 groupId = 3;
-    int32 week = 4;
-    int32 year = 5;
-    string name = 6;
-    string status = 7;
-    string text = 8;
+  int32 noteId = 1;
+  int32 userId = 2;
+  int32 groupId = 3;
+  int32 week = 4;
+  int32 year = 5;
+  string name = 6;
+  string status = 7;
+  string text = 8;
 }
 
 message RegisterNoteReply {
-    int32 noteId = 1;
-    int32 userId = 2;
-    int32 groupId = 3;
-    int32 week = 4;
-    int32 year = 5;
-    string name = 6;
-    string status = 7;
-    string text = 8;
+  int32 noteId = 1;
+  int32 userId = 2;
+  int32 groupId = 3;
+  int32 week = 4;
+  int32 year = 5;
+  string name = 6;
+  string status = 7;
+  string text = 8;
 }
 
 message RegisterInvitationRequest  {
-    int32 id = 1;
-    int32 invitorId = 2;
-    int32 inviteeId = 3;
-    int32 groupId = 4;
-
+  int32 id = 1;
+  int32 invitorId = 2;
+  int32 inviteeId = 3;
+  int32 groupId = 4;
 }
 
 message RegisterInvitationReply {
-    int32 id = 1;
-    int32 invitorId = 2;
-    int32 inviteeId = 3;
-    int32 groupId = 4;
-
+  int32 id = 1;
+  int32 invitorId = 2;
+  int32 inviteeId = 3;
+  int32 groupId = 4;
 }

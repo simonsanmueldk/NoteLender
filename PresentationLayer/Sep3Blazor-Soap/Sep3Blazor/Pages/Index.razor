@@ -3,7 +3,6 @@
 @using Sep3Blazor.Model
 @inject IGroupService _groupService
 @inject INoteService _noteService
-@inject IInvitationService _invitationService
 @inject NavigationManager NavigationManager;
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @using LoginComponent
@@ -12,7 +11,7 @@
 <Login/>
 <AuthorizeView>
     Welcome to your new app
-    @context.User.FindFirst(claim => claim.Type.Equals("id")).Value
+    @context.User.FindFirst(claim => claim.Type.Equals("Id")).Value
     <input type="submit" value="Get the second object from database" @onclick="AddGroup">
  
 @if (SearchPhrase == null)
@@ -42,6 +41,7 @@ else
 {
     public string SearchPhrase;
     public string SearchPhrase2;
+
 
     public Note Note;
     

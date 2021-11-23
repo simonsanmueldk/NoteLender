@@ -210,7 +210,31 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public String addInvitation(String json) throws SQLException {
+    public String editUser(String json, int user_id) throws SQLException {
+        User temp = gson.fromJson(json, User.class);
+        User user;
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("UPDATE notelender.users SET password='" + temp.getPassword() + "'WHERE id=" + temp.getId() + "", Statement.RETURN_GENERATED_KEYS);
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    user = new User(generatedKeys.getInt(1), generatedKeys.getString(2), generatedKeys.getString(3), generatedKeys.getString(4), generatedKeys.getString(5));
+                    System.out.println("edit User is working");
+                    return gson.toJson(user);
+                } else {
+                    throw new SQLException("Creating failed, no ID obtained.");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection failure.");
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
+    @Override
+    public String addInvitation(String json) {
         {
             System.out.println("JSON: " + json);
             Invitation invitation = gson.fromJson(json, Invitation.class);
@@ -222,8 +246,8 @@ public class PersistenceService implements IPersistenceService {
             try {
                 Statement statement = connection.createStatement();
                 statement.executeUpdate("INSERT INTO notelender.invitations (id,invitor_id,invitee_id,group_id) VALUES ("
-                    + invitation.getId() + "," + invitation.getGroupId() + ","
-                    + invitation.getInviteeId() + "," + invitation.getInvitorId() + ")", Statement.RETURN_GENERATED_KEYS);
+                        + invitation.getId() + "," + invitation.getGroupId() + ","
+                        + invitation.getInviteeId() + "," + invitation.getInvitorId() + ")", Statement.RETURN_GENERATED_KEYS);
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         Invitation invitationToAdd = new Invitation(generatedKeys.getInt(1),generatedKeys.getInt(2),generatedKeys.getInt(3),generatedKeys.getInt(4));
