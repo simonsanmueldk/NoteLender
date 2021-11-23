@@ -28,12 +28,12 @@ public class PersistenceService implements IPersistenceService {
                 "INSERT INTO notelender.groups (groupname) VALUES (?)";
         List<Group> GroupList = new ArrayList<>();
         try {
-            PreparedStatement insertGroup = connection.prepareStatement(insertString,PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement insertGroup = connection.prepareStatement(insertString, PreparedStatement.RETURN_GENERATED_KEYS);
             insertGroup.setString(1, json);
             insertGroup.executeUpdate();
 
 
-            try (ResultSet generatedKeys =  insertGroup.getGeneratedKeys()) {
+            try (ResultSet generatedKeys = insertGroup.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     Group groupToAdd = new Group(generatedKeys.getInt(1), generatedKeys.getString(2));
                     GroupList.add(groupToAdd);
@@ -67,8 +67,7 @@ public class PersistenceService implements IPersistenceService {
     @Override
     public String addNote(String json) throws SQLException {
         System.out.println("JSON: " + json);
-        Note note = new Note(0,0,0,0,0,"","","");
-        note = gson.fromJson(json,Note.class);
+        Note note = gson.fromJson(json, Note.class);
         System.out.println("Note: " + note.getId());
 
         try {
@@ -98,41 +97,58 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public String deleteGroup(int id) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement
-                ("DELETE FROM notelender.groups WHERE id='" + id + "'");
-        int deleted = statement.executeUpdate();
+        String deleteString = "DELETE FROM notelender.groups WHERE id= ?";
+        PreparedStatement deleteGroup = connection.prepareStatement(deleteString);
+        deleteGroup.setInt(1, id);
+        int deleted = deleteGroup.executeUpdate();
+        ;
         if (deleted == 0) {
             return "Fail";
         } else {
             return "Success";
         }
+//        PreparedStatement statement = connection.prepareStatement
+//                ("DELETE FROM notelender.groups WHERE id='" + id + "'");
     }
 
     @Override
     public String getNote(int id) throws SQLException {
         List<Note> NoteList = new ArrayList<>();
-        ResultSet resultSet = connection.createStatement().executeQuery
-                ("SELECT * FROM notelender.notes WHERE group_id = " + id);
-        while (resultSet.next()) {
-            Note noteToAdd = new Note(resultSet.getInt(1), resultSet.getInt(2),
-                    resultSet.getInt(3), resultSet.getInt(4),
-                    resultSet.getInt(5), resultSet.getString(6),
-                    resultSet.getString(7), resultSet.getString(8));
+
+        String getString = "SELECT * FROM notelender.notes WHERE group_id = ?";
+        PreparedStatement getNote = connection.prepareStatement(getString);
+        getNote.setInt(1, id);
+        ResultSet rs = getNote.executeQuery();
+//
+        while (rs.next()) {
+            Note noteToAdd = new Note(rs.getInt(1), rs.getInt(2),
+                    rs.getInt(3), rs.getInt(4),
+                    rs.getInt(5), rs.getString(6),
+                    rs.getString(7), rs.getString(8));
             NoteList.add(noteToAdd);
         }
         return gson.toJson(NoteList);
+
+//        ResultSet resultSet = connection.createStatement().executeQuery
+//                ("SELECT * FROM notelender.notes WHERE group_id = " + id);
     }
 
     @Override
     public String getGroup(int id) throws SQLException {
         List<Group> GroupList = new ArrayList<>();
-        ResultSet resultSet = connection.createStatement().executeQuery
-                ("SELECT * FROM notelender.groups WHERE id = " + id);
-        while (resultSet.next()) {
-            Group groupToAdd = new Group(resultSet.getInt(1), resultSet.getString(2));
+        String getString = "SELECT * FROM notelender.groups WHERE id =  ?";
+        PreparedStatement getGroup = connection.prepareStatement(getString);
+        getGroup.setInt(1, id);
+        ResultSet rs = getGroup.executeQuery();
+
+        while (rs.next()) {
+            Group groupToAdd = new Group(rs.getInt(1), rs.getString(2));
             GroupList.add(groupToAdd);
         }
         return gson.toJson(GroupList);
+
+//        ResultSet resultSet = connection.createStatement().executeQuery
+//                ("SELECT * FROM notelender.groups WHERE id = " + id);
     }
 
     @Override
@@ -154,36 +170,44 @@ public class PersistenceService implements IPersistenceService {
      */
 
     @Override
-    public String validateUser(String json) throws SQLException {
-
+    public String validateUser(String json) {
         User user = null;
-        System.out.println("aleo");
-        User temp=gson.fromJson(json,User.class);
+        User temp = gson.fromJson(json, User.class);
+        String getString = "SELECT * FROM notelender.users WHERE username =  ?";
         try {
-
-            ResultSet resultSet = connection.createStatement().executeQuery
-                    ("SELECT * FROM notelender.users WHERE username ='" + temp.getUsername() + "'");
-            while (resultSet.next()) {
-                user = new User(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5));
+            PreparedStatement validateUser = connection.prepareStatement(getString);
+            validateUser.setString(1, temp.getUsername());
+            ResultSet rs = validateUser.executeQuery();
+            while (rs.next()) {
+                user = new User(rs.getInt(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4),
+                        rs.getString(5));
             }
             System.out.println("Login is working");
             return gson.toJson(user);
         } catch (Exception e) {
             return null;
         }
-
+//        ResultSet rs = connection.createStatement().executeQuery
+//                ("SELECT * FROM notelender.users WHERE username ='" + temp.getUsername() + "'");
     }
 
     @Override
-    public String registerUser(String json) throws SQLException {
-        User temp=gson.fromJson(json,User.class);
-        User user;
+    public String registerUser(String json) {
+        User temp = gson.fromJson(json, User.class);
+        String registerString = "INSERT INTO notelender.users (firstname,lastname,username,password) VALUES (?,?,?,?)";
         try {
-            Statement statement = connection.createStatement();
-            statement.executeUpdate("INSERT INTO notelender.users (firstname,lastname,username,password) VALUES ('" + temp.getFirstName() + "','" + temp.getLastName() + "','" + temp.getUsername()+ "','" + temp.getPassword() + "')", Statement.RETURN_GENERATED_KEYS);
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    user = new User(generatedKeys.getInt(1), generatedKeys.getString(2), generatedKeys.getString(3), generatedKeys.getString(4), generatedKeys.getString(5));
+            PreparedStatement registerUser = connection.prepareStatement(registerString, PreparedStatement.RETURN_GENERATED_KEYS);
+            registerUser.setString(1, temp.getFirstName());
+            registerUser.setString(2, temp.getLastName());
+            registerUser.setString(3, temp.getUsername());
+            registerUser.setString(4, temp.getPassword());
+            registerUser.executeUpdate();
+
+            try (ResultSet gk = registerUser.getGeneratedKeys()) {
+                if (gk.next()) {
+                    User user = new User(gk.getInt(1), gk.getString(2),
+                            gk.getString(3), gk.getString(4), gk.getString(5));
                     System.out.println("register User is working");
                     return gson.toJson(user);
                 } else {
@@ -195,6 +219,9 @@ public class PersistenceService implements IPersistenceService {
             e.printStackTrace();
         }
         return null;
+        //     statement.executeUpdate("INSERT INTO notelender.users (firstname,lastname,username,password)
+        //     VALUES ('" + temp.getFirstName() + "','" + temp.getLastName() + "','" + temp.getUsername()
+        //     + "','" + temp.getPassword() + "')", Statement.RETURN_GENERATED_KEYS);
     }
     @Override
     public String editUser(String json, int user_id) throws SQLException {
@@ -223,13 +250,40 @@ public class PersistenceService implements IPersistenceService {
     @Override
     public String addInvitation(String json) throws SQLException {
         {
+            System.out.println("JSON: " + json);
+            Invitation invitation = gson.fromJson(json, Invitation.class);
+            System.out.println("ID: " + invitation.getId());
+            System.out.println("InvitorId: " + invitation.getInvitorId());
+            System.out.println("InviteeId: " + invitation.getInviteeId());
+            System.out.println("GroupId: " + invitation.getGroupId());
+
+            try {
+                Statement statement = connection.createStatement();
+                statement.executeUpdate("INSERT INTO notelender.invitations (id,invitor_id,invitee_id,group_id) VALUES ("
+                    + invitation.getId() + "," + invitation.getInvitorId() + ","
+                    + invitation.getInviteeId() + "," + invitation.getGroupId() + ")", Statement.RETURN_GENERATED_KEYS);
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        Invitation invitationToAdd = new Invitation(generatedKeys.getInt(1),generatedKeys.getInt(2),generatedKeys.getInt(3),generatedKeys.getInt(4));
+                        return gson.toJson(invitationToAdd);
+                    } else {
+                        throw new SQLException("Creating failed, no ID obtained.");
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println("Connection failure.");
+                e.printStackTrace();
+            }
+            return null;
+        }
+            /*
             List<Invitation> InvitationList = new ArrayList<>();
             try {
                 Statement statement = connection.createStatement();
-                statement.executeUpdate("INSERT INTO notelender.invitations (name) VALUES (" + json + ")", Statement.RETURN_GENERATED_KEYS);
+                statement.executeUpdate("INSERT INTO notelender.invitations (invitationName) VALUES (" + json + ")", Statement.RETURN_GENERATED_KEYS);
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        Invitation invitationToAdd = new Invitation(generatedKeys.getInt(1),generatedKeys.getInt(2),generatedKeys.getInt(3));
+                        Invitation invitationToAdd = new Invitation(generatedKeys.getInt(1));
                         InvitationList.add(invitationToAdd);
                         return gson.toJson(InvitationList);
                     } else {
@@ -259,8 +313,6 @@ public class PersistenceService implements IPersistenceService {
         invitationsList.add(text);
         return gson.toJson(invitationsList);
     }
-
-
 
 }
 
