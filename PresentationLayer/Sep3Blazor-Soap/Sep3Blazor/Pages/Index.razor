@@ -11,7 +11,7 @@
 <Login/>
 <AuthorizeView>
     Welcome to your new app
-    @context.User.FindFirst(claim => claim.Type.Equals("id")).Value
+    @context.User.FindFirst(claim => claim.Type.Equals("Id")).Value
     <input type="submit" value="Get the second object from database" @onclick="AddGroup">
  
 @if (SearchPhrase == null)
@@ -51,7 +51,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-    // base.OnInitialized();
+    base.OnInitialized();
         Console.WriteLine("2str");
         //await AddGroup();
     //Note = await _noteService.GetNote(9,1);

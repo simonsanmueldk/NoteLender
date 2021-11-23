@@ -14,7 +14,7 @@ namespace Sep3Blazor.Authentication
     {
         private readonly IJSRuntime jsRunTime;
         private readonly IUserService userService;
-        private User cachedUser;
+        public User cachedUser { get; set; }
         
         public CustomAuthenticationStateProvider(IJSRuntime jsRunTime, IUserService userService)
         {
@@ -48,7 +48,11 @@ namespace Sep3Blazor.Authentication
         {
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.Name,user.Username));
-            claims.Add(new Claim("id",user.id.ToString()));
+            claims.Add(new Claim("Id",user.id.ToString()));
+            claims.Add(new Claim("FirstName",user.FirstName));
+            claims.Add(new Claim("LastName",user.LastName));
+            claims.Add(new Claim("Password",user.Password));
+            
             ClaimsIdentity identity = new ClaimsIdentity(claims, "apiauth_type");
             return identity;
         }

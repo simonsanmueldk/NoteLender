@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using GrpcService.Logic;
 using Microsoft.Extensions.Logging;
+using Sep3Blazor;
 
 namespace GrpcService
 {
@@ -68,6 +69,11 @@ namespace GrpcService
         public override async Task<Reply> ValidateUser(Request request, ServerCallContext context)
         {
             return await _logicService.ValidateUser(request, context);
+        }
+
+        public override async Task<Reply> EditUser(EditUserRequest request, ServerCallContext context)
+        {
+            return await _logicService.EditUser(request, context);
         }
         
         /*

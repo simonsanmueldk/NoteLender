@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Grpc.Core;
 using GrpcService.Model;
+using Sep3Blazor;
 using Sep3Blazor.Model;
 
 
@@ -132,18 +132,14 @@ namespace GrpcService.Logic
 
         public async Task<Reply> ValidateUser(Request request, ServerCallContext context)
         {
-            Console.WriteLine("aleo");
             User temp = new User(0,"","",request.Name,request.Type);
             string str = JsonSerializer.Serialize(temp);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
-            Console.WriteLine("aleox2");
             HttpResponseMessage responseMessage = await client.PostAsync(uri + "/User", content);
-            Console.WriteLine("aleox3");
             try
             {
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    Console.WriteLine("aleo");
                     string message = await responseMessage.Content.ReadAsStringAsync();
                     User user = JsonSerializer.Deserialize<User>(message);
                     if (request.Type.Equals(user.Password))
@@ -163,6 +159,30 @@ namespace GrpcService.Logic
 
             return null;
 
+        }
+
+        public async Task<Reply> EditUser(EditUserRequest request, ServerCallContext context)
+        {
+            Console.WriteLine("edit aleox1");
+            User temp = new User(request.Id,"","","",request.NewPassword);
+            string str = JsonSerializer.Serialize(temp);
+            HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
+            Console.WriteLine("edit aleo");
+            HttpResponseMessage responseMessage = await client.PostAsync(uri + $"/User/{request.Id}",content);
+            Console.WriteLine("edit aleo x2");
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string message = await responseMessage.Content.ReadAsStringAsync();
+                
+                    return await Task.FromResult(new Reply
+                    {
+                        Message = message
+                    });
+                    
+
+            }
+
+            return null;
         }
 
         public async Task<Reply> GetInvitation(Request request, ServerCallContext context)

@@ -196,6 +196,29 @@ public class PersistenceService implements IPersistenceService {
         }
         return null;
     }
+    @Override
+    public String editUser(String json, int user_id) throws SQLException {
+        User temp=gson.fromJson(json,User.class);
+        User user;
+        try {
+            Statement statement = connection.createStatement();
+           statement.executeUpdate("UPDATE notelender.users SET password='"+temp.getPassword()+"'WHERE id="+temp.getId()+"", Statement.RETURN_GENERATED_KEYS);
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    user = new User(generatedKeys.getInt(1), generatedKeys.getString(2), generatedKeys.getString(3), generatedKeys.getString(4), generatedKeys.getString(5));
+                    System.out.println("edit User is working");
+                    return gson.toJson(user);
+                } else {
+                    throw new SQLException("Creating failed, no ID obtained.");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection failure.");
+            e.printStackTrace();
+        }
+        return null;
+
+    }
 
     @Override
     public String addInvitation(String json) throws SQLException {
@@ -236,6 +259,8 @@ public class PersistenceService implements IPersistenceService {
         invitationsList.add(text);
         return gson.toJson(invitationsList);
     }
+
+
 
 }
 

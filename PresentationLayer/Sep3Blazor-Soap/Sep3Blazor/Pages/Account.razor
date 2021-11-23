@@ -1,0 +1,100 @@
+﻿@page "/Account"
+@using Microsoft.AspNetCore.Components
+@using Sep3Blazor.Model
+@using System.Security.Claims
+@using System.Runtime.CompilerServices
+@using Sep3Blazor.Authentication
+@using Sep3Blazor.Data
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+<h3>Account</h3>
+<AuthorizeView>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <article class="card-body">
+                    <header class="card-header">
+                        <h4 class="card-title mt-2">Account</h4>
+                    </header>
+                    <div class="col form-group">
+                        <label>First Name :</label>
+                        <input class="form-control" readonly placeholder=" @context.User.FindFirst("FirstName").Value"/>
+
+                    </div>
+                    <div class="col form-group">
+                        <label>Last Name :</label>
+                        <input class="form-control" readonly placeholder=" @context.User.FindFirst("LastName").Value"/>
+                    </div><!-- form-group end.// -->
+                    <div class="col form-group">
+                        <label>Username :</label>
+                        <input class="form-control" readonly placeholder="@context.User.Identity.Name"/>
+                    </div>
+                    <div class="col form-group" style="display:@temp">
+                        <label>Password :</label>
+                        <input class="form-control" type="password" @bind-value="@password"/>
+                    </div>
+                    <div class="col form-group" style="display:@temp">
+                        <label>Change password :</label>
+                        <input class="form-control" type="password" @bind-value="@changedPassword"/>
+                    </div>
+                    <div class="col form-group" style="display:@temp">
+                        <label >Confirm password :</label>
+                        <input class="form-control" type="password" @bind-value="@confirmedPassword"/>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" @onclick="Change" style="display:@temp2 ">Change passsword</button>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" @onclick="EditAccount" style="display:@temp ">Save changes</button>
+                    </div>
+
+
+                </article>
+
+            </div>
+        </div>
+    </div>
+</AuthorizeView>
+
+@code {
+    private User user = new User(0, "", "", "", "");
+    private string temp = "none";
+    private string temp2 = "block";
+    private string password = "";
+    private string changedPassword = "";
+    private string confirmedPassword = "";
+    private IUserService _userService = new UserService();
+    private User cachedUser;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        cachedUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
+    }
+
+    private void Change()
+    {
+    // Console.WriteLine(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.FindFirst("Id").Value);
+        temp2 = "none";
+        temp = "block";
+    }
+
+    private async Task EditAccount()
+    {
+        
+        if (!string.IsNullOrEmpty(password) || !string.IsNullOrEmpty(changedPassword)
+            || !string.IsNullOrEmpty(confirmedPassword))
+        {
+            if (cachedUser.Password.Equals(password))
+            {
+                if (changedPassword == confirmedPassword)
+                {
+                    await _userService.EditUser(cachedUser.id, changedPassword);
+                    NavigationManager.NavigateTo("/");
+                }
+            }
+        }
+    }
+
+}
+

@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Sep3Blazor;
 
 
 namespace GrpcService.Logic
@@ -22,6 +23,7 @@ namespace GrpcService.Logic
         // User
         public Task<RegisterReply> RegisterUser(RegisterRequest request, ServerCallContext context);
         public Task<Reply> ValidateUser(Request request, ServerCallContext context);
+        public Task<Reply> EditUser(EditUserRequest request, ServerCallContext context);
         
         // Invitations
         public Task<Reply> GetInvitation(Request request, ServerCallContext context);

@@ -13,11 +13,13 @@ service BusinessServer {
   rpc PostGroup (Request) returns (Reply);
   rpc PostNote  (RegisterNoteRequest) returns (Reply);
   rpc DeleteNote (Request) returns (Reply);
+    rpc GetNoteList (Request) returns (Reply);
   rpc DeleteGroup  (Request) returns (Reply);
   rpc RegisterUser(RegisterRequest) returns (RegisterReply);
   rpc ValidateUser(Request) returns (Reply);
   rpc GetInvitation(Request) returns (Reply);
   rpc PostInvitation(Request) returns (Reply);   
+  rpc EditUser(EditUserRequest) returns (Reply);
 }
 
 // The request message containing the user's name.
@@ -25,6 +27,12 @@ message Request {
   string name = 1;
   string type = 2;
 }
+
+message EditUserRequest {
+    int32 id=1;
+    string newPassword=2;
+    string message=3;
+    }
 
 // The response message containing the greetings.
 message Reply {
