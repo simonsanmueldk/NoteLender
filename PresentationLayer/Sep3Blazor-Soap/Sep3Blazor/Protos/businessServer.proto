@@ -8,17 +8,18 @@ package BusinessServ;
 // The greeting service definition.
 service BusinessServer {
   // Sends a greeting
-  rpc PostNote (RegisterNoteRequest) returns (Reply);
-  rpc GetNote (Request) returns (Reply);
-  rpc GetNoteList (Request) returns (Reply);
-  rpc DeleteNote (Request) returns (Reply);
-  rpc DeleteGroup  (Request) returns (Reply);
-  rpc RegisterUser(RegisterRequest) returns (RegisterReply);
-  rpc ValidateUser(Request) returns (Reply);
-  rpc GetInvitation(Request) returns (Reply);
-  rpc PostInvitation(Request) returns (Reply);   
-  rpc EditUser(EditUserRequest) returns (Reply);
-  rpc PostInvitation(RegisterInvitationRequest) returns (Reply);
+    rpc PostNote (RegisterNoteRequest) returns (Reply);
+    rpc GetNote (Request) returns (Reply);
+    rpc GetNoteList (Request) returns (Reply);
+    rpc DeleteNote (Request) returns (Reply);
+    rpc GetGroup (Request) returns (Reply);
+    rpc PostGroup (Request) returns (Reply);
+    rpc DeleteGroup  (Request) returns (Reply);
+    rpc RegisterUser(RegisterRequest) returns (RegisterReply);
+    rpc ValidateUser(Request) returns (Reply);
+    rpc GetInvitation(Request) returns (Reply); 
+    rpc EditUser(EditUserRequest) returns (Reply);
+    rpc PostInvitation(RegisterInvitationRequest) returns (Reply);
 }
 
 

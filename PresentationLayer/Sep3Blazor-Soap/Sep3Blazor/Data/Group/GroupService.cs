@@ -43,7 +43,7 @@ namespace Sep3Blazor.Data
             var reply = await client.DeleteGroupAsync(
                 new Request {Name = s});
             Console.WriteLine("Greeting: " + reply.Message);
-            // GroupList = JsonSerializer.Deserialize<List<Group>>(reply.Message);
+             GroupList = JsonSerializer.Deserialize<List<Group>>(reply.Message);
             // return GroupList;
         }
     }

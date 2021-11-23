@@ -21,15 +21,15 @@ namespace Sep3Blazor.Data
             Console.WriteLine("ID: " + invitation.id + " InviteeId: " + invitation.inviteeId +
                               "InvitorId: " + invitation.invitorId + "Group: " + invitation.groupId);
 
-            var reply = await client.PostInvitationAsync(new RegisterInvitationRequest
-                {
+            /*var reply = await client.PostInvitationAsync(new RegisterInvitationRequest
+                /*{
                     Id = invitation.id,
                     InviteeId = invitation.inviteeId,
                     InvitorId = invitation.invitorId,
                     GroupId = invitation.groupId
-                }
-            );
-            Console.WriteLine("greetings" + reply.Message);
+                }#1#
+            );*/
+            //Console.WriteLine("greetings" + reply.Message);
             return null;
 
             /*

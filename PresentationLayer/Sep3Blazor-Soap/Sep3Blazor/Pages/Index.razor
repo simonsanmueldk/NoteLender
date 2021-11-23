@@ -3,7 +3,6 @@
 @using Sep3Blazor.Model
 @inject IGroupService _groupService
 @inject INoteService _noteService
-@inject IInvitationService _invitationService
 @inject NavigationManager NavigationManager;
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @using LoginComponent
@@ -54,7 +53,6 @@ else
     protected override async Task OnInitializedAsync()
     {
      base.OnInitialized();
-  
         Console.WriteLine("2str");
 
         //await AddInvitation();

@@ -17,8 +17,7 @@ service BusinessServer {
   rpc DeleteGroup  (Request) returns (Reply);
   rpc RegisterUser(RegisterRequest) returns (RegisterReply);
   rpc ValidateUser(Request) returns (Reply);
-  rpc GetInvitation(Request) returns (Reply);
-  rpc PostInvitation(Request) returns (Reply);   
+  rpc GetInvitation(Request) returns (Reply); 
   rpc EditUser(EditUserRequest) returns (Reply);
   rpc PostInvitation(RegisterInvitationRequest) returns (Reply);
 }
