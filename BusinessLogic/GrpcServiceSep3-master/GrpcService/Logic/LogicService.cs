@@ -58,7 +58,7 @@ namespace GrpcService.Logic
             });
         }
 
-        public async Task<Reply> PostNote(RegisterNoteRequest request, ServerCallContext context)
+        public async Task<Reply> PostNote(NoteRequest request, ServerCallContext context)
         {
             Note note = new Note(request.NoteId, request.UserId, request.GroupId,
                 request.Week, request.Year, request.Name, request.Status, request.Text);
