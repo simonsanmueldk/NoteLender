@@ -29,9 +29,14 @@
 {
    
     public async Task PerformLogout() {
-        try {
+        try
+        {
             ((CustomAuthenticationStateProvider) AuthenticationStateProvider).LogOut();
             NavigationManager.NavigateTo("/");
-        } catch (Exception e) { }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
     }
 }

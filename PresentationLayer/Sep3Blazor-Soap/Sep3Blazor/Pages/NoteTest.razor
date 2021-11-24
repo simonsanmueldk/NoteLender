@@ -8,134 +8,145 @@
 <h1>Note Testing</h1>
 
 <div class="container">
-    <div class="row">
-        <div class="col-sm-12">
-            <h3>Get Note</h3>
-            <p>@Value</p>
-            <EditForm Model="@Note" OnValidSubmit="@SubmitGetNote">
-                <DataAnnotationsValidator/>
-                <ValidationSummary/>
-                <p>
-                    <label>
-                        Group ID:
-                        <InputNumber @bind-Value="Note.groupId"/>
-                        @if (SearchPhrase == null)
-                        {
-                            <p>
-                                <em>Loading...</em>
-                            </p>
-                        }
-                        else
-                        {
-                            <table class='table'>
+  <div class="row">
+    <div class="col-sm-12">
+        <h3>Get Note</h3>
+        <EditForm Model="@Note" OnValidSubmit="@SubmitGetNote">
+            <DataAnnotationsValidator/>
+            <ValidationSummary/>
+            <p>
+                <label>
+                    Group ID:
+                    <InputNumber @bind-Value="Note.groupId"/>
+                    @if (SearchPhrase == null)
+                    {
+                        <p>
+                            <em>Loading...</em>
+                        </p>
+                    }
+                    else
+                    {
+                        <table class='table'>
                                 <thead>
-                                <tr>
-                                    <th>Note ID</th>
-                                    <th>User ID</th>
-                                    <th>Group ID</th>
-                                    <th>Week</th>
-                                    <th>Year</th>
-                                    <th>Name</th>
-                                    <th>Status</th>
-                                    <th>Text</th>
-                                </tr>
+                                    <tr>
+                                        <th>Note ID</th>
+                                        <th>User ID</th>
+                                        <th>Group ID</th>
+                                        <th>Week</th>
+                                        <th>Year</th>
+                                        <th>Name</th>
+                                        <th>Status</th>
+                                        <th>Text</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                @foreach (var Note in NoteList)
-                                {
-                                    <tr>
-                                        <td>@Note.id</td>
-                                        <td>@Note.userId</td>
-                                        <td>@Note.groupId</td>
-                                        <td>@Note.week</td>
-                                        <td>@Note.year</td>
-                                        <td>@Note.name</td>
-                                        <td>@Note.status</td>
-                                        <td>@Note.text</td>
-                                    </tr>
-                                }
+                                    @foreach (var Note in NoteList)
+                                    {
+                                        <tr>
+                                            <td>@Note.id</td>
+                                            <td>@Note.userId</td>
+                                            <td>@Note.groupId</td>
+                                            <td>@Note.week</td>
+                                            <td>@Note.year</td>
+                                            <td>@Note.name</td>
+                                            <td>@Note.status</td>
+                                            <td>@Note.text</td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
-                        }
-                    </label>
-                </p>
-                <button type="submit">GET</button>
-            </EditForm>
+                    }
+                </label>
+            </p>
+            <button type="submit">GET</button>
+        </EditForm>
         </div>
-        <div class="col-sm-6">
-            <h3>Add Note</h3>
-            <EditForm Model="@Note" OnValidSubmit="@HandleValidSubmit">
-                <DataAnnotationsValidator/>
-                <ValidationSummary/>
-                <p>
-                    <label>
-                        NoteId:
-                        <InputNumber @bind-Value="Note.id"/>
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        UserId:
-                        <InputNumber @bind-Value="Note.userId"/>
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        GroupId:
-                        <InputNumber @bind-Value="Note.groupId"/>
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        Week:
-                        <InputNumber @bind-Value="Note.week"/>
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        Year:
-                        <InputNumber @bind-Value="Note.year"/>
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        Name:
-                        <InputText @bind-Value="Note.name"/>
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        Status:
-                        <InputSelect @bind-Value="Note.status">
-                            <option value="">Not started</option>
-                            <option value="Started">Started</option>
-                            <option value="Finished">Finished</option>
-                        </InputSelect>
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        Text
-                        <InputTextArea @bind-Value="Note.text"/>
-                    </label>
-                </p>
-                <button type="submit">ADD</button>
-            </EditForm>
-        </div>
-        <div class="col-sm-6">
-            <h3>Delete Note</h3>
-        </div>
+    <div class="col-sm-6">
+        <h3>Add Note</h3>
+        <EditForm Model="@Note" OnValidSubmit="@SubmitAddNote">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <p>
+                <label>
+                    NoteId:
+                    <InputNumber @bind-Value="Note.id" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    UserId:
+                    <InputNumber @bind-Value="Note.userId" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    GroupId:
+                    <InputNumber @bind-Value="Note.groupId" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    Week:
+                    <InputNumber @bind-Value="Note.week" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    Year:
+                    <InputNumber @bind-Value="Note.year" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    Name:
+                    <InputText @bind-Value="Note.name"/>
+                </label>
+            </p>
+            <p>
+                <label>
+                    Status:
+                    <InputSelect @bind-Value="Note.status">
+                        <option value="">Not started</option>
+                        <option value="Started">Started</option>
+                        <option value="Finished">Finished</option>
+                    </InputSelect>
+                </label>
+            </p>
+            <p>
+                <label>
+                    Text
+                    <InputTextArea @bind-Value="Note.text" />
+                </label>
+            </p>
+            <button type="submit">ADD</button>
+        </EditForm>
     </div>
+    <div class="col-sm-6">
+        <h3>Delete Note</h3>
+        <EditForm Model="@Note" OnValidSubmit="@SubmitDelNote">
+        <DataAnnotationsValidator />
+                    <ValidationSummary />
+        <p>
+            <label>
+                NoteId:
+                <InputNumber @bind-Value="Note.id" />
+            </label>
+        </p>
+        <button type="submit">Delete</button>
+        </EditForm>
+    </div>
+  </div>
 </div>
 
 @code
 {
-    public Note Note = new Note(0, 0, 0, 0, 0, "", "", "");
+    public Note Note = new Note(0,0,0,0,0,"","","");
     public IList<Note> NoteList { get; set; }
     public string SearchPhrase;
 
     protected override async Task OnInitializedAsync()
     {
+        
     }
 
     private async void SubmitGetNote()
@@ -144,14 +155,15 @@
         {
             NoteList = await _noteService.GetNoteList(Note.groupId.ToString());
             SearchPhrase = NoteList[0].text;
+
         }
-        catch (ArgumentOutOfRangeException)
+        catch (ArgumentOutOfRangeException indexOutOfRangeException)
         {
             SearchPhrase = "Out of range";
         }
     }
 
-    private async void HandleValidSubmit()
+    private async void SubmitAddNote()
     {
         Console.WriteLine("NoteID: " + Note.id);
         Console.WriteLine("UserID: " + Note.userId);
@@ -166,19 +178,21 @@
             Note.groupId, Note.week, Note.year,
             Note.name, Note.status,
             Note.text);
-
-    //NoteList.Add(noteToAdd);
+        
+        //NoteList.Add(noteToAdd);
         Note temp = await _noteService.AddNote(noteToAdd);
-    //Console.WriteLine(temp.text);
-    //await AddNote(noteToAdd);
+        //Console.WriteLine(temp.text);
+        //await AddNote(noteToAdd);
     }
 
-    public async Task AddNote(Note Note)
+    private async void SubmitDelNote()
     {
+        await _noteService.DeleteNote(Note.id);
+        
     //NoteList.Add(Note);
     //await _noteService.AddNote(Note);
     }
-
-    [Parameter]
-    public String Value { get; set; }
+    
+    
+    
 }

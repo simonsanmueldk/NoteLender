@@ -19,17 +19,16 @@ namespace GrpcService
         /*
          *  Note methods
          */
-
-        public override async Task<Reply> PostNote(RegisterNoteRequest request, ServerCallContext context)
+        
+        public override async Task<Reply> PostNote(NoteRequest request, ServerCallContext context)
         {
             return await _logicService.PostNote(request, context);
         }
-
         public override async Task<Reply> DeleteNote(Request request, ServerCallContext context)
         {
-            return await _logicService.DeleteGroup(request, context);
+            return await _logicService.DeleteNote(request, context);
         }
-
+        
         public override async Task<Reply> GetNoteList(Request request, ServerCallContext context)
         {
             return await _logicService.GetNoteList(request, context);
@@ -38,22 +37,21 @@ namespace GrpcService
         /*
          *  Group methods
          */
-
+        
         public override async Task<Reply> PostGroup(Request request, ServerCallContext context)
         {
             return await _logicService.PostGroup(request, context);
         }
-
+        
         public override async Task<Reply> GetGroup(Request request, ServerCallContext context)
         {
             return await _logicService.GetGroup(request, context);
         }
-
         public override async Task<Reply> GetNote(Request request, ServerCallContext context)
         {
             return await _logicService.GetNote(request, context);
         }
-
+        
         public override async Task<Reply> DeleteGroup(Request request, ServerCallContext context)
         {
             return await _logicService.DeleteGroup(request, context);
@@ -67,7 +65,7 @@ namespace GrpcService
         {
             return await _logicService.RegisterUser(request, context);
         }
-
+        
         public override async Task<Reply> ValidateUser(Request request, ServerCallContext context)
         {
             return await _logicService.ValidateUser(request, context);
@@ -77,7 +75,7 @@ namespace GrpcService
         {
             return await _logicService.EditUser(request, context);
         }
-
+        
         /*
          * Invitation Methods
          */
