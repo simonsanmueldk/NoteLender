@@ -97,7 +97,7 @@ public class PersistenceServerController {
     }
 
     @DeleteMapping("/Invitation/{id}")
-    public synchronized String deleteInvitation(@PathVariable(value = "id") int id) throws SQLException {
+    public synchronized String deleteInvitation(@PathVariable(value = "id") String id) throws SQLException {
         return persistenceService.deleteInvitation(id);
     }
 }
