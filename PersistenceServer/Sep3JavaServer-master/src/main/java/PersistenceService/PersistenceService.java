@@ -5,7 +5,6 @@ import Model.Invitation;
 import Model.Note;
 import Model.User;
 import com.google.gson.Gson;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -280,6 +279,21 @@ public class PersistenceService implements IPersistenceService {
         invitationsList.add(text);
         return gson.toJson(invitationsList);
 
+    }
+
+    @Override
+    public String deleteNote(int noteId){
+        String sql = "DELETE FROM notelender.notes WHERE id = ?";
+
+        try{
+            PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, noteId);
+            statement.executeUpdate();
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return null;
     }
 
 

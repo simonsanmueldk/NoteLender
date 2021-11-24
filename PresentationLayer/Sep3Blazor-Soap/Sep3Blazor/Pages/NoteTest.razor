@@ -63,7 +63,7 @@
         </div>
     <div class="col-sm-6">
         <h3>Add Note</h3>
-        <EditForm Model="@Note" OnValidSubmit="@HandleValidSubmit">
+        <EditForm Model="@Note" OnValidSubmit="@SubmitAddNote">
             <DataAnnotationsValidator />
             <ValidationSummary />
             <p>
@@ -122,7 +122,18 @@
         </EditForm>
     </div>
     <div class="col-sm-6">
-      <h3>Delete Note</h3>
+        <h3>Delete Note</h3>
+        <EditForm Model="@Note" OnValidSubmit="@SubmitDelNote">
+        <DataAnnotationsValidator />
+                    <ValidationSummary />
+        <p>
+            <label>
+                NoteId:
+                <InputNumber @bind-Value="Note.id" />
+            </label>
+        </p>
+        <button type="submit">Delete</button>
+        </EditForm>
     </div>
   </div>
 </div>
@@ -152,7 +163,7 @@
         }
     }
 
-    private async void HandleValidSubmit()
+    private async void SubmitAddNote()
     {
         Console.WriteLine("NoteID: " + Note.id);
         Console.WriteLine("UserID: " + Note.userId);
@@ -174,10 +185,12 @@
         //await AddNote(noteToAdd);
     }
 
-    public async Task AddNote(Note Note)
+    private async void SubmitDelNote()
     {
-        //NoteList.Add(Note);
-        //await _noteService.AddNote(Note);
+        await _noteService.DeleteNote(Note.id);
+        
+    //NoteList.Add(Note);
+    //await _noteService.AddNote(Note);
     }
     
     

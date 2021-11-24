@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using GrpcService.Logic;
 using Microsoft.Extensions.Logging;
-using Sep3Blazor;
 
 namespace GrpcService
 {
@@ -20,13 +19,13 @@ namespace GrpcService
          *  Note methods
          */
         
-        public override async Task<Reply> PostNote(RegisterNoteRequest request, ServerCallContext context)
+        public override async Task<Reply> PostNote(NoteRequest request, ServerCallContext context)
         {
             return await _logicService.PostNote(request, context);
         }
         public override async Task<Reply> DeleteNote(Request request, ServerCallContext context)
         {
-            return await _logicService.DeleteGroup(request, context);
+            return await _logicService.DeleteNote(request, context);
         }
         
         public override async Task<Reply> GetNoteList(Request request, ServerCallContext context)

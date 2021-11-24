@@ -1,7 +1,6 @@
 package PersistenceService;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public interface IPersistenceService {
      String getGroup(int id) throws SQLException;
@@ -14,5 +13,6 @@ public interface IPersistenceService {
      String registerUser(String json) throws SQLException;
      String addInvitation(String json) throws  SQLException;
      String getInvitation(int id) throws SQLException;
-    String editUser(String json, int user_id) throws SQLException;
+     String editUser(String json, int user_id) throws SQLException;
+     String deleteNote(int noteId);
 }
