@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Grpc.Net.Client;
 using Sep3Blazor.Model;
 
-
 namespace Sep3Blazor.Data
 {
     public class GroupService : IGroupService
@@ -21,7 +20,6 @@ namespace Sep3Blazor.Data
                 new Request {Name = s});
             Console.WriteLine("Greeting: " + reply.Message);
             GroupList = JsonSerializer.Deserialize<List<Group>>(reply.Message);
-            Console.WriteLine(GroupList[0]);
             return GroupList;
         }
 
@@ -43,7 +41,7 @@ namespace Sep3Blazor.Data
             var reply = await client.DeleteGroupAsync(
                 new Request {Name = s});
             Console.WriteLine("Greeting: " + reply.Message);
-             GroupList = JsonSerializer.Deserialize<List<Group>>(reply.Message);
+            GroupList = JsonSerializer.Deserialize<List<Group>>(reply.Message);
             // return GroupList;
         }
     }

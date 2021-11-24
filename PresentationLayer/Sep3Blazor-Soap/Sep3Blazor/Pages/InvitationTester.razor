@@ -36,7 +36,7 @@
                 </p>
                 <button type="submit">ADD</button>
             </EditForm>
-        <div class="col-sm-12">
+            <div class="col-sm-12">
                 <h3>Get Note</h3>
                 <EditForm Model="@Invitation" OnValidSubmit="@SubmitGetInvitation">
                     <DataAnnotationsValidator/>
@@ -54,32 +54,32 @@
                             else
                             {
                                 <table class='table'>
-                                        <thead>
-                                            <tr>
-                                                <th>Invitation ID</th>
-                                                <th>Group ID</th>
-                                                <th>Invitee ID</th>
-                                                <th>Invitor Id</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var Invitation in InvitationList)
-                                            {
-                                                <tr>
-                                                    <td>@Invitation.id</td>
-                                                    <td>@Invitation.groupId</td>
-                                                    <td>@Invitation.inviteeId</td>
-                                                    <td>@Invitation.invitorId</td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
+                                    <thead>
+                                    <tr>
+                                        <th>Invitation ID</th>
+                                        <th>Group ID</th>
+                                        <th>Invitee ID</th>
+                                        <th>Invitor Id</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var Invitation in InvitationList)
+                                    {
+                                        <tr>
+                                            <td>@Invitation.id</td>
+                                            <td>@Invitation.groupId</td>
+                                            <td>@Invitation.inviteeId</td>
+                                            <td>@Invitation.invitorId</td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
                             }
                         </label>
                     </p>
                     <button type="submit">GET</button>
                 </EditForm>
-                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -87,8 +87,8 @@
 @code {
     public IList<Invitation> InvitationList { get; set; }
     public string SearchPhrase;
-    public Invitation Invitation = new Invitation(0,0,0,0);
-    
+    public Invitation Invitation = new Invitation(0, 0, 0, 0);
+
     private async void HandleValidSubmit()
     {
         Console.WriteLine(_invitationService.AddInvitations(Invitation));
@@ -104,7 +104,6 @@
         catch (ArgumentOutOfRangeException indexOutOfRangeException)
         {
             SearchPhrase = "Out of range";
-
         }
     }
 

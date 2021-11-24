@@ -11,7 +11,7 @@ namespace Sep3Blazor.Data
     public class UserService : IUserService
     {
         private readonly String URL = "https://localhost:5004";
-        
+
         public async Task<User> ValidateLogin(string username, string password)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -22,7 +22,7 @@ namespace Sep3Blazor.Data
             if (reply != null)
             {
                 Console.WriteLine("Greeting: " + reply.Message);
-                 User user = JsonSerializer.Deserialize<User>(reply.Message);
+                User user = JsonSerializer.Deserialize<User>(reply.Message);
                 return user;
             }
             else
@@ -62,11 +62,12 @@ namespace Sep3Blazor.Data
             var reply = await client.EditUserAsync(new EditUserRequest
                 {Id = id, NewPassword = newPassword});
             Console.WriteLine("Greeting: " + reply);
-            if (reply!=null)
-            { 
-               User  user = JsonSerializer.Deserialize<User>(reply.Message);
-               return user;
+            if (reply != null)
+            {
+                User user = JsonSerializer.Deserialize<User>(reply.Message);
+                return user;
             }
+
             return null;
         }
     }

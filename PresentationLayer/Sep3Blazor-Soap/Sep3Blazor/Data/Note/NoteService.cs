@@ -9,9 +9,9 @@ namespace Sep3Blazor.Data
 {
     public class NoteService : INoteService
     {
-        
         private readonly String URL = "https://localhost:5004";
         public IList<Note> NoteList { get; set; }
+
         public async Task<IList<Note>> GetNoteList(string s)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -22,7 +22,7 @@ namespace Sep3Blazor.Data
             NoteList = JsonSerializer.Deserialize<List<Note>>(reply.Message);
             return NoteList;
         }
-        
+
         public async Task<Note> AddNote(Note note)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -42,11 +42,10 @@ namespace Sep3Blazor.Data
                     Text = note.text
                 });
             Console.WriteLine("Greeting: " + reply.Message);
-            
+
             // Return message from GRPC.
             //Note temp = JsonSerializer.Deserialize<Note>(reply.Message);
             return null;
         }
-        
     }
 }
