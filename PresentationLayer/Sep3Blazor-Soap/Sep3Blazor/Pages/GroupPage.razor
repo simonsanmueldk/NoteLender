@@ -40,13 +40,43 @@ else
                 </tbody>
             </table>
         </div>
+
+        <div style="display:inline">
+            <table class="table" id="datatable">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>UserId</th>
+                    <th>GrouId</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var note in Notes)
+                {
+                    <tr class="onHoverChange" @onclick="@(() => ChangeSelected(note))">
+                        <td>@note.week</td>
+                        <td>@note.year</td>
+                        <td>@note.name</td>
+                        <td>@note.status</td>
+                        <td>@note.text</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+        
         <div style="display:inline">
             <NoteTest Value=@Value></NoteTest>
         </div>
     </div>
 }
 
+
+
+
+
 @code {
+
     [Parameter]
     public int Id { get; set; }
 
@@ -70,4 +100,5 @@ else
     {
         Value = note.id.ToString();
     }
+
 }

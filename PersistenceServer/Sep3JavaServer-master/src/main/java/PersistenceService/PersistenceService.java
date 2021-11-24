@@ -18,14 +18,12 @@ public class PersistenceService implements IPersistenceService {
     private final String PASSWORD = "9LEmAjua_Uo0YR5sGqAFHn0Kgm9DDKu1";
     private final Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
 
-
     public PersistenceService() throws SQLException {
     }
 
     @Override
     public String postGroup(String json) {
-        String insertString =
-                "INSERT INTO notelender.groups (groupname) VALUES (?)";
+        String insertString = "INSERT INTO notelender.groups (groupname) VALUES (?)";
         List<Group> GroupList = new ArrayList<>();
         try {
             PreparedStatement insertGroup = connection.prepareStatement(insertString, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -81,11 +79,6 @@ public class PersistenceService implements IPersistenceService {
             e.printStackTrace();
         }
         return null;
-//        statement.executeUpdate("INSERT INTO notelender.notes (id,user_id,group_id,week,year,name,status,text) VALUES ("
-//                + note.getId() + "," + note.getUserId() + ","
-//                + note.getGroupId() + "," + note.getWeek() + ","
-//                + note.getYear() + ",'" + note.getName() + "','"
-//                + note.getStatus() + "','" + note.getText() + "')", Statement.RETURN_GENERATED_KEYS);
     }
 
     @Override
@@ -99,8 +92,6 @@ public class PersistenceService implements IPersistenceService {
         } else {
             return "Success";
         }
-//        PreparedStatement statement = connection.prepareStatement
-//                ("DELETE FROM notelender.groups WHERE id='" + id + "'");
     }
 
     @Override
@@ -120,9 +111,6 @@ public class PersistenceService implements IPersistenceService {
             NoteList.add(noteToAdd);
         }
         return gson.toJson(NoteList);
-
-//        ResultSet resultSet = connection.createStatement().executeQuery
-//                ("SELECT * FROM notelender.notes WHERE group_id = " + id);
     }
 
     @Override
@@ -138,14 +126,14 @@ public class PersistenceService implements IPersistenceService {
             GroupList.add(groupToAdd);
         }
         return gson.toJson(GroupList);
-
-//        ResultSet resultSet = connection.createStatement().executeQuery
-//                ("SELECT * FROM notelender.groups WHERE id = " + id);
     }
 
     @Override
     public String getUserList(int id) throws SQLException {
         String text = "";
+        String getString = "SELECT groupMembers.id,user_id,u.username,group_id from groupMembers INNER JOIN notelender.users u on u.id = groupMembers.user_id where group_id = ?";
+        PreparedStatement getUserList = connection.prepareStatement(getString);
+        getUserList.setInt(1, id);
         ResultSet resultSet = connection.createStatement().executeQuery
                 ("SELECT * FROM sep3.notes WHERE id = " + id);
         while (resultSet.next()) {
@@ -180,8 +168,7 @@ public class PersistenceService implements IPersistenceService {
         } catch (Exception e) {
             return null;
         }
-//        ResultSet rs = connection.createStatement().executeQuery
-//                ("SELECT * FROM notelender.users WHERE username ='" + temp.getUsername() + "'");
+
     }
 
     @Override
@@ -211,9 +198,6 @@ public class PersistenceService implements IPersistenceService {
             e.printStackTrace();
         }
         return null;
-        //     statement.executeUpdate("INSERT INTO notelender.users (firstname,lastname,username,password)
-        //     VALUES ('" + temp.getFirstName() + "','" + temp.getLastName() + "','" + temp.getUsername()
-        //     + "','" + temp.getPassword() + "')", Statement.RETURN_GENERATED_KEYS);
     }
 
     @Override
@@ -242,8 +226,6 @@ public class PersistenceService implements IPersistenceService {
             e.printStackTrace();
         }
         return null;
-
-        //  statement.executeUpdate("UPDATE notelender.users SET password='" + temp.getPassword() + "'WHERE id=" + temp.getId() + "", Statement.RETURN_GENERATED_KEYS);
     }
 
     @Override
@@ -276,9 +258,6 @@ public class PersistenceService implements IPersistenceService {
             }
             return null;
         }
-//        statement.executeUpdate("INSERT INTO notelender.invitations (id,invitor_id,invitee_id,group_id) VALUES ("
-//                + invitation.getId() + "," + invitation.getGroupId() + ","
-//                + invitation.getInviteeId() + "," + invitation.getInvitorId() + ")", Statement.RETURN_GENERATED_KEYS);
     }
 
 
@@ -295,10 +274,7 @@ public class PersistenceService implements IPersistenceService {
         List<String> invitationsList = new ArrayList<>();
         invitationsList.add(text);
         return gson.toJson(invitationsList);
-
     }
-
-
 }
 
 
