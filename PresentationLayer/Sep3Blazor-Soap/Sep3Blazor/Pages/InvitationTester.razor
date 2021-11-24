@@ -81,7 +81,18 @@
                 </EditForm>
             </div>
             <div class="col-sm-6">
-                <h3>Delete Note</h3>
+                <h3>Delete Invitation</h3>
+            <EditForm Model="@Invitation" OnValidSubmit="@SubmitDelInvitation">
+                    <DataAnnotationsValidator />
+                                <ValidationSummary />
+                    <p>
+                        <label>
+                            ID:
+                            <InputNumber @bind-Value="Invitation.id" />
+                        </label>
+                    </p>
+                    <button type="submit">Delete</button>
+                    </EditForm>
                 </div>
         </div>
     </div>
@@ -116,6 +127,11 @@
             SearchPhrase = "Out of range";
 
         }
+    }
+
+    private async Task SubmitDelInvitation()
+    {
+        await _invitationService.DeleteInvitation(Invitation.id.ToString());
     }
 
 }
