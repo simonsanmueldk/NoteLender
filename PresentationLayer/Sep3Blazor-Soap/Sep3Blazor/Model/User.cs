@@ -9,7 +9,9 @@ namespace Sep3Blazor.Model
         [Required] [StringLength(20)] public String FirstName { get; set; }
         [Required] [StringLength(20)] public String LastName { get; set; }
         [Required] [StringLength(15)] public String Username { get; set; }
-        [Required] /*[Range(7,15,ErrorMessage = "Please enter a value between 7-15 characters for Password")]*/ public String Password { get; set; }
+
+        [Required] /*[Range(7,15,ErrorMessage = "Please enter a value between 7-15 characters for Password")]*/
+        public String Password { get; set; }
 
         public User(int id, string firstName, string lastName, string username, string password)
         {
@@ -19,6 +21,5 @@ namespace Sep3Blazor.Model
             Username = username;
             Password = password;
         }
-        
     }
 }

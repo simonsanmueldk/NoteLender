@@ -13,38 +13,37 @@
     Welcome to your new app
     @context.User.FindFirst(claim => claim.Type.Equals("Id")).Value
     <input type="submit" value="Get the second object from database" @onclick="AddGroup">
- 
-@if (SearchPhrase == null)
-{
-    <p>
-        <em>Loading...</em>
-    </p>
-}
-else
-{
-    <p>@SearchPhrase</p>
-}
-@if (SearchPhrase2 == null)
-{
-    <p>
-        <em>Loading...</em>
-    </p>
-}
-else
-{
-    <p>@SearchPhrase2</p>
-  
-}
+
+    @if (SearchPhrase == null)
+    {
+        <p>
+            <em>Loading...</em>
+        </p>
+    }
+    else
+    {
+        <p>@SearchPhrase</p>
+    }
+    
+    @if (SearchPhrase2 == null)
+    {
+        <p>
+            <em>Loading...</em>
+        </p>
+    }
+    else
+    {
+        <p>@SearchPhrase2</p>
+    }
 </AuthorizeView>
 
 @code
 {
     public string SearchPhrase;
     public string SearchPhrase2;
-
-
-    public Note Note;
     
+    public Note Note;
+
     public IList<Note> NoteList { get; set; }
     public IList<Group> GroupList { get; set; }
     public IList<Invitation> InvitationList { get; set; }
@@ -52,10 +51,10 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-     base.OnInitialized();
+        base.OnInitialized();
         Console.WriteLine("2str");
 
-        //await AddInvitation();
+    //await AddInvitation();
     //await AddGroup();
     //Note = await _noteService.GetNote(9,1);
     //SearchPhrase = Note.text;
@@ -75,15 +74,10 @@ else
         Invitation temp = new Invitation(2, 2, 2, 2);
         SearchPhrase2 = InvitationList.ToString();
     }
-
-
+    
     public async Task AddGroup()
     {
         GroupList = await _groupService.AddGroup("newGroupName");
         SearchPhrase2 = GroupList.Last().name;
     }
-    
-    
-    
-    
 }

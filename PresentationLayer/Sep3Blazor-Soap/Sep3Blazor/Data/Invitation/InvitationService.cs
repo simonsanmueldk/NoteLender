@@ -17,7 +17,7 @@ namespace Sep3Blazor.Data
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
-            
+
             Console.WriteLine("ID: " + invitation.id + " InviteeId: " + invitation.inviteeId +
                               "InvitorId: " + invitation.invitorId + "Group: " + invitation.groupId);
 

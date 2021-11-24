@@ -1,0 +1,73 @@
+﻿@page "/GroupPage"
+@page "/GroupPage/{Id:int}" 
+@using Sep3Blazor.Data
+@using Sep3Blazor.Model
+@inject INoteService _noteService
+<h3>GroupPage</h3>
+
+
+@if (Notes == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <div style=" text-align:center">
+        <div style="display:inline">
+            <table class="table" id="datatable">
+                <thead>
+                <tr>
+                    <th>week</th>
+                    <th>year</th>
+                    <th>name</th>
+                    <th>status</th>
+                    <th>text</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var note in Notes)
+                {
+                    <tr class="onHoverChange" @onclick="@(() => ChangeSelected(note))">
+                        <td>@note.week</td>
+                        <td>@note.year</td>
+                        <td>@note.name</td>
+                        <td>@note.status</td>
+                        <td>@note.text</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+        <div style="display:inline">
+            <NoteTest Value=@Value></NoteTest>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthStat { get; set; }
+
+    public string Value { get; set; }
+
+    public IList<Note> Notes { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("AdultPage");
+        {
+            Notes = await _noteService.GetNoteList(Id.ToString());
+            Console.WriteLine(Notes.Count);
+        }
+    }
+
+    private void ChangeSelected(Note note)
+    {
+        Value = note.id.ToString();
+    }
+}
