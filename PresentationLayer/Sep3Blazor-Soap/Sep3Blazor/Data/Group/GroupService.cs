@@ -11,6 +11,7 @@ namespace Sep3Blazor.Data
     {
         private readonly String URL = "https://localhost:5004";
         public IList<Group> GroupList { get; set; }
+        public IList<GroupMembers> UserList { get; set; }
 
         public async Task<IList<Group>> AddGroup(string s)
         {
@@ -43,6 +44,17 @@ namespace Sep3Blazor.Data
             Console.WriteLine("Greeting: " + reply.Message);
             GroupList = JsonSerializer.Deserialize<List<Group>>(reply.Message);
             // return GroupList;
+        }
+
+        public async Task<IList<GroupMembers>> GetUserList(int group_id)
+        {
+            using var channel = GrpcChannel.ForAddress(URL);
+            var client = new BusinessServer.BusinessServerClient(channel);
+            var reply = await client.GetUserListAsync(
+                new Request {Name = group_id.ToString()});
+            Console.WriteLine("Group: " + reply.Message);
+            UserList = JsonSerializer.Deserialize<List<GroupMembers>>(reply.Message);
+            return UserList;
         }
     }
 }

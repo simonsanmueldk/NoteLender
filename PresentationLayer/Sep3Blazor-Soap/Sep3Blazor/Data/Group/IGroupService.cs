@@ -12,5 +12,7 @@ namespace Sep3Blazor.Data
         public Task<IList<Group>> AddGroup(String s);
 
         public Task DeleteGroup(string s);
+        
+        public Task<IList<GroupMembers>> GetUserList(int group_id);
     }
 }
