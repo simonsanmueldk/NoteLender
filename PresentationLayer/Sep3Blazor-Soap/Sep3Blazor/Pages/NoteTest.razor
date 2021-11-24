@@ -10,7 +10,9 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-12">
+    
         <h3>Get Note</h3>
+        <p>@Value</p>
         <EditForm Model="@Note" OnValidSubmit="@SubmitGetNote">
             <DataAnnotationsValidator/>
             <ValidationSummary/>
@@ -179,7 +181,7 @@
         //NoteList.Add(Note);
         //await _noteService.AddNote(Note);
     }
-    
-    
-    
+
+    [Parameter]
+    public String Value { get; set; }
 }
