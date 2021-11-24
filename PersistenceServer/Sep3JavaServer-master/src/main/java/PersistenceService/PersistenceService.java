@@ -267,21 +267,36 @@ public class PersistenceService implements IPersistenceService {
 
 
     @Override
-    public String getInvitation(int id)
+    public String getInvitationList(String id)
             throws SQLException {
-        String text = "";
-        ResultSet resultSet = connection.createStatement().executeQuery
-                ("SELECT * FROM sep3.notelendar.invitations WHERE id = " + id);
-        while (resultSet.next()) {
-            text = resultSet.getString(2);
-            System.out.println(text);
-        }
-        List<String> invitationsList = new ArrayList<>();
-        invitationsList.add(text);
-        return gson.toJson(invitationsList);
 
+        System.out.println("Get invitation man");
+        List<Invitation> InvitationList = new ArrayList<>();
+        String getString = "SELECT * FROM notelender.invitations WHERE id = ?";
+        PreparedStatement getInvitation = connection.prepareStatement(getString);
+        getInvitation.setInt(1, Integer.valueOf(id));
+        ResultSet rs = getInvitation.executeQuery();
+        while (rs.next()) {
+            Invitation invitationToAdd = new Invitation(rs.getInt(1),
+                rs.getInt(2),rs.getInt(3),rs.getInt(4));
+            InvitationList.add(invitationToAdd);
+        }
+        return gson.toJson(InvitationList);
     }
 
+    @Override public String deleteInvitation(int id) throws SQLException
+    {
+        String deleteString = "DELETE FROM notelender.invitations WHERE id= ?";
+        PreparedStatement deleteInvitation = connection.prepareStatement(deleteString);
+        deleteInvitation.setInt(1, id);
+        int deleted = deleteInvitation.executeUpdate();
+        ;
+        if (deleted == 0) {
+            return "Fail";
+        } else {
+            return "Success";
+        }
+    }
 
 }
 

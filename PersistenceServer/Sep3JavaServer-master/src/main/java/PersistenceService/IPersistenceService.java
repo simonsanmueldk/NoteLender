@@ -13,6 +13,7 @@ public interface IPersistenceService {
      String validateUser(String json) throws SQLException;
      String registerUser(String json) throws SQLException;
      String addInvitation(String json) throws  SQLException;
-     String getInvitation(int id) throws SQLException;
+     String getInvitationList(String id) throws SQLException;
+     String deleteInvitation(int id) throws SQLException;
     String editUser(String json, int user_id) throws SQLException;
 }
