@@ -36,16 +36,7 @@ namespace GrpcService.Logic
             });
         }
         
-        public async Task<Reply> GetGroup(Request request, ServerCallContext context)
-        {
-            Console.WriteLine(request);
-            Task<string> stringAsync = client.GetStringAsync(uri + "/Group/" + request.Name);
-            string message = await stringAsync;
-            return await Task.FromResult(new Reply
-            {
-                Message = message
-            });
-        }
+      
         
         public async Task<Reply> DeleteGroup(Request request, ServerCallContext context)
         {
@@ -187,7 +178,20 @@ namespace GrpcService.Logic
 
         public async Task<Reply> GetInvitationList(Request request, ServerCallContext context)
         {
-            Task<string> stringAsync = client.GetStringAsync(uri + "/InvitationList/" + request.Name);
+            Console.WriteLine(request.Name + "AAAAAAAAA");    
+            Task<string> stringAsync = client.GetStringAsync(uri + "/Invitation/" + request.Name);
+            string message = await stringAsync;
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+           
+        }
+        
+        public async Task<Reply> GetGroup(Request request, ServerCallContext context)
+        {
+            Console.WriteLine(request);
+            Task<string> stringAsync = client.GetStringAsync(uri + "/Group/" + request.Name);
             string message = await stringAsync;
             return await Task.FromResult(new Reply
             {
@@ -205,6 +209,23 @@ namespace GrpcService.Logic
             HttpResponseMessage responseMessage = await client.PostAsync(uri + "/Invitation", content);
             string message = await responseMessage.Content.ReadAsStringAsync();
             
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+
+        public async Task<Reply> DeleteInvitation(Request request, ServerCallContext context)
+        {
+            Console.WriteLine(request);
+            HttpResponseMessage responseMessage = await client.DeleteAsync(uri + "/Invitation/" + request.Name);
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                throw new Exception(@"Error : (responseMessage.Status), (responseMessage.ReasonPhrase");
+            }
+
+            string message = await responseMessage.Content.ReadAsStringAsync();
+            Console.WriteLine(message);
             return await Task.FromResult(new Reply
             {
                 Message = message

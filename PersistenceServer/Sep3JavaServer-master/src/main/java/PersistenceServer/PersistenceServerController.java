@@ -85,8 +85,14 @@ public class PersistenceServerController {
         return  persistenceService.addInvitation(json);
     }
 
-    @GetMapping("/InvitationList/{id}")
-    public synchronized String getInvitationList(@PathVariable(value = "id") int id) throws SQLException {
-        return persistenceService.getInvitation(id);
+    @GetMapping("/Invitation/{id}")
+    public synchronized String getInvitationList(@PathVariable(value = "id") String id) throws SQLException {
+        System.out.println("Aleeeoooo");
+        return persistenceService.getInvitationList(id);
+    }
+
+    @DeleteMapping("/Invitation/{id}")
+    public synchronized String deleteInvitation(@PathVariable(value = "id") int id) throws SQLException {
+        return persistenceService.deleteInvitation(id);
     }
 }

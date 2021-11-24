@@ -88,5 +88,11 @@ namespace GrpcService
         {
             return await _logicService.GetInvitationList(request, context);
         }
+
+        public override async Task<Reply> DeleteInvitation(Request request, ServerCallContext context)
+        {
+            return await _logicService.DeleteInvitation(request,context);
+        }
+
     }
 }

@@ -29,5 +29,8 @@ namespace GrpcService.Logic
         public Task<Reply> GetInvitationList(Request request, ServerCallContext context);
         public Task<Reply> PostInvitation(RegisterInvitationRequest request, ServerCallContext context);
         
+        public Task<Reply> DeleteInvitation(Request request, ServerCallContext context);
+
+        
     }
 }

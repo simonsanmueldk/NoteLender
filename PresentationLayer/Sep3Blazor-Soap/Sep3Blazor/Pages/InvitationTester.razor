@@ -36,14 +36,14 @@
                 </p>
                 <button type="submit">ADD</button>
             </EditForm>
-        <div class="col-sm-12">
-                <h3>Get Note</h3>
+            <div class="col-sm-12">
+                <h3>Get Invitation</h3>
                 <EditForm Model="@Invitation" OnValidSubmit="@SubmitGetInvitation">
                     <DataAnnotationsValidator/>
                     <ValidationSummary/>
                     <p>
                         <label>
-                            ID:
+                            Id:
                             <InputNumber @bind-Value="Invitation.id"/>
                             @if (SearchPhrase == null)
                             {
@@ -54,31 +54,34 @@
                             else
                             {
                                 <table class='table'>
-                                        <thead>
-                                            <tr>
-                                                <th>Invitation ID</th>
-                                                <th>Group ID</th>
-                                                <th>Invitee ID</th>
-                                                <th>Invitor Id</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var Invitation in InvitationList)
-                                            {
-                                                <tr>
-                                                    <td>@Invitation.id</td>
-                                                    <td>@Invitation.groupId</td>
-                                                    <td>@Invitation.inviteeId</td>
-                                                    <td>@Invitation.invitorId</td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
+                                    <thead>
+                                    <tr>
+                                        <th>Invitation ID</th>
+                                        <th>Group ID</th>
+                                        <th>Invitee ID</th>
+                                        <th>Invitor Id</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var Invitation in InvitationList)
+                                    {
+                                        <tr>
+                                            <td>@Invitation.id</td>
+                                            <td>@Invitation.groupId</td>
+                                            <td>@Invitation.inviteeId</td>
+                                            <td>@Invitation.invitorId</td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
                             }
                         </label>
                     </p>
                     <button type="submit">GET</button>
                 </EditForm>
+            </div>
+            <div class="col-sm-6">
+                <h3>Delete Note</h3>
                 </div>
         </div>
     </div>
@@ -91,14 +94,21 @@
     
     private async void HandleValidSubmit()
     {
-        Console.WriteLine(_invitationService.AddInvitations(Invitation));
+       // Console.WriteLine(_invitationService.AddInvitations(Invitation));
+        Console.WriteLine("Invitation Id" + Invitation.id);
+        Console.WriteLine("Group Id" + Invitation.groupId);
+        Console.WriteLine("Invitee Id" + Invitation.inviteeId);
+        Console.WriteLine("Invitor Id" + Invitation.invitorId);
+
+        Invitation invitationToAdd = new Invitation(Invitation.id, Invitation.groupId, Invitation.inviteeId, Invitation.invitorId);
+        Invitation temp = await _invitationService.AddInvitations(invitationToAdd);
     }
 
     private async Task SubmitGetInvitation()
     {
         try
         {
-            InvitationList = await _invitationService.GetInvitations(Invitation.id.ToString());
+            InvitationList = await _invitationService.GetInvitationList(Invitation.id.ToString());
             SearchPhrase = InvitationList[0].id.ToString();
         }
         catch (ArgumentOutOfRangeException indexOutOfRangeException)

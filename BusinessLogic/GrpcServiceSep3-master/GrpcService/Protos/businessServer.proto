@@ -20,6 +20,7 @@ service BusinessServer {
   rpc GetInvitationList(Request) returns (Reply); 
   rpc EditUser(EditUserRequest) returns (Reply);
   rpc PostInvitation(RegisterInvitationRequest) returns (Reply);
+  rpc DeleteInvitation(Request) returns (Reply);
 }
 
 
@@ -86,6 +87,8 @@ message RegisterInvitationRequest {
     int32 groupId = 4;
 
 }
+
+
 
 message RegisterInvitationReply {
     int32 id = 1;
