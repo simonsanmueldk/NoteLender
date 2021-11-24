@@ -37,14 +37,14 @@ namespace Sep3Blazor.Data
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
-            var reply = await client.GetNoteAsync(
+            var reply = await client.GetInvitationListAsync(
                 new Request {Name = userId});
             Console.WriteLine("haaland: " + reply.Message);
             InvitationList = JsonSerializer.Deserialize<List<Invitation>>(reply.Message);
             return InvitationList;
         }
         
-        public async Task DeleteInvitation(string userId)
+        public async Task DeleteInvitation(String userId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);

@@ -227,6 +227,11 @@ public class PersistenceService implements IPersistenceService {
 
     }
 
+    @Override public String deleteNote(int noteId)
+    {
+        return null;
+    }
+
     @Override
     public String deleteNote(int noteId){
         String sql = "DELETE FROM notelender.notes WHERE id = ?";
@@ -294,11 +299,11 @@ public class PersistenceService implements IPersistenceService {
         return gson.toJson(InvitationList);
     }
 
-    @Override public String deleteInvitation(int id) throws SQLException
+    @Override public String deleteInvitation(String id) throws SQLException
     {
         String deleteString = "DELETE FROM notelender.invitations WHERE id= ?";
         PreparedStatement deleteInvitation = connection.prepareStatement(deleteString);
-        deleteInvitation.setInt(1, id);
+        deleteInvitation.setInt(1, Integer.valueOf(id));
         int deleted = deleteInvitation.executeUpdate();
         ;
         if (deleted == 0) {
