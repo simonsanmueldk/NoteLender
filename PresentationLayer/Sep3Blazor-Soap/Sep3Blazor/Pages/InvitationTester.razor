@@ -43,8 +43,8 @@
                     <ValidationSummary/>
                     <p>
                         <label>
-                            Group ID:
-                            <InputNumber @bind-Value="Invitation.groupId"/>
+                            ID:
+                            <InputNumber @bind-Value="Invitation.id"/>
                             @if (SearchPhrase == null)
                             {
                                 <p>
@@ -98,8 +98,8 @@
     {
         try
         {
-            InvitationList = await _invitationService.GetInvitations(Invitation.groupId.ToString());
-            SearchPhrase = InvitationList[0].groupId.ToString();
+            InvitationList = await _invitationService.GetInvitations(Invitation.id.ToString());
+            SearchPhrase = InvitationList[0].id.ToString();
         }
         catch (ArgumentOutOfRangeException indexOutOfRangeException)
         {
