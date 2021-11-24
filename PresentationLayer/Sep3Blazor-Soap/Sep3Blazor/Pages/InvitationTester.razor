@@ -108,7 +108,7 @@
     {
         try
         {
-            InvitationList = await _invitationService.GetInvitationList(Invitation.id.ToString());
+            InvitationList = await _invitationService.GetInvitations(Invitation.id.ToString());
             SearchPhrase = InvitationList[0].id.ToString();
         }
         catch (ArgumentOutOfRangeException indexOutOfRangeException)

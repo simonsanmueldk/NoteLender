@@ -198,6 +198,22 @@ namespace GrpcService.Logic
             });
         }
 
+        public async Task<Reply> DeleteInvitation(Request request, ServerCallContext context)
+        {
+            Console.WriteLine(request);
+            HttpResponseMessage responseMessage = await client.DeleteAsync(uri + "/Invitation/" + request.Name);
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                throw new Exception(@"Error : (responseMessage.Status), (responseMessage.ReasonPhrase");
+            }
+            string message = await responseMessage.Content.ReadAsStringAsync();
+            Console.WriteLine(message);
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+
         public async Task<Reply> GetUserList(Request request, ServerCallContext context)
         {
             Console.WriteLine(request.Name);
