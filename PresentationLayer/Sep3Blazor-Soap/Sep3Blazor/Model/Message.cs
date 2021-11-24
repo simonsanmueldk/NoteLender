@@ -2,8 +2,8 @@
 {
     public class Message
     {
-        public string type{ get; set; }
-        public string message{ get; set; }
+        public string type { get; set; }
+        public string message { get; set; }
 
         public Message(string message, string type)
         {

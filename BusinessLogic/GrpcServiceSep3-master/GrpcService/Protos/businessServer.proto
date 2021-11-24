@@ -8,16 +8,17 @@ package BusinessServ;
 // The greeting service definition.
 service BusinessServer {
   // Sends a greeting
-  rpc PostNote (RegisterNoteRequest) returns (Reply);
+  rpc PostNote (NoteRequest) returns (Reply);
   rpc GetNote (Request) returns (Reply);
   rpc GetNoteList (Request) returns (Reply);
   rpc DeleteNote (Request) returns (Reply);
   rpc GetGroup (Request) returns (Reply);
+  rpc GetUserList (Request) returns (Reply);
   rpc PostGroup (Request) returns (Reply);
   rpc DeleteGroup  (Request) returns (Reply);
   rpc RegisterUser(RegisterRequest) returns (RegisterReply);
   rpc ValidateUser(Request) returns (Reply);
-  rpc GetInvitationList(Request) returns (Reply); 
+  rpc GetInvitationList(Request) returns (Reply);
   rpc EditUser(EditUserRequest) returns (Reply);
   rpc PostInvitation(RegisterInvitationRequest) returns (Reply);
   rpc DeleteInvitation(Request) returns (Reply);
@@ -31,10 +32,10 @@ message Request {
 }
 
 message EditUserRequest {
-    int32 id=1;
-    string newPassword=2;
-    string message=3;
-    }
+  int32 id = 1;
+  string newPassword = 2;
+  string message = 3;
+}
 
 // The response message containing the greetings.
 message Reply {
@@ -45,20 +46,20 @@ message Reply {
 message RegisterRequest {
   string firstName = 1;
   string lastName = 2;
-   string username = 3;
-    string password = 4;
-    
+  string username = 3;
+  string password = 4;
+
 }
 // The request message containing the user's name.
 message RegisterReply {
-string message=1;
+  string message = 1;
   string firstName = 2;
   string lastName = 3;
-   string username = 4;
-    string password = 5;
+  string username = 4;
+  string password = 5;
 }
 
-message RegisterNoteRequest {
+message NoteRequest {
     int32 noteId = 1;
     int32 userId = 2;
     int32 groupId = 3;
@@ -81,19 +82,19 @@ message RegisterNoteReply {
 }
 
 message RegisterInvitationRequest {
-    int32 id = 1;
-    int32 invitorId = 2;
-    int32 inviteeId = 3;
-    int32 groupId = 4;
+  int32 id = 1;
+  int32 invitorId = 2;
+  int32 inviteeId = 3;
+  int32 groupId = 4;
 
 }
 
 
 
 message RegisterInvitationReply {
-    int32 id = 1;
-    int32 invitorId = 2;
-    int32 inviteeId = 3;
-    int32 groupId = 4;
+  int32 id = 1;
+  int32 invitorId = 2;
+  int32 inviteeId = 3;
+  int32 groupId = 4;
 
 }

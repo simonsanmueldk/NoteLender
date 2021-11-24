@@ -33,11 +33,11 @@ namespace Sep3Blazor.Data
             return null;
         }
 
-        public async Task<IList<Invitation>> GetInvitationList(string userId)
+        public async Task<IList<Invitation>> GetInvitations(String userId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
-            var reply = await client.GetInvitationListAsync(
+            var reply = await client.GetNoteAsync(
                 new Request {Name = userId});
             Console.WriteLine("haaland: " + reply.Message);
             InvitationList = JsonSerializer.Deserialize<List<Invitation>>(reply.Message);

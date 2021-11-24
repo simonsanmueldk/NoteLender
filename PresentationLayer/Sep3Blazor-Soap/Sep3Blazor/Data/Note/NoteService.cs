@@ -30,7 +30,7 @@ namespace Sep3Blazor.Data
 
             // Send note to GRPC service.
             var reply = await client.PostNoteAsync(
-                new RegisterNoteRequest
+                new NoteRequest
                 {
                     NoteId = note.id,
                     UserId = note.userId,
@@ -45,6 +45,21 @@ namespace Sep3Blazor.Data
             
             // Return message from GRPC.
             //Note temp = JsonSerializer.Deserialize<Note>(reply.Message);
+            return null;
+        }
+
+        public async Task<Note> DeleteNote(int noteId)
+        {
+            using var channel = GrpcChannel.ForAddress(URL);
+            var client = new BusinessServer.BusinessServerClient(channel);
+
+            var reply = await client.DeleteNoteAsync(
+                new Request()
+                {
+                    Name = noteId.ToString()
+                }
+            );
+            Console.WriteLine("Greeting: " + reply.Message);
             return null;
         }
         

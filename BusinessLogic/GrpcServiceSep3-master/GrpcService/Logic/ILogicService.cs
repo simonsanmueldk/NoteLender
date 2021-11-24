@@ -32,5 +32,6 @@ namespace GrpcService.Logic
         public Task<Reply> DeleteInvitation(Request request, ServerCallContext context);
 
         
+        public Task<Reply> GetUserList(Request request, ServerCallContext context);
     }
 }
