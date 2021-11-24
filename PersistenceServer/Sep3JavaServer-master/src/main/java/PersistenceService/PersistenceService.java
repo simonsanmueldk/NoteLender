@@ -227,11 +227,6 @@ public class PersistenceService implements IPersistenceService {
 
     }
 
-    @Override public String deleteNote(int noteId)
-    {
-        return null;
-    }
-
     @Override
     public String deleteNote(int noteId){
         String sql = "DELETE FROM notelender.notes WHERE id = ?";
