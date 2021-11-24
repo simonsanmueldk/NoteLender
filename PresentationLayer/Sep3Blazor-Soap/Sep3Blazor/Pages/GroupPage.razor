@@ -3,6 +3,7 @@
 @using Sep3Blazor.Data
 @using Sep3Blazor.Model
 @inject INoteService _noteService
+@inject IGroupService _groupService
 <h3>GroupPage</h3>
 
 
@@ -86,13 +87,16 @@ else
     public string Value { get; set; }
 
     public IList<Note> Notes { get; set; }
+    public IList<GroupMembers> GroupMembersList { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine("AdultPage");
         {
-            Notes = await _noteService.GetNoteList(Id.ToString());
+            Notes = await _noteService.GetNoteList(Id.ToString()); 
+            GroupMembersList = await _groupService.GetUserList(9);
             Console.WriteLine(Notes.Count);
+            Console.WriteLine(GroupMembersList.Count);
         }
     }
 

@@ -198,6 +198,18 @@ namespace GrpcService.Logic
             });
         }
 
+        public async Task<Reply> GetUserList(Request request, ServerCallContext context)
+        {
+            Console.WriteLine(request.Name);
+            Task<string> stringAsync = client.GetStringAsync(uri + "/UserList/" + request.Name);
+            string message = await stringAsync;
+            Console.WriteLine(message);
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+
         public async Task<Reply> GetNoteList(Request request, ServerCallContext context)
         {
             Console.WriteLine(request.Name);

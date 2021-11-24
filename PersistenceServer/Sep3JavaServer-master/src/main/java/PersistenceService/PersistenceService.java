@@ -1,9 +1,6 @@
 package PersistenceService;
 
-import Model.Group;
-import Model.Invitation;
-import Model.Note;
-import Model.User;
+import Model.*;
 import com.google.gson.Gson;
 
 import java.sql.*;
@@ -130,19 +127,18 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public String getUserList(int id) throws SQLException {
-        String text = "";
-        String getString = "SELECT groupMembers.id,user_id,u.username,group_id from groupMembers INNER JOIN notelender.users u on u.id = groupMembers.user_id where group_id = ?";
+        List<GroupMembers> GroupMembersList = new ArrayList<>();
+        System.out.println(id);
+        String getString = "SELECT notelender.groupmembers.id,user_id,u.username,group_id from notelender.groupmembers INNER JOIN notelender.users u on u.id = groupmembers.user_id where notelender.groupmembers.group_id = ?";
         PreparedStatement getUserList = connection.prepareStatement(getString);
         getUserList.setInt(1, id);
-        ResultSet resultSet = connection.createStatement().executeQuery
-                ("SELECT * FROM sep3.notes WHERE id = " + id);
-        while (resultSet.next()) {
-            text = resultSet.getString(2);
-            System.out.println(text);
+        ResultSet rs = getUserList.executeQuery();
+        while (rs.next()) {
+            GroupMembers groupMembers = new GroupMembers(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4));
+            GroupMembersList.add(groupMembers);
+            System.out.println(groupMembers.getUsername());
         }
-        List<String> AdultsList = new ArrayList<>();
-        AdultsList.add(text);
-        return gson.toJson(AdultsList);
+        return gson.toJson(GroupMembersList);
     }
 
     /*
