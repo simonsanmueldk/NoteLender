@@ -107,7 +107,7 @@ public class PersistenceService implements IPersistenceService {
     public String getNote(int id) throws SQLException {
         List<Note> NoteList = new ArrayList<>();
 
-        String getString = "SELECT * FROM notelender.notes WHERE group_id = ?";
+        String getString = "SELECT * FROM notelender.notes WHERE group_id = ? ORDER BY year ASC, week";
         PreparedStatement getNote = connection.prepareStatement(getString);
         getNote.setInt(1, id);
         ResultSet rs = getNote.executeQuery();
