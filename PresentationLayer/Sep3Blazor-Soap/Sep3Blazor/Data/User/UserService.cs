@@ -12,7 +12,7 @@ namespace Sep3Blazor.Data
     {
         private readonly String URL = "https://localhost:5004";
 
-        public async Task<User> ValidateLogin(string username, string password)
+        public async Task<User> ValidateUser(string username, string password)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);

@@ -65,7 +65,7 @@ namespace Sep3Blazor.Authentication
             ClaimsIdentity identity = new ClaimsIdentity();
             try
             {
-                User user = await userService.ValidateLogin(tempUserName, tempPassword);
+                User user = await userService.ValidateUser(tempUserName, tempPassword);
                 identity = SetupClaimsForUser(user);
                 string serialisedData = JsonSerializer.Serialize(user);
                 await jsRunTime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
