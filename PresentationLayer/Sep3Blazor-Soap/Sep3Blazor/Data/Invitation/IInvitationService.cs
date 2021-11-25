@@ -7,9 +7,9 @@ namespace Sep3Blazor.Data
 {
     public interface IInvitationService
     {
-        public Task<IList<Invitation>> GetInvitations(string invitationId);
+        public Task<IList<Invitation>> GetInvitations(string userId);
         public Task<Invitation> AddInvitations(Invitation invitation);
-        public Task<object> DeleteInvitation(string invitationId);
+        public Task<object> DeleteInvitation(string userId);
 
         
     }
