@@ -104,9 +104,11 @@ else
         Value = note.id.ToString();
     }
     
-    public void RefreshState(){
+    public async void RefreshState(){
         StateHasChanged();
         Console.WriteLine("Hey, i got called from componet");
+        Notes = await _noteService.GetNoteList(Id.ToString());
+        
     }
 
 

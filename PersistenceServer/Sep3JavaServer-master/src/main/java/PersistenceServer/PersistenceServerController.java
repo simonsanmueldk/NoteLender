@@ -57,6 +57,7 @@ public class PersistenceServerController {
 
     @PutMapping("/Note")
     public synchronized String editNote(@RequestBody String json) throws SQLException {
+        System.out.println("EDIT BABYYY");
         return persistenceService.editNote(json);
     }
 

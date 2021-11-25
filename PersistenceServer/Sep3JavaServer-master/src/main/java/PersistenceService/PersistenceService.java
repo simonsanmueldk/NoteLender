@@ -40,9 +40,10 @@ public class PersistenceService implements IPersistenceService {
         }
         return null;
     }
-
+    @Override
     public String editNote(String json){
         Note note = gson.fromJson(json, Note.class);
+        System.out.println("ALLOOOO");
         String editString =
                 "UPDATE notelender.notes " +
                 "SET week = ?, year = ?, name = ?, status = ?, text = ? " +
@@ -55,6 +56,7 @@ public class PersistenceService implements IPersistenceService {
             editNote.setString(4, note.getStatus());
             editNote.setString(5, note.getText());
             editNote.setInt(6, note.getId());
+            editNote.executeUpdate();
             try (ResultSet keys = editNote.getGeneratedKeys()){
                 if(keys.next()) {
                     Note noteToEdit = new Note(note.getId(), note.getUserId(), note.getGroupId(),

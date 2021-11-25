@@ -15,6 +15,7 @@ service BusinessServer {
   rpc GetGroup (Request) returns (Reply);
   rpc GetUserList (Request) returns (Reply);
   rpc PostGroup (Request) returns (Reply);
+  rpc PutNote (NoteRequest) returns (Reply);
   rpc DeleteGroup  (Request) returns (Reply);
   rpc RegisterUser(RegisterRequest) returns (RegisterReply);
   rpc ValidateUser(Request) returns (Reply);

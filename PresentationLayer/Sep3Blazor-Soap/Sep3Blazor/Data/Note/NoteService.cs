@@ -18,7 +18,6 @@ namespace Sep3Blazor.Data
             var client = new BusinessServer.BusinessServerClient(channel);
             var reply = await client.GetNoteAsync(
                 new Request {Name = s});
-            Console.WriteLine("Greeting: " + reply.Message);
             NoteList = JsonSerializer.Deserialize<List<Note>>(reply.Message);
             return NoteList;
         }
@@ -41,8 +40,7 @@ namespace Sep3Blazor.Data
                     Status = note.status,
                     Text = note.text
                 });
-            Console.WriteLine("Greeting: " + reply.Message);
-            
+
             // Return message from GRPC.
             //Note temp = JsonSerializer.Deserialize<Note>(reply.Message);
             return null;
@@ -59,7 +57,6 @@ namespace Sep3Blazor.Data
                     Name = noteId.ToString()
                 }
             );
-            Console.WriteLine("Greeting: " + reply.Message);
             return null;
         }
 
@@ -80,7 +77,6 @@ namespace Sep3Blazor.Data
                     Status = note.status,
                     Text = note.text
                 });
-            Console.WriteLine("Greeting: " + reply.Message);
 
             return null;
         }

@@ -26,6 +26,11 @@ namespace GrpcService
         {
             return await _logicService.PostNote(request, context);
         }
+        
+        public override async Task<Reply> PutNote(NoteRequest request, ServerCallContext context)
+        {
+            return await _logicService.PutNote(request, context);
+        }
         public override async Task<Reply> DeleteNote(Request request, ServerCallContext context)
         {
             return await _logicService.DeleteGroup(request, context);

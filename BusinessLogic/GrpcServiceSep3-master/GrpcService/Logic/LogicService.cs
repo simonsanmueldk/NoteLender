@@ -77,7 +77,7 @@ namespace GrpcService.Logic
             Note note = new Note(request.NoteId, request.UserId, request.GroupId,
                 request.Week, request.Year, request.Name, request.Status, request.Text);
             string str = JsonSerializer.Serialize(note);
-            HttpContent content = new StringContent(str, Encoding.UTF8, "application(json");
+            HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await client.PutAsync(uri + "/Note", content);
             string message = await responseMessage.Content.ReadAsStringAsync();
             return await Task.FromResult(new Reply
