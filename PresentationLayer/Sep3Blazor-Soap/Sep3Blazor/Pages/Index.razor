@@ -9,12 +9,15 @@
 
 
 <h1>Hello, world!</h1>
+
+<Login/>
+<AuthorizeView >
 <div class="row">
     <div class="col-sm-6">
-       <GroupPage></GroupPage>
+        <Account></Account>
     </div>
     <div class="col-sm-6">
-       <Invitations></Invitations>
+       <Invitations Value=@context.User.FindFirst("id").Value></Invitations>
     </div>
     <div class="col-sm-12">
         <p>
@@ -35,9 +38,6 @@
     </div>
 
 </div>
-<Login/>
-<AuthorizeView >
-
 </AuthorizeView>
 
 @code
