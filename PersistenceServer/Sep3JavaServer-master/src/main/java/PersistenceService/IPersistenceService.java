@@ -17,4 +17,5 @@ public interface IPersistenceService {
      String deleteInvitation(String id) throws SQLException;
     String editUser(String json, int user_id) throws SQLException;
      String deleteNote(int noteId);
+     String deleteUser(int userId);
 }

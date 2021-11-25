@@ -45,6 +45,12 @@ public class PersistenceServerController {
     public synchronized String registerUser(@RequestBody String json) throws SQLException {
       return persistenceService.registerUser(json);
     }
+    @DeleteMapping("/User/{userId}")
+    public synchronized String deleteUser(@PathVariable(value = "userId") int userId) throws SQLException{
+        System.out.println("DELETE User");
+        return persistenceService.deleteUser(userId);
+    }
+
 
 
     @PostMapping("/Note")
