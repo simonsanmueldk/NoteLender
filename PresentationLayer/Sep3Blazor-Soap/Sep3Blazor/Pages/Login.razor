@@ -8,26 +8,66 @@
 
 <AuthorizeView>
     <NotAuthorized>
-        <div class="d-flex flex-column align-items-center">
-            <div style="color:red">@errorMessage</div>
+        <div class="d-flex justify-content-center">
+            <aside class="col-sm-4 " style="alignment: center">
+                <div class=" card ">
+                    <article class="card-body ">
+                        <h4 class="card-title text-center mb-4 mt-1">Sign in</h4>
+                        <hr>
 
-            <div id="usernamediv" class="form-group">
-                <label id="loginlabel">Username:</label>
-                <input id="input"type="text" placeholder="Username" @bind-value="username"/>
-            </div>
-            <div id="passworddiv">
-                <label id="loginlabel">Password: </label>
-                <input id="input" type="password" placeholder="Password" @bind-value="password"/>
-            </div>
+                        <div class="d-flex flex-column align-items-center">
+                            <div style="color:red">@errorMessage</div>
+                            <form>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="far fa-user"></i>
+                                            </span>
+                                        </div>
+                                        <input name="" class="form-control" placeholder="Username" type="text" @bind-value="username"/>
+                                    </div> <!-- input-group.// -->
+                                </div> <!-- form-group// -->
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-lock"></i>
+                                            </span>
+                                        </div>
+                                        <input class="form-control" placeholder="******" type="password" @bind-value="password"/>
+                                    </div> <!-- input-group.// -->
+                                </div> <!-- form-group// -->
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-block" @onclick="PerformLogin"> Login </button>
+                                </div> <!-- form-group// -->
+                                @*<div id="usernamediv" class="form-group">
+                        <label id="loginlabel">Username:</label>
+                        <input id="input"type="text" placeholder="Username" @bind-value="username"/>
+                    </div>*@
+                                @*<div id="passworddiv">
+                        <label id="loginlabel">Password: </label>
+                        <input id="input" type="password" placeholder="Password" @bind-value="password"/>
+                    </div>*@
 
-            <div >
-                <button id="button-one"@onclick="PerformLogin">Login</button>
-            </div>
-            <div>
-                <p>
-                    <a href @onclick="Register"> Sign up</a>
-                </p>
-            </div>
+                                @*<div >
+                        <button id="button-one"@onclick="PerformLogin">Login</button>
+                    </div>*@
+                                @*<div>
+                                    <p>
+                                        <a href @onclick="Register"> Sign up</a>
+                                    </p>
+                                </div>*@
+                                <div id="register-link" class="text-right">
+                                    <a href="#" @onclick="Register" class="text-info">Register here</a>
+                                </div>
+                            </form>
+
+                        </div>
+
+                    </article>
+                </div>
+            </aside>
         </div>
     </NotAuthorized>
 
