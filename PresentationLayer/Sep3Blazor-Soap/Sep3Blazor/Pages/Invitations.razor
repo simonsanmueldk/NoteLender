@@ -1,0 +1,39 @@
+@page "/Invitations"
+@using System.Drawing
+
+<h3>Pending invitations</h3>
+
+@foreach (var invitations in Iinvitations)
+{
+    <div class="card mb-2">
+        <div class="card-header">
+            @invitations.id
+         
+        </div>
+        <div class="card-body">
+            <p>@invitations.invitorId Wants you to pe apart of group @invitations.groupId </p>
+            
+            <button type="button" style="background-color: darkgreen ">Accept</button>
+            <button type = "button" style="background-color: red">Decline</button>
+        </div>
+    </div>
+}
+<h3>Invite user to group</h3>
+
+@code {
+    public  class Invitation
+    {
+        public int id { get; set; }
+        public int invitorId { get; set; }
+        public int inviteeId { get; set; }
+        public int groupId { get; set; }
+    }
+
+     List<Invitation> Iinvitations = new List<Invitation>()
+    {
+        new Invitation(){id = 1,inviteeId = 2,invitorId = 3,groupId = 2},  
+        new Invitation(){id = 2,inviteeId = 3,invitorId = 4,groupId = 5},
+        new Invitation(){id = 3,inviteeId = 4,invitorId = 5,groupId = 6},
+
+    };
+}

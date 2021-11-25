@@ -70,12 +70,7 @@ else
     //await _groupService.ValidateLogin("dorin", "123");
     }
 
-    private async Task AddInvitation()
-    {
-        Invitation temp = new Invitation(2, 2, 2, 2);
-        SearchPhrase2 = InvitationList.ToString();
-    }
-    
+   
     public async Task AddGroup()
     {
         GroupList = await _groupService.AddGroup("newGroupName");
