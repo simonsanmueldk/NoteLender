@@ -10,6 +10,7 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-12">
+       <p>@Value</p>
         <h3>Get Note</h3>
         <EditForm Model="@Note" OnValidSubmit="@SubmitGetNote">
             <DataAnnotationsValidator/>
@@ -140,6 +141,10 @@
 
 @code
 {
+    
+    [Parameter]
+    public String Value { get; set; }
+    
     public Note Note = new Note(0,0,0,0,0,"","","");
     public IList<Note> NoteList { get; set; }
     public string SearchPhrase;
