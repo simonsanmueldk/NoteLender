@@ -175,11 +175,21 @@ namespace GrpcService.Logic
         public async Task<Reply> GetInvitationList(Request request, ServerCallContext context)
         {
             Task<string> stringAsync = client.GetStringAsync(uri + "/InvitationList/" + request.Name);
+            Console.WriteLine(request.Name + "AAAAAAAAA");    
+            stringAsync = client.GetStringAsync(uri + "/Invitation/" + request.Name);
             string message = await stringAsync;
             return await Task.FromResult(new Reply
             {
                 Message = message
             });
+            /*
+            Task<string> stringAsync = client.GetStringAsync(uri + "/InvitationList/" + request.Name);
+            string message = await stringAsync;
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+            */
         }
 
         public async Task<Reply> PostInvitation(RegisterInvitationRequest request, ServerCallContext context)
