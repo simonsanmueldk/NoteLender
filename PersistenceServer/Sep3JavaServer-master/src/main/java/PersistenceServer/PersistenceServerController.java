@@ -41,12 +41,24 @@ public class PersistenceServerController {
     public synchronized String registerUser(@RequestBody String json) throws SQLException {
         return persistenceService.registerUser(json);
     }
+    @DeleteMapping("/User/{userId}")
+    public synchronized String deleteUser(@PathVariable(value = "userId") int userId) throws SQLException{
+        System.out.println("DELETE User");
+        return persistenceService.deleteUser(userId);
+    }
+
 
 
     @PostMapping("/Note")
     public synchronized String addNote(@RequestBody String json) throws SQLException {
         System.out.println("It's working AddNote");
         return persistenceService.addNote(json);
+    }
+
+    @PutMapping("/Note")
+    public synchronized String editNote(@RequestBody String json) throws SQLException {
+        System.out.println("EDIT BABYYY");
+        return persistenceService.editNote(json);
     }
 
     @DeleteMapping("/Note/{noteId}")

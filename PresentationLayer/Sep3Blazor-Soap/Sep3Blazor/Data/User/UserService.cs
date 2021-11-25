@@ -70,5 +70,20 @@ namespace Sep3Blazor.Data
 
             return null;
         }
+
+        public async Task<User> DeleteUser(int id)
+        {
+            using var channel = GrpcChannel.ForAddress(URL);
+            var client = new BusinessServer.BusinessServerClient(channel);
+
+            var reply = await client.DeleteUserAsync(
+                new UserRequest()
+                {
+                    Id = id
+                }
+            );
+            Console.WriteLine("Greeting: " + reply.Message);
+            return null;
+        }
     }
 }
