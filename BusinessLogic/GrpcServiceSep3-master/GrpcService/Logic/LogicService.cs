@@ -226,6 +226,22 @@ namespace GrpcService.Logic
             });
         }
 
+        public async Task<Reply> DeleteUser(UserRequest request, ServerCallContext context)
+        {
+           
+            HttpResponseMessage responseMessage = await client.DeleteAsync(uri + "/User/" + request.Id);
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                throw new Exception(@"Error : (responseMessage.Status), (responseMessage.ReasonPhrase");
+            }
+            string message = await responseMessage.Content.ReadAsStringAsync();
+            Console.WriteLine(message);
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+
         public async Task<Reply> GetNoteList(Request request, ServerCallContext context)
         {
             Console.WriteLine(request.Name);

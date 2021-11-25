@@ -76,6 +76,12 @@ namespace GrpcService
             return await _logicService.EditUser(request, context);
         }
         
+        public override async Task<Reply> DeleteUser(UserRequest request, ServerCallContext context)
+        {
+            return await _logicService.DeleteUser(request, context);
+        }
+
+        
         /*
          * Invitation Methods
          */

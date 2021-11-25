@@ -21,6 +21,7 @@ service BusinessServer {
   rpc EditUser(EditUserRequest) returns (Reply);
   rpc PostInvitation(RegisterInvitationRequest) returns (Reply);
   rpc DeleteInvitation(Request) returns (Reply);
+   rpc DeleteUser(UserRequest) returns (Reply);
 }
 
 
@@ -28,6 +29,9 @@ service BusinessServer {
 message Request {
   string name = 1;
   string type = 2;
+}
+message UserRequest{
+int32 id=1;
 }
 
 message EditUserRequest {
