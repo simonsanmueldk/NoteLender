@@ -53,6 +53,11 @@ public class PersistenceServerController {
         return persistenceService.addNote(json);
     }
 
+    @PutMapping("/Note")
+    public synchronized String editNote(@RequestBody String json) throws SQLException {
+        return persistenceService.editNote(json);
+    }
+
     @DeleteMapping("/Note/{noteId}")
     public synchronized String deleteNote(@PathVariable(value = "noteId") int noteId) throws SQLException{
         System.out.println("DELETE NOTE");

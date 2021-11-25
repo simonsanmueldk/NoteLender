@@ -41,6 +41,35 @@ public class PersistenceService implements IPersistenceService {
         return null;
     }
 
+    public String editNote(String json){
+        Note note = gson.fromJson(json, Note.class);
+        String editString =
+                "UPDATE notelender.notes " +
+                "SET week = ?, year = ?, name = ?, status = ?, text = ? " +
+                "WHERE id = ?";
+        try{
+            PreparedStatement editNote = connection.prepareStatement(editString, PreparedStatement.RETURN_GENERATED_KEYS);
+            editNote.setInt(1, note.getWeek());
+            editNote.setInt(2, note.getYear());
+            editNote.setString(3,note.getName());
+            editNote.setString(4, note.getStatus());
+            editNote.setString(5, note.getText());
+            editNote.setInt(6, note.getId());
+            try (ResultSet keys = editNote.getGeneratedKeys()){
+                if(keys.next()) {
+                    Note noteToEdit = new Note(note.getId(), note.getUserId(), note.getGroupId(),
+                            keys.getInt(1), keys.getInt(2), keys.getString(3),
+                            keys.getString(4),keys.getString(5));
+                    return gson.toJson(noteToEdit);
+                }
+            }
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return null;
+    }
+
     @Override
     public String addNote(String json) {
         String addString =

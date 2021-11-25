@@ -62,6 +62,28 @@ namespace Sep3Blazor.Data
             Console.WriteLine("Greeting: " + reply.Message);
             return null;
         }
+
+        public async Task<Note> editNote(Note note)
+        {
+            using var channel = GrpcChannel.ForAddress(URL);
+            var client = new BusinessServer.BusinessServerClient(channel);
+
+            var reply = await client.PutNoteAsync(
+                new NoteRequest
+                {
+                    NoteId = note.id,
+                    UserId = note.userId,
+                    GroupId = note.groupId,
+                    Week = note.week,
+                    Year = note.year,
+                    Name = note.name,
+                    Status = note.status,
+                    Text = note.text
+                });
+            Console.WriteLine("Greeting: " + reply.Message);
+
+            return null;
+        }
         
     }
 }
