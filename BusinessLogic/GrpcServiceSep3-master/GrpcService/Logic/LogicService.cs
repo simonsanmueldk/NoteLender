@@ -189,11 +189,21 @@ namespace GrpcService.Logic
         public async Task<Reply> GetInvitationList(Request request, ServerCallContext context)
         {
             Task<string> stringAsync = client.GetStringAsync(uri + "/InvitationList/" + request.Name);
+            Console.WriteLine(request.Name + "AAAAAAAAA");    
+            stringAsync = client.GetStringAsync(uri + "/Invitation/" + request.Name);
             string message = await stringAsync;
             return await Task.FromResult(new Reply
             {
                 Message = message
             });
+            /*
+            Task<string> stringAsync = client.GetStringAsync(uri + "/InvitationList/" + request.Name);
+            string message = await stringAsync;
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+            */
         }
 
         public async Task<Reply> PostInvitation(RegisterInvitationRequest request, ServerCallContext context)
@@ -233,6 +243,22 @@ namespace GrpcService.Logic
             Console.WriteLine(request.Name);
             Task<string> stringAsync = client.GetStringAsync(uri + "/UserList/" + request.Name);
             string message = await stringAsync;
+            Console.WriteLine(message);
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+
+        public async Task<Reply> DeleteUser(UserRequest request, ServerCallContext context)
+        {
+           
+            HttpResponseMessage responseMessage = await client.DeleteAsync(uri + "/User/" + request.Id);
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                throw new Exception(@"Error : (responseMessage.Status), (responseMessage.ReasonPhrase");
+            }
+            string message = await responseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(message);
             return await Task.FromResult(new Reply
             {

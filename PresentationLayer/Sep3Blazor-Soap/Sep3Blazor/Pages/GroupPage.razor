@@ -1,9 +1,11 @@
 ﻿@page "/GroupPage"
 @page "/GroupPage/{Id:int}" 
 @using Sep3Blazor.Data
+@using Sep3Blazor.Data.Refresh
 @using Sep3Blazor.Model
 @inject INoteService _noteService
 @inject IGroupService _groupService
+@inject IRefreshService _refreshService
 <h3>GroupPage</h3>
 
 
@@ -30,7 +32,7 @@ else
                 <tbody>
                 @foreach (var note in Notes)
                 {
-                    <tr class="onHoverChange" @onclick="@(() => ChangeSelected(note))">
+                    <tr class="onHoverChange" @onclick="@(() => ChangeSelectedNote(note))">
                         <td>@note.week</td>
                         <td>@note.year</td>
                         <td>@note.name</td>
@@ -47,34 +49,30 @@ else
                 <thead>
                 <tr>
                     <th>Id</th>
-                    <th>UserId</th>
-                    <th>GrouId</th>
+                    <th>MemberId</th>
+                    <th>Username</th>
+                    <th>GroupId</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach (var note in Notes)
+                @foreach (var members in GroupMembersList)
                 {
-                    <tr class="onHoverChange" @onclick="@(() => ChangeSelected(note))">
-                        <td>@note.week</td>
-                        <td>@note.year</td>
-                        <td>@note.name</td>
-                        <td>@note.status</td>
-                        <td>@note.text</td>
+                    <tr class="onHoverChange" @onclick="@(() => ChangeSelectedGroup(members))">
+                        <td>@members.Id</td>
+                        <td>@members.UserId</td>
+                        <td>@members.Username</td>
+                        <td>@members.GroupId</td>
                     </tr>
                 }
                 </tbody>
             </table>
         </div>
-        
+
         <div style="display:inline">
             <NoteTest Value=@Value></NoteTest>
         </div>
     </div>
 }
-
-
-
-
 
 @code {
 
@@ -93,16 +91,28 @@ else
     {
         Console.WriteLine("AdultPage");
         {
-            Notes = await _noteService.GetNoteList(Id.ToString()); 
+            _refreshService.RefreshRequested += RefreshState;
+            Notes = await _noteService.GetNoteList(Id.ToString());
             GroupMembersList = await _groupService.GetUserList(9);
             Console.WriteLine(Notes.Count);
             Console.WriteLine(GroupMembersList.Count);
         }
     }
 
-    private void ChangeSelected(Note note)
+    private void ChangeSelectedNote(Note note)
     {
         Value = note.id.ToString();
+    }
+    
+    public void RefreshState(){
+        StateHasChanged();
+        Console.WriteLine("Hey, i got called from componet");
+    }
+
+
+    private void ChangeSelectedGroup(GroupMembers groupMembers)
+    {
+        Value = groupMembers.Id.ToString();
     }
 
 }

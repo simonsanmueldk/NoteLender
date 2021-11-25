@@ -272,6 +272,21 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
+    public String deleteUser(int userId) {
+        String sql = "DELETE FROM notelender.user WHERE id = ?";
+
+        try{
+            PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, userId);
+            statement.executeUpdate();
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public String addInvitation(String json) {
         {
             System.out.println("JSON: " + json);
