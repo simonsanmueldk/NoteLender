@@ -5,21 +5,16 @@ import PersistenceService.IPersistenceService;
 import PersistenceService.PersistenceService;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.SQLException;
 
 @RestController
 public class PersistenceServerController {
 
     private IPersistenceService persistenceService;
 
-
     public PersistenceServerController() throws SQLException {
         persistenceService = new PersistenceService();
-
-
         System.out.println("Hello");
-
     }
 
     @PutMapping("/Group")
@@ -30,20 +25,21 @@ public class PersistenceServerController {
     }
 
     @PostMapping("/User")
-    public synchronized String ValidateUser(@RequestBody String json )  throws SQLException {
+    public synchronized String ValidateUser(@RequestBody String json) throws SQLException {
         System.out.println("It's working Validate");
         return persistenceService.validateUser(json);
     }
+
     @PostMapping("/User/{user_id}")
-    public synchronized String ValidateUser(@RequestBody String json,@PathVariable(value = "user_id") int user_id )  throws SQLException {
+    public synchronized String ValidateUser(@RequestBody String json, @PathVariable(value = "user_id") int user_id) throws SQLException {
         System.out.println("It's working Validate");
-        return persistenceService.editUser(json,user_id);
+        return persistenceService.editUser(json, user_id);
     }
 
 
     @PostMapping("/UnregisterUser")
     public synchronized String registerUser(@RequestBody String json) throws SQLException {
-      return persistenceService.registerUser(json);
+        return persistenceService.registerUser(json);
     }
 
 
@@ -54,13 +50,13 @@ public class PersistenceServerController {
     }
 
     @DeleteMapping("/Note/{noteId}")
-    public synchronized String deleteNote(@PathVariable(value = "noteId") int noteId) throws SQLException{
+    public synchronized String deleteNote(@PathVariable(value = "noteId") int noteId) throws SQLException {
         System.out.println("DELETE NOTE");
         return persistenceService.deleteNote(noteId);
     }
 
     @GetMapping("/Note/{groupId}")
-    public synchronized String getNote(@PathVariable(value = "groupId") int groupId) throws SQLException{
+    public synchronized String getNote(@PathVariable(value = "groupId") int groupId) throws SQLException {
         return persistenceService.getNote(groupId);
     }
 
@@ -74,20 +70,18 @@ public class PersistenceServerController {
     public synchronized String getUserList(@PathVariable(value = "id") int id) throws SQLException {
         System.out.println("It's working Get");
         return persistenceService.getUserList(id);
-
     }
 
     @DeleteMapping("/Group/{id}")
     public synchronized String deleteGroup(@PathVariable(value = "id") int id) throws SQLException {
         System.out.println("It's working Delete");
         return persistenceService.deleteGroup(id);
-
     }
+
     @PostMapping("/Invitation")
-    public synchronized  String addInvitation(@RequestBody String json) throws SQLException
-    {
+    public synchronized String addInvitation(@RequestBody String json) throws SQLException {
         System.out.println("its working post invitation");
-        return  persistenceService.addInvitation(json);
+        return persistenceService.addInvitation(json);
     }
 
     @GetMapping("/Invitation/{id}")

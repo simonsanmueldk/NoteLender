@@ -46,12 +46,12 @@ namespace Sep3Blazor.Data
             // return GroupList;
         }
 
-        public async Task<IList<GroupMembers>> GetUserList(int group_id)
+        public async Task<IList<GroupMembers>> GetUserList(int groupId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
             var reply = await client.GetUserListAsync(
-                new Request {Name = group_id.ToString()});
+                new Request {Name = groupId.ToString()});
             Console.WriteLine("Group: " + reply.Message);
             UserList = JsonSerializer.Deserialize<List<GroupMembers>>(reply.Message);
             return UserList;
