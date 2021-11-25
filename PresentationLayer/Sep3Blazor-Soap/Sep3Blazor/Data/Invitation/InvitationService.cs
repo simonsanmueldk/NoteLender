@@ -33,7 +33,7 @@ namespace Sep3Blazor.Data
             return null;
         }
 
-        public async Task<IList<Invitation>> GetInvitations(String userId)
+        public async Task<IList<Invitation>> GetInvitations(string userId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
@@ -44,14 +44,19 @@ namespace Sep3Blazor.Data
             return InvitationList;
         }
         
-        public async Task DeleteInvitation(String userId)
+        public async Task<object> DeleteInvitation(string userId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
+
             var reply = await client.DeleteInvitationAsync(
-                new Request {Name = userId});
+                new Request()
+                {
+                    Name = userId.ToString()
+                }
+            );
             Console.WriteLine("Greeting: " + reply.Message);
-            InvitationList = JsonSerializer.Deserialize<List<Invitation>>(reply.Message);    
+            return null;
         }
     }
 }
