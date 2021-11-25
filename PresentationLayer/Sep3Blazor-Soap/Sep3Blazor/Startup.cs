@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Sep3Blazor.Authentication;
 using Sep3Blazor.Data;
+using Sep3Blazor.Data.Refresh;
 
 namespace Sep3Blazor
 {
@@ -28,6 +29,7 @@ namespace Sep3Blazor
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<INoteService, NoteService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRefreshService, RefreshService>();
             services.AddScoped<IInvitationService, InvitationService>();
         }
 

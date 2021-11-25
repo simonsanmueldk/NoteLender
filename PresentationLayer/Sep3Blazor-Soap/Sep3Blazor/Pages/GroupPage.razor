@@ -1,9 +1,11 @@
 ﻿@page "/GroupPage"
 @page "/GroupPage/{Id:int}" 
 @using Sep3Blazor.Data
+@using Sep3Blazor.Data.Refresh
 @using Sep3Blazor.Model
 @inject INoteService _noteService
 @inject IGroupService _groupService
+@inject IRefreshService _refreshService
 <h3>GroupPage</h3>
 
 
@@ -50,7 +52,6 @@ else
                     <th>MemberId</th>
                     <th>Username</th>
                     <th>GroupId</th>
-
                 </tr>
                 </thead>
                 <tbody>
@@ -90,6 +91,7 @@ else
     {
         Console.WriteLine("AdultPage");
         {
+            _refreshService.RefreshRequested += RefreshState;
             Notes = await _noteService.GetNoteList(Id.ToString());
             GroupMembersList = await _groupService.GetUserList(9);
             Console.WriteLine(Notes.Count);
@@ -100,6 +102,11 @@ else
     private void ChangeSelectedNote(Note note)
     {
         Value = note.id.ToString();
+    }
+    
+    public void RefreshState(){
+        StateHasChanged();
+        Console.WriteLine("Hey, i got called from componet");
     }
 
 

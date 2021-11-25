@@ -2,7 +2,9 @@
 @using Sep3Blazor.Data
 @using Sep3Blazor.Model
 @using Microsoft.AspNetCore.Components
+@using Sep3Blazor.Data.Refresh
 @inject INoteService _noteService
+@inject IRefreshService _refreshService
 @inject NavigationManager NavigationManager;
 
 <h1>Note Testing</h1>
@@ -145,6 +147,11 @@
     [Parameter]
     public String Value { get; set; }
     
+    public String _value { get; set; }
+    
+    [CascadingParameter]
+    public GroupPage _Parent { get; set; }
+    
     public Note Note = new Note(0,0,0,0,0,"","","");
     public IList<Note> NoteList { get; set; }
     public string SearchPhrase;
@@ -152,6 +159,17 @@
     protected override async Task OnInitializedAsync()
     {
         
+    }
+    
+    protected override void OnParametersSet()
+    {
+        if (_value != Value)
+        {
+            _value = Value;
+            Note.id = Convert.ToInt32(Value);
+            Console.WriteLine("a parameter has changed");
+            _refreshService.CallRequestRefresh();
+        }
     }
 
     private async void SubmitGetNote()
@@ -197,7 +215,4 @@
     //NoteList.Add(Note);
     //await _noteService.AddNote(Note);
     }
-    
-    
-    
 }
