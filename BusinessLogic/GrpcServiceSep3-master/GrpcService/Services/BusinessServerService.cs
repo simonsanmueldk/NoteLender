@@ -1,7 +1,9 @@
+using System;
 using System.Threading.Tasks;
 using Grpc.Core;
 using GrpcService.Logic;
 using Microsoft.Extensions.Logging;
+using Sep3Blazor;
 
 namespace GrpcService
 {
@@ -14,14 +16,20 @@ namespace GrpcService
         {
             _logicService = new LogicService();
             _logger = logger;
+            
         }
         /*
          *  Note methods
          */
         
-        public override async Task<Reply> PostNote(RegisterNoteRequest request, ServerCallContext context)
+        public override async Task<Reply> PostNote(NoteRequest request, ServerCallContext context)
         {
             return await _logicService.PostNote(request, context);
+        }
+        
+        public override async Task<Reply> PutNote(NoteRequest request, ServerCallContext context)
+        {
+            return await _logicService.PutNote(request, context);
         }
         public override async Task<Reply> DeleteNote(Request request, ServerCallContext context)
         {
@@ -30,6 +38,8 @@ namespace GrpcService
         
         public override async Task<Reply> GetNoteList(Request request, ServerCallContext context)
         {
+            String Message = $"About page visited at {DateTime.UtcNow.ToLongTimeString()}";
+            _logger.LogInformation(Message);
             return await _logicService.GetNoteList(request, context);
         }
 
@@ -48,6 +58,8 @@ namespace GrpcService
         }
         public override async Task<Reply> GetNote(Request request, ServerCallContext context)
         {
+            String Message = $"About page visited at {DateTime.UtcNow.ToLongTimeString()}";
+            _logger.LogInformation(Message);
             return await _logicService.GetNote(request, context);
         }
         
@@ -69,6 +81,17 @@ namespace GrpcService
         {
             return await _logicService.ValidateUser(request, context);
         }
+
+        public override async Task<Reply> EditUser(EditUserRequest request, ServerCallContext context)
+        {
+            return await _logicService.EditUser(request, context);
+        }
+        
+        public override async Task<Reply> DeleteUser(UserRequest request, ServerCallContext context)
+        {
+            return await _logicService.DeleteUser(request, context);
+        }
+
         
         /*
          * Invitation Methods
@@ -78,9 +101,20 @@ namespace GrpcService
             return await _logicService.PostInvitation(request, context);
         }
 
-        public override async Task<Reply> GetInvitation(Request request, ServerCallContext context)
+        public override async Task<Reply> GetInvitationList(Request request, ServerCallContext context)
         {
-            return await _logicService.GetInvitation(request, context);
+            return await _logicService.GetInvitationList(request, context);
+        }
+
+        public override async Task<Reply> DeleteInvitation(Request request, ServerCallContext context)
+        {
+            return await _logicService.DeleteInvitation(request,context);
+        }
+
+        
+        public override async Task<Reply> GetUserList(Request request, ServerCallContext context)
+        {
+            return await _logicService.GetUserList(request, context);
         }
     }
 }

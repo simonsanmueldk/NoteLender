@@ -10,19 +10,19 @@ using Sep3Blazor.Model;
 
 namespace Sep3Blazor.Authentication
 {
-    public class CustomAuthenticationStateProvider :AuthenticationStateProvider
+    public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {
         private readonly IJSRuntime jsRunTime;
         private readonly IUserService userService;
-        private User cachedUser;
-        
+        public User cachedUser { get; set; }
+
         public CustomAuthenticationStateProvider(IJSRuntime jsRunTime, IUserService userService)
         {
             this.jsRunTime = jsRunTime;
             this.userService = userService;
         }
-        
-        
+
+
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var identity = new ClaimsIdentity();
@@ -43,40 +43,43 @@ namespace Sep3Blazor.Authentication
             ClaimsPrincipal cachedClaimsPrincipal = new ClaimsPrincipal(identity);
             return await Task.FromResult(new AuthenticationState(cachedClaimsPrincipal));
         }
-        
+
         private ClaimsIdentity SetupClaimsForUser(User user)
         {
             List<Claim> claims = new List<Claim>();
-            claims.Add(new Claim(ClaimTypes.Name,user.Username));
-            claims.Add(new Claim("id",user.id.ToString()));
+            claims.Add(new Claim(ClaimTypes.Name, user.Username));
+            claims.Add(new Claim("Id", user.id.ToString()));
+            claims.Add(new Claim("FirstName", user.FirstName));
+            claims.Add(new Claim("LastName", user.LastName));
+            claims.Add(new Claim("Password", user.Password));
+
             ClaimsIdentity identity = new ClaimsIdentity(claims, "apiauth_type");
             return identity;
         }
-        
+
 
         public async Task ValidateLogin(string tempUserName, string tempPassword)
         {
             Console.WriteLine("Validating log in");
-            if (string.IsNullOrEmpty(tempUserName)) throw new Exception("Enter username");
-            if (string.IsNullOrEmpty(tempPassword)) throw new Exception("Enter password");
 
             ClaimsIdentity identity = new ClaimsIdentity();
-            try {
-                Console.WriteLine("aleo");
-                User user = await userService.ValidateLogin(tempUserName, tempPassword);
-                Console.WriteLine("aleox2");
+            try
+            {
+                User user = await userService.ValidateUser(tempUserName, tempPassword);
                 identity = SetupClaimsForUser(user);
                 string serialisedData = JsonSerializer.Serialize(user);
                 await jsRunTime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
                 cachedUser = user;
                 Console.WriteLine(user.Username);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 throw e;
             }
-
             NotifyAuthenticationStateChanged(
                 Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity))));
         }
+
         public void LogOut()
         {
             cachedUser = null;

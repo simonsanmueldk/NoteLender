@@ -4,8 +4,8 @@ namespace Sep3Blazor.Model
 {
     public class Group
     {
-        public int id{ get; set; }
-        public String name{ get; set; }
+        public int id { get; set; }
+        public String name { get; set; }
 
         public Group(int id, string name)
         {

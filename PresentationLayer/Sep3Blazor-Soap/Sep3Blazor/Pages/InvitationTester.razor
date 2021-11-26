@@ -36,30 +36,102 @@
                 </p>
                 <button type="submit">ADD</button>
             </EditForm>
+            <div class="col-sm-12">
+                <h3>Get Invitation</h3>
+                <EditForm Model="@Invitation" OnValidSubmit="@SubmitGetInvitation">
+                    <DataAnnotationsValidator/>
+                    <ValidationSummary/>
+                    <p>
+                        <label>
+                            Id:
+                            <InputNumber @bind-Value="Invitation.id"/>
+                            @if (SearchPhrase == null)
+                            {
+                                <p>
+                                    <em>Loading...</em>
+                                </p>
+                            }
+                            else
+                            {
+                                <table class='table'>
+                                    <thead>
+                                    <tr>
+                                        <th>Invitation ID</th>
+                                        <th>Group ID</th>
+                                        <th>Invitee ID</th>
+                                        <th>Invitor Id</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var Invitation in InvitationList)
+                                    {
+                                        <tr>
+                                            <td>@Invitation.id</td>
+                                            <td>@Invitation.groupId</td>
+                                            <td>@Invitation.inviteeId</td>
+                                            <td>@Invitation.invitorId</td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            }
+                        </label>
+                    </p>
+                    <button type="submit">GET</button>
+                </EditForm>
+            </div>
+            <div class="col-sm-6">
+                <h3>Delete Invitation</h3>
+            <EditForm Model="@Invitation" OnValidSubmit="@SubmitDelInvitation">
+                    <DataAnnotationsValidator />
+                                <ValidationSummary />
+                    <p>
+                        <label>
+                            ID:
+                            <InputNumber @bind-Value="Invitation.id" />
+                        </label>
+                    </p>
+                    <button type="submit">Delete</button>
+                    </EditForm>
+                </div>
         </div>
     </div>
 </div>
 
 @code {
-    
-    
-    
+    public IList<Invitation> InvitationList { get; set; }
+    public string SearchPhrase;
     public Invitation Invitation = new Invitation(0,0,0,0);
     
-
     private async void HandleValidSubmit()
     {
+       // Console.WriteLine(_invitationService.AddInvitations(Invitation));
+        Console.WriteLine("Invitation Id" + Invitation.id);
+        Console.WriteLine("Group Id" + Invitation.groupId);
+        Console.WriteLine("Invitee Id" + Invitation.inviteeId);
+        Console.WriteLine("Invitor Id" + Invitation.invitorId);
 
-        Console.WriteLine(_invitationService.AddInvitations(Invitation));
+        Invitation invitationToAdd = new Invitation(Invitation.id, Invitation.groupId, Invitation.inviteeId, Invitation.invitorId);
+        Invitation temp = await _invitationService.AddInvitations(invitationToAdd);
+    }
 
+    private async Task SubmitGetInvitation()
+    {
+        try
+        {
+            InvitationList = await _invitationService.GetInvitations(Invitation.id.ToString());
+            SearchPhrase = InvitationList[0].id.ToString();
+        }
+        catch (ArgumentOutOfRangeException indexOutOfRangeException)
+        {
+            SearchPhrase = "Out of range";
 
-    //  Invitation invitationToAdd = new Invitation(_invitation.id);
+        }
+    }
 
-
-
-    //NoteList.Add(noteToAdd);
-    //Console.WriteLine(temp.text);
-    //await AddNote(noteToAdd);
+    private async Task SubmitDelInvitation()
+    {
+        await _invitationService.DeleteInvitation(Invitation.id.ToString());
     }
 
 }

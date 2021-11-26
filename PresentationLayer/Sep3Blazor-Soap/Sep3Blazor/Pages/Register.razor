@@ -1,6 +1,7 @@
 ﻿@page "/Register"
 @using Sep3Blazor.Model
 @using Sep3Blazor.Data
+@inject IUserService _userService
 
 <h3>Register</h3>
 @inject NavigationManager NavigationManager
@@ -8,40 +9,65 @@
 <EditForm Model="@user" OnValidSubmit="@RegisterUser">
     <DataAnnotationsValidator/>
     <ValidationSummary/>
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+    <div class="d-flex justify-content-center">
+        <aside class="col-sm-4 " style="alignment: center">
             <div class="card">
                 <article class="card-body">
                     <header class="card-header">
-                        <h4 class="card-title mt-2">Register</h4>
+                        <h4 class="card-title text-center mt-2">Create account</h4>
                     </header>
-                    <div class="col form-group">
-                        <label>First Name :</label>
-                        <InputText class="form-control" @bind-Value="user.FirstName"/>
-                    </div>
-                    <div class="col form-group">
-                        <label>Last Name :</label>
-                        <InputText class="form-control" @bind-Value="user.LastName"/>
-                    </div><!-- form-group end.// -->
-                    <div class="col form-group">
-                        <label>Username :</label>
-                        <InputText class="form-control" @bind-Value="user.Username"/>
-                    </div>
-                     <div class="col form-group">
-                        <label>Password :</label>
-                        <InputText class="form-control" type="password" @bind-Value="user.Password"/>
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary btn-block" type="submit">Sign in</button>
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary btn-block" @onclick="Back">Back</button>
-                    </div>
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="far fa-user-circle"></i>
+                                    </span>
+                                </div>
+                                <InputText class="form-control" type="text" placeholder="First Name" @bind-Value="user.FirstName"/>
+                            </div> <!-- input-group.// -->
+                        </div> <!-- form-group// -->
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="far fa-user-circle"></i>
+                                    </span>
+                                </div>
+                                <InputText class="form-control" type="text" placeholder="Last Name" @bind-Value="user.LastName"/>
+                            </div> <!-- input-group.// -->
+                        </div> <!-- form-group// -->
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                </div>
+                                <InputText class="form-control" type="text" placeholder="Username" @bind-Value="user.Username"/>
+                            </div> <!-- input-group.// -->
+                        </div> <!-- form-group// -->
 
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                </div>
+                                <InputText class="form-control" type="password" placeholder="Password" @bind-Value="user.LastName"/>
+                            </div> <!-- input-group.// -->
+                        </div> <!-- form-group// -->
+
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block" type="submit">Create account</button>
+                        </div>
+
+                        <p class="text-center">Have an account? <a href="#" @onclick="Back">Log In</a> </p>
+                    </div>
                 </article>
-
             </div>
-        </div>
+        </aside>
     </div>
 
 
@@ -50,7 +76,6 @@
 
 @code {
     private User user = new User(0, "", "", "", "");
-    private IUserService _userService = new UserService();
 
     private async Task RegisterUser()
     {

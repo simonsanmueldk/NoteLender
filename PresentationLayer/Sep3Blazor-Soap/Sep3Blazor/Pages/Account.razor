@@ -1,0 +1,102 @@
+﻿@page "/Account"
+@using Microsoft.AspNetCore.Components
+@using Sep3Blazor.Model
+@using Sep3Blazor.Authentication
+@using Sep3Blazor.Data
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+
+<h3>Account</h3>
+<AuthorizeView>
+
+    <div class="d-flex justify-content-center">
+        <aside class="col-sm-4 " style="alignment: center">
+            <div class="card" style="border-radius: 15px;">
+                <article class="card-body text-center">
+                    <header class="card-header">
+                        <h4 class="card-title mt-4"><b>Account Information</b></h4>
+                    </header>
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="mt-3 mb-4">
+                            <img
+                                src="images/avatar.png"
+                                class="rounded-circle img-fluid" style="width: 100px;"/>
+                        </div>
+                        <div class="col form-group">
+                            <p>
+                                <h2>
+                                    <b>@context.User.FindFirst("FirstName").Value @context.User.FindFirst("LastName").Value</b>
+                                </h2>
+                            </p>
+                        </div>
+                        <div class="col form-group">
+                            <p>
+                                <i> @context.User.Identity.Name</i>
+                            </p>
+                        </div>
+                        <div class=" form-group" style="display:@temp">
+                            <label id="labelAcc">Password :</label>
+                            <input class="form-control" type="password" @bind-value="@password"/>
+                        </div>
+                        <div class=" form-group" style="display:@temp">
+                            <div class="">
+                                <label id="labelAcc">Change password :</label>
+                                <input class="form-control" type="password" @bind-value="@changedPassword"/>
+                            </div>
+                        </div>
+                        <div class="form-group" style="display:@temp">
+                            <label id="labelAcc" >Confirm password :</label>
+                            <input class="form-control" type="password" @bind-value="@confirmedPassword"/>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block" @onclick="Change" style="display:@temp2 ">Change passsword</button>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block" @onclick="EditAccount" style="display:@temp ">Save changes</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </aside>
+    </div>
+</AuthorizeView>
+
+@code {
+    private string temp = "none";
+    private string temp2 = "block";
+    private string password = "";
+    private string changedPassword = "";
+    private string confirmedPassword = "";
+    private IUserService _userService = new UserService();
+    private User cachedUser;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        cachedUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
+    }
+
+    private void Change()
+    {
+        temp2 = "none";
+        temp = "block";
+    }
+
+    private async Task EditAccount()
+    {
+        if (!string.IsNullOrEmpty(password) || !string.IsNullOrEmpty(changedPassword)
+            || !string.IsNullOrEmpty(confirmedPassword))
+        {
+            if (cachedUser.Password.Equals(password))
+            {
+                if (changedPassword == confirmedPassword)
+                {
+                    await _userService.EditUser(cachedUser.id, changedPassword);
+                    NavigationManager.NavigateTo("/");
+                }
+            }
+        }
+    }
+
+}

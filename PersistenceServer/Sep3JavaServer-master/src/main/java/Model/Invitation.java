@@ -1,4 +1,4 @@
-package PersistenceServer;
+package Model;
 
 public class Invitation
 {
@@ -49,8 +49,9 @@ public class Invitation
   public Invitation(int id, int invitorId, int inviteeId, int groupId)
   {
     this.id = id;
-    this.invitorId = invitorId;
-    this.inviteeId = inviteeId;
     this.groupId = groupId;
+    this.inviteeId = inviteeId;
+    this.invitorId = invitorId;
+
   }
 }

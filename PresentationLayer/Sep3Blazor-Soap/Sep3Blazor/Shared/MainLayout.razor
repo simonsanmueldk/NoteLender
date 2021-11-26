@@ -11,11 +11,15 @@
 
     <div class="main">
         <div class="top-row px-4">
-             <AuthorizeView>
-                          <button  id="button-one" href="" @onclick="PerformLogout">
-                               Log out
-                        </button>
-                       </AuthorizeView>
+            <AuthorizeView>
+                 
+                 <div class="form-group">
+                     <button class="btn btn-primary btn-block" href="" @onclick="PerformLogout">
+                         Log out
+                     </button>
+                 </div>
+               
+            </AuthorizeView>
         </div>
 
         <div class="content px-4">
@@ -29,9 +33,14 @@
 {
    
     public async Task PerformLogout() {
-        try {
+        try
+        {
             ((CustomAuthenticationStateProvider) AuthenticationStateProvider).LogOut();
             NavigationManager.NavigateTo("/");
-        } catch (Exception e) { }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
     }
 }

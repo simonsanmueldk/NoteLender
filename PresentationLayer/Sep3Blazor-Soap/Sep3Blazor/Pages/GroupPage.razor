@@ -1,0 +1,120 @@
+﻿@page "/GroupPage"
+@page "/GroupPage/{Id:int}" 
+@using Sep3Blazor.Data
+@using Sep3Blazor.Data.Refresh
+@using Sep3Blazor.Model
+@inject INoteService _noteService
+@inject IGroupService _groupService
+@inject IRefreshService _refreshService
+<h3>GroupPage</h3>
+
+
+@if (Notes == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <div style=" text-align:center">
+        <div style="display:inline">
+            <table class="table" id="datatable">
+                <thead>
+                <tr>
+                    <th>week</th>
+                    <th>year</th>
+                    <th>name</th>
+                    <th>status</th>
+                    <th>text</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var note in Notes)
+                {
+                    <tr class="onHoverChange" @onclick="@(() => ChangeSelectedNote(note))">
+                        <td>@note.week</td>
+                        <td>@note.year</td>
+                        <td>@note.name</td>
+                        <td>@note.status</td>
+                        <td>@note.text</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <div style="display:inline">
+            <table class="table" id="datatable">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>MemberId</th>
+                    <th>Username</th>
+                    <th>GroupId</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var members in GroupMembersList)
+                {
+                    <tr class="onHoverChange" @onclick="@(() => ChangeSelectedGroup(members))">
+                        <td>@members.Id</td>
+                        <td>@members.UserId</td>
+                        <td>@members.Username</td>
+                        <td>@members.GroupId</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <div style="display:inline">
+            <NoteTest Value=@Value></NoteTest>
+        </div>
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthStat { get; set; }
+
+    public string Value { get; set; }
+
+    public IList<Note> Notes { get; set; }
+    public IList<GroupMembers> GroupMembersList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("AdultPage");
+        {
+            _refreshService.RefreshRequested += RefreshState;
+            Notes = await _noteService.GetNoteList(Id.ToString());
+            GroupMembersList = await _groupService.GetUserList(9);
+            Console.WriteLine(Notes.Count);
+            Console.WriteLine(GroupMembersList.Count);
+        }
+    }
+
+    private void ChangeSelectedNote(Note note)
+    {
+        Value = note.id.ToString();
+    }
+    
+    public async void RefreshState(){
+        StateHasChanged();
+        Console.WriteLine("Hey, i got called from componet");
+        Notes = await _noteService.GetNoteList(Id.ToString());
+        
+    }
+
+
+    private void ChangeSelectedGroup(GroupMembers groupMembers)
+    {
+        Value = groupMembers.Id.ToString();
+    }
+
+}

@@ -8,12 +8,14 @@ namespace Sep3Blazor.Model
         public int groupId { get; set; }
      
 
-        public Invitation(int id, int invitorId, int inviteeId, int groupId)
+        public Invitation(int id, int groupId, int inviteeId,int invitorId )
         {
             this.id = id;
-            this.invitorId = invitorId;
-            this.inviteeId = inviteeId;
             this.groupId = groupId;
+            this.inviteeId = inviteeId;
+            this.invitorId = invitorId;
+
+           
         }
     }
 }

@@ -18,42 +18,45 @@ namespace Sep3Blazor.Data
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
             
-            Console.WriteLine("ID: " + invitation.id + " InviteeId: " + invitation.inviteeId +
-                              "InvitorId: " + invitation.invitorId + "Group: " + invitation.groupId);
+            Console.WriteLine("ID: " + invitation.id + "Group: " + invitation.groupId, " InviteeId: " + invitation.inviteeId +
+                              "InvitorId: " + invitation.invitorId );
 
             var reply = await client.PostInvitationAsync(new RegisterInvitationRequest
                 {
                     Id = invitation.id,
+                    GroupId = invitation.groupId,
                     InviteeId = invitation.inviteeId,
                     InvitorId = invitation.invitorId,
-                    GroupId = invitation.groupId
                 }
             );
             Console.WriteLine("greetings" + reply.Message);
             return null;
-
-            /*
-            using var channel = GrpcChannel.ForAddress(URL);
-            var client = new BusinessServer.BusinessServerClient(channel);
-
-            var reply =  await client.PostInvitationAsync(
-                new Request {Name = invitation});
-            Console.WriteLine("mbappe: " + reply.Message);
-            InvitationList = JsonSerializer.Deserialize<List<Invitation>>(reply.Message);
-            Console.WriteLine(InvitationList[0]);
-            return InvitationList;
-            */
         }
 
-        public async Task<IList<Invitation>> GetInvitations(String userId)
+        public async Task<IList<Invitation>> GetInvitations(string userId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
-            var reply = await client.GetNoteAsync(
+            var reply = await client.GetInvitationListAsync(
                 new Request {Name = userId});
             Console.WriteLine("haaland: " + reply.Message);
             InvitationList = JsonSerializer.Deserialize<List<Invitation>>(reply.Message);
             return InvitationList;
+        }
+        
+        public async Task<object> DeleteInvitation(string userId)
+        {
+            using var channel = GrpcChannel.ForAddress(URL);
+            var client = new BusinessServer.BusinessServerClient(channel);
+
+            var reply = await client.DeleteInvitationAsync(
+                new Request()
+                {
+                    Name = userId
+                }
+            );
+            Console.WriteLine("Greeting: " + reply.Message);
+            return null;
         }
     }
 }

@@ -9,5 +9,8 @@ namespace Sep3Blazor.Data
     {
         public Task<IList<Note>> GetNoteList(String s);
         public Task<Note> AddNote(Note note);
+        public Task<Note> DeleteNote(int id);
+
+        public Task<Note> editNote(Note note);
     }
 }
