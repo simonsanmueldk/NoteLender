@@ -6,7 +6,6 @@ import PersistenceService.PersistenceService;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 @RestController
 public class PersistenceServerController {
