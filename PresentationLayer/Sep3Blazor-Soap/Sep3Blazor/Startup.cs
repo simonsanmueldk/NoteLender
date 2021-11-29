@@ -6,9 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Sep3Blazor.Authentication;
-using Sep3Blazor.Data;
-using Sep3Blazor.Data.Group;
 using Sep3Blazor.Data.GroupData;
+using Sep3Blazor.Data.GroupMembersData;
 using Sep3Blazor.Data.InvitationData;
 using Sep3Blazor.Data.NoteData;
 using Sep3Blazor.Data.Notifications;
@@ -38,6 +37,7 @@ namespace Sep3Blazor
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRefreshService, RefreshService>();
             services.AddScoped<IInvitationService, InvitationService>();
+            services.AddScoped<IGroupMembersService, GroupMembersService>();
             services.AddSingleton<NotificationManager>();
         }
 
