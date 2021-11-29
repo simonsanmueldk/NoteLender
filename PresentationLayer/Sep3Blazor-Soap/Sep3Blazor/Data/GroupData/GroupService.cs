@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Grpc.Net.Client;
 using Sep3Blazor.Model;
 
-namespace Sep3Blazor.Data
+namespace Sep3Blazor.Data.GroupData
 {
     public class GroupService : IGroupService
     {
@@ -56,5 +56,7 @@ namespace Sep3Blazor.Data
             UserList = JsonSerializer.Deserialize<List<GroupMembers>>(reply.Message);
             return UserList;
         }
+        
+        
     }
 }

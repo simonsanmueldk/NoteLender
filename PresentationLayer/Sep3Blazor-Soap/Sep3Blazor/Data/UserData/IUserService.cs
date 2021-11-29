@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Sep3Blazor.Model;
 
-namespace Sep3Blazor.Data
+namespace Sep3Blazor.Data.UserData
 {
     public interface IUserService
     {

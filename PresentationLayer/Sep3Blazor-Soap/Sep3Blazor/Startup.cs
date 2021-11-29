@@ -7,8 +7,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Sep3Blazor.Authentication;
 using Sep3Blazor.Data;
+using Sep3Blazor.Data.Group;
+using Sep3Blazor.Data.GroupData;
+using Sep3Blazor.Data.InvitationData;
+using Sep3Blazor.Data.NoteData;
 using Sep3Blazor.Data.Notifications;
 using Sep3Blazor.Data.Refresh;
+using Sep3Blazor.Data.UserData;
 
 namespace Sep3Blazor
 {
