@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Sep3Blazor.Authentication;
 using Sep3Blazor.Data;
-using Sep3Blazor.Data.Group;
+using Sep3Blazor.Data.GroupData;
 using Sep3Blazor.Data.GroupData;
 using Sep3Blazor.Data.InvitationData;
 using Sep3Blazor.Data.NoteData;
