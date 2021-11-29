@@ -1,136 +1,139 @@
 ﻿@page "/Notes"
 @page "/Notes/{Id:int}" 
 @using Sep3Blazor.Model
-@using Sep3Blazor.Data
+@using System.Globalization
 @using Sep3Blazor.Data.NoteData
 @namespace NotesComponent
 @inject INoteService _noteService
 
 <h1>Note Testing</h1>
-<div class="container">
-  <div class="row">
-    <div class="col-sm">
-      @if (NoteList == null)
+<div class="row justify-content-between">
+  <div class="col-sm-4">
+    @if (NoteList == null)
+    {
+      Console.WriteLine("NoteList is empty/non-existing");
+    }
+    else
+    {
+      @foreach (Note note in NoteList)
       {
-        
-      } else {
-        <p>Week @WeekInFocus</p>
-        <table class='table'>
-          <thead>
-          <tr>
-            <th>Note ID</th>
-            <th>User ID</th>
-            <th>Group ID</th>
-            <th>Week</th>
-            <th>Year</th>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Text</th>
-          </tr>
-          </thead>
-          <tbody>
-          @foreach (var note in NoteList)
-          {
-            @if (note.week == (WeekInFocus-1))
-            {
+        if (note.week == currentWeek - 1)
+        {
+          <p>Week @currentWeek</p>
+          <div>
+            <table class="table-responsive">
+              <thead>
               <tr>
-                <td>@note.id</td>
-                <td>@note.userId</td>
-                <td>@note.groupId</td>
-                <td>@note.week</td>
-                <td>@note.year</td>
-                <td>@note.name</td>
-                <td>@note.status</td>
-                <td>@note.text</td>
+                <th>Week</th>
+                <th>Year</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Text</th>
               </tr>
-            }
-          }
-          </tbody>
-        </table>
+              </thead>
+              <tbody>
+              <td>@note.week</td>
+              <td>@note.year</td>
+              <td>@note.name</td>
+              <td>@note.status</td>
+              <td>@note.text</td>
+              </tbody>
+            </table>
+          </div>
+
+        }
+        else
+        {
+          <p>No notes this week. Please click here to create note</p>
+          break;
+        }
       }
-    </div>
-    <div class="col-sm">
-      @if (NoteList == null)
+    }
+  </div>
+  <div class="col-sm-4">
+    @if (NoteList == null)
+    {
+      Console.WriteLine("NoteList is empty/non-existing");
+    }
+    else
+    {
+      @foreach (Note note in NoteList)
       {
-            
-      } else {
-        <p>Week @WeekInFocus-1</p>
-        <table class='table'>
-          <thead>
-          <tr>
-            <th>Note ID</th>
-            <th>User ID</th>
-            <th>Group ID</th>
-            <th>Week</th>
-            <th>Year</th>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Text</th>
-          </tr>
-          </thead>
-          <tbody>
-          @foreach (var note in NoteList)
-          {
-            @if (note.week == WeekInFocus)
-            {
+        if (note.week == currentWeek)
+        {
+          <p>Week @currentWeek</p>
+          <div>
+            <table class="table-responsive">
+              <thead>
               <tr>
-                <td>@note.id</td>
-                <td>@note.userId</td>
-                <td>@note.groupId</td>
-                <td>@note.week</td>
-                <td>@note.year</td>
-                <td>@note.name</td>
-                <td>@note.status</td>
-                <td>@note.text</td>
+                <th>Week</th>
+                <th>Year</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Text</th>
               </tr>
-            }
-          }
-          </tbody>
-        </table>
+              </thead>
+              <tbody>
+              <td>@note.week</td>
+              <td>@note.year</td>
+              <td>@note.name</td>
+              <td>@note.status</td>
+              <td>@note.text</td>
+              </tbody>
+            </table>
+          </div>
+          //else
+          //{
+          //  <p>No notes this week. Please click here to create note</p>
+
+        }
       }
-    </div>
-    <div class="col-sm">
-      @if (NoteList == null)
+    }
+  </div>
+  <div class="col-sm-4">
+    @if (NoteList == null)
+    {
+      Console.WriteLine("NoteList is empty/non-existing");
+    }
+    else
+    {
+      @foreach (Note note in NoteList)
       {
-            
-      } else {
-        <p>Week @WeekInFocus+1</p>
-        <table class='table'>
-          <thead>
-          <tr>
-            <th>Note ID</th>
-            <th>User ID</th>
-            <th>Group ID</th>
-            <th>Week</th>
-            <th>Year</th>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Text</th>
-          </tr>
-          </thead>
-          <tbody>
-          @foreach (var note in NoteList)
-          {
-            @if (note.week.Equals(WeekInFocus + 1))
-            {
+        if (note.week == currentWeek + 1)
+        {
+          <p>Week @currentWeek</p>
+          <div>
+            <table class="table-responsive">
+              <thead>
               <tr>
-                <td>@note.id</td>
-                <td>@note.userId</td>
-                <td>@note.groupId</td>
-                <td>@note.week</td>
-                <td>@note.year</td>
-                <td>@note.name</td>
-                <td>@note.status</td>
-                <td>@note.text</td>
+                <th>Week</th>
+                <th>Year</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Text</th>
               </tr>
-            }
-          }
-          </tbody>
-        </table>
+              </thead>
+              <tbody>
+              <td>@note.week</td>
+              <td>@note.year</td>
+              <td>@note.name</td>
+              <td>@note.status</td>
+              <td>@note.text</td>
+              </tbody>
+            </table>
+          </div>
+
+        }
+        else
+        {
+          <p>No notes this week. Please click here to create note</p>
+          break;
+        }
       }
-    </div>
+    }
   </div>
 </div>
+
 
 
 @code{
@@ -138,11 +141,28 @@
   [Parameter]
   public int Id { get; set; }
   public IList<Note> NoteList { get; set; }
-  public int WeekInFocus = 1;
+  public int currentWeek;
+
+  public static int GetIso8601WeekOfYear(DateTime time)
+  {
+    DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
+    if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
+    {
+      time = time.AddDays(3);
+    }
+    return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+  }
   
   protected override async Task OnInitializedAsync()
   {
+    
+    // Get todays week
+    currentWeek = GetIso8601WeekOfYear(DateTime.Today);
+    Console.WriteLine("Today's week: " + currentWeek);
+
+
     NoteList = await _noteService.GetNoteList(Id.ToString());
+    Console.WriteLine(NoteList[0].week);
   }
   
 
