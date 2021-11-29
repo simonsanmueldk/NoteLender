@@ -30,7 +30,7 @@
           <tbody>
           @foreach (var note in NoteList)
           {
-            @if (note.week == (WeekInFocus-1))
+            @if (note.week == (WeekInFocus))
             {
               <tr>
                 <td>@note.id</td>
@@ -53,7 +53,7 @@
       {
             
       } else {
-        <p>Week @WeekInFocus-1</p>
+        <p>Week @WeekInFocus</p>
         <table class='table'>
           <thead>
           <tr>
@@ -68,22 +68,6 @@
           </tr>
           </thead>
           <tbody>
-          @foreach (var note in NoteList)
-          {
-            @if (note.week == WeekInFocus)
-            {
-              <tr>
-                <td>@note.id</td>
-                <td>@note.userId</td>
-                <td>@note.groupId</td>
-                <td>@note.week</td>
-                <td>@note.year</td>
-                <td>@note.name</td>
-                <td>@note.status</td>
-                <td>@note.text</td>
-              </tr>
-            }
-          }
           </tbody>
         </table>
       }
@@ -93,7 +77,7 @@
       {
             
       } else {
-        <p>Week @WeekInFocus+1</p>
+        <p>Week @WeekInFocus</p>
         <table class='table'>
           <thead>
           <tr>
@@ -108,22 +92,6 @@
           </tr>
           </thead>
           <tbody>
-          @foreach (var note in NoteList)
-          {
-            @if (note.week.Equals(WeekInFocus + 1))
-            {
-              <tr>
-                <td>@note.id</td>
-                <td>@note.userId</td>
-                <td>@note.groupId</td>
-                <td>@note.week</td>
-                <td>@note.year</td>
-                <td>@note.name</td>
-                <td>@note.status</td>
-                <td>@note.text</td>
-              </tr>
-            }
-          }
           </tbody>
         </table>
       }
