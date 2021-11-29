@@ -7,22 +7,22 @@ namespace Sep3Blazor.Model
     {
         public int id { get; set; }
         [Required] [StringLength(20)] 
-        public String FirstName { get; set; }
+        public String firstName { get; set; }
         [Required] [StringLength(20)] 
-        public String LastName { get; set; }
+        public String lastName { get; set; }
         [Required] [StringLength(15)] 
-        public String Username { get; set; }
+        public String username { get; set; }
 
         [Required] /*[Range(7,15,ErrorMessage = "Please enter a value between 7-15 characters for Password")]*/
-        public String Password { get; set; }
+        public String password { get; set; }
 
         public User(int id, string firstName, string lastName, string username, string password)
         {
             this.id = id;
-            FirstName = firstName;
-            LastName = lastName;
-            Username = username;
-            Password = password;
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.username = username;
+            this.password = password;
         }
     }
 }

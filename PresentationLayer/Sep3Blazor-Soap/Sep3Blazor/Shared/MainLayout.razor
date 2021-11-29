@@ -11,24 +11,24 @@
 
     <div class="main">
         <div class="top-row px-4">
-             <AuthorizeView>
-                          <button  id="button-one" href="" @onclick="PerformLogout">
-                               Log out
-                        </button>
-                       </AuthorizeView>
+            <AuthorizeView>
+                <button id="button-one" href="" @onclick="PerformLogout">
+                    Log out
+                </button>
+            </AuthorizeView>
         </div>
-
         <div class="content px-4">
             @Body
-           
         </div>
+         <NotificationComponent/>
     </div>
 </div>
 
 @code
 {
-   
-    public async Task PerformLogout() {
+
+    public async Task PerformLogout()
+    {
         try
         {
             ((CustomAuthenticationStateProvider) AuthenticationStateProvider).LogOut();

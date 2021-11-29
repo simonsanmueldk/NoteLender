@@ -9,6 +9,8 @@
       <Content Remove="obj\obj\**" />
       <EmbeddedResource Remove="obj\obj\**" />
       <None Remove="obj\obj\**" />
+      <Content Remove="Shared\Components\Notifications\NotificationComponent.razor" />
+      <Content Remove="Shared\Components\NavMenu\NavMenu.razor" />
     </ItemGroup>
 
     <ItemGroup>

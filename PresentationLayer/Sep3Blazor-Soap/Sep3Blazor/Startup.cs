@@ -1,3 +1,4 @@
+using Assignment1.Data.Notifications;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +32,7 @@ namespace Sep3Blazor
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRefreshService, RefreshService>();
             services.AddScoped<IInvitationService, InvitationService>();
+            services.AddSingleton<NotificationManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
