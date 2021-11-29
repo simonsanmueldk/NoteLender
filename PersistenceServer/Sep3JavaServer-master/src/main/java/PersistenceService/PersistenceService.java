@@ -218,7 +218,9 @@ public class PersistenceService implements IPersistenceService {
                         rs.getString(3), rs.getString(4),
                         rs.getString(5));
             }
+            System.out.println(user.getUsername());
             System.out.println("Login is working");
+
             return gson.toJson(user);
         } catch (Exception e) {
             return null;

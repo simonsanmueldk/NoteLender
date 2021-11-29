@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Assignment1.Data.Notifications.NotificationModel;
+using Sep3Blazor.Data.Notifications.NotificationModel;
 
-namespace Assignment1.Data.Notifications
+namespace Sep3Blazor.Data.Notifications
 {
     public class NotificationManager
     {

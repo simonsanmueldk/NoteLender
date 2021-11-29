@@ -1,4 +1,4 @@
-using Assignment1.Data.Notifications;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Sep3Blazor.Authentication;
 using Sep3Blazor.Data;
+using Sep3Blazor.Data.Notifications;
 using Sep3Blazor.Data.Refresh;
 
 namespace Sep3Blazor

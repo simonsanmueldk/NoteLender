@@ -1,6 +1,5 @@
 package PersistenceServer;
 
-import PersistenceService.GroupService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +13,5 @@ public class PersistenceServer {
         SpringApplication.run(PersistenceServer.class, args);
     }
 
-    @Bean
-    public GroupService groupService() {
-        return new GroupService();
-    }
+
 }
