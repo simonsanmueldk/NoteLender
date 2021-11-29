@@ -16,10 +16,8 @@ public class PersistenceService implements IPersistenceService {
     private final String PASSWORD = "9LEmAjua_Uo0YR5sGqAFHn0Kgm9DDKu1";
     private Connection connection;
 
-    @Autowired
     public PersistenceService() {
         try {
-
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -208,6 +206,7 @@ public class PersistenceService implements IPersistenceService {
     public String validateUser(String json) {
         User user = null;
         User temp = gson.fromJson(json, User.class);
+        System.out.println(temp.getUsername());
         String getString = "SELECT * FROM notelender.users WHERE username =  ?";
         try {
             PreparedStatement validateUser = connection.prepareStatement(getString);
