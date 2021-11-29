@@ -148,8 +148,9 @@ public class PersistenceService implements IPersistenceService {
                         rs.getInt(5), rs.getString(6),
                         rs.getString(7), rs.getString(8));
                 NoteList.add(noteToAdd);
-                return gson.toJson(NoteList);
+
             }
+            return gson.toJson(NoteList);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

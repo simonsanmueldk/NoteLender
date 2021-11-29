@@ -5,9 +5,14 @@
 @inject NavigationManager NavigationManager;
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NotificationManager NotificationManager
+@inject IGroupMembersService GroupMembersService
 @using LoginComponent
+@using Sep3Blazor.Data.GroupData
+@using Sep3Blazor.Data.GroupMembersData
+@using Sep3Blazor.Data.NoteData
 @using Sep3Blazor.Data.Notifications
 @using Sep3Blazor.Data.Notifications.NotificationModel
+@using System.Globalization
 
 
 <h1>Hello, world!</h1>
@@ -49,11 +54,22 @@
     protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
-        Console.WriteLine("2str");
+        Console.WriteLine(GetIso8601WeekOfYear(DateTime.Today));
     }
 
     private async void ShowNotification()
     {
         await NotificationManager.Show("Title", "a simple paragraph", NotificationType.Info);
+        
     }
+    
+    public static int GetIso8601WeekOfYear(DateTime time)
+    {
+        DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
+        if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
+        {
+            time = time.AddDays(3);
+        }
+        return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+    } 
 }

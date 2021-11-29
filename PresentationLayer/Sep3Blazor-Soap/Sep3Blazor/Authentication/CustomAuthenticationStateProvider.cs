@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using Sep3Blazor.Data;
+using Sep3Blazor.Data.UserData;
 using Sep3Blazor.Model;
 
 namespace Sep3Blazor.Authentication

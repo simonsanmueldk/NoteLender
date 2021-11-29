@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 using Grpc.Net.Client;
 using Sep3Blazor.Model;
 
-
-namespace Sep3Blazor.Data
+namespace Sep3Blazor.Data.InvitationData
 {
     public class InvitationService : IInvitationService
     {

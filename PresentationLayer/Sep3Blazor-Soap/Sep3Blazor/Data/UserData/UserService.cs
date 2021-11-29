@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Security.Cryptography;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Grpc.Net.Client;
-using Microsoft.AspNetCore.Mvc;
 using Sep3Blazor.Model;
 
-namespace Sep3Blazor.Data
+namespace Sep3Blazor.Data.UserData
 {
     public class UserService : IUserService
     {

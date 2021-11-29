@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Sep3Blazor.Model;
 
-namespace Sep3Blazor.Data
+namespace Sep3Blazor.Data.InvitationData
 {
     public interface IInvitationService
     {
