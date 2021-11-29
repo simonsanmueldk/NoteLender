@@ -1,32 +1,28 @@
 ﻿@page "/Notes"
 @page "/Notes/{Id:int}" 
 @using Sep3Blazor.Model
-@using Sep3Blazor.Data
 @using System.Globalization
+@using Sep3Blazor.Data.NoteData
 @namespace NotesComponent
 @inject INoteService _noteService
 
 <h1>Note Testing</h1>
-<div class="container">
-  <div class="row">
-    <div class="col-sm">
-      @if (NoteList == null)
+<div class="d-flex flex-row">
+  @if (NoteList == null)
+    {
+      Console.WriteLine("NoteList is empty/non-existing");
+    }
+    else
+    {
+      @foreach (Note note in NoteList)
       {
-        Console.WriteLine("NoteList is empty/non-existing");
-      }
-      else
-      {
-        @foreach (Note note in NoteList)
+        if (note.week == currentWeek - 1)
         {
-          if (note.week == currentWeek - 1)
-          {
-            <p>Week @currentWeek</p>
-            <table class='table'>
+          <p>Week @currentWeek</p>
+          <div>
+          <table class='table'>
               <thead>
               <tr>
-                <th>Note ID</th>
-                <th>User ID</th>
-                <th>Group ID</th>
                 <th>Week</th>
                 <th>Year</th>
                 <th>Name</th>
@@ -35,9 +31,6 @@
               </tr>
               </thead>
               <tbody>
-              <td>@note.id</td>
-              <td>@note.userId</td>
-              <td>@note.groupId</td>
               <td>@note.week</td>
               <td>@note.year</td>
               <td>@note.name</td>
@@ -45,33 +38,31 @@
               <td>@note.text</td>
               </tbody>
             </table>
+          </div>
 
-          }
-          else
-          {
-            <p>No notes this week. Please click here to create note</p>
-          }
+        }
+        else
+        {
+          <p>No notes this week. Please click here to create note</p>
+          break;
         }
       }
-    </div>
-    <div class="col-sm">
-      @if (NoteList == null)
+    }
+  @if (NoteList == null)
+    {
+      Console.WriteLine("NoteList is empty/non-existing");
+    }
+    else
+    {
+      @foreach (Note note in NoteList)
       {
-        Console.WriteLine("NoteList is empty/non-existing");
-      }
-      else
-      {
-        @foreach (Note note in NoteList)
+        if (note.week == currentWeek)
         {
-          if (note.week == currentWeek)
-          {
-            <p>Week @currentWeek</p>
+          <p>Week @currentWeek</p>
+          <div>
             <table class='table'>
               <thead>
               <tr>
-                <th>Note ID</th>
-                <th>User ID</th>
-                <th>Group ID</th>
                 <th>Week</th>
                 <th>Year</th>
                 <th>Name</th>
@@ -80,9 +71,6 @@
               </tr>
               </thead>
               <tbody>
-              <td>@note.id</td>
-              <td>@note.userId</td>
-              <td>@note.groupId</td>
               <td>@note.week</td>
               <td>@note.year</td>
               <td>@note.name</td>
@@ -90,33 +78,29 @@
               <td>@note.text</td>
               </tbody>
             </table>
-    
-          }
-          else
-          {
-            <p>No notes this week. Please click here to create note</p>
-          }
+          </div>
+          //else
+          //{
+          //  <p>No notes this week. Please click here to create note</p>
+
         }
       }
-    </div>
-    <div class="col-sm">
-      @if (NoteList == null)
+    }
+  @if (NoteList == null)
+    {
+      Console.WriteLine("NoteList is empty/non-existing");
+    }
+    else
+    {
+      @foreach (Note note in NoteList)
       {
-        Console.WriteLine("NoteList is empty/non-existing");
-      }
-      else
-      {
-        @foreach (Note note in NoteList)
+        if (note.week == currentWeek + 1)
         {
-          if (note.week == currentWeek + 1)
-          {
-            <p>Week @currentWeek</p>
+          <p>Week @currentWeek</p>
+          <div>
             <table class='table'>
               <thead>
               <tr>
-                <th>Note ID</th>
-                <th>User ID</th>
-                <th>Group ID</th>
                 <th>Week</th>
                 <th>Year</th>
                 <th>Name</th>
@@ -125,9 +109,6 @@
               </tr>
               </thead>
               <tbody>
-              <td>@note.id</td>
-              <td>@note.userId</td>
-              <td>@note.groupId</td>
               <td>@note.week</td>
               <td>@note.year</td>
               <td>@note.name</td>
@@ -135,16 +116,16 @@
               <td>@note.text</td>
               </tbody>
             </table>
-    
-          }
-          else
-          {
-            <p>No notes this week. Please click here to create note</p>
-          }
+          </div>
+
+        }
+        else
+        {
+          <p>No notes this week. Please click here to create note</p>
+          break;
         }
       }
-    </div>
-  </div>
+    }
 </div>
 
 
