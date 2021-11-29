@@ -18,6 +18,7 @@ public class PersistenceService implements IPersistenceService {
     public PersistenceService() {
         try {
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            System.out.println("aleoaleolaoe");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
