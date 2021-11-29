@@ -2,18 +2,18 @@ package Model;
 
 public class User {
     private int id;
-    private String FirstName;
-    private String LastName;
-    private String Username;
-    private String Password;
+    private String firstName;
+    private String lastName;
+    private String username;
+    private String password;
 
 
     public User(int id, String firstName, String lastName, String username, String password) {
         this.id = id;
-        FirstName = firstName;
-        LastName = lastName;
-        Username = username;
-        Password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
     }
 
     public int getId() {
@@ -25,35 +25,35 @@ public class User {
     }
 
     public String getFirstName() {
-        return FirstName;
+        return firstName;
     }
 
     public void setFirstName(String firstName) {
-        this.FirstName = firstName;
+        this.firstName = firstName;
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
-        this.LastName = lastName;
+        this.lastName = lastName;
     }
 
     public String getUsername() {
-        return Username;
+        return username;
     }
 
     public void setUsername(String username) {
-        this.Username = username;
+        this.username = username;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
-        this.Password = password;
+        this.password = password;
     }
 
 

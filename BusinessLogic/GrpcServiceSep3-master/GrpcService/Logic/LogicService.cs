@@ -140,6 +140,7 @@ namespace GrpcService.Logic
         public async Task<Reply> ValidateUser(Request request, ServerCallContext context)
         {
             User temp = new User(0, "", "", request.Name, request.Type);
+            Console.WriteLine(request.Name);
             string str = JsonSerializer.Serialize(temp);
 
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
