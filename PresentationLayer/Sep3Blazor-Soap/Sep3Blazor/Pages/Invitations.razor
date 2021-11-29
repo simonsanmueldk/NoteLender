@@ -5,58 +5,83 @@
 @using Sep3Blazor.Model
 @inject IInvitationService _invitationService
 <h3>Pending invitations</h3>
+<button type="submit" @onclick="SubmitGetInvitation">GET</button>
 
-@foreach (var invitations in Iinvitations)
-{
     <div class="card mb-2">
         <div class="card-header">
-            @invitations.id
-         
+            @Invitation.id
+
         </div>
-        <div class="card-body">
-            <p>@invitations.invitorId Wants you to pe apart of group @invitations.groupId </p>
+    <div class="card-body">
+        <p>@Invitation.invitorId Wants you to pe apart of group @Invitation.groupId </p>
+
+        <button type="button" style="background-color: darkgreen ">Accept</button>
+        <button type="button" style="background-color: red" @onclick="@(() => RemoveInvitation(Invitation.id))">Decline</button>
             
-            <button type="button" style="background-color: darkgreen ">Accept</button>
-            <button type = "button" style="background-color: red">Decline</button>
-            <button @onclick="@(() => RemoveInvitation(invitations.id))"><i class="oi oi-trash" style="color:red" /></button>
-
-        </div>
     </div>
-}
-<h3>Invite user to group</h3>
-<div class="dropdown show">
-  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Dropdown link
-  </a>
+       </div>
 
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-    <a class="dropdown-item" href="#">Action</a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
-  </div>
-</div>
+
+<h3>Invite user to group</h3>
+  <EditForm Model="@Invitation" OnValidSubmit="@HandleValidSubmit">
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+                <p>
+                    <label>
+                        Invitation Id:
+                        <InputNumber @bind-Value="Invitation.id"/>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        Invite to (group id):
+                        <InputNumber @bind-Value="Invitation.groupId"/>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        Invite (user id):
+                        <InputNumber @bind-Value="Invitation.inviteeId"/>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        Invitor (user id):
+                        <InputNumber @bind-Value="Invitation.invitorId"/>
+                    </label>
+                </p>
+                <button type="submit">ADD</button>
+            </EditForm>
+
 @code {
-    /*
-    public  class Invitation
-    {
-        public int id { get; set; }
-        public int invitorId { get; set; }
-        public int inviteeId { get; set; }
-        public int groupId { get; set; }
-    }
-    */
     [Parameter]
     public String Value { get; set; }
-    public Invitation invitation = new Invitation(0,0,0,0);
+    public IList<Invitation> InvitationList { get; set; }
+    public string SearchPhrase;
+    public Invitation Invitation = new Invitation(0,0,0,0);
 
-    List<Invitation> Iinvitations = new List<Invitation>()
+    private async Task RemoveInvitation(int id)
     {
-        new Invitation(1,2,2,3),
-        new Invitation(2,5,3,4)
-
-    };
-    private async Task RemoveInvitation(int invitationsId)
-    {
-        await _invitationService.DeleteInvitation(invitation.id.ToString());
+        await _invitationService.DeleteInvitation(Invitation.id.ToString());
     }
+    private async void HandleValidSubmit()
+    {
+        Invitation invitationToAdd = new Invitation(Invitation.id, Invitation.groupId, Invitation.inviteeId, Invitation.invitorId);
+        Invitation temp = await _invitationService.AddInvitations(invitationToAdd);
+    }
+    private async Task SubmitGetInvitation()
+    {
+        try
+        {
+            InvitationList = await _invitationService.GetInvitations(Invitation.id.ToString());
+            SearchPhrase = InvitationList[0].id.ToString();
+        }
+        catch (ArgumentOutOfRangeException indexOutOfRangeException)
+        {
+            SearchPhrase = "Out of range";
+
+        }
+    }
+    
+
 }
