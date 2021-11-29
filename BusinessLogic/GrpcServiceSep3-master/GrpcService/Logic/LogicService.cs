@@ -274,5 +274,17 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
+        
+        public async Task<Reply> GetGroupMembersList(Request request, ServerCallContext context)
+        {
+            Console.WriteLine(request.Name);
+            Task<string> stringAsync = _client.GetStringAsync(uri + "/groupmemberslist/" + request.Name);
+            string message = await stringAsync;
+            Console.WriteLine(message);
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
     }
 }

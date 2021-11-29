@@ -1,18 +1,11 @@
 package PersistenceServer;
 
-
-
 import PersistenceService.IPersistenceService;
 import PersistenceService.PersistenceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
 
 @RestController
 public class PersistenceServerController {
-
 
     private IPersistenceService persistenceService;
 
@@ -87,6 +80,12 @@ public class PersistenceServerController {
     public synchronized String getUserList(@PathVariable(value = "id") int id) {
         System.out.println("It's working Get");
         return persistenceService.getUserList(id);
+    }
+
+    @GetMapping("/groupmemberslist/{id}")
+    public synchronized String getGroupMembersList(@PathVariable(value = "id") int id) {
+        System.out.println("It's working Get");
+        return persistenceService.getGroupMembersList(id);
     }
 
     @DeleteMapping("/group/{id}")
