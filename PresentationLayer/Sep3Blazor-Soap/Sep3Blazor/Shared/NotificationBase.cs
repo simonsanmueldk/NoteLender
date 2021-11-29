@@ -2,6 +2,7 @@ using System;
 using Assignment1.Data.Notifications;
 using Assignment1.Data.Notifications.NotificationModel;
 using Microsoft.AspNetCore.Components;
+using Sep3Blazor.Data.Notifications;
 
 namespace Assignment1.Shared.Components.Notifications
 {
