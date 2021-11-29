@@ -72,6 +72,7 @@ public class PersistenceService implements IPersistenceService {
                     return gson.toJson(noteToEdit);
                 }
             }
+            editNote.close();
 
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();

@@ -110,6 +110,7 @@
   protected override async Task OnInitializedAsync()
   {
     NoteList = await _noteService.GetNoteList(Id.ToString());
+    //NoteList.OrderBy()
   }
   
 
