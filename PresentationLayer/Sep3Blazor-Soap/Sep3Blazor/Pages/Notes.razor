@@ -1,51 +1,148 @@
-﻿@page "/Notes/{Id:int}" 
+﻿@page "/Notes"
+@page "/Notes/{Id:int}" 
+@using Sep3Blazor.Model
+@using Sep3Blazor.Data
+@namespace NotesComponent
+@inject INoteService _noteService
 
-<DxGridLayout CssClass="w-100 ch-480">
-    <Rows>
-        <DxGridLayoutRow Height="100px" />
-        <DxGridLayoutRow />
-        <DxGridLayoutRow Height="auto" />
-    </Rows>
-    <Columns>
-        <DxGridLayoutColumn Width="2fr" />
-        <DxGridLayoutColumn Width="60%" />
-        <DxGridLayoutColumn />
-    </Columns>
-    <Items>
-        <DxGridLayoutItem Row="0" Column="0" ColumnSpan="3">
-            <Template>
-                <div class="gridlayout-header gridlayout-item">
-                    Header
-                </div>
-            </Template>
-        </DxGridLayoutItem>
-        <DxGridLayoutItem Row="1" Column="1">
-            <Template>
-                <div class="gridlayout-content gridlayout-item">
-                    Content
-                </div>
-            </Template>
-        </DxGridLayoutItem>
-        <DxGridLayoutItem Row="1" Column="0">
-            <Template>
-                <div class="gridlayout-left-side-bar gridlayout-item">
-                    Left Bar
-                </div>
-            </Template>
-        </DxGridLayoutItem>
-        <DxGridLayoutItem Row="1" Column="2">
-            <Template>
-                <div class="gridlayout-right-side-bar gridlayout-item">
-                    Right Bar
-                </div>
-            </Template>
-        </DxGridLayoutItem>
-        <DxGridLayoutItem Row="2" Column="0" ColumnSpan="3">
-            <Template>
-                <div class="gridlayout-footer gridlayout-item">
-                    Footer
-                </div>
-            </Template>
-        </DxGridLayoutItem>
-    </Items>
-</DxGridLayout>
+<h1>Note Testing</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      @if (NoteList == null)
+      {
+        
+      } else {
+        <p>Week @WeekInFocus</p>
+        <table class='table'>
+          <thead>
+          <tr>
+            <th>Note ID</th>
+            <th>User ID</th>
+            <th>Group ID</th>
+            <th>Week</th>
+            <th>Year</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Text</th>
+          </tr>
+          </thead>
+          <tbody>
+          @foreach (var note in NoteList)
+          {
+            @if (note.week == (WeekInFocus-1))
+            {
+              <tr>
+                <td>@note.id</td>
+                <td>@note.userId</td>
+                <td>@note.groupId</td>
+                <td>@note.week</td>
+                <td>@note.year</td>
+                <td>@note.name</td>
+                <td>@note.status</td>
+                <td>@note.text</td>
+              </tr>
+            }
+          }
+          </tbody>
+        </table>
+      }
+    </div>
+    <div class="col-sm">
+      @if (NoteList == null)
+      {
+            
+      } else {
+        <p>Week @WeekInFocus-1</p>
+        <table class='table'>
+          <thead>
+          <tr>
+            <th>Note ID</th>
+            <th>User ID</th>
+            <th>Group ID</th>
+            <th>Week</th>
+            <th>Year</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Text</th>
+          </tr>
+          </thead>
+          <tbody>
+          @foreach (var note in NoteList)
+          {
+            @if (note.week == WeekInFocus)
+            {
+              <tr>
+                <td>@note.id</td>
+                <td>@note.userId</td>
+                <td>@note.groupId</td>
+                <td>@note.week</td>
+                <td>@note.year</td>
+                <td>@note.name</td>
+                <td>@note.status</td>
+                <td>@note.text</td>
+              </tr>
+            }
+          }
+          </tbody>
+        </table>
+      }
+    </div>
+    <div class="col-sm">
+      @if (NoteList == null)
+      {
+            
+      } else {
+        <p>Week @WeekInFocus+1</p>
+        <table class='table'>
+          <thead>
+          <tr>
+            <th>Note ID</th>
+            <th>User ID</th>
+            <th>Group ID</th>
+            <th>Week</th>
+            <th>Year</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Text</th>
+          </tr>
+          </thead>
+          <tbody>
+          @foreach (var note in NoteList)
+          {
+            @if (note.week.Equals(WeekInFocus + 1))
+            {
+              <tr>
+                <td>@note.id</td>
+                <td>@note.userId</td>
+                <td>@note.groupId</td>
+                <td>@note.week</td>
+                <td>@note.year</td>
+                <td>@note.name</td>
+                <td>@note.status</td>
+                <td>@note.text</td>
+              </tr>
+            }
+          }
+          </tbody>
+        </table>
+      }
+    </div>
+  </div>
+</div>
+
+
+@code{
+
+  [Parameter]
+  public int Id { get; set; }
+  public IList<Note> NoteList { get; set; }
+  public int WeekInFocus = 1;
+  
+  protected override async Task OnInitializedAsync()
+  {
+    NoteList = await _noteService.GetNoteList(Id.ToString());
+  }
+  
+
+}
