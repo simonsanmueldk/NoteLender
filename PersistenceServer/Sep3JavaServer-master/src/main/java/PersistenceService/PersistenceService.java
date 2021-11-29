@@ -3,7 +3,6 @@ package PersistenceService;
 import Model.*;
 import com.google.gson.Gson;
 
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -188,6 +187,26 @@ public class PersistenceService implements IPersistenceService {
             ResultSet rs = getUserList.executeQuery();
             while (rs.next()) {
                 GroupMembers groupMembers = new GroupMembers(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4));
+                GroupMembersList.add(groupMembers);
+                System.out.println(groupMembers.getUsername());
+            }
+            return gson.toJson(GroupMembersList);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public String getGroupMembersList(int id) {
+        List<GroupMembers> GroupMembersList = new ArrayList<>();
+        try {
+            String getString = "SELECT id,user_id,group_id from notelender.groupmembers where user_id = ?";
+            PreparedStatement getGroupMembersList = connection.prepareStatement(getString);
+            getGroupMembersList.setInt(1, id);
+            ResultSet rs = getGroupMembersList.executeQuery();
+            while (rs.next()) {
+                GroupMembers groupMembers = new GroupMembers(rs.getInt(1), rs.getInt(2), null, rs.getInt(4));
                 GroupMembersList.add(groupMembers);
                 System.out.println(groupMembers.getUsername());
             }

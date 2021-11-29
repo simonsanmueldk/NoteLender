@@ -1,13 +1,12 @@
 package PersistenceService;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 public interface IPersistenceService {
      String getGroup(int id);
      String postGroup(String json);
      String deleteGroup(int id);
      String getUserList(int id);
+     String getGroupMembersList(int id);
      String getNote(int groupId);
      String addNote(String json);
      String editNote(String json);
