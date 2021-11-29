@@ -32,7 +32,7 @@ namespace Sep3Blazor.Authentication
                 if (!string.IsNullOrEmpty(userAsJson))
                 {
                     User temp = JsonSerializer.Deserialize<User>(userAsJson);
-                    await ValidateLogin(temp.Username, temp.Password);
+                    await ValidateLogin(temp.username, temp.password);
                 }
             }
             else
@@ -47,11 +47,11 @@ namespace Sep3Blazor.Authentication
         private ClaimsIdentity SetupClaimsForUser(User user)
         {
             List<Claim> claims = new List<Claim>();
-            claims.Add(new Claim(ClaimTypes.Name, user.Username));
+            claims.Add(new Claim(ClaimTypes.Name, user.username));
             claims.Add(new Claim("Id", user.id.ToString()));
-            claims.Add(new Claim("FirstName", user.FirstName));
-            claims.Add(new Claim("LastName", user.LastName));
-            claims.Add(new Claim("Password", user.Password));
+            claims.Add(new Claim("FirstName", user.firstName));
+            claims.Add(new Claim("LastName", user.lastName));
+            claims.Add(new Claim("Password", user.password));
 
             ClaimsIdentity identity = new ClaimsIdentity(claims, "apiauth_type");
             return identity;
@@ -70,7 +70,7 @@ namespace Sep3Blazor.Authentication
                 string serialisedData = JsonSerializer.Serialize(user);
                 await jsRunTime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
                 cachedUser = user;
-                Console.WriteLine(user.Username);
+                Console.WriteLine(user.username);
             }
             catch (Exception e)
             {

@@ -3,6 +3,7 @@
 @using Sep3Blazor.Data
 @using Sep3Blazor.Data.Refresh
 @using Sep3Blazor.Model
+@using LoginComponent
 @inject INoteService _noteService
 @inject IGroupService _groupService
 @inject IRefreshService _refreshService
@@ -17,8 +18,8 @@
 }
 else
 {
-    <div style=" text-align:center">
-        <div style="display:inline">
+    <div class="row" style=" text-align:center">
+        <div class="col-sm-6" style="display:inline">
             <table class="table" id="datatable">
                 <thead>
                 <tr>
@@ -44,7 +45,7 @@ else
             </table>
         </div>
 
-        <div style="display:inline">
+        <div class="col-sm-6" style="display:inline">
             <table class="table" id="datatable">
                 <thead>
                 <tr>
@@ -58,19 +59,17 @@ else
                 @foreach (var members in GroupMembersList)
                 {
                     <tr class="onHoverChange" @onclick="@(() => ChangeSelectedGroup(members))">
-                        <td>@members.Id</td>
-                        <td>@members.UserId</td>
-                        <td>@members.Username</td>
-                        <td>@members.GroupId</td>
+                        <td>@members.id</td>
+                        <td>@members.userId</td>
+                        <td>@members.username</td>
+                        <td>@members.groupId</td>
                     </tr>
                 }
                 </tbody>
             </table>
         </div>
 
-        <div style="display:inline">
-            <NoteTest Value=@Value></NoteTest>
-        </div>
+    
     </div>
 }
 
@@ -78,6 +77,7 @@ else
 
     [Parameter]
     public int Id { get; set; }
+    
 
     [CascadingParameter]
     protected Task<AuthenticationState> AuthStat { get; set; }
@@ -86,7 +86,8 @@ else
 
     public IList<Note> Notes { get; set; }
     public IList<GroupMembers> GroupMembersList { get; set; }
-
+    
+    
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine("AdultPage");
@@ -114,7 +115,7 @@ else
 
     private void ChangeSelectedGroup(GroupMembers groupMembers)
     {
-        Value = groupMembers.Id.ToString();
+        Value = groupMembers.id.ToString();
     }
 
 }

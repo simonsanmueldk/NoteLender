@@ -79,7 +79,7 @@
         if (!string.IsNullOrEmpty(password) || !string.IsNullOrEmpty(changedPassword)
             || !string.IsNullOrEmpty(confirmedPassword))
         {
-            if (cachedUser.Password.Equals(password))
+            if (cachedUser.password.Equals(password))
             {
                 if (changedPassword == confirmedPassword)
                 {

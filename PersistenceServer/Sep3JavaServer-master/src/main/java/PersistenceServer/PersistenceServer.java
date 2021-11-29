@@ -1,13 +1,21 @@
 package PersistenceServer;
 
+import PersistenceService.GroupService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+@EnableJpaRepositories
 public class PersistenceServer {
 
     public static void main(String[] args) {
         SpringApplication.run(PersistenceServer.class, args);
     }
 
+    @Bean
+    public GroupService groupService() {
+        return new GroupService();
+    }
 }

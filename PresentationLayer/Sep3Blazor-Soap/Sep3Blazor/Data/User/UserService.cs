@@ -36,12 +36,12 @@ namespace Sep3Blazor.Data
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
 
-            Console.WriteLine(user.Username + "lalala");
+            Console.WriteLine(user.username + "lalala");
             var reply = await client.RegisterUserAsync(
                 new RegisterRequest
                 {
-                    Username = user.Username, Password = user.Password, FirstName = user.FirstName,
-                    LastName = user.LastName
+                    Username = user.username, Password = user.password, FirstName = user.firstName,
+                    LastName = user.lastName
                 });
             Console.WriteLine("Greeting: " + reply);
 

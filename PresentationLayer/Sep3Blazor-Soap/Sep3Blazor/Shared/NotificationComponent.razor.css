@@ -1,0 +1,33 @@
+.notification-body{
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    z-index: 1;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    align-content: stretch;
+    padding:20px;
+    width: 30vw;
+    border-radius: 15px;
+    background-color: black;
+    color: white;
+}
+
+.notifictaion-visible{
+    display: flex;
+}
+
+.notification-hidden{
+    display: none;
+}
+
+.notification-title{
+    font-size: 25px;
+    font-weight: bolder;
+}
+
+.notification-content{
+    font-size: 16px;
+}
