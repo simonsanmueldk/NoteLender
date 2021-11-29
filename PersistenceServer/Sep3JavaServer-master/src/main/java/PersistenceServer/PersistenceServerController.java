@@ -1,14 +1,10 @@
 package PersistenceServer;
 
 
-import DatabaseModels.GroupModel;
-import JpaRepositories.GroupRepository;
+
 import PersistenceService.IPersistenceService;
 import PersistenceService.PersistenceService;
-import PersistenceService.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,8 +13,6 @@ import java.util.List;
 @RestController
 public class PersistenceServerController {
 
-    @Autowired
-    private GroupService groupService;
 
     private IPersistenceService persistenceService;
 
@@ -82,10 +76,6 @@ public class PersistenceServerController {
         return persistenceService.getNote(groupId);
     }
 
-    @GetMapping("/group")
-    public List<GroupModel> getGroups() {
-        return groupService.getAllGroups();
-    }
 
     @GetMapping("/group/{id}")
     public synchronized String getGroup(@PathVariable(value = "id") int id) {

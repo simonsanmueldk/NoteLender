@@ -142,7 +142,7 @@ namespace GrpcService.Logic
             User temp = new User(0, "", "", request.Name, request.Type);
             string str = JsonSerializer.Serialize(temp);
 
-            HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
+            HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await _client.PostAsync(uri + "/user", content);
             try
             {

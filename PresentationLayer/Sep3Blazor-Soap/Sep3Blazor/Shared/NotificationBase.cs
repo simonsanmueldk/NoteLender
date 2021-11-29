@@ -1,10 +1,9 @@
 using System;
-using Assignment1.Data.Notifications;
-using Assignment1.Data.Notifications.NotificationModel;
 using Microsoft.AspNetCore.Components;
 using Sep3Blazor.Data.Notifications;
+using Sep3Blazor.Data.Notifications.NotificationModel;
 
-namespace Assignment1.Shared.Components.Notifications
+namespace Sep3Blazor.Shared
 {
     public class NotificationBase : ComponentBase, IDisposable
     {

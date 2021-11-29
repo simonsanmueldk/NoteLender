@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Assignment1.Data.Notifications.NotificationModel;
+using Sep3Blazor.Data.Notifications.NotificationModel;
 
 namespace Sep3Blazor.Data.Notifications
 {

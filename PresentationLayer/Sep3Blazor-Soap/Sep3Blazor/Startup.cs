@@ -1,4 +1,4 @@
-using Assignment1.Data.Notifications;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
