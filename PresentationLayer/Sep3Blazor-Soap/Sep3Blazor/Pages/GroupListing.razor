@@ -1,0 +1,65 @@
+﻿@page "/GroupListing"
+@using System.Collections
+@using Sep3Blazor.Data.GroupMembersData
+@using Sep3Blazor.Model
+@inject IGroupMembersService _groupMembersService
+@inject NavigationManager NavigationManager
+<h3>GroupListing</h3>
+
+@if (GroupMembersList == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <div class="col-sm-6" style="display:inline">
+        <table class="table" id="datatable">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>MemberId</th>
+                <th>Username</th>
+                <th>GroupId</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var members in GroupMembersList)
+            {
+                <tr class="onHoverChange" @onclick="@(() => ChangeSelectedGroup(members))">
+                    <td>@members.id</td>
+                    <td>@members.userId</td>
+                    <td>@members.username</td>
+                    <td>@members.groupId</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+
+@code {
+
+    public IList<GroupMembers> GroupMembersList { get; set; }
+
+    [Parameter]
+    public string Value { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("GroupListing");
+        base.OnInitialized();
+        GroupMembersList = await _groupMembersService.GetGroupMembersList(Convert.ToInt32(Value));
+    }
+
+    private void ChangeSelectedGroup(GroupMembers groupMembers)
+    {
+        Value = groupMembers.id.ToString();
+        Console.WriteLine(Value);
+        NavigationManager.NavigateTo("/GroupPage/"+groupMembers.groupId);
+    }
+
+}

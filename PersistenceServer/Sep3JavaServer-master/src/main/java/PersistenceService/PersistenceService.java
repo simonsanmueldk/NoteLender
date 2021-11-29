@@ -206,7 +206,7 @@ public class PersistenceService implements IPersistenceService {
             getGroupMembersList.setInt(1, id);
             ResultSet rs = getGroupMembersList.executeQuery();
             while (rs.next()) {
-                GroupMembers groupMembers = new GroupMembers(rs.getInt(1), rs.getInt(2), null, rs.getInt(4));
+                GroupMembers groupMembers = new GroupMembers(rs.getInt(1), rs.getInt(2), null, rs.getInt(3));
                 GroupMembersList.add(groupMembers);
                 System.out.println(groupMembers.getUsername());
             }

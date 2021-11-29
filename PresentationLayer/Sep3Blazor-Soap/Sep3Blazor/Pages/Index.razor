@@ -21,7 +21,7 @@
 <AuthorizeView >
     <div class="row">
         <div class="col-sm-6">
-            <a href=" https://localhost:5001/GroupPage/9"> HEY</a>
+            <GroupListing Value=@context.User.FindFirst("id").Value></GroupListing>
         </div>
         <div class="col-sm-6">
             <Invitations Value=@context.User.FindFirst("id").Value></Invitations>
