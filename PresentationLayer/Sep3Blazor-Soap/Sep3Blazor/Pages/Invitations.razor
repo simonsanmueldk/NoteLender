@@ -1,9 +1,12 @@
 @page "/Invitations"
 @using System.Drawing
 @using Sep3Blazor.Data
+@using Sep3Blazor.Data.GroupMembersData
 @using Sep3Blazor.Data.InvitationData
 @using Sep3Blazor.Model
 @inject IInvitationService _invitationService
+@inject IGroupMembersService _groupMembersService 
+
 <h3>Pending invitations</h3>
 <button type="submit" @onclick="SubmitGetInvitation">GET</button>
 
@@ -18,12 +21,11 @@ else
         <div class="card mb-2">
             <div class="card-header">
                 @invitation.id
-
             </div>
             <div class="card-body">
                 <p>@invitation.invitorId Wants you to pe apart of group @invitation.groupId </p>
 
-                <button type="button" style="background-color: darkgreen ">Accept</button>
+                <button type="button" style="background-color: darkgreen "@onclick="@(() => AcceptInvitation(invitation.id))">Accept</button>
                 <button type="button" style="background-color: red" @onclick="@(() => RemoveInvitation(invitation.id))">Decline</button>
 
             </div>
@@ -44,7 +46,7 @@ else
     
     private async Task RemoveInvitation(int id)
     {
-        await _invitationService.DeleteInvitation(_invitation.id.ToString());
+            await _invitationService.DeleteInvitation(id.ToString());
     }
     /*
     private async void HandleValidSubmit()
@@ -68,6 +70,13 @@ else
         {
             SearchPhrase = "Out of range";
         }
+    }
+
+
+    
+    private async Task  AcceptInvitation(int invitationId)
+    {
+       await _groupMembersService.GetGroupMembersList()
     }
     
 

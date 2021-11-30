@@ -54,7 +54,7 @@ namespace Sep3Blazor.Data.InvitationData
                     Name = userId
                 }
             );
-            Console.WriteLine("Greeting: " + reply.Message);
+            Console.WriteLine("Delete: " + reply.Message);
             return null;
         }
     }
