@@ -10,7 +10,7 @@
   <div class="col-12">Showing week @(CurrentWeek-1) - @(CurrentWeek+1)</div>
   <div class="row">
     <div class="col-1">
-      <button type="button" class="btn btn-secondary" style="height: 100%;" @onclick="previousPage">&lt;</button>
+      <button type="button" class="btn btn-secondary" style="height: 480px; width: 36px;" @onclick="previousPage">&lt;</button>
     </div>
     <div class="col-10">
       <div class="row justify-content-between">
@@ -101,7 +101,7 @@
       </div>
     </div>
     <div class="col-1">
-      <button type="button" class="btn btn-primary" style="height: 100%;" @onclick="nextPage">&gt;</button>
+      <button type="button" class="btn btn-primary" style="height: 480px; width: 36px;" @onclick="nextPage">&gt;</button>
     </div>
   </div>
 </div>
@@ -115,17 +115,26 @@
   public IList<Note> NoteList { get; set; }
   public int CurrentWeek;
 
+  // Show the notes further ahead in time and prevent going past week 52.
   public void nextPage()
   {
-    CurrentWeek++;
+    if (!((CurrentWeek+2) > 52))
+    {
+      CurrentWeek++;
+    }
   }
 
+  // Show the notes further behind in time and prevent going before week 1.
   public void previousPage()
   {
-    CurrentWeek--;
+    if (!((CurrentWeek-2) < 1))
+    {
+      CurrentWeek--;
+    }
   }
   
-  public static int GetIso8601WeekOfYear(DateTime time)
+  // Using Calender Library method to get the week of today´.
+  public static int GetIsoWeekOfYear(DateTime time)
   {
     DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
     if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
@@ -135,13 +144,14 @@
     return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
   }
   
+  // Method to run, when user enters this page.
   protected override async Task OnInitializedAsync()
   {
     // Get the selected group's notes
     NoteList = await _noteService.GetNoteList(Value.ToString());
     
     // Get todays week
-    CurrentWeek = GetIso8601WeekOfYear(DateTime.Today);
+    CurrentWeek = GetIsoWeekOfYear(DateTime.Today);
   }
   
 
