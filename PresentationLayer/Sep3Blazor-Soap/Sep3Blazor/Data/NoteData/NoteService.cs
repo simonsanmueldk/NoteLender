@@ -18,8 +18,7 @@ namespace Sep3Blazor.Data.NoteData
             var client = new BusinessServer.BusinessServerClient(channel);
             var reply = await client.GetNoteAsync(
                 new Request {Name = s});
-            NoteList = JsonSerializer.Deserialize<List<Note>>(reply.Message);
-            return NoteList;
+            return JsonSerializer.Deserialize<List<Note>>(reply.Message);
         }
         
         public async Task<Note> AddNote(Note note)
@@ -60,7 +59,7 @@ namespace Sep3Blazor.Data.NoteData
             return null;
         }
 
-        public async Task<Note> editNote(Note note)
+        public async Task<Note> EditNote(Note note)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);

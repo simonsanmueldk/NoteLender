@@ -48,8 +48,6 @@ namespace Sep3Blazor.Data.UserData
                 User temp = JsonSerializer.Deserialize<User>(reply.Message);
                 return temp;
             }
-
-
             return null;
         }
 

@@ -172,7 +172,7 @@
             IList<Note> notesList = await _noteService.GetNoteList("9");
             Note TestNote = notesList[0];
             
-            Note editedNote = await _noteService.editNote(new Note(TestNote.id, TestNote.userId, TestNote.groupId, 10, 2002, "Fart", "Not finished", "This is fart text"));
+            Note editedNote = await _noteService.EditNote(new Note(TestNote.id, TestNote.userId, TestNote.groupId, 10, 2002, "Fart", "Not finished", "This is fart text"));
             
             
             
