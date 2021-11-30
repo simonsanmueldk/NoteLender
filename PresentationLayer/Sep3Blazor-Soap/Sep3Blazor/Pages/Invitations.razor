@@ -3,9 +3,11 @@
 @using Sep3Blazor.Data
 @using Sep3Blazor.Data.GroupMembersData
 @using Sep3Blazor.Data.InvitationData
+@using Sep3Blazor.Data.Refresh
 @using Sep3Blazor.Model
 @inject IInvitationService _invitationService
-@inject IGroupMembersService _groupMembersService 
+@inject IRefreshService _refreshService
+@inject IGroupMembersService _groupMembersService
 
 <h3>Pending invitations</h3>
 <button type="submit" @onclick="SubmitGetInvitation">GET</button>
@@ -25,7 +27,7 @@ else
             <div class="card-body">
                 <p>@invitation.invitorId Wants you to pe apart of group @invitation.groupId </p>
 
-                <button type="button" style="background-color: darkgreen "@onclick="@(() => AcceptInvitation(invitation.inviteeId,invitation.groupId,invitation.id))">Accept</button>
+                <button type="button" style="background-color: darkgreen "@onclick="@(() => AcceptInvitation(invitation.inviteeId, invitation.groupId, invitation.id))">Accept</button>
                 <button type="button" style="background-color: red" @onclick="@(() => RemoveInvitation(invitation.id))">Decline</button>
 
             </div>
@@ -36,19 +38,39 @@ else
 
 
 @code {
+
     [Parameter]
     public String Value { get; set; }
+
     public IList<Invitation> InvitationList { get; set; }
     public IList<GroupMembers> GroupMembersList { get; set; }
     public IList<Group> GroupList { get; set; }
     public string SearchPhrase;
     private Invitation _invitation;
 
-    
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("Invitation");
+        try
+        {
+            InvitationList = await _invitationService.GetInvitations(Value.ToString());
+            foreach (var invitation in InvitationList)
+            {
+                Console.WriteLine(invitation.id);
+            }
+            SearchPhrase = InvitationList[0].id.ToString();
+        }
+        catch (ArgumentOutOfRangeException indexOutOfRangeException)
+        {
+            SearchPhrase = "Out of range";
+        }
+    }
+
     private async Task RemoveInvitation(int id)
     {
-            await _invitationService.DeleteInvitation(id.ToString());
+        await _invitationService.DeleteInvitation(id.ToString());
     }
+
     /*
     private async void HandleValidSubmit()
     {
@@ -56,6 +78,7 @@ else
         Invitation temp = await _invitationService.AddInvitations(invitationToAdd);
     }
     */
+
     private async Task SubmitGetInvitation()
     {
         try
@@ -74,13 +97,13 @@ else
     }
 
 
-    
-    private async Task AcceptInvitation(int groupId, int userId,int invitationId)
+    private async Task AcceptInvitation(int groupId, int userId, int invitationId)
     {
-        await _groupMembersService.AddGroupMember(groupId,userId);
-        await _invitationService.DeleteInvitation(invitationId.ToString());
+    // await _groupMembersService.AddGroupMember(groupId,userId);
+        _refreshService.CallRequestRefresh();
+    //  await _invitationService.DeleteInvitation(invitationId.ToString());
     //await _groupMembersService.GetGroupMembersList(id);
     }
-    
+
 
 }

@@ -21,6 +21,8 @@ namespace Sep3Blazor.Data.GroupMembersData
             return JsonSerializer.Deserialize<List<GroupMembers>>(reply.Message);
         }
 
+      
+
         public async Task<IList<GroupMembers>> AddGroupMember(int groupId, int userId)
         {
             Console.WriteLine("G" + groupId + " U " + userId);

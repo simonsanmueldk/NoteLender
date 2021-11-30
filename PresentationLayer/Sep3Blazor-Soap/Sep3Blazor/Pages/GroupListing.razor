@@ -2,8 +2,10 @@
 @using System.Collections
 @using Sep3Blazor.Data.GroupData
 @using Sep3Blazor.Data.GroupMembersData
+@using Sep3Blazor.Data.Refresh
 @using Sep3Blazor.Model
 @inject IGroupService _groupService
+@inject IRefreshService _refreshService
 @inject NavigationManager NavigationManager
 <h3>GroupListing</h3>
 
@@ -37,6 +39,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
+        _refreshService.RefreshRequested += RefreshState;
         Console.WriteLine("GroupListing");
         GroupList = await _groupService.GetGroupMembersList(Convert.ToInt32(Value));
     }
@@ -46,6 +49,13 @@ else
         Value = group.id.ToString();
         Console.WriteLine(Value);
         NavigationManager.NavigateTo("/GroupPage/" + group.id);
+    }
+    
+    public async void RefreshState()
+    {
+        Console.WriteLine("Hey, i got called from component GroupListing");
+        GroupList = await _groupService.GetGroupMembersList(Convert.ToInt32(Value));
+        StateHasChanged();
     }
 
 }
