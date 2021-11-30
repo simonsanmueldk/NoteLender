@@ -35,9 +35,9 @@
             <tr>
               <th>Text</th>
               <td>
-                <textarea disabled cols="45" rows="10">
-                    @note.text
-                  </textarea>
+                <textarea class=".bg-warning" disabled cols="32" rows="3">
+                                    @note.text
+                                  </textarea>
               </td>
             </tr>
           </table>
@@ -73,9 +73,9 @@
             <tr>
               <th>Text</th>
               <td>
-                <textarea disabled cols="45" rows="10">
-                    @note.text
-                  </textarea>
+                <textarea class=".bg-warning" disabled cols="32" rows="3">
+                                    @note.text
+                                  </textarea>
               </td>
             </tr>
           </table>
@@ -111,7 +111,7 @@
             <tr>
               <th>Text</th>
               <td>
-                <textarea disabled cols="45" rows="10">
+                <textarea class=".bg-warning" disabled cols="32" rows="3">
                     @note.text
                   </textarea>
               </td>
@@ -137,6 +137,8 @@
 
   [Parameter]
   public int Id { get; set; }
+  [Parameter]
+  public int Value { get; set; }
   public IList<Note> NoteList { get; set; }
   public int CurrentWeek;
 
@@ -163,7 +165,7 @@
   protected override async Task OnInitializedAsync()
   {
     // Get the selected group's notes
-    NoteList = await _noteService.GetNoteList(Id.ToString());
+    NoteList = await _noteService.GetNoteList(Value.ToString());
     
     // Get todays week
     CurrentWeek = GetIso8601WeekOfYear(DateTime.Today);

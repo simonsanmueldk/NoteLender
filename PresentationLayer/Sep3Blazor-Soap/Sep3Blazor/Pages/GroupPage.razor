@@ -4,6 +4,7 @@
 @using Sep3Blazor.Data.Refresh
 @using Sep3Blazor.Model
 @using LoginComponent
+@using NotesComponent
 @using Sep3Blazor.Data.GroupData
 @using Sep3Blazor.Data.NoteData
 @inject INoteService _noteService
@@ -21,50 +22,25 @@
 else
 {
     <div class="row" style=" text-align:center">
-        <div class="col-sm-6" style="display:inline">
-            <table class="table" id="datatable">
-                <thead>
-                <tr>
-                    <th>week</th>
-                    <th>year</th>
-                    <th>name</th>
-                    <th>status</th>
-                    <th>text</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach (var note in Notes)
-                {
-                    <tr class="onHoverChange" @onclick="@(() => ChangeSelectedNote(note))">
-                        <td>@note.week</td>
-                        <td>@note.year</td>
-                        <td>@note.name</td>
-                        <td>@note.status</td>
-                        <td>@note.text</td>
-                    </tr>
-                }
-                </tbody>
-            </table>
+        <div class="col-sm-9" style="display:inline">
+            <Notes Value=@Id></Notes>
         </div>
 
-        <div class="col-sm-6" style="display:inline">
+        <div class="col-sm-3" style="display:inline">
+            <h3>Members</h3>
             <table class="table" id="datatable">
                 <thead>
                 <tr>
-                    <th>Id</th>
                     <th>MemberId</th>
                     <th>Username</th>
-                    <th>GroupId</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach (var members in GroupMembersList)
                 {
                     <tr class="onHoverChange" @onclick="@(() => ChangeSelectedGroup(members))">
-                        <td>@members.id</td>
                         <td>@members.userId</td>
                         <td>@members.username</td>
-                        <td>@members.groupId</td>
                     </tr>
                 }
                 </tbody>
