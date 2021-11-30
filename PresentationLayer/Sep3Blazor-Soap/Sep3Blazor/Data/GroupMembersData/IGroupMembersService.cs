@@ -6,6 +6,6 @@ namespace Sep3Blazor.Data.GroupMembersData
 {
     public interface IGroupMembersService
     {
-        public Task<IList<GroupMembers>> GetGroupMembersList(int group_id);
+        public Task<IList<GroupMembers>> GetUserList(int group_id);
     }
 }
