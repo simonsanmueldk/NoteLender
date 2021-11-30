@@ -52,6 +52,39 @@ else
     </div>
 }
 
+<TabControl>
+    <TabPage Text="Tab 1">
+       <div class="col-sm-9" style="display:inline">
+                  <Notes Value=@Id></Notes>
+              </div>
+    </TabPage>
+    <TabPage Text="Tab 2">
+       <div class="col-sm-3" style="display:inline">
+                  <h3>Members</h3>
+                  <table class="table" id="datatable">
+                      <thead>
+                      <tr>
+                          <th>MemberId</th>
+                          <th>Username</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      @foreach (var members in GroupMembersList)
+                      {
+                          <tr class="onHoverChange" @onclick="@(() => ChangeSelectedGroup(members))">
+                              <td>@members.userId</td>
+                              <td>@members.username</td>
+                          </tr>
+                      }
+                      </tbody>
+                  </table>
+              </div>
+    </TabPage>
+    <TabPage Text="Tab 3">
+        <h1>The third tab</h1>
+    </TabPage>
+</TabControl>
+
 @code {
 
     [Parameter]
