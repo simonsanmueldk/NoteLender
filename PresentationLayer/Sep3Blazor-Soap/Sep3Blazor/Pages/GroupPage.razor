@@ -32,7 +32,6 @@ else
             <table class="table" id="datatable">
                 <thead>
                 <tr>
-                    <th>MemberId</th>
                     <th>Username</th>
                 </tr>
                 </thead>
@@ -40,7 +39,6 @@ else
                 @foreach (var members in GroupMembersList)
                 {
                     <tr class="onHoverChange" @onclick="@(() => ChangeSelectedGroup(members))">
-                        <td>@members.userId</td>
                         <td>@members.username</td>
                     </tr>
                 }
