@@ -1,14 +1,15 @@
 ﻿@page "/GroupPage"
 @page "/GroupPage/{Id:int}" 
-@using Sep3Blazor.Data
+
 @using Sep3Blazor.Data.Refresh
 @using Sep3Blazor.Model
 @using LoginComponent
 @using NotesComponent
 @using Sep3Blazor.Data.GroupData
+@using Sep3Blazor.Data.GroupMembersData
 @using Sep3Blazor.Data.NoteData
 @inject INoteService _noteService
-@inject IGroupService _groupService
+@inject IGroupMembersService _groupMembersService
 @inject IRefreshService _refreshService
 <h3>GroupPage</h3>
 
@@ -72,7 +73,7 @@ else
         {
             _refreshService.RefreshRequested += RefreshState;
             Notes = await _noteService.GetNoteList(Id.ToString());
-            GroupMembersList = await _groupService.GetUserList(9);
+            GroupMembersList = await _groupMembersService.GetUserList(9);
             Console.WriteLine(Notes.Count);
             Console.WriteLine(GroupMembersList.Count);
         }

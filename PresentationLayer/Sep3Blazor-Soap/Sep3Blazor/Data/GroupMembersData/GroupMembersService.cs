@@ -13,7 +13,9 @@ namespace Sep3Blazor.Data.GroupMembersData
         
         private readonly String URL = "https://localhost:5004";
         
-        public async Task<IList<GroupMembers>> GetGroupMembersList(int groupId)
+     
+        
+        public async Task<IList<GroupMembers>> GetUserList(int groupId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
