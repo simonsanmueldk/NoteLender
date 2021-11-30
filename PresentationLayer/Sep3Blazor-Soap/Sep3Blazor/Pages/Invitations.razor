@@ -58,6 +58,10 @@ else
         try
         {
             InvitationList = await _invitationService.GetInvitations(Value.ToString());
+            foreach (var invitation in InvitationList)
+            {
+                Console.WriteLine(invitation.id);
+            }
             SearchPhrase = InvitationList[0].id.ToString();
         }
         catch (ArgumentOutOfRangeException indexOutOfRangeException)
