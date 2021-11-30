@@ -42,15 +42,20 @@ a, .btn-link {
     z-index: 1000;
 }
 
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
-    }
-#labelAcc{
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
+
+#labelAcc {
     color: #B4886B;
     font-weight: bold;
     font-size: 15px;
 
+}
+
+.onHoverChange:hover{
+    background: red;
 }

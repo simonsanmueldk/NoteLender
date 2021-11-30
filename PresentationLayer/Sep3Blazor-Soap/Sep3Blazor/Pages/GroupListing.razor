@@ -50,8 +50,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+           base.OnInitialized();
         Console.WriteLine("GroupListing");
-        base.OnInitialized();
         GroupMembersList = await _groupMembersService.GetGroupMembersList(Convert.ToInt32(Value));
     }
 

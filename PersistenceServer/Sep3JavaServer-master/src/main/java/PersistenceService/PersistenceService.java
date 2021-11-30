@@ -201,8 +201,10 @@ public class PersistenceService implements IPersistenceService {
     @Override
     public String getGroupMembersList(int id) {
         List<GroupMembers> GroupMembersList = new ArrayList<>();
+        System.out.println("hi "+id);
         try {
             String getString = "SELECT id,user_id,group_id from notelender.groupmembers where user_id = ?";
+            System.out.println("hello "+id);
             PreparedStatement getGroupMembersList = connection.prepareStatement(getString);
             getGroupMembersList.setInt(1, id);
             ResultSet rs = getGroupMembersList.executeQuery();
