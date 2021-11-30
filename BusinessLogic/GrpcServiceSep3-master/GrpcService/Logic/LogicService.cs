@@ -248,6 +248,8 @@ namespace GrpcService.Logic
             });
         }
 
+       
+
         public async Task<Reply> DeleteUser(UserRequest request, ServerCallContext context)
         {
             HttpResponseMessage responseMessage = await _client.DeleteAsync(uri + "/user/" + request.Id);
@@ -285,6 +287,26 @@ namespace GrpcService.Logic
             {
                 Message = message
             });
+        }
+        
+        public async Task<Reply> AddGroupMember(AddGroupMemberRequest request, ServerCallContext context)
+        {
+            Console.WriteLine(request.GroupId + ":" + request.UserId);
+            GroupMembers temp = new GroupMembers(0,request.GroupId,null,request.UserId);
+            Console.WriteLine("KRZZZZ");
+            string str = JsonSerializer.Serialize(temp);
+            HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
+            HttpResponseMessage responseMessage = await _client.PostAsync(uri + "/groupmembers", content);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string message = await responseMessage.Content.ReadAsStringAsync();
+                Console.WriteLine(message);
+                return await Task.FromResult(new Reply()
+                {
+                    Message = message
+                });
+            }
+            return null;
         }
     }
 }

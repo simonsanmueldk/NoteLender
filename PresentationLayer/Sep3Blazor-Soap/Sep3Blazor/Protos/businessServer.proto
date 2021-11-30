@@ -24,6 +24,7 @@ service BusinessServer {
   rpc PostInvitation(RegisterInvitationRequest) returns (Reply);
   rpc DeleteInvitation(Request) returns (Reply);
    rpc DeleteUser(UserRequest) returns (Reply);
+   rpc AddGroupMember(AddGroupMemberRequest) returns (Reply);
 }
 
 
@@ -98,3 +99,9 @@ message RegisterInvitationReply {
   int32 inviteeId = 3;
   int32 groupId = 4;
 }
+
+message AddGroupMemberRequest {
+    int32 groupId = 1;
+    int32 userId = 2;
+}
+

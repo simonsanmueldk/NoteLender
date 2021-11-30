@@ -7,6 +7,7 @@ public interface IPersistenceService {
      String deleteGroup(int id);
      String getUserList(int id);
      String getGroupMembersList(int id);
+     String addGroupMember(String json);
      String getNote(int groupId);
      String addNote(String json);
      String editNote(String json);

@@ -218,6 +218,35 @@ public class PersistenceService implements IPersistenceService {
         return null;
     }
 
+    @Override
+    public String addGroupMember(String json)
+    {
+        String addString =
+            "INSERT INTO notelender.groupmembers (user_id,group_id) VALUES (?,?)";
+        System.out.println("JSON: " + json);
+        GroupMembers groupMembers = gson.fromJson(json, GroupMembers.class);
+        System.out.println("GroupMembers: " + groupMembers.getId() +" " +  groupMembers.getUserId() + " " +groupMembers.getUsername()+ " " + groupMembers.getGroupId());
+        try {
+            PreparedStatement addGroupMember = connection.prepareStatement(addString, PreparedStatement.RETURN_GENERATED_KEYS);
+            addGroupMember.setInt(1, groupMembers.getUserId());
+            addGroupMember.setInt(2, groupMembers.getGroupId());
+            addGroupMember.executeUpdate();
+            try (ResultSet keys = addGroupMember.getGeneratedKeys()) {
+                if (keys.next()) {
+                    GroupMembers groupMemberToAdd = new GroupMembers(keys.getInt(1), keys.getInt(2),
+                        "",keys.getInt(3));
+                    return gson.toJson(groupMemberToAdd);
+                } else {
+                    throw new SQLException("Creating failed, no ID obtained.");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection failure.");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     /*
         Note section
      */
@@ -394,7 +423,19 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public String deleteInvitation(String id) {
-        String deleteString = "DELETE FROM notelender.invitations WHERE id= ?";
+        String sql = "DELETE FROM notelender.invitations WHERE id= ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, Integer.valueOf(id));
+            statement.executeUpdate();
+            System.out.println(id + "Value of id");
+            System.out.println("Hika");
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return null;
+    }
+        /*
         try {
             PreparedStatement deleteInvitation = connection.prepareStatement(deleteString);
             deleteInvitation.setInt(1, Integer.valueOf(id));
@@ -409,6 +450,8 @@ public class PersistenceService implements IPersistenceService {
         }
         return "Fail";
     }
+
+         */
 
 }
 

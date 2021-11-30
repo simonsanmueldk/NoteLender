@@ -122,5 +122,11 @@ namespace GrpcService
         {
             return await _logicService.GetGroupMembersList(request, context);
         }
+        
+        public override async Task<Reply> AddGroupMember(AddGroupMemberRequest request, ServerCallContext context)
+        {
+            return await _logicService.AddGroupMember(request, context);
+        }
+        
     }
 }
