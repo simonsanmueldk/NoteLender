@@ -200,18 +200,22 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public String getGroupMembersList(int id) {
-        List<GroupMembers> GroupMembersList = new ArrayList<>();
+        List<Group> GroupList = new ArrayList<>();
+        System.out.println("hi " + id);
         try {
-            String getString = "SELECT id,user_id,group_id from notelender.groupmembers where user_id = ?";
+            String getString = "SELECT g.id, groupname\n" +
+                    "from notelender.groupmembers\n" +
+                    "         inner join notelender.groups g on g.id = groupmembers.group_id\n" +
+                    "where user_id = ?";
+            System.out.println("hello " + id);
             PreparedStatement getGroupMembersList = connection.prepareStatement(getString);
             getGroupMembersList.setInt(1, id);
             ResultSet rs = getGroupMembersList.executeQuery();
             while (rs.next()) {
-                GroupMembers groupMembers = new GroupMembers(rs.getInt(1), rs.getInt(2), null, rs.getInt(3));
-                GroupMembersList.add(groupMembers);
-                System.out.println(groupMembers.getUsername());
+                Group group = new Group(rs.getInt(1), rs.getString(2));
+                GroupList.add(group);
             }
-            return gson.toJson(GroupMembersList);
+            return gson.toJson(GroupList);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -266,7 +270,7 @@ public class PersistenceService implements IPersistenceService {
                         rs.getString(3), rs.getString(4),
                         rs.getString(5));
             }
-            System.out.println(user.getUsername());
+
             System.out.println("Login is working");
 
             return gson.toJson(user);
@@ -406,7 +410,7 @@ public class PersistenceService implements IPersistenceService {
         try {
             String getString = "SELECT * FROM notelender.invitations WHERE invitee_id = ?";
             PreparedStatement getInvitation = connection.prepareStatement(getString);
-            getInvitation.setInt(1, Integer.valueOf(id));
+            getInvitation.setInt(1, Integer.parseInt(id));
             ResultSet rs = getInvitation.executeQuery();
             while (rs.next()) {
                 Invitation invitationToAdd = new Invitation(rs.getInt(1),
@@ -438,7 +442,7 @@ public class PersistenceService implements IPersistenceService {
         /*
         try {
             PreparedStatement deleteInvitation = connection.prepareStatement(deleteString);
-            deleteInvitation.setInt(1, Integer.valueOf(id));
+            deleteInvitation.setInt(1, Integer.parseInt(id));
             int deleted = deleteInvitation.executeUpdate();
             if (deleted == 0) {
                 return "Fail";

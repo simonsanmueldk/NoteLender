@@ -1,5 +1,5 @@
 @page "/"
-@using Sep3Blazor.Data
+
 @inject IGroupService _groupService
 @inject INoteService _noteService
 @inject NavigationManager NavigationManager;
@@ -7,14 +7,13 @@
 @inject NotificationManager NotificationManager
 @using LoginComponent
 @using Sep3Blazor.Data.GroupData
-@using Sep3Blazor.Data.GroupMembersData
 @using Sep3Blazor.Data.NoteData
 @using Sep3Blazor.Data.Notifications
 @using Sep3Blazor.Data.Notifications.NotificationModel
 @using System.Globalization
+@using Microsoft.AspNetCore.Components.Web.Extensions.Head
 
-
-<h1>Hello, world!</h1>
+<Title Value="Homepage" />
 
 <Login/>
 <AuthorizeView >
@@ -41,12 +40,14 @@
                 Some prehistoric penguin species were enormous: as tall or heavy as an adult human.
                 There was a great diversity of species in subantarctic regions, and at least one giant species in a region around 2,000 km south of the equator 35 mya, in a climate decidedly warmer than today.
             </p>
+
         </div>
     </div>
 </AuthorizeView>
 <div class="main-title-big" @onclick="ShowNotification">
     Welcome
 </div>
+
 
 @code
 {
@@ -59,9 +60,8 @@
     private async void ShowNotification()
     {
         await NotificationManager.Show("Title", "a simple paragraph", NotificationType.Info);
-        
     }
-    
+
     public static int GetIso8601WeekOfYear(DateTime time)
     {
         DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
@@ -70,5 +70,5 @@
             time = time.AddDays(3);
         }
         return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-    } 
+    }
 }

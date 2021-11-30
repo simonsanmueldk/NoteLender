@@ -13,6 +13,7 @@ using Sep3Blazor.Data.NoteData;
 using Sep3Blazor.Data.Notifications;
 using Sep3Blazor.Data.Refresh;
 using Sep3Blazor.Data.UserData;
+using Syncfusion.Blazor;
 
 namespace Sep3Blazor
 {
@@ -39,6 +40,7 @@ namespace Sep3Blazor
             services.AddScoped<IInvitationService, InvitationService>();
             services.AddScoped<IGroupMembersService, GroupMembersService>();
             services.AddSingleton<NotificationManager>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -11,7 +11,6 @@ namespace Sep3Blazor.Data.GroupData
     {
         private readonly String URL = "https://localhost:5004";
         public IList<Group> GroupList { get; set; }
-        public IList<GroupMembers> UserList { get; set; }
 
         public async Task<IList<Group>> AddGroup(string s)
         {
@@ -20,8 +19,7 @@ namespace Sep3Blazor.Data.GroupData
             var reply = await client.PostGroupAsync(
                 new Request {Name = s});
             Console.WriteLine("Greeting: " + reply.Message);
-            GroupList = JsonSerializer.Deserialize<List<Group>>(reply.Message);
-            return GroupList;
+            return JsonSerializer.Deserialize<List<Group>>(reply.Message);
         }
 
         public async Task<IList<Group>> GetGroupList(string s)
@@ -31,8 +29,7 @@ namespace Sep3Blazor.Data.GroupData
             var reply = await client.GetGroupAsync(
                 new Request {Name = s});
             Console.WriteLine("Group: " + reply.Message);
-            GroupList = JsonSerializer.Deserialize<List<Group>>(reply.Message);
-            return GroupList;
+            return JsonSerializer.Deserialize<List<Group>>(reply.Message);
         }
 
         public async Task DeleteGroup(string s)
@@ -46,15 +43,14 @@ namespace Sep3Blazor.Data.GroupData
             // return GroupList;
         }
 
-        public async Task<IList<GroupMembers>> GetUserList(int groupId)
+        public async Task<IList<Group>> GetGroupMembersList(int groupId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
-            var reply = await client.GetUserListAsync(
+            var reply = await client.GetGroupMembersListAsync(
                 new Request {Name = groupId.ToString()});
             Console.WriteLine("Group: " + reply.Message);
-            UserList = JsonSerializer.Deserialize<List<GroupMembers>>(reply.Message);
-            return UserList;
+            return JsonSerializer.Deserialize<List<Group>>(reply.Message);
         }
         
         

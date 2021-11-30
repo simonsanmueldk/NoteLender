@@ -21,6 +21,8 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+      <PackageReference Include="Quick.AspNetCore.Components.Web.Extensions" Version="5.0.0" />
+      <PackageReference Include="Syncfusion.Blazor.SplitButtons" Version="19.3.0.56" />
     </ItemGroup>
     
     <ItemGroup>

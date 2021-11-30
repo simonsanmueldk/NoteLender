@@ -1,79 +1,68 @@
 ﻿@page "/GroupPage"
 @page "/GroupPage/{Id:int}" 
-@using Sep3Blazor.Data
+
 @using Sep3Blazor.Data.Refresh
 @using Sep3Blazor.Model
 @using LoginComponent
+@using NotesComponent
 @using Sep3Blazor.Data.GroupData
+@using Sep3Blazor.Data.GroupMembersData
 @using Sep3Blazor.Data.NoteData
 @inject INoteService _noteService
-@inject IGroupService _groupService
+@inject IGroupMembersService _groupMembersService
 @inject IRefreshService _refreshService
+@using Microsoft.AspNetCore.Components.Web.Extensions.Head
+
+<Title Value="@("Group "+Id)" />
 <h3>GroupPage</h3>
-
-
-@if (Notes == null)
-{
-    <p>
-        <em>Loading...</em>
-    </p>
-}
-else
-{
-    <div class="row" style=" text-align:center">
-        <div class="col-sm-6" style="display:inline">
-            <table class="table" id="datatable">
-                <thead>
-                <tr>
-                    <th>week</th>
-                    <th>year</th>
-                    <th>name</th>
-                    <th>status</th>
-                    <th>text</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach (var note in Notes)
-                {
-                    <tr class="onHoverChange" @onclick="@(() => ChangeSelectedNote(note))">
-                        <td>@note.week</td>
-                        <td>@note.year</td>
-                        <td>@note.name</td>
-                        <td>@note.status</td>
-                        <td>@note.text</td>
+<TabControl>
+    <TabPage Text="Notes">
+        @if (Notes == null)
+        {
+            <p>
+                <em>Loading...</em>
+            </p>
+        }
+        else
+        {
+            <div class="col-sm-9" style="display:inline">
+                <Notes Value=@Id></Notes>
+            </div>
+        }
+    </TabPage>
+    <TabPage Text="Members">
+        @if (GroupMembersList == null)
+        {
+            <p>
+                <em>Loading...</em>
+            </p>
+        }
+        else
+        {
+            <div class="col-sm-3" style="display:inline">
+                <h3>Members</h3>
+                <table class="table" id="datatable">
+                    <thead>
+                    <tr>
+                        <th>Username</th>
                     </tr>
-                }
-                </tbody>
-            </table>
-        </div>
-
-        <div class="col-sm-6" style="display:inline">
-            <table class="table" id="datatable">
-                <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>MemberId</th>
-                    <th>Username</th>
-                    <th>GroupId</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach (var members in GroupMembersList)
-                {
-                    <tr class="onHoverChange" @onclick="@(() => ChangeSelectedGroup(members))">
-                        <td>@members.id</td>
-                        <td>@members.userId</td>
-                        <td>@members.username</td>
-                        <td>@members.groupId</td>
-                    </tr>
-                }
-                </tbody>
-            </table>
-        </div>
-
-
-    </div>
-}
+                    </thead>
+                    <tbody>
+                    @foreach (var members in GroupMembersList)
+                    {
+                        <tr class="onHoverChange" @onclick="@(() => ChangeSelectedGroup(members))">
+                            <td>@members.username</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </TabPage>
+    <TabPage Text="Invite">
+        <h1>The third tab</h1>
+    </TabPage>
+</TabControl>
 
 @code {
 
@@ -96,7 +85,7 @@ else
         {
             _refreshService.RefreshRequested += RefreshState;
             Notes = await _noteService.GetNoteList(Id.ToString());
-            GroupMembersList = await _groupService.GetUserList(9);
+            GroupMembersList = await _groupMembersService.GetUserList(9);
             Console.WriteLine(Notes.Count);
             Console.WriteLine(GroupMembersList.Count);
         }

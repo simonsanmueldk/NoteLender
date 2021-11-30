@@ -10,7 +10,6 @@ namespace Sep3Blazor.Data.InvitationData
     public class InvitationService : IInvitationService
     {
         private readonly String URL = "https://localhost:5004";
-        public IList<Invitation> InvitationList { get; set; }
 
         public async Task<Invitation> AddInvitations(Invitation invitation)
         {
@@ -39,8 +38,7 @@ namespace Sep3Blazor.Data.InvitationData
             var reply = await client.GetInvitationListAsync(
                 new Request {Name = userId});
             Console.WriteLine("haaland: " + reply.Message);
-            InvitationList = JsonSerializer.Deserialize<List<Invitation>>(reply.Message);
-            return InvitationList;
+            return JsonSerializer.Deserialize<List<Invitation>>(reply.Message);
         }
         
         public async Task<object> DeleteInvitation(string userId)
