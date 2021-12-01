@@ -194,7 +194,6 @@ namespace GrpcService.Logic
         public async Task<Reply> GetInvitationList(Request request, ServerCallContext context)
         {
             Task<string> stringAsync = _client.GetStringAsync(uri + "/InvitationList/" + request.Name);
-            Console.WriteLine(request.Name + "AAAAAAAAA");
             stringAsync = _client.GetStringAsync(uri + "/invitation/" + request.Name);
             string message = await stringAsync;
             return await Task.FromResult(new Reply
@@ -207,8 +206,6 @@ namespace GrpcService.Logic
         {
             Invitation invitation = new Invitation(request.Id, request.GroupId, request.InviteeId, request.InvitorId);
             string str = JsonSerializer.Serialize(invitation);
-            Console.WriteLine(invitation);
-            Console.WriteLine(str);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await _client.PostAsync(uri + "/invitation", content);
             string message = await responseMessage.Content.ReadAsStringAsync();
@@ -229,7 +226,6 @@ namespace GrpcService.Logic
             }
 
             string message = await responseMessage.Content.ReadAsStringAsync();
-            Console.WriteLine(message);
             return await Task.FromResult(new Reply
             {
                 Message = message
