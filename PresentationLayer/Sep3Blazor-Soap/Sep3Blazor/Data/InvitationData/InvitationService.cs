@@ -47,7 +47,7 @@ namespace Sep3Blazor.Data.InvitationData
             var client = new BusinessServer.BusinessServerClient(channel);
 
             var reply = await client.DeleteInvitationAsync(
-                new Request()
+                new Request
                 {
                     Name = userId
                 }

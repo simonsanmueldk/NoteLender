@@ -398,7 +398,19 @@ public class PersistenceService implements IPersistenceService {
             }
             return null;
         }
+    }
 
+    @Override
+    public String deleteInvitation(String id) {
+        String deleteString = "DELETE FROM notelender.invitations WHERE id= ?";
+        try {
+            PreparedStatement deleteInvitation = connection.prepareStatement(deleteString, PreparedStatement.RETURN_GENERATED_KEYS);
+            deleteInvitation.setInt(1, Integer.valueOf(id));
+            deleteInvitation.executeUpdate();
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return null;
     }
 
 
@@ -424,39 +436,6 @@ public class PersistenceService implements IPersistenceService {
         }
         return null;
     }
-
-    @Override
-    public String deleteInvitation(String id) {
-        String sql = "DELETE FROM notelender.invitations WHERE id= ?";
-        try {
-            PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            statement.setInt(1, Integer.valueOf(id));
-            statement.executeUpdate();
-            System.out.println(id + "Value of id");
-            System.out.println("Hika");
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-        }
-        return null;
-    }
-        /*
-        try {
-            PreparedStatement deleteInvitation = connection.prepareStatement(deleteString);
-            deleteInvitation.setInt(1, Integer.parseInt(id));
-            int deleted = deleteInvitation.executeUpdate();
-            if (deleted == 0) {
-                return "Fail";
-            } else {
-                return "Success";
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return "Fail";
-    }
-
-         */
-
 }
 
 

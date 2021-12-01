@@ -4,6 +4,7 @@
 @using Sep3Blazor.Data.Refresh
 @using Sep3Blazor.Model
 @using NotesComponent
+@using MembersComponent
 @using Sep3Blazor.Data.GroupMembersData
 @using Sep3Blazor.Data.NoteData
 @inject INoteService _noteService
@@ -14,47 +15,10 @@
 <h3>GroupPage</h3>
 <TabControl>
     <TabPage Text="Notes">
-        @if (Notes == null)
-        {
-            <p>
-                <em>Loading...</em>
-            </p>
-        }
-        else
-        {
-            <div class="col-sm-9" style="display:inline">
-                <Notes Value=@Id></Notes>
-            </div>
-        }
+        <Notes Value=@Id></Notes>
     </TabPage>
     <TabPage Text="Members">
-        @if (GroupMembersList == null)
-        {
-            <p>
-                <em>Loading...</em>
-            </p>
-        }
-        else
-        {
-            <div class="col-sm-3" style="display:inline">
-                <h3>Members</h3>
-                <table class="table" id="datatable">
-                    <thead>
-                    <tr>
-                        <th>Username</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach (var members in GroupMembersList)
-                    {
-                        <tr class="onHoverChange" @onclick="@(() => ChangeSelectedGroup(members))">
-                            <td>@members.username</td>
-                        </tr>
-                    }
-                    </tbody>
-                </table>
-            </div>
-        }
+        <Members Id="@Id"></Members>
     </TabPage>
     <TabPage Text="Invite">
         <h1>The third tab</h1>

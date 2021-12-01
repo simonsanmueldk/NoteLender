@@ -1,0 +1,44 @@
+﻿@page "/Members"
+@page "/Members/{Id:int}"
+@using Sep3Blazor.Model
+@using Sep3Blazor.Data.GroupMembersData
+@inject IGroupMembersService _groupMembersService
+@namespace MembersComponent
+
+<div class="container-fluid">
+  <br>
+<div class="col-5 offset-1">
+  <div class="p-3 mb-2 bg-secondary text-white">
+    Members
+  </div>
+  @if (GroupMembersList == null)
+  {
+    <p>
+      <em>Loading...</em>
+    </p>
+  }
+  else
+  {
+    <select class="form-select" multiple aria-label="multiple select example">
+      @foreach (var member in GroupMembersList)
+      {
+        <option value="@member.userId">@member.username</option>
+      }
+    </select>
+  }
+  </div>
+</div>
+
+@code {
+  [Parameter]
+  public int Id { get; set; }
+
+  public IList<GroupMembers> GroupMembersList { get; set; }
+  
+  protected override async Task OnInitializedAsync()
+  {
+    GroupMembersList = await _groupMembersService.GetUserList(Id);
+  }
+  
+  
+}

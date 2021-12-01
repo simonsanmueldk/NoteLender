@@ -99,9 +99,9 @@ else
 
     private async Task AcceptInvitation(int groupId, int userId, int invitationId)
     {
-    // await _groupMembersService.AddGroupMember(groupId,userId);
+        await _groupMembersService.AddGroupMember(groupId,userId);
+        await _invitationService.DeleteInvitation(invitationId.ToString());
         _refreshService.CallRequestRefresh();
-    //  await _invitationService.DeleteInvitation(invitationId.ToString());
     //await _groupMembersService.GetGroupMembersList(id);
     }
 

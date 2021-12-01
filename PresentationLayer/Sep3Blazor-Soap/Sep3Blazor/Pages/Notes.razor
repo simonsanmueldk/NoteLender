@@ -6,105 +6,139 @@
 @namespace NotesComponent
 @inject INoteService _noteService
 
-<div class="container">
-  <div class="col-12">Showing week @(CurrentWeek-1) - @(CurrentWeek+1)</div>
+<div class="container-fluid">
+  <br>
   <div class="row">
     <div class="col-1">
-      <button type="button" class="btn btn-secondary" style="height: 480px; width: 36px;" @onclick="previousPage">&lt;</button>
+      <button type="button" class="btn btn-secondary" style="height: 480px; width: 36px;" @onclick="PreviousPage">&lt;</button>
     </div>
     <div class="col-10">
       <div class="row justify-content-between">
         <div class="col-sm-4">
-          @if (NoteList == null)
-          {
-            Console.WriteLine("NoteList is empty/non-existing");
-          }
-          else
-          {
-            @foreach (Note note in NoteList)
+          <div class="p-3 mb-2 bg-secondary text-white">
+            Week @(_currentWeek - 1)
+          </div>
+          <table class="table table-sm table-hover table-wrapper-scroll-y my-custom-scrollbar">
+            @if (NoteList == null)
             {
-              
-              if (note.week == (CurrentWeek - 1))
+              <p>
+                <em>Loading...</em>
+              </p>
+            }
+            else
+            {
+              @foreach (Note note in NoteList)
               {
-          
-                <ul class="list-group">
-                  <li class="list-group-item active">Week @(CurrentWeek - 1)</li>
-                  <li class="list-group-item">Name:</li>
-                  <input class="form-control" type="text" placeholder="@note.name" readonly>
-                  <li class="list-group-item">Year</li>
-                  <input class="form-control" type="text" placeholder="@note.year" readonly>
-                  <li class="list-group-item">Status</li>
-                  <input class="form-control" type="text" placeholder="@note.status" readonly>
-                  <li class="list-group-item">Text</li>
-                  <textarea class="p-3 mb-2 bg-warning text-dark" disabled cols="32" rows="3">
-                  @note.text                               
-                  </textarea>
-                </ul>
+                if (note.week == (_currentWeek - 1))
+                {
+                  <tbody>
+                  <tr>
+                    <th scope="row">Name</th>
+                    <td>@note.name</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Year</th>
+                    <td>@note.year</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Status</th>
+                    <td>@note.status</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Text</th>
+                    <td class="table-warning">@note.text</td>
+                  </tr>
+                  </tbody>
+                  <br>
+                }
               }
             }
-          }
+          </table>
         </div>
-        <div class="col-sm-4 ">
-          @if (NoteList == null)
-          {
-            Console.WriteLine("NoteList is empty/non-existing");
-          }
-          else
-          {
-            @foreach (Note note in NoteList)
+        <div class="col-sm-4">
+          <div class="p-3 mb-2 bg-secondary text-white">
+            Week @_currentWeek
+          </div>
+          <table class="table table-sm table-hover table-wrapper-scroll-y my-custom-scrollbar">
+            @if (NoteList == null)
             {
-              if (note.week == CurrentWeek)
+              Console.WriteLine("NoteList is empty/non-existing");
+            }
+            else
+            {
+              @foreach (Note note in NoteList)
               {
-                <ul class="list-group">
-                  <li class="list-group-item active">Week @CurrentWeek</li>
-                  <li class="list-group-item">Name:</li>
-                  <input class="form-control" type="text" placeholder="@note.name" readonly>
-                  <li class="list-group-item">Year</li>
-                  <input class="form-control" type="text" placeholder="@note.year" readonly>
-                  <li class="list-group-item">Status</li>
-                  <input class="form-control" type="text" placeholder="@note.status" readonly>
-                  <li class="list-group-item">Text</li>
-                  <textarea class="p-3 mb-2 bg-warning text-dark" disabled cols="32" rows="3">
-                  @note.text                               
-                  </textarea>
-                </ul>
+                if (note.week == _currentWeek)
+                {
+
+
+                  <tbody>
+                  <tr>
+                    <th scope="row">Name</th>
+                    <td>@note.name</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Year</th>
+                    <td>@note.year</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Status</th>
+                    <td>@note.status</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Text</th>
+                    <td class="table-warning">@note.text</td>
+                  </tr>
+                  </tbody>
+                  <br>
+                }
               }
             }
-          }
+          </table>
         </div>
-        <div class="col-sm-4 ">
-          @if (NoteList == null)
-          {
-            Console.WriteLine("NoteList is empty/non-existing");
-          }
-          else
-          {
-            @foreach (Note note in NoteList)
+        <div class="col-sm-4">
+          <div class="p-3 mb-2 bg-secondary text-white">
+            Week @(_currentWeek + 1)
+          </div>
+          <table class="table table-sm table-hover table-wrapper-scroll-y my-custom-scrollbar">
+            @if (NoteList == null)
             {
-              
-              if (note.week == (CurrentWeek + 1))
+              Console.WriteLine("NoteList is empty/non-existing");
+            }
+            else
+            {
+              @foreach (Note note in NoteList)
               {
-                <ul class="list-group">
-                  <li class="list-group-item active">Week @(CurrentWeek + 1)</li>
-                  <li class="list-group-item">Name:</li>
-                  <input class="form-control" type="text" placeholder="@note.name" readonly>
-                  <li class="list-group-item">Year</li>
-                  <input class="form-control" type="text" placeholder="@note.year" readonly>
-                  <li class="list-group-item">Status</li>
-                  <input class="form-control" type="text" placeholder="@note.status" readonly>
-                  <li class="list-group-item">Text</li>
-                  <textarea class="p-3 mb-2 bg-warning text-dark" disabled cols="32" rows="3">
-                  @note.text                               
-                  </textarea>
-                </ul>
+                if (note.week == (_currentWeek + 1))
+                {
+                  <tbody>
+                  <tr>
+                    <th scope="row">Name</th>
+                    <td>@note.name</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Year</th>
+                    <td>@note.year</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Status</th>
+                    <td>@note.status</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Text</th>
+                    <td class="table-warning">@note.text</td>
+                  </tr>
+                  </tbody>
+                  <br>
+                }
               }
             }
-          }
+          </table>
         </div>
       </div>
     </div>
     <div class="col-1">
-      <button type="button" class="btn btn-primary" style="height: 480px; width: 36px;" @onclick="nextPage">&gt;</button>
+      <button type="button" class="btn btn-primary" style="height: 480px; width: 36px;" @onclick="NextPage">&gt;</button>
     </div>
   </div>
 </div>
@@ -115,33 +149,49 @@
   public int Id { get; set; }
   [Parameter]
   public int Value { get; set; }
-  
-  public IList<Note> NoteList { get; set; }
-  public int CurrentWeek;
+
+  private IList<Note> NoteList { get; set; }
+  private int _currentWeek;
 
   // Show the notes further ahead in time and prevent going past week 52.
-  public void nextPage()
+  private void NextPage()
   {
-    if (!((CurrentWeek+2) > 52))
+    switch (_currentWeek)
     {
-      CurrentWeek+=3;
+      case 50:
+        _currentWeek++;
+        break;
+      case 49:
+        _currentWeek += 2;
+        break;
+      case <= 48:
+        _currentWeek += 3;
+        break;
     }
   }
 
   // Show the notes further behind in time and prevent going before week 1.
-  public void previousPage()
+  private void PreviousPage()
   {
-    if (!((CurrentWeek-2) < 1))
+    switch (_currentWeek)
     {
-      CurrentWeek -=3;
+      case 3:
+        _currentWeek--;
+        break;
+      case 4:
+        _currentWeek -= 2;
+        break;
+      case >= 5:
+        _currentWeek -= 3;
+        break;
     }
   }
   
   // Using Calender Library method to get the week of today´.
-  public static int GetIsoWeekOfYear(DateTime time)
+  private static int GetIsoWeekOfYear(DateTime time)
   {
     DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
-    if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
+    if (day is >= DayOfWeek.Monday and <= DayOfWeek.Wednesday)
     {
       time = time.AddDays(3);
     }
@@ -154,8 +204,8 @@
     // Get the selected group's notes
     NoteList = await _noteService.GetNoteList(Value.ToString());
     
-    // Get todays week
-    CurrentWeek = GetIsoWeekOfYear(DateTime.Today);
+    // Get today's week
+    _currentWeek = GetIsoWeekOfYear(DateTime.Today);
   }
   
 
