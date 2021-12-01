@@ -33,16 +33,14 @@ namespace Sep3Blazor.Data.UserData
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
-
             Console.WriteLine(user.username + "lalala");
             var reply = await client.RegisterUserAsync(
                 new RegisterRequest
                 {
-                    Username = user.username, Password = user.password, FirstName = user.firstName,
-                    LastName = user.lastName
+                    Username = user.username, Password = user.password, 
+                    FirstName = user.firstName, LastName = user.lastName
                 });
             Console.WriteLine("Greeting: " + reply);
-
             if (reply != null)
             {
                 User temp = JsonSerializer.Deserialize<User>(reply.Message);
@@ -63,7 +61,6 @@ namespace Sep3Blazor.Data.UserData
                 User user = JsonSerializer.Deserialize<User>(reply.Message);
                 return user;
             }
-
             return null;
         }
 
@@ -71,7 +68,6 @@ namespace Sep3Blazor.Data.UserData
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
-
             var reply = await client.DeleteUserAsync(
                 new UserRequest()
                 {

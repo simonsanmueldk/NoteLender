@@ -83,18 +83,18 @@
             </div>
             <div class="col-sm-6">
                 <h3>Delete Invitation</h3>
-            <EditForm Model="@Invitation" OnValidSubmit="@SubmitDelInvitation">
-                    <DataAnnotationsValidator />
-                                <ValidationSummary />
+                <EditForm Model="@Invitation" OnValidSubmit="@SubmitDelInvitation">
+                    <DataAnnotationsValidator/>
+                    <ValidationSummary/>
                     <p>
                         <label>
                             ID:
-                            <InputNumber @bind-Value="Invitation.id" />
+                            <InputNumber @bind-Value="Invitation.id"/>
                         </label>
                     </p>
                     <button type="submit">Delete</button>
-                    </EditForm>
-                </div>
+                </EditForm>
+            </div>
         </div>
     </div>
 </div>
@@ -102,17 +102,18 @@
 @code {
     public IList<Invitation> InvitationList { get; set; }
     public string SearchPhrase;
-    public Invitation Invitation = new Invitation(0,0,0,0);
-    
+    public Invitation Invitation = new Invitation(0, 0, null, 0, null, 0, null);
+
     private async void HandleValidSubmit()
     {
-       // Console.WriteLine(_invitationService.AddInvitations(Invitation));
+    // Console.WriteLine(_invitationService.AddInvitations(Invitation));
         Console.WriteLine("Invitation Id" + Invitation.id);
         Console.WriteLine("Group Id" + Invitation.groupId);
         Console.WriteLine("Invitee Id" + Invitation.inviteeId);
         Console.WriteLine("Invitor Id" + Invitation.invitorId);
 
-        Invitation invitationToAdd = new Invitation(Invitation.id, Invitation.groupId, Invitation.inviteeId, Invitation.invitorId);
+        Invitation invitationToAdd = new Invitation(Invitation.id, Invitation.groupId, Invitation.groupName, 
+            Invitation.inviteeId, Invitation.inviteeName, Invitation.invitorId, Invitation.invitorName);
         Invitation temp = await _invitationService.AddInvitations(invitationToAdd);
     }
 
@@ -126,7 +127,6 @@
         catch (ArgumentOutOfRangeException indexOutOfRangeException)
         {
             SearchPhrase = "Out of range";
-
         }
     }
 

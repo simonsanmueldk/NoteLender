@@ -205,7 +205,8 @@ namespace GrpcService.Logic
 
         public async Task<Reply> PostInvitation(RegisterInvitationRequest request, ServerCallContext context)
         {
-            Invitation invitation = new Invitation(request.Id, request.GroupId, request.InviteeId, request.InvitorId);
+            Invitation invitation = new Invitation(request.Id, request.GroupId, null, request.InviteeId, null,
+                request.InvitorId, null);
             string str = JsonSerializer.Serialize(invitation);
             Console.WriteLine(invitation);
             Console.WriteLine(str);
@@ -248,7 +249,6 @@ namespace GrpcService.Logic
             });
         }
 
-       
 
         public async Task<Reply> DeleteUser(UserRequest request, ServerCallContext context)
         {
@@ -276,7 +276,7 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
-        
+
         public async Task<Reply> GetGroupMembersList(Request request, ServerCallContext context)
         {
             Console.WriteLine(request.Name);
@@ -288,11 +288,11 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
-        
+
         public async Task<Reply> AddGroupMember(AddGroupMemberRequest request, ServerCallContext context)
         {
             Console.WriteLine(request.GroupId + ":" + request.UserId);
-            GroupMembers temp = new GroupMembers(0,request.GroupId,null,request.UserId);
+            GroupMembers temp = new GroupMembers(0, request.GroupId, null, request.UserId);
             Console.WriteLine("KRZZZZ");
             string str = JsonSerializer.Serialize(temp);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
@@ -306,6 +306,7 @@ namespace GrpcService.Logic
                     Message = message
                 });
             }
+
             return null;
         }
     }
