@@ -1,0 +1,83 @@
+﻿@page "/Invite"
+@page "/Invite/{Value:int}" 
+@using Sep3Blazor.Data.UserData
+@using Sep3Blazor.Model
+@using Sep3Blazor.Data.InvitationData
+@using Sep3Blazor.Authentication
+@inject IUserService UserService
+@inject IInvitationService invitationService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+<h3>Invite</h3>
+<div class="form-group">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <label>Search for a new member </label>
+            <span class="input-group-text">
+                <i class="fa fa-smile-o"></i>
+            </span>
+        </div>
+    </div>
+    <input type="text" placeholder="Type the username " @bind-value="username">
+</div>
+<div class="form-group">
+    <button class="btn btn-primary btn-block" @onclick="Search">Search</button>
+</div>
+<br>
+<br>
+@if (!temp)
+{
+    <p>
+        <b>User not found</b>
+    </p>
+}
+else
+{
+    <div class="col-sm-6" style="display:inline">
+        <ul class="list-group">
+            @foreach (var user in users)
+            {
+                <div class="form-group">
+                    <div class="input-group">
+                        <li class="list-group-item onHoverChange">@user.firstName @user.lastName @user.username</li>
+                            <button class="btn btn-primary btn-block" @onclick="@(() => InviteUser(user))" style="display:@temp ">Invite </button>
+                    </div>
+                </div>
+            }
+        </ul>
+    </div>
+}
+
+@code {
+    public string username;
+    public bool temp = false;
+    public List<User> users;
+
+    [Parameter]
+    public int Value { get; set; }
+
+    private User cachedUser;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        cachedUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
+    }
+
+    private async Task Search()
+    {
+        users = await UserService.GetUser(username);
+        if (users != null)
+        {
+            temp = true;
+        }
+    }
+
+    private async Task InviteUser(User user)
+    {
+        Invitation invitation = new Invitation(0, Value, user.id, cachedUser.id);
+        await invitationService.AddInvitations(invitation);
+    }
+
+}
+
+}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Grpc.Net.Client;
@@ -65,6 +66,16 @@ namespace Sep3Blazor.Data.UserData
             }
 
             return null;
+        }
+
+        public async Task<List<User>> GetUser(string username)
+        {
+            using var channel = GrpcChannel.ForAddress(URL);
+            var client = new BusinessServer.BusinessServerClient(channel);
+            var reply = await client.GetUserAsync(
+                new GetUserRequest {Username = username});
+            Console.WriteLine("Group: " + reply.Message);
+            return JsonSerializer.Deserialize<List<User>>(reply.Message);
         }
 
         public async Task<User> DeleteUser(int id)

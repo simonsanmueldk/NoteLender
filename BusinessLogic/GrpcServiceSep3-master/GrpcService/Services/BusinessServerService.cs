@@ -117,6 +117,11 @@ namespace GrpcService
             return await _logicService.GetUserList(request, context);
         }
         
+        public override async Task<Reply> GetUser(GetUserRequest request, ServerCallContext context)
+        {
+            return await _logicService.GetUser(request, context);
+        }
+
         
         public override async Task<Reply> GetGroupMembersList(Request request, ServerCallContext context)
         {

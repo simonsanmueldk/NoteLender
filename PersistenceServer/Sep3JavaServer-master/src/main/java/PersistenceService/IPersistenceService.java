@@ -19,4 +19,5 @@ public interface IPersistenceService {
      String editUser(String json, int user_id);
      String deleteNote(int noteId);
      String deleteUser(int userId);
+     String getUser(String json);
 }

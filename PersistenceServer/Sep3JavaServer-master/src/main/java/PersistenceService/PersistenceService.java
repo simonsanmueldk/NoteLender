@@ -369,18 +369,41 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
+    public String getUser(String json) {
+        try {
+            List<User> users=new ArrayList<>();
+            User userToadd=null;
+            String getString = "SELECT * FROM notelender.users WHERE username LIKE  ?";
+            PreparedStatement getGroup = connection.prepareStatement(getString);
+            getGroup.setString(1,"%"+ json+"%");
+            ResultSet rs = getGroup.executeQuery();
+
+            while (rs.next()) {
+                userToadd =new User(rs.getInt(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4),null);
+                users.add(userToadd);
+            }
+            return gson.toJson(users);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+
+    }
+
+    @Override
     public String addInvitation(String json) {
         {
             System.out.println("JSON: " + json);
             Invitation invitation = gson.fromJson(json, Invitation.class);
 
-            String addString = "INSERT INTO notelender.invitations (id,invitor_id,invitee_id,group_id) VALUES (?,?,?,?)";
+            String addString = "INSERT INTO notelender.invitations (invitor_id,invitee_id,group_id) VALUES (?,?,?)";
             try {
                 PreparedStatement addInvitation = connection.prepareStatement(addString, PreparedStatement.RETURN_GENERATED_KEYS);
-                addInvitation.setInt(1, invitation.getId());
-                addInvitation.setInt(2, invitation.getInvitorId());
-                addInvitation.setInt(3, invitation.getInviteeId());
-                addInvitation.setInt(4, invitation.getGroupId());
+
+                addInvitation.setInt(1, invitation.getInvitorId());
+                addInvitation.setInt(2, invitation.getInviteeId());
+                addInvitation.setInt(3, invitation.getGroupId());
                 addInvitation.executeUpdate();
 
                 try (ResultSet keys = addInvitation.getGeneratedKeys()) {

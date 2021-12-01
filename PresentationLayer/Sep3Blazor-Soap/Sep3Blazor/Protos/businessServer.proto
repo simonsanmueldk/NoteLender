@@ -25,6 +25,7 @@ service BusinessServer {
   rpc DeleteInvitation(Request) returns (Reply);
    rpc DeleteUser(UserRequest) returns (Reply);
    rpc AddGroupMember(AddGroupMemberRequest) returns (Reply);
+     rpc GetUser(GetUserRequest) returns  (Reply);
 }
 
 
@@ -33,6 +34,11 @@ message Request {
   string name = 1;
   string type = 2;
 }
+message GetUserRequest{
+int32 id=1;
+string username = 2;
+}
+
 message UserRequest{
 int32 id=1;
 }

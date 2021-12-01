@@ -150,6 +150,7 @@ namespace GrpcService.Logic
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string message = await responseMessage.Content.ReadAsStringAsync();
+                    Console.WriteLine(message+"aleooooooooo");
                     User user = JsonSerializer.Deserialize<User>(message);
                     if (request.Type.Equals(user.password))
                     {
@@ -260,6 +261,19 @@ namespace GrpcService.Logic
 
             string message = await responseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(message);
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+
+        public async Task<Reply> GetUser(GetUserRequest request, ServerCallContext context)
+        {
+            Console.WriteLine(request.Username+"aleoo");
+            Task<string> stringAsync = _client.GetStringAsync(uri + "/users/" + request.Username);
+            
+            string message = await stringAsync;
+            Console.WriteLine(message+"aleoox2");
             return await Task.FromResult(new Reply
             {
                 Message = message
