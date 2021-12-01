@@ -23,6 +23,11 @@ namespace Sep3Blazor.Data.GroupMembersData
 
       
 
+        public Task<IList<GroupMembers>> GetGroupMembersList(int group_id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IList<GroupMembers>> AddGroupMember(int groupId, int userId)
         {
             Console.WriteLine("G" + groupId + " U " + userId);

@@ -415,7 +415,6 @@ public class PersistenceService implements IPersistenceService {
     @Override
     public String getInvitationList(String id) {
 
-        System.out.println("Get invitation man");
         List<Invitation> InvitationList = new ArrayList<>();
         try {
             String getString = "SELECT invitations.id, g.id, g.groupname, invitations.invitee_id, u2.username, " +
@@ -434,7 +433,6 @@ public class PersistenceService implements IPersistenceService {
                         rs.getString(5), rs.getInt(6),
                         rs.getString(7));
                 InvitationList.add(invitationToAdd);
-                System.out.println(invitationToAdd.getId());
             }
             return gson.toJson(InvitationList);
         } catch (SQLException throwables) {
