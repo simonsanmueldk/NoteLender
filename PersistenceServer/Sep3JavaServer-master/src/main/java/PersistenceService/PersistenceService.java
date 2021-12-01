@@ -293,25 +293,25 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public String getUser(String json) {
+    public ResponseEntity<List<User>> getUser(String json) {
         try {
             List<User> users=new ArrayList<>();
-            User userToadd=null;
+            User userToAdd=null;
             String getString = "SELECT * FROM notelender.users WHERE username LIKE  ?";
             PreparedStatement getGroup = connection.prepareStatement(getString);
             getGroup.setString(1,"%"+ json+"%");
             ResultSet rs = getGroup.executeQuery();
 
             while (rs.next()) {
-                userToadd =new User(rs.getInt(1), rs.getString(2),
+                userToAdd =new User(rs.getInt(1), rs.getString(2),
                         rs.getString(3), rs.getString(4),null);
-                users.add(userToadd);
+                users.add(userToAdd);
             }
-            return gson.toJson(users);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return null;
 
     }
 

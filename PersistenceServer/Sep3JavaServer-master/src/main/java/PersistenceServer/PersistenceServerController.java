@@ -26,13 +26,11 @@ public class PersistenceServerController {
     }
 
     @GetMapping("/users/{username}")
-    public synchronized String getUser(@PathVariable(value = "username") String username) {
+    public ResponseEntity<List<User>> getUser(@PathVariable(value = "username") String username) {
         System.out.println("Get user");
         return persistenceService.getUser(username);
     }
 
-    @PostMapping("/user")
-    public synchronized String ValidateUser(@RequestBody String json) {
     @PostMapping("/user")
     public ResponseEntity<User> ValidateUser(@RequestBody String json) {
         System.out.println("It's working Validate");

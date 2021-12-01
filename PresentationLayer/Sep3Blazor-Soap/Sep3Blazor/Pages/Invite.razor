@@ -74,7 +74,7 @@ else
 
     private async Task InviteUser(User user)
     {
-        Invitation invitation = new Invitation(0, Value, user.id, cachedUser.id);
+        Invitation invitation = new Invitation(0, Value,null, user.id,null, cachedUser.id,null);
         await invitationService.AddInvitations(invitation);
     }
 

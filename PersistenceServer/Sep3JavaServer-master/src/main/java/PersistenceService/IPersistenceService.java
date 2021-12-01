@@ -1,6 +1,11 @@
 package PersistenceService;
 
 
+import Model.*;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
+
 public interface IPersistenceService {
      ResponseEntity<List<Group>> getGroup(int id);
      ResponseEntity<Group> postGroup(String json);
@@ -19,5 +24,5 @@ public interface IPersistenceService {
      ResponseEntity<Void> editUser(String json, int user_id);
      ResponseEntity<Void> deleteNote(int noteId);
      ResponseEntity<Void> deleteUser(int userId);
-      String getUser(String json);
+     ResponseEntity<List<User>> getUser(String json);
 }
