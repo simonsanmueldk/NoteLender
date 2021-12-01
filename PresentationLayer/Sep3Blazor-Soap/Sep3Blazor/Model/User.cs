@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace Sep3Blazor.Model
 {
@@ -16,6 +17,7 @@ namespace Sep3Blazor.Model
         [Required] /*[Range(7,15,ErrorMessage = "Please enter a value between 7-15 characters for Password")]*/
         public String password { get; set; }
 
+
         public User(int id, string firstName, string lastName, string username, string password)
         {
             this.id = id;
@@ -24,5 +26,6 @@ namespace Sep3Blazor.Model
             this.username = username;
             this.password = password;
         }
+
     }
 }

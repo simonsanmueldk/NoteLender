@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace GrpcService.Model
 {
@@ -10,6 +11,7 @@ namespace GrpcService.Model
         public String username { get; set; }
         public String password { get; set; }
 
+       
         public User(int id, String firstName, String lastName, String username, String password)
         {
             this.id = id;
@@ -18,5 +20,6 @@ namespace GrpcService.Model
             this.username = username;
             this.password = password;
         }
+      
     }
 }

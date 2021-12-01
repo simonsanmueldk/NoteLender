@@ -7,21 +7,27 @@
 @inject IGroupService _groupService
 @inject IRefreshService _refreshService
 @inject NavigationManager NavigationManager
-<h3>GroupListing</h3>
+<h3>My groups</h3>
 
 @if (GroupList == null)
 {
+    <progress></progress>
+}
+else if (GroupList.Count == 0)
+{
     <p>
-        <em>Loading...</em>
+        You are not part of any group.
+         <br>
+        You can create group Here or accept invitation on the right
     </p>
 }
 else
 {
-    <div class="col-sm-6" style="display:inline">
+    <div class="col-sm-3" style="display:inline">
         <ul class="list-group">
             @foreach (var group in GroupList)
             {
-                <li class="list-group-item onHoverChange" @onclick="@(() => ChangeSelectedGroup(group))">@group.id @group.name</li>
+                <li class="list-group-item onHoverChange" @onclick="@(() => ChangeSelectedGroup(group))">@group.name</li>
             }
         </ul>
     </div>
@@ -41,7 +47,7 @@ else
         base.OnInitialized();
         _refreshService.RefreshRequested += RefreshState;
         Console.WriteLine("GroupListing");
-        GroupList = await _groupService.GetGroupMembersList(Convert.ToInt32(Value));
+        GroupList = await _groupService.GetGroupList(Convert.ToInt32(Value));
     }
 
     private void ChangeSelectedGroup(Group group)
@@ -50,11 +56,11 @@ else
         Console.WriteLine(Value);
         NavigationManager.NavigateTo("/GroupPage/" + group.id);
     }
-    
+
     public async void RefreshState()
     {
         Console.WriteLine("Hey, i got called from component GroupListing");
-        GroupList = await _groupService.GetGroupMembersList(Convert.ToInt32(Value));
+        GroupList = await _groupService.GetGroupList(Convert.ToInt32(Value));
         StateHasChanged();
     }
 

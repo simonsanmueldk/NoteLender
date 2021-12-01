@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Grpc.Net.Client;
@@ -33,16 +34,14 @@ namespace Sep3Blazor.Data.UserData
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
-
             Console.WriteLine(user.username + "lalala");
             var reply = await client.RegisterUserAsync(
                 new RegisterRequest
                 {
-                    Username = user.username, Password = user.password, FirstName = user.firstName,
-                    LastName = user.lastName
+                    Username = user.username, Password = user.password, 
+                    FirstName = user.firstName, LastName = user.lastName
                 });
             Console.WriteLine("Greeting: " + reply);
-
             if (reply != null)
             {
                 User temp = JsonSerializer.Deserialize<User>(reply.Message);
@@ -63,15 +62,23 @@ namespace Sep3Blazor.Data.UserData
                 User user = JsonSerializer.Deserialize<User>(reply.Message);
                 return user;
             }
-
             return null;
+        }
+
+        public async Task<List<User>> GetUser(string username)
+        {
+            using var channel = GrpcChannel.ForAddress(URL);
+            var client = new BusinessServer.BusinessServerClient(channel);
+            var reply = await client.GetUserAsync(
+                new GetUserRequest {Username = username});
+            Console.WriteLine("Group: " + reply.Message);
+            return JsonSerializer.Deserialize<List<User>>(reply.Message);
         }
 
         public async Task<User> DeleteUser(int id)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
-
             var reply = await client.DeleteUserAsync(
                 new UserRequest()
                 {

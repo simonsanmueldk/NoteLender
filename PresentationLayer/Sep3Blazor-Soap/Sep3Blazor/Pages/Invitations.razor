@@ -10,11 +10,18 @@
 @inject IGroupMembersService _groupMembersService
 
 <h3>Pending invitations</h3>
-<button type="submit" @onclick="SubmitGetInvitation">GET</button>
 
 @if (InvitationList == null)
 {
-    Console.WriteLine("No invitations");
+    <progress></progress>
+}
+else if (InvitationList.Count == 0)
+{
+    <p>
+        You don't have any invitations yet.
+        <br>
+        You can wait for other users to invite you or you can create group on the letf
+    </p>
 }
 else
 {
@@ -25,9 +32,12 @@ else
                 @invitation.id
             </div>
             <div class="card-body">
-                <p>@invitation.invitorId Wants you to pe apart of group @invitation.groupId </p>
+                <p>User @invitation.invitorName Wants you to pe apart of group @invitation.groupName </p>
 
-                <button type="button" style="background-color: darkgreen "@onclick="@(() => AcceptInvitation(invitation.inviteeId, invitation.groupId, invitation.id))">Accept</button>
+                <button type="button" style="background-color: darkgreen "
+                        @onclick="@(() => AcceptInvitation(invitation.inviteeId, invitation.groupId, invitation.id))">
+                    Accept
+                </button>
                 <button type="button" style="background-color: red" @onclick="@(() => RemoveInvitation(invitation.id))">Decline</button>
 
             </div>
@@ -51,19 +61,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine("Invitation");
-        try
-        {
-            InvitationList = await _invitationService.GetInvitations(Value.ToString());
-            foreach (var invitation in InvitationList)
-            {
-                Console.WriteLine(invitation.id);
-            }
-            SearchPhrase = InvitationList[0].id.ToString();
-        }
-        catch (ArgumentOutOfRangeException indexOutOfRangeException)
-        {
-            SearchPhrase = "Out of range";
-        }
+        await SubmitGetInvitation();
     }
 
     private async Task RemoveInvitation(int id)
@@ -99,9 +97,10 @@ else
 
     private async Task AcceptInvitation(int groupId, int userId, int invitationId)
     {
-        await _groupMembersService.AddGroupMember(groupId,userId);
+        await _groupMembersService.AddGroupMember(groupId, userId);
         await _invitationService.DeleteInvitation(invitationId.ToString());
         _refreshService.CallRequestRefresh();
+        await SubmitGetInvitation();
     //await _groupMembersService.GetGroupMembersList(id);
     }
 

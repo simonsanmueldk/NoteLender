@@ -43,7 +43,7 @@ namespace Sep3Blazor.Data.GroupData
             // return GroupList;
         }
 
-        public async Task<IList<Group>> GetGroupMembersList(int groupId)
+        public async Task<IList<Group>> GetGroupList(int groupId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
