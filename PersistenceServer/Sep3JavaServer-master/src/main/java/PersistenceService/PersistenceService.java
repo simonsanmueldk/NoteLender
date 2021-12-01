@@ -417,7 +417,6 @@ public class PersistenceService implements IPersistenceService {
     @Override
     public String getInvitationList(String id) {
 
-        System.out.println("Get invitation man");
         List<Invitation> InvitationList = new ArrayList<>();
         try {
             String getString = "SELECT * FROM notelender.invitations WHERE invitee_id = ?";
@@ -428,7 +427,6 @@ public class PersistenceService implements IPersistenceService {
                 Invitation invitationToAdd = new Invitation(rs.getInt(1),
                         rs.getInt(2), rs.getInt(3), rs.getInt(4));
                 InvitationList.add(invitationToAdd);
-                System.out.println(invitationToAdd.getId());
             }
             return gson.toJson(InvitationList);
         } catch (SQLException throwables) {
