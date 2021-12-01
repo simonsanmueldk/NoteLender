@@ -6,3 +6,8 @@
 .table-wrapper-scroll-y {
     display: block;
 }
+
+.btn {
+    margin-bottom: 5px;
+    margin-top: 6px;
+}
