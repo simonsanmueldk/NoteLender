@@ -15,9 +15,10 @@ namespace Sep3Blazor.Data.InvitationData
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
-            
-            Console.WriteLine("ID: " + invitation.id + "Group: " + invitation.groupId, " InviteeId: " + invitation.inviteeId +
-                              "InvitorId: " + invitation.invitorId );
+
+            Console.WriteLine("ID: " + invitation.id + "Group: " + invitation.groupId, " InviteeId: " +
+                invitation.inviteeId +
+                "InvitorId: " + invitation.invitorId);
 
             var reply = await client.PostInvitationAsync(new RegisterInvitationRequest
                 {
@@ -40,7 +41,7 @@ namespace Sep3Blazor.Data.InvitationData
             Console.WriteLine("haaland: " + reply.Message);
             return JsonSerializer.Deserialize<List<Invitation>>(reply.Message);
         }
-        
+
         public async Task<object> DeleteInvitation(string userId)
         {
             using var channel = GrpcChannel.ForAddress(URL);

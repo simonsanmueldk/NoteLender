@@ -223,13 +223,12 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public String addGroupMember(String json)
-    {
+    public String addGroupMember(String json) {
         String addString =
-            "INSERT INTO notelender.groupmembers (user_id,group_id) VALUES (?,?)";
+                "INSERT INTO notelender.groupmembers (user_id,group_id) VALUES (?,?)";
         System.out.println("JSON: " + json);
         GroupMembers groupMembers = gson.fromJson(json, GroupMembers.class);
-        System.out.println("GroupMembers: " + groupMembers.getId() +" " +  groupMembers.getUserId() + " " +groupMembers.getUsername()+ " " + groupMembers.getGroupId());
+        System.out.println("GroupMembers: " + groupMembers.getId() + " " + groupMembers.getUserId() + " " + groupMembers.getUsername() + " " + groupMembers.getGroupId());
         try {
             PreparedStatement addGroupMember = connection.prepareStatement(addString, PreparedStatement.RETURN_GENERATED_KEYS);
             addGroupMember.setInt(1, groupMembers.getUserId());
@@ -238,7 +237,7 @@ public class PersistenceService implements IPersistenceService {
             try (ResultSet keys = addGroupMember.getGeneratedKeys()) {
                 if (keys.next()) {
                     GroupMembers groupMemberToAdd = new GroupMembers(keys.getInt(1), keys.getInt(2),
-                        "",keys.getInt(3));
+                            "", keys.getInt(3));
                     return gson.toJson(groupMemberToAdd);
                 } else {
                     throw new SQLException("Creating failed, no ID obtained.");
@@ -367,7 +366,7 @@ public class PersistenceService implements IPersistenceService {
         }
         return null;
     }
-
+//REPAIR THIS LATER
     @Override
     public String addInvitation(String json) {
         {
@@ -385,9 +384,8 @@ public class PersistenceService implements IPersistenceService {
 
                 try (ResultSet keys = addInvitation.getGeneratedKeys()) {
                     if (keys.next()) {
-                        Invitation invitationToAdd = new Invitation(keys.getInt(1), keys.getInt(2),
-                                keys.getInt(3), keys.getInt(4));
-                        return gson.toJson(invitationToAdd);
+
+                        return gson.toJson("Success");
                     } else {
                         throw new SQLException("Creating failed, no ID obtained.");
                     }
@@ -420,13 +418,21 @@ public class PersistenceService implements IPersistenceService {
         System.out.println("Get invitation man");
         List<Invitation> InvitationList = new ArrayList<>();
         try {
-            String getString = "SELECT * FROM notelender.invitations WHERE invitee_id = ?";
+            String getString = "SELECT invitations.id, g.id, g.groupname, invitations.invitee_id, u2.username, " +
+                    "invitations.invitor_id, u.username\n" +
+                    "FROM notelender.invitations\n" +
+                    "         inner join notelender.groups g on g.id = invitations.group_id\n" +
+                    "         inner join notelender.users u on u.id = invitations.invitor_id\n" +
+                    "         inner join notelender.users u2 on u2.id = invitations.invitee_id\n" +
+                    "WHERE invitee_id = ?";
             PreparedStatement getInvitation = connection.prepareStatement(getString);
             getInvitation.setInt(1, Integer.parseInt(id));
             ResultSet rs = getInvitation.executeQuery();
             while (rs.next()) {
-                Invitation invitationToAdd = new Invitation(rs.getInt(1),
-                        rs.getInt(2), rs.getInt(3), rs.getInt(4));
+                Invitation invitationToAdd = new Invitation(rs.getInt(1), rs.getInt(2),
+                        rs.getString(3), rs.getInt(4),
+                        rs.getString(5), rs.getInt(6),
+                        rs.getString(7));
                 InvitationList.add(invitationToAdd);
                 System.out.println(invitationToAdd.getId());
             }
