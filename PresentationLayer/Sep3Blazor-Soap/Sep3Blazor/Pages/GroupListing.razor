@@ -47,7 +47,7 @@ else
         base.OnInitialized();
         _refreshService.RefreshRequested += RefreshState;
         Console.WriteLine("GroupListing");
-        GroupList = await _groupService.GetGroupMembersList(Convert.ToInt32(Value));
+        GroupList = await _groupService.GetGroupList(Convert.ToInt32(Value));
     }
 
     private void ChangeSelectedGroup(Group group)
@@ -60,7 +60,7 @@ else
     public async void RefreshState()
     {
         Console.WriteLine("Hey, i got called from component GroupListing");
-        GroupList = await _groupService.GetGroupMembersList(Convert.ToInt32(Value));
+        GroupList = await _groupService.GetGroupList(Convert.ToInt32(Value));
         StateHasChanged();
     }
 
