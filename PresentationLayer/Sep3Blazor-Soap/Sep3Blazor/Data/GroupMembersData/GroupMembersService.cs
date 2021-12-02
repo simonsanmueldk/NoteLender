@@ -38,14 +38,14 @@ namespace Sep3Blazor.Data.GroupMembersData
             Console.WriteLine("Group: " + reply.Message);
         }
 
-        public async Task DeleteGroupMembersList(int group_id, int user_id)
+        public async Task LeaveGroup(int group_id, int user_id)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
             try
             {
-                var reply = await client.DeleteGroupMemberAsync(
-                    new DeleteGroupMemberRequest {GroupId = group_id, UserId = user_id});
+                var reply = await client.LeaveGroupAsync(
+                    new DeleteGroupMemberRequest() {GroupId = group_id,UserId = user_id});
                 Console.WriteLine("Group: " + reply.Message);
             }
             catch (RpcException e)
@@ -54,6 +54,19 @@ namespace Sep3Blazor.Data.GroupMembersData
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
             }
+        }
+        public async Task DeleteGroupMember(int id)
+        {
+            using var channel = GrpcChannel.ForAddress(URL);
+            var client = new BusinessServer.BusinessServerClient(channel);
+
+            var reply = await client.DeleteGroupMemberAsync(
+                new UserRequest()
+                {
+                    Id = id
+                }
+            );
+            Console.WriteLine("DeleteGroupMember " + reply.Message); 
         }
     }
 }

@@ -94,6 +94,11 @@ public class PersistenceServerController {
         System.out.println("It's working Get");
         return persistenceService.getGroupList(id);
     }
+    @DeleteMapping("/groupmembers/{id}")
+    public ResponseEntity<Void> deleteGroupMember(@PathVariable(value = "id") int id) {
+        System.out.println("It's working Delete groupMember");
+        return persistenceService.deleteGroupMember(id);
+    }
 
     @DeleteMapping("/group/{id}")
     public ResponseEntity<Void> deleteGroup(@PathVariable(value = "id") int id) {
@@ -123,10 +128,5 @@ public class PersistenceServerController {
     public ResponseEntity<Void> AddGroupMember(@RequestBody String json) {
         return persistenceService.addGroupMember(json);
     }
-
-    @PostMapping("/groupmembers/{id}")
-    public ResponseEntity<Void> AddGroupMember(@PathVariable(value = "id") int id,@RequestBody String json) {
-        System.out.println("I'm deleting myself");
-        return persistenceService.deleteGroupMember(id, json);
-    }
+    
 }
