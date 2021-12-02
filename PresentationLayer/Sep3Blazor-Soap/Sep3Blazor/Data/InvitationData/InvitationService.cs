@@ -42,7 +42,7 @@ namespace Sep3Blazor.Data.InvitationData
             return JsonSerializer.Deserialize<List<Invitation>>(reply.Message);
         }
 
-        public async Task<object> DeleteInvitation(string userId)
+        public async Task DeleteInvitation(string userId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
@@ -54,7 +54,7 @@ namespace Sep3Blazor.Data.InvitationData
                 }
             );
             Console.WriteLine("Delete: " + reply.Message);
-            return null;
+          
         }
     }
 }
