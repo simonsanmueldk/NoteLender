@@ -123,4 +123,10 @@ public class PersistenceServerController {
     public ResponseEntity<Void> AddGroupMember(@RequestBody String json) {
         return persistenceService.addGroupMember(json);
     }
+
+    @PostMapping("/groupmembers/{id}")
+    public ResponseEntity<Void> AddGroupMember(@PathVariable(value = "id") int id,@RequestBody String json) {
+        System.out.println("I'm deleting myself");
+        return persistenceService.deleteGroupMember(id, json);
+    }
 }

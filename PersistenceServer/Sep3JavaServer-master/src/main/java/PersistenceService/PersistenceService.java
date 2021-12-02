@@ -208,6 +208,22 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
+    public ResponseEntity<Void> deleteGroupMember(int id, String json) {
+        System.out.println(json);
+        System.out.println(id);
+        String deleteString = "DELETE FROM notelender.groupmembers WHERE group_id = ? and user_id = ?";
+        try {
+            PreparedStatement deleteGroupMember = connection.prepareStatement(deleteString);
+            deleteGroupMember.setInt(1, id);
+            deleteGroupMember.setInt(2, Integer.parseInt(json));
+            deleteGroupMember.executeUpdate();
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Override
     public ResponseEntity<User> validateUser(String json) {
         User user = null;
         User temp = gson.fromJson(json, User.class);
@@ -294,16 +310,16 @@ public class PersistenceService implements IPersistenceService {
     @Override
     public ResponseEntity<List<User>> getUser(String json) {
         try {
-            List<User> users=new ArrayList<>();
-            User userToAdd=null;
+            List<User> users = new ArrayList<>();
+            User userToAdd = null;
             String getString = "SELECT * FROM notelender.users WHERE username LIKE  ?";
             PreparedStatement getGroup = connection.prepareStatement(getString);
-            getGroup.setString(1,"%"+ json+"%");
+            getGroup.setString(1, "%" + json + "%");
             ResultSet rs = getGroup.executeQuery();
 
             while (rs.next()) {
-                userToAdd =new User(rs.getInt(1), rs.getString(2),
-                        rs.getString(3), rs.getString(4),null);
+                userToAdd = new User(rs.getInt(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4), null);
                 users.add(userToAdd);
             }
             return new ResponseEntity<>(users, HttpStatus.OK);
