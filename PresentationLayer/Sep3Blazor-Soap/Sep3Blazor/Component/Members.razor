@@ -67,8 +67,7 @@
         cachedUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
         GroupMembersList = await _groupMembersService.GetUserList(Id);
     }
-
-
+    
     private async Task LeaveGroup()
     {
         Console.WriteLine("KSAIDIAD");
