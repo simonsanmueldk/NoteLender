@@ -20,12 +20,32 @@
         }
         else
         {
-            <select class="form-select" multiple aria-label="multiple select example">
+            <table class="table table-sm table-hover">
                 @foreach (var member in GroupMembersList)
                 {
-                    <option value="@member.userId">@member.username</option>
+                    <tbody>
+                    <tr>
+                        <th scope="col">
+                            <i>Username</i>
+                        </th>
+                        <td>
+                            <b>@member.username</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="col">
+                            <i>Remove</i>
+                        </th>
+                        <td>
+                            <button @onclick="@(() => DeleteMember(member.id))">
+                                <i class="oi oi-trash" style="color:red"/>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <br>
                 }
-            </select>
+            </table>
         }
     </div>
     <div class="col-3 offset-1">
@@ -72,8 +92,15 @@
     private async Task LeaveGroup()
     {
         Console.WriteLine("KSAIDIAD");
-        await _groupMembersService.DeleteGroupMembersList(Id, cachedUser.id);
+        await _groupMembersService.LeaveGroup(Id, cachedUser.id);
         NavigationManager.NavigateTo("/");
+    }
+
+    private async Task DeleteMember(int id)
+    {
+        Console.WriteLine("HAHAHA" + id);
+        await _groupMembersService.DeleteGroupMember(id);
+        GroupMembersList = await _groupMembersService.GetUserList(Id);
     }
 
 }

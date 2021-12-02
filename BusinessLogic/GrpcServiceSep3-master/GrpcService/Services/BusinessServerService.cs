@@ -133,11 +133,17 @@ namespace GrpcService
             return await _logicService.AddGroupMember(request, context);
         }
         
-        public override async Task<Reply> DeleteGroupMember(DeleteGroupMemberRequest request, ServerCallContext context)
+        public override async Task<Reply> DeleteGroupMember(UserRequest request, ServerCallContext context)
         {
             return await _logicService.DeleteGroupMember(request, context);
         }
+        
+        public override async Task<Reply> LeaveGroup(DeleteGroupMemberRequest request, ServerCallContext context)
+        {
+            return await _logicService.LeaveGroup(request, context);
+        }
 
+        
 
     }
 }

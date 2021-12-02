@@ -13,7 +13,8 @@ public interface IPersistenceService {
      ResponseEntity<List<GroupMembers>> getUserList(int id);
      ResponseEntity<List<Group>> getGroupList(int id);
      ResponseEntity<Void> addGroupMember(String json);
-     ResponseEntity<Void> deleteGroupMember(int id,String json);
+     ResponseEntity<Void> leaveGroup(int user_id,String json);
+     ResponseEntity<Void> deleteGroupMember(int id);
      ResponseEntity<List<Note>> getNote(int groupId);
      ResponseEntity<Void> addNote(String json);
      ResponseEntity<Void> editNote(String json);
