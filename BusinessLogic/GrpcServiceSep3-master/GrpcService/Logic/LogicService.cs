@@ -24,6 +24,11 @@ namespace GrpcService.Logic
             HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await _client.PutAsync(uri + "/group", content);
             Console.WriteLine("1" + responseMessage.Content);
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                throw new Exception(responseMessage.StatusCode + responseMessage.ReasonPhrase);
+            }
+
             string message = await responseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(message);
             return await Task.FromResult(new Reply
@@ -101,7 +106,7 @@ namespace GrpcService.Logic
 
         public async Task<Reply> DeleteNote(Request request, ServerCallContext context)
         {
-            Console.WriteLine(request);
+            Console.WriteLine("Name "+request);
             HttpResponseMessage responseMessage = await _client.DeleteAsync(uri + "/note/" + request.Name);
             if (!responseMessage.IsSuccessStatusCode)
             {

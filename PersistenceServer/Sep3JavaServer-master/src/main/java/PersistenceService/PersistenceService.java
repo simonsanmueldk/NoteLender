@@ -267,7 +267,7 @@ public class PersistenceService implements IPersistenceService {
     @Override
     public ResponseEntity<Void> deleteNote(int noteId) {
         String sql = "DELETE FROM notelender.notes WHERE id = ?";
-
+        System.out.println(noteId);
         try {
             PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setInt(1, noteId);

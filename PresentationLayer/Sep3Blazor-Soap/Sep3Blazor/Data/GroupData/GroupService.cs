@@ -18,6 +18,7 @@ namespace Sep3Blazor.Data.GroupData
             var client = new BusinessServer.BusinessServerClient(channel);
             var reply = await client.PostGroupAsync(
                 new Request {Name = s});
+            
             Console.WriteLine("Greeting: " + reply.Message);
             return JsonSerializer.Deserialize<List<Group>>(reply.Message);
         }

@@ -2,150 +2,408 @@
 @page "/Notes/{Id:int}" 
 @using Sep3Blazor.Model
 @using System.Globalization
-@using Sep3Blazor.Authentication
-@inject AuthenticationStateProvider AuthenticationStateProvider
 @using Sep3Blazor.Data.NoteData
-@using Sep3Blazor.Component
 
 @inject INoteService _noteService
 
 <div class="container-fluid">
-    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleAddModal"><i class="oi oi-plus"></i> New note</button>
-    <div class="modal fade" id="exampleAddModal" tabindex="-1" aria-labelledby="exampleAddModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="background-color:white">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleAddModalLabel">Add Node in Group @Id</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
-                </div>
-                <div class="modal-body">
-                    <EditForm Model="@noteToAdd" OnValidSubmit="@SubmitAddNote">
-                        <DataAnnotationsValidator/>
-                        <ValidationSummary/>
-                        <p>
-                            <label>
-                                Week:
-                                <InputNumber @bind-Value="noteToAdd.week"/>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                Year:
-                                <InputNumber @bind-Value="noteToAdd.year"/>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                Name:
-                                <InputText @bind-Value="noteToAdd.name"/>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                Status:
-                                <InputSelect @bind-Value="noteToAdd.status">
-                                    <option value="">Not started</option>
-                                    <option value="Started">Started</option>
-                                    <option value="Finished">Finished</option>
-                                </InputSelect>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                Text
-                                <InputTextArea @bind-Value="noteToAdd.text"/>
-                            </label>
-                        </p>
-                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    </EditForm>
-                </div>
+<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleAddModal"><i class="oi oi-plus"></i> New note</button>
+<div class="modal fade" id="exampleAddModal" tabindex="-1" aria-labelledby="exampleAddModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color:white">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleAddModalLabel">Add Node in Group @Id</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+            </div>
+            <div class="modal-body">
+                <EditForm Model="@noteToAdd" OnValidSubmit="@SubmitAddNote">
+                    <DataAnnotationsValidator/>
+                    <ValidationSummary/>
+                    <p>
+                        <label>
+                            Week:
+                            <InputNumber @bind-Value="noteToAdd.week"/>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            Year:
+                            <InputNumber @bind-Value="noteToAdd.year"/>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            Name:
+                            <InputText @bind-Value="noteToAdd.name"/>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            Status:
+                            <InputSelect @bind-Value="noteToAdd.status">
+                                <option value="">Not started</option>
+                                <option value="Started">Started</option>
+                                <option value="Finished">Finished</option>
+                            </InputSelect>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            Text
+                            <InputTextArea @bind-Value="noteToAdd.text"/>
+                        </label>
+                    </p>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </EditForm>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-1">
-            <button type="button" class="btn btn-secondary" style="height: 480px; width: 36px;" @onclick="PreviousPage">&lt;</button>
-        </div>
-        <div class="col-10">
-            <div class="row justify-content-between">
-                <div class="col-sm-4">
-                    <div class="p-3 mb-2 bg-secondary text-white">
-                        Week @(_currentWeek - 1)
-                    </div>
-                    <table class="table table-sm table-hover table-wrapper-scroll-y my-custom-scrollbar">
-                        @if (NoteList == null)
-                        {
-                            <p>
-                                <em>Loading...</em>
-                            </p>
-                        }
-                        else
-                        {
-                            @foreach (Note note in NoteList)
-                            {
-                                if (note.week == (_currentWeek - 1))
-                                {
-                                    <CascadingValue Value="@note">
-                                        <StickyNote Value=@Id></StickyNote>
-                                    </CascadingValue>
-                                }
-                            }
-                        }
-                    </table>
-                </div>
-                <div class="col-sm-4">
-                    <div class="p-3 mb-2 bg-secondary text-white">
-                        Week @_currentWeek
-                    </div>
-                    <table class="table table-sm table-hover table-wrapper-scroll-y my-custom-scrollbar">
-                        @if (NoteList == null)
-                        {
-                            Console.WriteLine("NoteList is empty/non-existing");
-                        }
-                        else
-                        {
-                            @foreach (Note note in NoteList)
-                            {
-                                if (note.week == _currentWeek)
-                                {
-                                    <CascadingValue Value="@note">
-                                        <StickyNote Value=@Id></StickyNote>
-                                    </CascadingValue>
-                                }
-                            }
-                        }
-                    </table>
-                </div>
-                <div class="col-sm-4">
-                    <div class="p-3 mb-2 bg-secondary text-white">
-                        Week @(_currentWeek + 1)
-                    </div>
-                    <table class="table table-sm table-hover table-wrapper-scroll-y my-custom-scrollbar">
-                        @if (NoteList == null)
-                        {
-                            Console.WriteLine("NoteList is empty/non-existing");
-                        }
-                        else
-                        {
-                            @foreach (Note note in NoteList)
-                            {
-                                if (note.week == (_currentWeek + 1))
-                                {
-                                    <CascadingValue Value="@note">
-                                        <StickyNote Value=@Id></StickyNote>
-                                    </CascadingValue>
-                                }
-                            }
-                        }
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-1">
-            <button type="button" class="btn btn-primary" style="height: 480px; width: 36px;" @onclick="NextPage">&gt;</button>
-        </div>
+</div>
+<div class="row">
+<div class="col-1">
+    <button type="button" class="btn btn-secondary" style="height: 480px; width: 36px;" @onclick="PreviousPage">&lt;</button>
+</div>
+<div class="col-10">
+<div class="row justify-content-between">
+<div class="col-sm-4">
+    <div class="p-3 mb-2 bg-secondary text-white">
+        Week @(_currentWeek - 1)
     </div>
+    <table class="table table-sm table-hover table-wrapper-scroll-y my-custom-scrollbar">
+        @if (NoteList == null)
+        {
+            <p>
+                <em>Loading...</em>
+            </p>
+        }
+        else
+        {
+            @foreach (Note note in NoteList)
+            {
+                if (note.week == (_currentWeek - 1))
+                {
+                    <tbody>
+                    <tr>
+                        <th scope="row">Name</th>
+                        <td>@note.name</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Year</th>
+                        <td>@note.year</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Status</th>
+                        <td>@note.status</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Text</th>
+                        <td class="table-warning">@note.text</td>
+                    </tr>
+                    </tbody>
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleEditModal">Edit</button>
+                    <div class="modal fade" id="exampleEditModal" tabindex="-1" aria-labelledby="exampleEditModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content" style="background-color:white">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleEditModalLabel">Node @note.id in Group @note.groupId</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <EditForm Model="@noteToAdd" OnValidSubmit="@SubmitEditNote">
+                                        <DataAnnotationsValidator/>
+                                        <ValidationSummary/>
+                                        <p>
+                                            <label>
+                                                Week:
+                                                <InputNumber @bind-Value="note.week"/>
+                                            </label>
+                                        </p>
+                                        <p>
+                                            <label>
+                                                Year:
+                                                <InputNumber @bind-Value="note.year"/>
+                                            </label>
+                                        </p>
+                                        <p>
+                                            <label>
+                                                Name:
+                                                <InputText @bind-Value="note.name"/>
+                                            </label>
+                                        </p>
+                                        <p>
+                                            <label>
+                                                Status:
+                                                <InputSelect @bind-Value="note.status">
+                                                    <option value="">Not started</option>
+                                                    <option value="Started">Started</option>
+                                                    <option value="Finished">Finished</option>
+                                                </InputSelect>
+                                            </label>
+                                        </p>
+                                        <p>
+                                            <label>
+                                                Text
+                                                <InputTextArea @bind-Value="note.text"/>
+                                            </label>
+                                        </p>
+                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    </EditForm>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleDelete">
+                        Delete
+                    </button>
+                    <div class="modal fade" id="exampleDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content" style="background-color: white">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Delete Note#@note.id from group#@note.groupId?</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-primary" @onclick="@(() => DeleteNote(note.id))">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                }
+            }
+        }
+    </table>
+</div>
+<div class="col-sm-4">
+    <div class="p-3 mb-2 bg-secondary text-white">
+        Week @_currentWeek
+    </div>
+    <table class="table table-sm table-hover table-wrapper-scroll-y my-custom-scrollbar">
+        @if (NoteList == null)
+        {
+            Console.WriteLine("NoteList is empty/non-existing");
+        }
+        else
+        {
+            @foreach (Note note in NoteList)
+            {
+                if (note.week == _currentWeek)
+                {
+                    <tbody>
+                    <tr>
+                        <th scope="row">Name</th>
+                        <td>@note.name</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Year</th>
+                        <td>@note.year</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Status</th>
+                        <td>@note.status</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Text</th>
+                        <td class="table-warning">@note.text</td>
+                    </tr>
+                    </tbody>
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleEditModal">Edit</button>
+                    <div class="modal fade" id="exampleEditModal" tabindex="-1" aria-labelledby="exampleEditModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content" style="background-color:white">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleEditModalLabel">Node @note.id in Group @note.groupId</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <EditForm Model="@noteToAdd" OnValidSubmit="@SubmitEditNote">
+                                        <DataAnnotationsValidator/>
+                                        <ValidationSummary/>
+                                        <p>
+                                            <label>
+                                                Week:
+                                                <InputNumber @bind-Value="note.week"/>
+                                            </label>
+                                        </p>
+                                        <p>
+                                            <label>
+                                                Year:
+                                                <InputNumber @bind-Value="note.year"/>
+                                            </label>
+                                        </p>
+                                        <p>
+                                            <label>
+                                                Name:
+                                                <InputText @bind-Value="note.name"/>
+                                            </label>
+                                        </p>
+                                        <p>
+                                            <label>
+                                                Status:
+                                                <InputSelect @bind-Value="note.status">
+                                                    <option value="">Not started</option>
+                                                    <option value="Started">Started</option>
+                                                    <option value="Finished">Finished</option>
+                                                </InputSelect>
+                                            </label>
+                                        </p>
+                                        <p>
+                                            <label>
+                                                Text
+                                                <InputTextArea @bind-Value="note.text"/>
+                                            </label>
+                                        </p>
+                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    </EditForm>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleDelete">
+                        Delete
+                    </button>
+                    <div class="modal fade" id="exampleDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content" style="background-color: white">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Delete Note#@note.id from group#@note.groupId?</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-primary" @onclick="@(() => DeleteNote(note.id))">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                }
+            }
+        }
+    </table>
+</div>
+<div class="col-sm-4">
+    <div class="p-3 mb-2 bg-secondary text-white">
+        Week @(_currentWeek + 1)
+    </div>
+    <table class="table table-sm table-hover table-wrapper-scroll-y my-custom-scrollbar">
+        @if (NoteList == null)
+        {
+            Console.WriteLine("NoteList is empty/non-existing");
+        }
+        else
+        {
+            @foreach (Note note in NoteList)
+            {
+                if (note.week == (_currentWeek + 1))
+                {
+                    <tbody>
+                    <tr>
+                        <th scope="row">Name</th>
+                        <td>@note.name</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Year</th>
+                        <td>@note.year</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Status</th>
+                        <td>@note.status</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Text</th>
+                        <td class="table-warning">@note.text</td>
+                    </tr>
+                    </tbody>
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleEditModal">Edit</button>
+                    <div class="modal fade" id="exampleEditModal" tabindex="-1" aria-labelledby="exampleEditModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content" style="background-color:white">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleEditModalLabel">Node @note.id in Group @note.groupId</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <EditForm Model="@noteToAdd" OnValidSubmit="@SubmitEditNote">
+                                        <DataAnnotationsValidator/>
+                                        <ValidationSummary/>
+                                        <p>
+                                            <label>
+                                                Week:
+                                                <InputNumber @bind-Value="note.week"/>
+                                            </label>
+                                        </p>
+                                        <p>
+                                            <label>
+                                                Year:
+                                                <InputNumber @bind-Value="note.year"/>
+                                            </label>
+                                        </p>
+                                        <p>
+                                            <label>
+                                                Name:
+                                                <InputText @bind-Value="note.name"/>
+                                            </label>
+                                        </p>
+                                        <p>
+                                            <label>
+                                                Status:
+                                                <InputSelect @bind-Value="note.status">
+                                                    <option value="">Not started</option>
+                                                    <option value="Started">Started</option>
+                                                    <option value="Finished">Finished</option>
+                                                </InputSelect>
+                                            </label>
+                                        </p>
+                                        <p>
+                                            <label>
+                                                Text
+                                                <InputTextArea @bind-Value="note.text"/>
+                                            </label>
+                                        </p>
+                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    </EditForm>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleDelete">
+                        Delete
+                    </button>
+                    <div class="modal fade" id="exampleDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content" style="background-color: white">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Delete Note#@note.id from group#@note.groupId?</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-primary" @onclick="@(() => DeleteNote(note.id))">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                }
+            }
+        }
+    </table>
+</div>
+</div>
+</div>
+<div class="col-1">
+    <button type="button" class="btn btn-primary" style="height: 480px; width: 36px;" @onclick="NextPage">&gt;</button>
+</div>
+</div>
 </div>
 
 @code{
@@ -153,92 +411,83 @@
     [Parameter]
     public int Id { get; set; }
 
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
-
     private IList<Note> NoteList { get; set; }
     private int _currentWeek;
-  
-  private Note noteToAdd = new Note(0, 0, 0, 0, 0, "", "", "");
-  private User loggedInUser;
-  private Note note = new Note(0, 0, 0, 0, 0, "", "", "");
-  
 
-  // Show the notes further ahead in time and prevent going past week 52.
-  private void NextPage()
-  {
-    switch (_currentWeek)
-    {
-      case 50:
-        _currentWeek++;
-        break;
-      case 49:
-        _currentWeek += 2;
-        break;
-      case <= 48:
-        _currentWeek += 3;
-        break;
-    }
-  }
+    private Note noteToAdd = new Note(0, 0, 0, 0, 0, "", "", "");
+    private Note note = new Note(0, 0, 0, 0, 0, "", "", "");
 
-  // Show the notes further behind in time and prevent going before week 1.
-  private void PreviousPage()
-  {
-    switch (_currentWeek)
+    // Show the notes further ahead in time and prevent going past week 52.
+    private void NextPage()
     {
-      case 3:
-        _currentWeek--;
-        break;
-      case 4:
-        _currentWeek -= 2;
-        break;
-      case >= 5:
-        _currentWeek -= 3;
-        break;
+        switch (_currentWeek)
+        {
+            case 50:
+                _currentWeek++;
+                break;
+            case 49:
+                _currentWeek += 2;
+                break;
+            case <= 48:
+                _currentWeek += 3;
+                break;
+        }
     }
-  }
-  
-  // Using Calender Library method to get the week of today´.
-  private static int GetIsoWeekOfYear(DateTime time)
-  {
-    DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
-    if (day is >= DayOfWeek.Monday and <= DayOfWeek.Wednesday)
+
+    // Show the notes further behind in time and prevent going before week 1.
+    private void PreviousPage()
     {
-      time = time.AddDays(3);
+        switch (_currentWeek)
+        {
+            case 3:
+                _currentWeek--;
+                break;
+            case 4:
+                _currentWeek -= 2;
+                break;
+            case >= 5:
+                _currentWeek -= 3;
+                break;
+        }
     }
-    return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-  }
-  
-  // Method to run, when user enters this page.
-  protected override async Task OnInitializedAsync()
-  {
+
+    // Using Calender Library method to get the week of today´.
+    private static int GetIsoWeekOfYear(DateTime time)
+    {
+        DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
+        if (day is >= DayOfWeek.Monday and <= DayOfWeek.Wednesday)
+        {
+            time = time.AddDays(3);
+        }
+        return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+    }
+
+    // Method to run, when user enters this page.
+    protected override async Task OnInitializedAsync()
+    {
     // Get the selected group's notes
-    NoteList = await _noteService.GetNoteList(Id.ToString());
-    
+        NoteList = await _noteService.GetNoteList(Id.ToString());
+
     // Get today's week
-    _currentWeek = GetIsoWeekOfYear(DateTime.Today);
-    
-    // Get logged in user
-    loggedInUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
-  }
+        _currentWeek = GetIsoWeekOfYear(DateTime.Today);
+    }
 
-  private async Task SubmitAddNote()
-  {
-    Note note = new Note(0, loggedInUser.id, @Id, noteToAdd.week, noteToAdd.year, noteToAdd.name, noteToAdd.status, noteToAdd.text);
-    await _noteService.AddNote(note);
-  }
+    private void SubmitAddNote()
+    {
+        Note note = new Note(0, 0, @Id, noteToAdd.week, noteToAdd.year, noteToAdd.name, noteToAdd.status, noteToAdd.text);
+        Console.WriteLine("G: " + @Id + " W: " + note.week + " Y: " + note.year + " N: " + note.name + " S: " + note.status + " T: " + note.text);
+    }
 
-  private async void DeleteNote(int noteIdInput)
-  {
-    Note deletedNote = await _noteService.DeleteNote(noteIdInput);
-  }
+    private async void DeleteNote(int noteIdInput)
+    {
+        await _noteService.DeleteNote(noteIdInput);
+    }
 
-  private void SubmitEditNote()
-  {
-    Note noteToEdit = new Note(0, 0, @Id, note.week, note.year, note.name, note.status, note.text);
-    Console.WriteLine("G: " + @Id + " W: " + note.week + " Y: " + note.year + " N: " + note.name + " S: " + note.status + " T: " + note.text);
+    private void SubmitEditNote()
+    {
+        Note noteToEdit = new Note(0, 0, @Id, note.week, note.year, note.name, note.status, note.text);
+        Console.WriteLine("G: " + @Id + " W: " + note.week + " Y: " + note.year + " N: " + note.name + " S: " + note.status + " T: " + note.text);
+    }
 
-  }
-  
 
 }

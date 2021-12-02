@@ -97,7 +97,7 @@ public class PersistenceServerController {
 
     @DeleteMapping("/group/{id}")
     public ResponseEntity<Void> deleteGroup(@PathVariable(value = "id") int id) {
-        System.out.println("It's working Delete");
+        System.out.println("It's working Deleted");
         return persistenceService.deleteGroup(id);
     }
 
