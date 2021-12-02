@@ -18,10 +18,10 @@ public class PersistenceServerController {
         System.out.println("Hello");
     }
 
-    @PutMapping("/group")
-    public ResponseEntity<Group> createGroup(@RequestBody String json) {
+    @PutMapping("/group/{memberId}")
+    public ResponseEntity<Group> createGroup(@RequestBody String json, @PathVariable(value = "memberId") int memberId) {
         System.out.println("It's working Post");
-        return persistenceService.postGroup(json);
+        return persistenceService.postGroup(json, memberId);
 
     }
 
@@ -37,8 +37,8 @@ public class PersistenceServerController {
         return persistenceService.validateUser(json);
     }
 
-    @PostMapping("/user/{user_id}")
-    public ResponseEntity<Void> EditUser(@RequestBody String json, @PathVariable(value = "user_id") int user_id) {
+    @PostMapping("/user/{userId}")
+    public ResponseEntity<Void> EditUser(@RequestBody String json, @PathVariable(value = "userId") int user_id) {
         System.out.println("It's working Validate");
         return persistenceService.editUser(json, user_id);
     }
