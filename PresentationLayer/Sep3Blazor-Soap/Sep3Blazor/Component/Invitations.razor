@@ -60,14 +60,13 @@ else
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine("Invitation");
-        await SubmitGetInvitation();
+        InvitationList = await _invitationService.GetInvitations(Value.ToString());
     }
 
     private async Task RemoveInvitation(int id)
     {
         await _invitationService.DeleteInvitation(id.ToString());
-        _refreshService.CallRequestRefresh();
-
+        InvitationList = await _invitationService.GetInvitations(Value.ToString());
     }
 
     /*
@@ -78,35 +77,15 @@ else
     }
     */
 
-    private async Task SubmitGetInvitation()
-    {
-        try
-        {
-            InvitationList = await _invitationService.GetInvitations(Value.ToString());
-            foreach (var invitation in InvitationList)
-            {
-                Console.WriteLine(invitation.id);
-            }
-            SearchPhrase = InvitationList[0].id.ToString();
-        }
-        catch (ArgumentOutOfRangeException indexOutOfRangeException)
-        {
-            SearchPhrase = "Out of range";
-        }
-    }
+   
 
 
     private async Task AcceptInvitation(int groupId, int userId, int invitationId)
     {
-        Console.WriteLine("Not okay okay");
-
         await _groupMembersService.AddGroupMember(groupId, userId);
-        _refreshService.CallRequestRefresh();
-        Console.WriteLine("Okay okay");
-       // await _invitationService.DeleteInvitation(invitationId.ToString());
-        //await SubmitGetInvitation();
-    //await _groupMembersService.GetGroupMembersList(id);
+        await RemoveInvitation(invitationId);
+
     }
 
-
+    
 }
