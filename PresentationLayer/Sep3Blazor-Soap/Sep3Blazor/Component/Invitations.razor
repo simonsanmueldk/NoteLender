@@ -97,10 +97,13 @@ else
 
     private async Task AcceptInvitation(int groupId, int userId, int invitationId)
     {
+        Console.WriteLine("Not okay okay");
+
         await _groupMembersService.AddGroupMember(groupId, userId);
+        Console.WriteLine("Okay okay");
         await _invitationService.DeleteInvitation(invitationId.ToString());
         _refreshService.CallRequestRefresh();
-        await SubmitGetInvitation();
+        //await SubmitGetInvitation();
     //await _groupMembersService.GetGroupMembersList(id);
     }
 

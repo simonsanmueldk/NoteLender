@@ -36,8 +36,7 @@ namespace Sep3Blazor.Data.GroupMembersData
             var reply = await client.AddGroupMemberAsync(
                 new AddGroupMemberRequest {GroupId = groupId,UserId = userId});
             Console.WriteLine("Group: " + reply.Message);
-            GroupMembers temp = JsonSerializer.Deserialize<GroupMembers>(reply.Message);
-            return null;
+            return JsonSerializer.Deserialize<IList<GroupMembers>>(reply.Message);
         }
 
         public Task<IList<GroupMembers>> DeleteGroupMembersList(int group_id, int user_id)

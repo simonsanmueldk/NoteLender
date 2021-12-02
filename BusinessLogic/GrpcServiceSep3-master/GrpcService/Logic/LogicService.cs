@@ -202,7 +202,7 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
-
+    
         public async Task<Reply> PostInvitation(RegisterInvitationRequest request, ServerCallContext context)
         {
             Invitation invitation = new Invitation(request.Id, request.GroupId, null, request.InviteeId, null,
@@ -310,17 +310,12 @@ namespace GrpcService.Logic
             string str = JsonSerializer.Serialize(temp);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await _client.PostAsync(uri + "/groupmembers", content);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                string message = await responseMessage.Content.ReadAsStringAsync();
+            string message = await responseMessage.Content.ReadAsStringAsync();
                 Console.WriteLine(message);
                 return await Task.FromResult(new Reply()
                 {
                     Message = message
                 });
             }
-
-            return null;
-        }
     }
 }
