@@ -1,10 +1,8 @@
 ﻿@page "/GroupPage"
 @page "/GroupPage/{Id:int}" 
 
-@using Sep3Blazor.Data.Refresh
 @using Sep3Blazor.Model
-@using NotesComponent
-@using MembersComponent
+@using Sep3Blazor.Component
 @using Sep3Blazor.Data.GroupMembersData
 @using Sep3Blazor.Data.NoteData
 @inject INoteService _noteService
@@ -29,8 +27,7 @@
 
     [Parameter]
     public int Id { get; set; }
-
-
+    
     [CascadingParameter]
     protected Task<AuthenticationState> AuthStat { get; set; }
 
