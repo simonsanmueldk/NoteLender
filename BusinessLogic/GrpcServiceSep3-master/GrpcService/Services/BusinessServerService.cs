@@ -47,7 +47,7 @@ namespace GrpcService
          *  Group methods
          */
         
-        public override async Task<Reply> PostGroup(Request request, ServerCallContext context)
+        public override async Task<Reply> PostGroup(PostGroupRequest request, ServerCallContext context)
         {
             return await _logicService.PostGroup(request, context);
         }
