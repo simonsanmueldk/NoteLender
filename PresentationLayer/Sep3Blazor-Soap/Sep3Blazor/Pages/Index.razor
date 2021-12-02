@@ -67,7 +67,8 @@
 
     private async void ShowNotification()
     {
-        await NotificationManager.Show("Title", "a simple paragraph", NotificationType.Info);
+        Notification notification = await _groupService.DeleteGroup(50.ToString());
+        await NotificationManager.Show(notification);
     }
 
     public static int GetIso8601WeekOfYear(DateTime time)

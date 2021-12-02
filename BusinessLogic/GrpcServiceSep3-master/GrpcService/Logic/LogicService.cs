@@ -23,13 +23,21 @@ namespace GrpcService.Logic
         {
             HttpContent content = new StringContent(request.GroupName, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await _client.PutAsync(uri + "/group/" + request.MemberId, content);
-            Console.WriteLine("1" + responseMessage.Content);
-            string message = await responseMessage.Content.ReadAsStringAsync();
-            Console.WriteLine(message);
-            return await Task.FromResult(new Reply
+
+            if (!responseMessage.IsSuccessStatusCode)
             {
-                Message = message
-            });
+                
+                throw new Exception(responseMessage.StatusCode + responseMessage.ReasonPhrase);
+            }
+            else
+            {
+                string message = await responseMessage.Content.ReadAsStringAsync();
+                Console.WriteLine(message);
+                return await Task.FromResult(new Reply
+                {
+                    Message = message
+                });
+            }
         }
 
         public async Task<Reply> GetGroup(Request request, ServerCallContext context)
@@ -49,7 +57,7 @@ namespace GrpcService.Logic
             HttpResponseMessage responseMessage = await _client.DeleteAsync(uri + "/group/" + request.Name);
             if (!responseMessage.IsSuccessStatusCode)
             {
-                throw new Exception(@"Error : (responseMessage.Status), (responseMessage.ReasonPhrase");
+                throw new Exception("Error "+  responseMessage.StatusCode+" "+" "+responseMessage.ReasonPhrase);
             }
 
             string message = await responseMessage.Content.ReadAsStringAsync();
@@ -101,7 +109,7 @@ namespace GrpcService.Logic
 
         public async Task<Reply> DeleteNote(Request request, ServerCallContext context)
         {
-            Console.WriteLine(request);
+            Console.WriteLine("Name " + request);
             HttpResponseMessage responseMessage = await _client.DeleteAsync(uri + "/note/" + request.Name);
             if (!responseMessage.IsSuccessStatusCode)
             {
@@ -126,13 +134,12 @@ namespace GrpcService.Logic
             if (responseMessage.IsSuccessStatusCode)
             {
                 string message = await responseMessage.Content.ReadAsStringAsync();
-                Console.WriteLine(message);
+               
                 return await Task.FromResult(new RegisterReply
                 {
                     Message = message
                 });
             }
-
             return null;
         }
 
@@ -150,7 +157,7 @@ namespace GrpcService.Logic
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string message = await responseMessage.Content.ReadAsStringAsync();
-                    Console.WriteLine(message+"aleooooooooo");
+                    Console.WriteLine(message + "aleooooooooo");
                     User user = JsonSerializer.Deserialize<User>(message);
                     if (request.Type.Equals(user.password))
                     {
@@ -202,7 +209,7 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
-
+    
         public async Task<Reply> PostInvitation(RegisterInvitationRequest request, ServerCallContext context)
         {
             Invitation invitation = new Invitation(request.Id, request.GroupId, null, request.InviteeId, null,
@@ -265,7 +272,7 @@ namespace GrpcService.Logic
 
         public async Task<Reply> GetUser(GetUserRequest request, ServerCallContext context)
         {
-            HttpResponseMessage responseMessage= await _client.GetAsync(uri + "/users/" + request.Username);
+            HttpResponseMessage responseMessage = await _client.GetAsync(uri + "/users/" + request.Username);
             if (responseMessage.IsSuccessStatusCode)
             {
                 string message = await responseMessage.Content.ReadAsStringAsync();
@@ -276,7 +283,22 @@ namespace GrpcService.Logic
             }
 
             return null;
+        }
 
+        public async Task<Reply> DeleteGroupMember(UserRequest request, ServerCallContext context)
+        {
+            HttpResponseMessage responseMessage = await _client.DeleteAsync(uri + "/groupmembers/" + request.Id);
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                throw new Exception(@"Error : (responseMessage.Status), (responseMessage.ReasonPhrase");
+            }
+
+            string message = await responseMessage.Content.ReadAsStringAsync();
+            Console.WriteLine(message);
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
         }
 
         public async Task<Reply> GetNoteList(Request request, ServerCallContext context)
@@ -310,17 +332,12 @@ namespace GrpcService.Logic
             string str = JsonSerializer.Serialize(temp);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await _client.PostAsync(uri + "/groupmembers", content);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                string message = await responseMessage.Content.ReadAsStringAsync();
+            string message = await responseMessage.Content.ReadAsStringAsync();
                 Console.WriteLine(message);
                 return await Task.FromResult(new Reply()
                 {
                     Message = message
                 });
             }
-
-            return null;
-        }
     }
 }

@@ -6,39 +6,65 @@
 
 
 <div class="container-fluid">
-  <br>
-<div class="col-5 offset-1">
-  <div class="p-3 mb-2 bg-secondary text-white">
-    Members
-  </div>
-  @if (GroupMembersList == null)
-  {
-    <p>
-      <em>Loading...</em>
-    </p>
-  }
-  else
-  {
-    <select class="form-select" multiple aria-label="multiple select example">
-      @foreach (var member in GroupMembersList)
-      {
-        <option value="@member.userId">@member.username</option>
-      }
-    </select>
-  }
-  </div>
+    <br>
+    <div class="col-6 offset-1">
+        <div class="p-3 mb-2 bg-secondary text-white">
+            Members
+        </div>
+        @if (GroupMembersList == null)
+        {
+            <p>
+                <em>Loading...</em>
+            </p>
+        }
+        else
+        {
+            <table class="table table-sm table-hover" style="border: #20c997 1px">
+                @foreach (var member in GroupMembersList)
+                {
+                    <tbody>
+                    <tr>
+                        <th scope="col">
+                            <i>Username</i>
+                        </th>
+                        <td>
+                            <b>@member.username</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="col">
+                            <i>Remove</i>
+                        </th>
+                        <td>
+                            <button @onclick="@(() => DeleteMember(member.id))">
+                                <i class="oi oi-trash" style="color:red"/>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <br>
+                }
+            </table>
+        }
+    </div>
 </div>
 
 @code {
-  [Parameter]
-  public int Id { get; set; }
 
-  public IList<GroupMembers> GroupMembersList { get; set; }
-  
-  protected override async Task OnInitializedAsync()
-  {
-    GroupMembersList = await _groupMembersService.GetUserList(Id);
-  }
-  
-  
+    [Parameter]
+    public int Id { get; set; }
+
+    public IList<GroupMembers> GroupMembersList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        GroupMembersList = await _groupMembersService.GetUserList(Id);
+    }
+
+    private async Task DeleteMember(int id)
+    {
+        Console.WriteLine("HAHAHA" + id);
+        await _groupMembersService.DeleteGroupMember(id);
+    }
+
 }

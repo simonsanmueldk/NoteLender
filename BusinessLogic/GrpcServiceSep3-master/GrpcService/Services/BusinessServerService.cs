@@ -33,7 +33,7 @@ namespace GrpcService
         }
         public override async Task<Reply> DeleteNote(Request request, ServerCallContext context)
         {
-            return await _logicService.DeleteGroup(request, context);
+            return await _logicService.DeleteNote(request, context);
         }
         
         public override async Task<Reply> GetNoteList(Request request, ServerCallContext context)
@@ -109,6 +109,10 @@ namespace GrpcService
         public override async Task<Reply> DeleteInvitation(Request request, ServerCallContext context)
         {
             return await _logicService.DeleteInvitation(request,context);
+        }
+        public override async Task<Reply> DeleteGroupMember(UserRequest request, ServerCallContext context)
+        {
+            return await _logicService.DeleteGroupMember(request,context);
         }
 
         

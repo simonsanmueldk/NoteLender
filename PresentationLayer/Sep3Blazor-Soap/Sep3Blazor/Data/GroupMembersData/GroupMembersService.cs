@@ -28,7 +28,7 @@ namespace Sep3Blazor.Data.GroupMembersData
             throw new NotImplementedException();
         }
 
-        public async Task<IList<GroupMembers>> AddGroupMember(int groupId, int userId)
+        public async Task AddGroupMember(int groupId, int userId)
         {
             Console.WriteLine("G" + groupId + " U " + userId);
             using var channel = GrpcChannel.ForAddress(URL);
@@ -36,13 +36,20 @@ namespace Sep3Blazor.Data.GroupMembersData
             var reply = await client.AddGroupMemberAsync(
                 new AddGroupMemberRequest {GroupId = groupId,UserId = userId});
             Console.WriteLine("Group: " + reply.Message);
-            GroupMembers temp = JsonSerializer.Deserialize<GroupMembers>(reply.Message);
-            return null;
         }
 
-        public Task<IList<GroupMembers>> DeleteGroupMembersList(int group_id, int user_id)
+        public async Task<IList<GroupMembers>> DeleteGroupMember(int id)
         {
-            throw new NotImplementedException();
+            using var channel = GrpcChannel.ForAddress(URL);
+            var client = new BusinessServer.BusinessServerClient(channel);
+
+            var reply = await client.DeleteGroupMemberAsync(
+                new UserRequest()
+                {
+                    Id = id
+                }
+            );
+            return null;
         }
     }
 }

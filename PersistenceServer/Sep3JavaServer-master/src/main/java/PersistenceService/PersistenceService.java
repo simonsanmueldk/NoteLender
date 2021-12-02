@@ -218,6 +218,22 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
+    public ResponseEntity<Void> deleteGroupMember(int id) {
+        System.out.println("HAHAHAHAHH" + id);
+        String sql =
+                "DELETE FROM notelender.groupmembers WHERE id=?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @Override
     public ResponseEntity<User> validateUser(String json) {
         User user = null;
         User temp = gson.fromJson(json, User.class);
@@ -277,7 +293,7 @@ public class PersistenceService implements IPersistenceService {
     @Override
     public ResponseEntity<Void> deleteNote(int noteId) {
         String sql = "DELETE FROM notelender.notes WHERE id = ?";
-
+        System.out.println(noteId);
         try {
             PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setInt(1, noteId);
