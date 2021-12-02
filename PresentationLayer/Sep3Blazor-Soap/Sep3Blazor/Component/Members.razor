@@ -2,7 +2,11 @@
 @page "/Members/{Id:int}"
 @using Sep3Blazor.Model
 @using Sep3Blazor.Data.GroupMembersData
+@using Sep3Blazor.Data.Refresh
+@using Google.Protobuf.WellKnownTypes
 @inject IGroupMembersService _groupMembersService
+@inject NavigationManager NavigationManager
+@inject IRefreshService _refreshService
 
 
 <div class="container-fluid">
@@ -58,6 +62,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        
         GroupMembersList = await _groupMembersService.GetUserList(Id);
     }
 
@@ -65,6 +70,6 @@
     {
         Console.WriteLine("HAHAHA" + id);
         await _groupMembersService.DeleteGroupMember(id);
+        GroupMembersList = await _groupMembersService.GetUserList(Id);
     }
-
 }
