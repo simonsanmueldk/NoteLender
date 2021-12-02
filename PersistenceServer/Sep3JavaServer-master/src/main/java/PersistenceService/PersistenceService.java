@@ -319,16 +319,17 @@ public class PersistenceService implements IPersistenceService {
         {
             System.out.println("JSON: " + json);
             Invitation invitation = gson.fromJson(json, Invitation.class);
-            String addString = "INSERT INTO notelender.invitations (id,invitor_id,invitee_id,group_id) VALUES (?,?,?,?)";
+            String addString = "INSERT INTO notelender.invitations (invitor_id,invitee_id,group_id) VALUES (?,?,?)";
             try {
                 PreparedStatement addInvitation = connection.prepareStatement(addString, PreparedStatement.RETURN_GENERATED_KEYS);
-                addInvitation.setInt(1, invitation.getId());
-                addInvitation.setInt(2, invitation.getInvitorId());
-                addInvitation.setInt(3, invitation.getInviteeId());
-                addInvitation.setInt(4, invitation.getGroupId());
+                addInvitation.setInt(1, invitation.getInvitorId());
+                addInvitation.setInt(2, invitation.getInviteeId());
+                addInvitation.setInt(3, invitation.getGroupId());
                 addInvitation.executeUpdate();
+                System.out.println("aleoooo");
                 return new ResponseEntity<>(HttpStatus.OK);
             } catch (Exception e) {
+                System.out.println("aleo x2");
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
         }
@@ -349,6 +350,7 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public ResponseEntity<List<Invitation>> getInvitationList(String id) {
+        System.out.println("getInvitation");
         List<Invitation> InvitationList = new ArrayList<>();
         try {
             String getString = "SELECT invitations.id, g.id, g.groupname, invitations.invitee_id, u2.username, " +

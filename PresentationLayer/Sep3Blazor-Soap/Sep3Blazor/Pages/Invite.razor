@@ -8,40 +8,45 @@
 @inject IInvitationService invitationService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 <h3>Invite</h3>
-<div class="form-group">
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <label>Search for a new member </label>
-            <span class="input-group-text">
-                <i class="fa fa-smile-o"></i>
-            </span>
-        </div>
-    </div>
-    <input type="text" placeholder="Type the username " @bind-value="username">
-</div>
-<div class="form-group">
-    <button class="btn btn-primary btn-block" @onclick="Search">Search</button>
-</div>
-<br>
-<br>
+
 @if (!temp)
 {
-    <p>
-        <b>User not found</b>
-    </p>
+    <div class="form-group">
+        <div class="input-group">
+            <label>Search for a new member </label>
+        </div>
+        <input type="text" placeholder="Type the username " @bind-value="username">
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary btn-block" @onclick="Search">Search</button>
+    </div>
+    <br>
+    <br>
 }
 else
 {
+    <div class="form-group">
+        <div class="input-group">
+            <label>Search for a new member </label>
+        </div>
+        <input type="text" placeholder="Type the username " @bind-value="username">
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary btn-block" @onclick="Search">Search</button>
+    </div>
+    <br>
+    <br>
     <div class="col-sm-6" style="display:inline">
         <ul class="list-group">
-            @foreach (var user in users)
+            @foreach (var user in tempUsers)
             {
                 <div class="form-group">
                     <div class="input-group">
-                        <li class="list-group-item onHoverChange">@user.firstName @user.lastName @user.username</li>
-                            <button class="btn btn-primary btn-block" @onclick="@(() => InviteUser(user))" style="display:@temp ">Invite </button>
+                        <li class="list-group-item onHoverChange"><u>Name</u>: <b>@user.firstName @user.lastName</b> <br/> <u>Username</u>: <b>@user.username</b></li>
+                        <button class="btn btn-primary btn-block" @onclick="@(() => InviteUser(user))" style="display:@temp ">Invite </button>
                     </div>
                 </div>
+                <br>
             }
         </ul>
     </div>
@@ -51,7 +56,7 @@ else
     public string username;
     public bool temp = false;
     public List<User> users;
-
+    public List<User> tempUsers;
     [Parameter]
     public int Value { get; set; }
 
@@ -65,19 +70,36 @@ else
 
     private async Task Search()
     {
-        users = await UserService.GetUser(username);
-        if (users != null)
+        if (!username.Equals(""))
         {
-            temp = true;
+            users = await UserService.GetUser(username);
+            tempUsers = new List<User>();
+            foreach (var user in users)
+            {
+                
+                if (!user.username.Equals(cachedUser.username))
+                {
+                  tempUsers.Add(user);
+                }
+            }
+            if (tempUsers != null)
+            {
+                temp = true;
+            }
+        }
+        else
+        {
+            temp = false;
         }
     }
 
     private async Task InviteUser(User user)
     {
-        Invitation invitation = new Invitation(0, Value,null, user.id,null, cachedUser.id,null);
+        Invitation invitation = new Invitation(0, Value, null, user.id, null, cachedUser.id, null);
         await invitationService.AddInvitations(invitation);
     }
 
-}
+
 
 }
+
