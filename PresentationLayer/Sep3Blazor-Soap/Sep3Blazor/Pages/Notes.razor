@@ -2,6 +2,8 @@
 @page "/Notes/{Id:int}" 
 @using Sep3Blazor.Model
 @using System.Globalization
+@using Sep3Blazor.Authentication
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @using Sep3Blazor.Data.NoteData
 @namespace NotesComponent
 @inject INoteService _noteService
@@ -347,7 +349,9 @@
   private int _currentWeek;
 
   private Note noteToAdd = new Note(0, 0, 0, 0, 0, "", "", "");
+  private User loggedInUser;
   private Note note = new Note(0, 0, 0, 0, 0, "", "", "");
+  
 
   // Show the notes further ahead in time and prevent going past week 52.
   private void NextPage()
@@ -402,12 +406,15 @@
     
     // Get today's week
     _currentWeek = GetIsoWeekOfYear(DateTime.Today);
+    
+    // Get logged in user
+    loggedInUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
   }
 
   private void SubmitAddNote()
   {
-    Note note = new Note(0, 0, @Id, noteToAdd.week, noteToAdd.year, noteToAdd.name, noteToAdd.status, noteToAdd.text);
-    Console.WriteLine("G: " + @Id + " W: " + note.week + " Y: " + note.year + " N: " + note.name + " S: " + note.status + " T: " + note.text);
+    Note note = new Note(0, loggedInUser.id, @Id, noteToAdd.week, noteToAdd.year, noteToAdd.name, noteToAdd.status, noteToAdd.text);
+    Console.WriteLine( "U: " + note.userId + " G: " + note.groupId + " W: " + note.week + " Y: " + note.year + " N: " + note.name + " S: " + note.status + " T: " + note.text);
   }
 
   private async void DeleteNote(int noteIdInput)
