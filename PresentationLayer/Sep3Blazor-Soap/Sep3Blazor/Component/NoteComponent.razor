@@ -3,63 +3,59 @@
 @using Sep3Blazor.Model
 @inject INoteService _noteService
 
-@if (_id == null)
-{
-}
-else
-{
-    <tbody>
+
+<tbody>
     <tr>
         <th scope="row">Name</th>
-        <td>@noteToAdd.name</td>
+        <td>@Note.name</td>
     </tr>
     <tr>
         <th scope="row">Year</th>
-        <td>@noteToAdd.year</td>
+        <td>@Note.year</td>
     </tr>
     <tr>
         <th scope="row">Status</th>
-        <td>@noteToAdd.status</td>
+        <td>@Note.status</td>
     </tr>
     <tr>
         <th scope="row">Text</th>
-        <td class="table-warning">@noteToAdd.text</td>
+        <td class="table-warning">@Note.text</td>
     </tr>
     </tbody>
-    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="@("#exampleEditModal"+_id)">Edit</button>
-    <div class="modal fade" id="@("exampleEditModal"+_id)" tabindex="-1" aria-labelledby="@("exampleEditModalLabel"+_id)" aria-hidden="true">
+    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="@("#exampleEditModal"+Note.id)">Edit</button>
+    <div class="modal fade" id="@("exampleEditModal"+Note.id)" tabindex="-1" aria-labelledby="@("exampleEditModalLabel"+Note.id)" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" style="background-color:white">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="@("exampleEditModalLabel"+_id)">Node @noteToAdd.id in Group @noteToAdd.groupId</h5>
+                    <h5 class="modal-title" id="@("exampleEditModalLabel"+Note.id)">Note @Note.id in Group @Note.groupId</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
                 </div>
                 <div class="modal-body">
-                    <EditForm Model="@noteToAddModel" OnValidSubmit="@SubmitEditNote">
+                    <EditForm Model="@_noteToAddModel" OnValidSubmit="@SubmitEditNote">
                         <DataAnnotationsValidator/>
                         <ValidationSummary/>
                         <p>
                             <label>
                                 Week:
-                                <InputNumber @bind-Value="noteToAdd.week"/>
+                                <InputNumber @bind-Value="Note.week"/>
                             </label>
                         </p>
                         <p>
                             <label>
                                 Year:
-                                <InputNumber @bind-Value="noteToAdd.year"/>
+                                <InputNumber @bind-Value="Note.year"/>
                             </label>
                         </p>
                         <p>
                             <label>
                                 Name:
-                                <InputText @bind-Value="noteToAdd.name"/>
+                                <InputText @bind-Value="Note.name"/>
                             </label>
                         </p>
                         <p>
                             <label>
                                 Status:
-                                <InputSelect @bind-Value="noteToAdd.status">
+                                <InputSelect @bind-Value="Note.status">
                                     <option value="">Not started</option>
                                     <option value="Started">Started</option>
                                     <option value="Finished">Finished</option>
@@ -69,7 +65,7 @@ else
                         <p>
                             <label>
                                 Text
-                                <InputTextArea @bind-Value="noteToAdd.text"/>
+                                <InputTextArea @bind-Value="Note.text"/>
                             </label>
                         </p>
                         <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
@@ -79,14 +75,14 @@ else
             </div>
         </div>
     </div>
-    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="@("#exampleDelete"+_id)">
+    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="@("#exampleDelete"+Note.id)">
         Delete
     </button>
-    <div class="modal fade" id="@("exampleDelete"+_id)" tabindex="-1" role="dialog" aria-labelledby="@("exampleModalCenterTitle"+_id)" aria-hidden="true">
+    <div class="modal fade" id="@("exampleDelete"+Note.id)" tabindex="-1" role="dialog" aria-labelledby="@("exampleModalCenterTitle"+Note.id)" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content" style="background-color: white">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="@("exampleModalLongTitle"+_id)">Delete Note#@noteToAdd.id from group#@noteToAdd.groupId?</h5>
+                    <h5 class="modal-title" id="@("exampleModalLongTitle"+Note.id)">Delete Note @Note.id from group @Note.groupId?</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
                 </div>
                 <div class="modal-footer">
@@ -98,22 +94,15 @@ else
     </div>
 
     <br>
-}
+
 
 @code {
 
     [Parameter]
     public Note Note { get; set; }
-
-    [Parameter]
-    public int Id { get; set; }
-
-    private Note noteToAdd;
-
-    private Note noteToAddModel = new Note(0, 0, 0, 0, 0, "", "", "");
-
-    private int _id;
-
+    
+    private Note _noteToAddModel = new Note(0, 0, 0, 0, 0, "", "", "");
+    
     private void SubmitEditNote()
     {
         Console.WriteLine("G:  W: " + Note.week + " Y: " + Note.year + " N: " + Note.name + " S: " + Note.status + " T: " + Note.text);
@@ -122,17 +111,18 @@ else
 
     protected override void OnInitialized()
     {
-        _id = Id;
-        noteToAdd = Note;
-        Console.WriteLine("ID " + _id + " Note " + noteToAdd.name);
+      
+  
+        Console.WriteLine("ID " + Note.id + " Note " + Note.name);
     }
 
 
     private async Task DeleteNote()
     {
     // await _noteService.DeleteNote(Note.id);
-        Console.WriteLine("Deleted " + noteToAdd.id);
-        Console.WriteLine("Deleted " + noteToAdd.name);
+        Console.WriteLine("Delete " + Note.id);
+        Console.WriteLine("Delete " + Note.name);
     }
     
 }
+
