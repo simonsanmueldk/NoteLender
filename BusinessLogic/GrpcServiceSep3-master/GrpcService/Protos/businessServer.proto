@@ -15,7 +15,7 @@ service BusinessServer {
   rpc GetGroup (Request) returns (Reply);
   rpc GetUserList (Request) returns (Reply);
   rpc GetGroupMembersList (Request) returns (Reply);
-  rpc PostGroup (Request) returns (Reply);
+  rpc PostGroup (PostGroupRequest) returns (Reply);
   rpc PutNote (NoteRequest) returns (Reply);
   rpc DeleteGroup  (Request) returns (Reply);
   rpc RegisterUser(RegisterRequest) returns (RegisterReply);
@@ -36,6 +36,12 @@ message Request {
   string name = 1;
   string type = 2;
 }
+
+message PostGroupRequest {
+  string groupName = 1;
+  int32 memberId = 2;
+}
+
 message UserRequest{
 int32 id=1;
 }

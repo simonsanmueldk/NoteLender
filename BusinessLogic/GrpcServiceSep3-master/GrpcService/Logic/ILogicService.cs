@@ -16,9 +16,8 @@ namespace GrpcService.Logic
         public Task<Reply> GetNoteList(Request request, ServerCallContext context);
 
         // Group
-        public Task<Reply> PostGroup(Request request, ServerCallContext context);
+        public Task<Reply> PostGroup(PostGroupRequest request, ServerCallContext context);
         public Task<Reply> GetGroup(Request request, ServerCallContext context);
-
         public Task<Reply> DeleteGroup(Request request, ServerCallContext context);
 
         // User
