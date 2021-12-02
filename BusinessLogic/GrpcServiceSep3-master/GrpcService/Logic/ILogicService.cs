@@ -18,7 +18,6 @@ namespace GrpcService.Logic
         // Group
         public Task<Reply> PostGroup(Request request, ServerCallContext context);
         public Task<Reply> GetGroup(Request request, ServerCallContext context);
-
         public Task<Reply> DeleteGroup(Request request, ServerCallContext context);
 
         // User
