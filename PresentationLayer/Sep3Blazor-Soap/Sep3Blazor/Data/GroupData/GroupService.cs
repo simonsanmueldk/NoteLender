@@ -17,8 +17,11 @@ namespace Sep3Blazor.Data.GroupData
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
             var reply = await client.PostGroupAsync(
-                new Request {Name = s});
-            
+                new PostGroupRequest
+                {
+                    GroupName = groupName,
+                    MemberId = memberId
+                });
             Console.WriteLine("Greeting: " + reply.Message);
             return JsonSerializer.Deserialize<List<Group>>(reply.Message);
         }

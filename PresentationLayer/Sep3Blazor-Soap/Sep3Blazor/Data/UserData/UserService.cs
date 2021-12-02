@@ -38,7 +38,7 @@ namespace Sep3Blazor.Data.UserData
             var reply = await client.RegisterUserAsync(
                 new RegisterRequest
                 {
-                    Username = user.username, Password = user.password, 
+                    Username = user.username, Password = user.password,
                     FirstName = user.firstName, LastName = user.lastName
                 });
             Console.WriteLine("Greeting: " + reply);
@@ -47,6 +47,7 @@ namespace Sep3Blazor.Data.UserData
                 User temp = JsonSerializer.Deserialize<User>(reply.Message);
                 return temp;
             }
+
             return null;
         }
 
@@ -59,9 +60,9 @@ namespace Sep3Blazor.Data.UserData
             Console.WriteLine("Greeting: " + reply);
             if (reply != null)
             {
-                User user = JsonSerializer.Deserialize<User>(reply.Message);
-                return user;
+                
             }
+
             return null;
         }
 
@@ -71,8 +72,13 @@ namespace Sep3Blazor.Data.UserData
             var client = new BusinessServer.BusinessServerClient(channel);
             var reply = await client.GetUserAsync(
                 new GetUserRequest {Username = username});
-            Console.WriteLine("Group: " + reply.Message);
-            return JsonSerializer.Deserialize<List<User>>(reply.Message);
+            Console.WriteLine("User" + reply);
+            if (reply != null)
+            {
+                return JsonSerializer.Deserialize<List<User>>(reply.Message);
+            }
+
+            return null;
         }
 
         public async Task<User> DeleteUser(int id)

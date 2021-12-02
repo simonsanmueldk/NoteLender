@@ -9,7 +9,7 @@ namespace Sep3Blazor.Data.GroupData
     {
         public Task<IList<Group>> GetGroupList(String s);
 
-        public Task<IList<Group>> AddGroup(String s);
+        public Task<IList<Group>> AddGroup(string groupName, int memberId);
 
         public Task DeleteGroup(string s);
         

@@ -19,10 +19,10 @@ namespace GrpcService.Logic
             _client = new HttpClient();
         }
 
-        public async Task<Reply> PostGroup(Request request, ServerCallContext context)
+        public async Task<Reply> PostGroup(PostGroupRequest request, ServerCallContext context)
         {
-            HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await _client.PutAsync(uri + "/group", content);
+            HttpContent content = new StringContent(request.GroupName, Encoding.UTF8, "application/json");
+            HttpResponseMessage responseMessage = await _client.PutAsync(uri + "/group/" + request.MemberId, content);
             Console.WriteLine("1" + responseMessage.Content);
             if (!responseMessage.IsSuccessStatusCode)
             {
@@ -270,15 +270,18 @@ namespace GrpcService.Logic
 
         public async Task<Reply> GetUser(GetUserRequest request, ServerCallContext context)
         {
-            Console.WriteLine(request.Username+"aleoo");
-            Task<string> stringAsync = _client.GetStringAsync(uri + "/users/" + request.Username);
-            
-            string message = await stringAsync;
-            Console.WriteLine(message+"aleoox2");
-            return await Task.FromResult(new Reply
+            HttpResponseMessage responseMessage= await _client.GetAsync(uri + "/users/" + request.Username);
+            if (responseMessage.IsSuccessStatusCode)
             {
-                Message = message
-            });
+                string message = await responseMessage.Content.ReadAsStringAsync();
+                return await Task.FromResult(new Reply
+                {
+                    Message = message
+                });
+            }
+
+            return null;
+
         }
 
         public async Task<Reply> GetNoteList(Request request, ServerCallContext context)
