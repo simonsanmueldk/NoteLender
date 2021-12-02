@@ -1,37 +1,73 @@
 ﻿@page "/GroupListing"
 
 @using Sep3Blazor.Data.GroupData
+@using Sep3Blazor.Data.GroupMembersData
 
 @using Sep3Blazor.Data.Refresh
 @using Sep3Blazor.Model
+@using Sep3Blazor.Authentication
 @inject IGroupService _groupService
 @inject IRefreshService _refreshService
 @inject NavigationManager NavigationManager
-<h3>My groups</h3>
+@inject IGroupMembersService _groupMembersService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-@if (GroupList == null)
-{
-    <progress></progress>
-}
-else if (GroupList.Count == 0)
-{
-    <p>
-        You are not part of any group.
-         <br>
-        You can create group Here or accept invitation on the right
-    </p>
-}
-else
-{
-    <div class="col-sm-3" style="display:inline">
-        <ul class="list-group">
-            @foreach (var group in GroupList)
-            {
-                <li class="list-group-item onHoverChange" @onclick="@(() => ChangeSelectedGroup(group))">@group.name</li>
-            }
-        </ul>
+<div class="container-fluid">
+    <div class="col-12">
+        <h3 class="d-inline">My groups</h3>
+        <button type="button" class="btn btn-primary d-inline offset-6" data-bs-toggle="modal" data-bs-target="#exampleAddModal"><i class="oi oi-plus"></i> Create group</button>
+        <div class="modal fade" id="exampleAddModal" tabindex="-1" aria-labelledby="exampleAddModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="background-color:white">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleAddModalLabel">Create new group</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+                    </div>
+                    <div class="modal-body">
+                        <EditForm Model="@groupToAdd" OnValidSubmit="SubmitAddGroup">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
+                            <p>
+                                <label>
+                                    Name:
+                                    <InputText @bind-Value="groupToAdd.name"/>
+                                </label>
+                            </p>
+                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </EditForm>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-}
+
+
+    @if (GroupList == null)
+    {
+        <progress></progress>
+    }
+    else if (GroupList.Count == 0)
+    {
+        <p>
+            You are not part of any group.
+            <br>
+            You can create group Here or accept invitation on the right
+        </p>
+    }
+    else
+    {
+        <div class="col-sm-3" style="display:inline">
+            <ul class="list-group">
+                @foreach (var group in GroupList)
+                {
+                    <li class="list-group-item onHoverChange" @onclick="@(() => ChangeSelectedGroup(group))">@group.name</li>
+                }
+            </ul>
+        </div>
+    }
+</div>
+
 
 
 
@@ -41,6 +77,8 @@ else
 
     [Parameter]
     public string Value { get; set; }
+
+    private Group groupToAdd = new Group(0, "");
 
     protected override async Task OnInitializedAsync()
     {
@@ -62,6 +100,12 @@ else
         Console.WriteLine("Hey, i got called from component GroupListing");
         GroupList = await _groupService.GetGroupList(Convert.ToInt32(Value));
         StateHasChanged();
+    }
+
+    private async void SubmitAddGroup()
+    {
+        await _groupService.AddGroup(groupToAdd.name, ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser.id);
+        RefreshState();
     }
 
 }

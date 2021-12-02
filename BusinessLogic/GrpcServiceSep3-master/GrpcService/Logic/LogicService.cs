@@ -19,10 +19,10 @@ namespace GrpcService.Logic
             _client = new HttpClient();
         }
 
-        public async Task<Reply> PostGroup(Request request, ServerCallContext context)
+        public async Task<Reply> PostGroup(PostGroupRequest request, ServerCallContext context)
         {
-            HttpContent content = new StringContent(request.Name, Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await _client.PutAsync(uri + "/group", content);
+            HttpContent content = new StringContent(request.GroupName, Encoding.UTF8, "application/json");
+            HttpResponseMessage responseMessage = await _client.PutAsync(uri + "/group/" + request.MemberId, content);
             Console.WriteLine("1" + responseMessage.Content);
             string message = await responseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(message);
