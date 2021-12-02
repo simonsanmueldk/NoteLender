@@ -27,7 +27,7 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<Group> postGroup(String json) {
+    public ResponseEntity<Group> postGroup(String json, int memberId) {
         Group groupToAdd = null;
         String insertString = "INSERT INTO notelender.groups (groupname) VALUES (?)";
         try {
@@ -38,7 +38,17 @@ public class PersistenceService implements IPersistenceService {
             if (generatedKeys.next()) {
                 groupToAdd = new Group(generatedKeys.getInt(1), generatedKeys.getString(2));
             }
-            return new ResponseEntity<>(groupToAdd, HttpStatus.OK);
+            String insertGroupMemberString = "INSERT INTO notelender.groupmembers (user_id, group_id)  VALUES (?,?)";
+            try{
+                PreparedStatement insertMember = connection.prepareStatement(insertGroupMemberString);
+                insertMember.setInt(1, memberId);
+                insertMember.setInt(2, groupToAdd.getId());
+                insertMember.executeUpdate();
+                return new ResponseEntity<>(groupToAdd, HttpStatus.OK);
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -310,16 +320,16 @@ public class PersistenceService implements IPersistenceService {
     @Override
     public ResponseEntity<List<User>> getUser(String json) {
         try {
-            List<User> users = new ArrayList<>();
-            User userToAdd = null;
+            List<User> users=new ArrayList<>();
+            User userToAdd=null;
             String getString = "SELECT * FROM notelender.users WHERE username LIKE  ?";
             PreparedStatement getGroup = connection.prepareStatement(getString);
-            getGroup.setString(1, "%" + json + "%");
+            getGroup.setString(1,"%"+ json+"%");
             ResultSet rs = getGroup.executeQuery();
 
             while (rs.next()) {
-                userToAdd = new User(rs.getInt(1), rs.getString(2),
-                        rs.getString(3), rs.getString(4), null);
+                userToAdd =new User(rs.getInt(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4),null);
                 users.add(userToAdd);
             }
             return new ResponseEntity<>(users, HttpStatus.OK);

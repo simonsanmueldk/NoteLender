@@ -8,7 +8,7 @@ namespace Sep3Blazor.Data.GroupMembersData
     {
        
         public Task AddGroupMember(int groupId, int userId);
-        public Task<IList<GroupMembers>> DeleteGroupMembersList(int group_id, int user_id);
+        public Task DeleteGroupMembersList(int group_id, int user_id);
         
         
         public Task<IList<GroupMembers>> GetUserList(int group_id);

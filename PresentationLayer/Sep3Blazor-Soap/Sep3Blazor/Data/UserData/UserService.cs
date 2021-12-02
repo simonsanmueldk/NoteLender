@@ -30,7 +30,7 @@ namespace Sep3Blazor.Data.UserData
             }
         }
 
-        public async Task<User> RegisterUser(User user)
+        public async Task RegisterUser(User user)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
@@ -42,13 +42,7 @@ namespace Sep3Blazor.Data.UserData
                     FirstName = user.firstName, LastName = user.lastName
                 });
             Console.WriteLine("Greeting: " + reply);
-            if (reply != null)
-            {
-                User temp = JsonSerializer.Deserialize<User>(reply.Message);
-                return temp;
-            }
-
-            return null;
+           
         }
 
         public async Task<User> EditUser(int id, string newPassword)
@@ -60,9 +54,8 @@ namespace Sep3Blazor.Data.UserData
             Console.WriteLine("Greeting: " + reply);
             if (reply != null)
             {
-                
+                    
             }
-
             return null;
         }
 

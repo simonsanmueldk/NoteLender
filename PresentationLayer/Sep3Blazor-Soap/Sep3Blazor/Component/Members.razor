@@ -2,43 +2,80 @@
 @page "/Members/{Id:int}"
 @using Sep3Blazor.Model
 @using Sep3Blazor.Data.GroupMembersData
+@using Sep3Blazor.Authentication
 @inject IGroupMembersService _groupMembersService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
 
 
 <div class="container-fluid">
-  <br>
-<div class="col-5 offset-1">
-  <div class="p-3 mb-2 bg-secondary text-white">
-    Members
-  </div>
-  @if (GroupMembersList == null)
-  {
-    <p>
-      <em>Loading...</em>
-    </p>
-  }
-  else
-  {
-    <select class="form-select" multiple aria-label="multiple select example">
-      @foreach (var member in GroupMembersList)
-      {
-        <option value="@member.userId">@member.username</option>
-      }
-    </select>
-  }
-  </div>
+    <br>
+    <div class="col-5 offset-1">
+        <div class="p-3 mb-2 bg-secondary text-white">
+            Members
+        </div>
+        @if (GroupMembersList == null)
+        {
+            <p>
+                <em>Loading...</em>
+            </p>
+        }
+        else
+        {
+            <select class="form-select" multiple aria-label="multiple select example">
+                @foreach (var member in GroupMembersList)
+                {
+                    <option value="@member.userId">@member.username</option>
+                }
+            </select>
+        }
+    </div>
+    <div class="col-3 offset-1">
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleAddModal"><i class="oi oi-plus"></i> Leave Group</button>
+        <div class="modal fade" id="exampleAddModal" tabindex="-1" aria-labelledby="exampleAddModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="background-color:white">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleAddModalLabel">Leave group @Id</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <p>
+                            <label>
+                                Are you sure you want to leave this group?
+                            </label>
+                        </p>
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" @onclick="@(() => LeaveGroup())">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @code {
-  [Parameter]
-  public int Id { get; set; }
 
-  public IList<GroupMembers> GroupMembersList { get; set; }
-  
-  protected override async Task OnInitializedAsync()
-  {
-    GroupMembersList = await _groupMembersService.GetUserList(Id);
-  }
-  
-  
+    [Parameter]
+    public int Id { get; set; }
+
+    public IList<GroupMembers> GroupMembersList { get; set; }
+
+    private User cachedUser;
+
+    protected override async Task OnInitializedAsync()
+    {
+        cachedUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
+        GroupMembersList = await _groupMembersService.GetUserList(Id);
+    }
+
+
+    private async Task LeaveGroup()
+    {
+        Console.WriteLine("KSAIDIAD");
+        await _groupMembersService.DeleteGroupMembersList(Id, cachedUser.id);
+        NavigationManager.NavigateTo("/");
+    }
+
 }

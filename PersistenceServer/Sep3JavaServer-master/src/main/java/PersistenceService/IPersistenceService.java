@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IPersistenceService {
      ResponseEntity<List<Group>> getGroup(int id);
-     ResponseEntity<Group> postGroup(String json);
+     ResponseEntity<Group> postGroup(String json, int memberId);
      ResponseEntity<Void> deleteGroup(int id);
      ResponseEntity<List<GroupMembers>> getUserList(int id);
      ResponseEntity<List<Group>> getGroupList(int id);

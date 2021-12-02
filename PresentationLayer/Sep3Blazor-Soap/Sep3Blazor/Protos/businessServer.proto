@@ -23,9 +23,10 @@ service BusinessServer {
   rpc EditUser(EditUserRequest) returns (Reply);
   rpc PostInvitation(RegisterInvitationRequest) returns (Reply);
   rpc DeleteInvitation(Request) returns (Reply);
-   rpc DeleteUser(UserRequest) returns (Reply);
-   rpc AddGroupMember(AddGroupMemberRequest) returns (Reply);
-     rpc GetUser(GetUserRequest) returns  (Reply);
+  rpc DeleteUser(UserRequest) returns (Reply);
+  rpc AddGroupMember(AddGroupMemberRequest) returns (Reply);
+  rpc DeleteGroupMember(DeleteGroupMemberRequest) returns (Reply);
+  rpc GetUser(GetUserRequest) returns  (Reply);
 }
 
 
@@ -41,18 +42,28 @@ message PostGroupRequest {
 }
 
 message GetUserRequest{
-int32 id=1;
-string username = 2;
+  int32 id = 1;
+  string username = 2;
 }
 
 message UserRequest{
-int32 id=1;
+  int32 id = 1;
 }
 
 message EditUserRequest {
   int32 id = 1;
   string newPassword = 2;
   string message = 3;
+}
+
+message AddGroupMemberRequest {
+  int32 groupId = 1;
+  int32 userId = 2;
+}
+
+message DeleteGroupMemberRequest {
+  int32 groupId = 1;
+  int32 userId = 2;
 }
 
 // The response message containing the greetings.
@@ -112,8 +123,5 @@ message RegisterInvitationReply {
   int32 groupId = 4;
 }
 
-message AddGroupMemberRequest {
-    int32 groupId = 1;
-    int32 userId = 2;
-}
+
 
