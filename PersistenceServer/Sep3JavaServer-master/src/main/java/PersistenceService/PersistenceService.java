@@ -72,20 +72,19 @@ public class PersistenceService implements IPersistenceService {
     @Override
     public ResponseEntity<Void> addNote(String json) {
         String addString =
-                "INSERT INTO notelender.notes (id,user_id,group_id,week,year,name,status,text) VALUES (?,?,?,?,?,?,?,?)";
+                "INSERT INTO notelender.notes (user_id,group_id,week,year,name,status,text) VALUES (?,?,?,?,?,?,?)";
         System.out.println("JSON: " + json);
         Note note = gson.fromJson(json, Note.class);
         System.out.println("Note: " + note.getId());
         try {
             PreparedStatement addNote = connection.prepareStatement(addString, PreparedStatement.RETURN_GENERATED_KEYS);
-            addNote.setInt(1, note.getId());
-            addNote.setInt(2, note.getUserId());
-            addNote.setInt(3, note.getGroupId());
-            addNote.setInt(4, note.getWeek());
-            addNote.setInt(5, note.getYear());
-            addNote.setString(6, note.getName());
-            addNote.setString(7, note.getStatus());
-            addNote.setString(8, note.getText());
+            addNote.setInt(1, note.getUserId());
+            addNote.setInt(2, note.getGroupId());
+            addNote.setInt(3, note.getWeek());
+            addNote.setInt(4, note.getYear());
+            addNote.setString(5, note.getName());
+            addNote.setString(6, note.getStatus());
+            addNote.setString(7, note.getText());
             addNote.executeUpdate();
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {

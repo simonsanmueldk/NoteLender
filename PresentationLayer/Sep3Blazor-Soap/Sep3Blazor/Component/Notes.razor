@@ -411,10 +411,10 @@
     loggedInUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
   }
 
-  private void SubmitAddNote()
+  private async Task SubmitAddNote()
   {
     Note note = new Note(0, loggedInUser.id, @Id, noteToAdd.week, noteToAdd.year, noteToAdd.name, noteToAdd.status, noteToAdd.text);
-    Console.WriteLine( "U: " + note.userId + " G: " + note.groupId + " W: " + note.week + " Y: " + note.year + " N: " + note.name + " S: " + note.status + " T: " + note.text);
+    await _noteService.AddNote(note);
   }
 
   private async void DeleteNote(int noteIdInput)
