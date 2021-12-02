@@ -18,10 +18,10 @@ public class PersistenceServerController {
         System.out.println("Hello");
     }
 
-    @PutMapping("/group")
-    public ResponseEntity<Group> createGroup(@RequestBody String json) {
+    @PutMapping("/group/{memberId}")
+    public ResponseEntity<Group> createGroup(@RequestBody String json, @PathVariable(value = "memberId") int memberId) {
         System.out.println("It's working Post");
-        return persistenceService.postGroup(json);
+        return persistenceService.postGroup(json, memberId);
 
     }
 
