@@ -6,21 +6,15 @@ namespace Sep3Blazor.Data.Notifications
 {
     public class NotificationManager
     {
-        public event Action<Notification> OnShow;
-        public event Action OnHide;
+        public  event Action<Notification> OnShow;
+        public  event Action OnHide;
 
-        public async Task Show(string title, string content, NotificationType type)
+        public  async Task Show(Notification notification)
         {
-            
             Console.WriteLine("show");
-            Notification notification = new Notification()
-            {
-                Title = title,
-                Content = content,
-                Type = type
-            };
+
             OnShow?.Invoke(notification);
-            await Task.Delay(1000);
+            await Task.Delay(3000);
             try
             {
                 OnHide?.Invoke();

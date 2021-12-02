@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Sep3Blazor.Data.Notifications.NotificationModel;
 using Sep3Blazor.Model;
 
 namespace Sep3Blazor.Data.GroupData
@@ -9,9 +10,9 @@ namespace Sep3Blazor.Data.GroupData
     {
         public Task<IList<Group>> GetGroupList(String s);
 
-        public Task<IList<Group>> AddGroup(string groupName, int memberId);
+        public Task AddGroup(string groupName, int memberId);
 
-        public Task DeleteGroup(string s);
+        public Task<Notification> DeleteGroup(string s);
         
         public Task<IList<Group>> GetGroupList(int group_id);
     }
