@@ -27,7 +27,7 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<Group> postGroup(String json) {
+    public ResponseEntity<Group> postGroup(String json, int memberId) {
         Group groupToAdd = null;
         String insertString = "INSERT INTO notelender.groups (groupname) VALUES (?)";
         try {
@@ -38,7 +38,17 @@ public class PersistenceService implements IPersistenceService {
             if (generatedKeys.next()) {
                 groupToAdd = new Group(generatedKeys.getInt(1), generatedKeys.getString(2));
             }
-            return new ResponseEntity<>(groupToAdd, HttpStatus.OK);
+            String insertGroupMemberString = "INSERT INTO notelender.groupmembers (user_id, group_id)  VALUES (?,?)";
+            try{
+                PreparedStatement insertMember = connection.prepareStatement(insertGroupMemberString);
+                insertMember.setInt(1, memberId);
+                insertMember.setInt(2, groupToAdd.getId());
+                insertMember.executeUpdate();
+                return new ResponseEntity<>(groupToAdd, HttpStatus.OK);
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
