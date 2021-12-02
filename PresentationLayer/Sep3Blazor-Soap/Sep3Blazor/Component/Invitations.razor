@@ -67,6 +67,8 @@ else
     private async Task RemoveInvitation(int id)
     {
         await _invitationService.DeleteInvitation(id.ToString());
+        _refreshService.CallRequestRefresh();
+
     }
 
     /*
@@ -97,10 +99,13 @@ else
 
     private async Task AcceptInvitation(int groupId, int userId, int invitationId)
     {
+        Console.WriteLine("Not okay okay");
+
         await _groupMembersService.AddGroupMember(groupId, userId);
-        await _invitationService.DeleteInvitation(invitationId.ToString());
         _refreshService.CallRequestRefresh();
-        await SubmitGetInvitation();
+        Console.WriteLine("Okay okay");
+       // await _invitationService.DeleteInvitation(invitationId.ToString());
+        //await SubmitGetInvitation();
     //await _groupMembersService.GetGroupMembersList(id);
     }
 
