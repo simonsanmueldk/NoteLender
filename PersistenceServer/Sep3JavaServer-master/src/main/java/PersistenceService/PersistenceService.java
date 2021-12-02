@@ -218,19 +218,19 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<Void> deleteGroupMember(int id) {
-        System.out.println("HAHAHAHAHH" + id);
-        String sql =
-                "DELETE FROM notelender.groupmembers WHERE id=?";
+    public ResponseEntity<Void> deleteGroupMember(int id, String json) {
+        System.out.println(json);
+        System.out.println(id);
+        String deleteString = "DELETE FROM notelender.groupmembers WHERE group_id = ? and user_id = ?";
         try {
-            PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            statement.setInt(1, id);
-            statement.executeUpdate();
+            PreparedStatement deleteGroupMember = connection.prepareStatement(deleteString);
+            deleteGroupMember.setInt(1, id);
+            deleteGroupMember.setInt(2, Integer.parseInt(json));
+            deleteGroupMember.executeUpdate();
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
     }
 
     @Override

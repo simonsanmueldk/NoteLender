@@ -4,10 +4,8 @@
 @using Sep3Blazor.Model
 @using Sep3Blazor.Data.InvitationData
 @using Sep3Blazor.Authentication
-@using Sep3Blazor.Data.GroupMembersData
 @inject IUserService UserService
 @inject IInvitationService invitationService
-@inject IGroupMembersService GroupMembersService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 <h3>Invite</h3>
 
@@ -45,7 +43,7 @@ else
                 <div class="form-group">
                     <div class="input-group">
                         <li class="list-group-item onHoverChange"><u>Name</u>: <b>@user.firstName @user.lastName</b> <br/> <u>Username</u>: <b>@user.username</b></li>
-                        <button class="btn btn-primary btn-block"  @onclick="@(() => InviteUser(user))" style="display:@temp ">Invite </button>
+                        <button class="btn btn-primary btn-block" @onclick="@(() => InviteUser(user))" style="display:@temp ">Invite </button>
                     </div>
                 </div>
                 <br>
@@ -59,12 +57,8 @@ else
     public bool temp = false;
     public List<User> users;
     public List<User> tempUsers;
-
-
     [Parameter]
     public int Value { get; set; }
-
- 
 
     private User cachedUser;
 
@@ -76,16 +70,16 @@ else
 
     private async Task Search()
     {
-        tempUsers = new List<User>();
         if (!username.Equals(""))
         {
             users = await UserService.GetUser(username);
             tempUsers = new List<User>();
             foreach (var user in users)
             {
+                
                 if (!user.username.Equals(cachedUser.username))
                 {
-                    tempUsers.Add(user);
+                  tempUsers.Add(user);
                 }
             }
             if (tempUsers != null)
@@ -105,4 +99,7 @@ else
         await invitationService.AddInvitations(invitation);
     }
 
+
+
 }
+

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Grpc.Core;
 using Grpc.Net.Client;
 using Sep3Blazor.Model;
 
@@ -21,7 +22,6 @@ namespace Sep3Blazor.Data.GroupMembersData
             return JsonSerializer.Deserialize<List<GroupMembers>>(reply.Message);
         }
 
-      
 
         public Task<IList<GroupMembers>> GetGroupMembersList(int group_id)
         {
@@ -34,22 +34,26 @@ namespace Sep3Blazor.Data.GroupMembersData
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
             var reply = await client.AddGroupMemberAsync(
-                new AddGroupMemberRequest {GroupId = groupId,UserId = userId});
+                new AddGroupMemberRequest {GroupId = groupId, UserId = userId});
             Console.WriteLine("Group: " + reply.Message);
         }
 
-        public async Task<IList<GroupMembers>> DeleteGroupMember(int id)
+        public async Task DeleteGroupMembersList(int group_id, int user_id)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
-
-            var reply = await client.DeleteGroupMemberAsync(
-                new UserRequest()
-                {
-                    Id = id
-                }
-            );
-            return null;
+            try
+            {
+                var reply = await client.DeleteGroupMemberAsync(
+                    new DeleteGroupMemberRequest {GroupId = group_id, UserId = user_id});
+                Console.WriteLine("Group: " + reply.Message);
+            }
+            catch (RpcException e)
+            {
+                Console.WriteLine(e.Status.Detail);
+                Console.WriteLine(e.Status.StatusCode);
+                Console.WriteLine((int) e.Status.StatusCode);
+            }
         }
     }
 }

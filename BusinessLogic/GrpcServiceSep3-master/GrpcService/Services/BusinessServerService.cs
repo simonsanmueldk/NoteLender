@@ -110,10 +110,6 @@ namespace GrpcService
         {
             return await _logicService.DeleteInvitation(request,context);
         }
-        public override async Task<Reply> DeleteGroupMember(UserRequest request, ServerCallContext context)
-        {
-            return await _logicService.DeleteGroupMember(request,context);
-        }
 
         
         public override async Task<Reply> GetUserList(Request request, ServerCallContext context)
@@ -137,5 +133,11 @@ namespace GrpcService
             return await _logicService.AddGroupMember(request, context);
         }
         
+        public override async Task<Reply> DeleteGroupMember(DeleteGroupMemberRequest request, ServerCallContext context)
+        {
+            return await _logicService.DeleteGroupMember(request, context);
+        }
+
+
     }
 }

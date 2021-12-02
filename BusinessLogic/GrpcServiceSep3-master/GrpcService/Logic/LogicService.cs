@@ -134,12 +134,13 @@ namespace GrpcService.Logic
             if (responseMessage.IsSuccessStatusCode)
             {
                 string message = await responseMessage.Content.ReadAsStringAsync();
-               
+                Console.WriteLine(message);
                 return await Task.FromResult(new RegisterReply
                 {
                     Message = message
                 });
             }
+
             return null;
         }
 
@@ -254,6 +255,23 @@ namespace GrpcService.Logic
         }
 
 
+        public async Task<Reply> DeleteGroupMember(DeleteGroupMemberRequest request, ServerCallContext context)
+        {
+           
+            HttpContent content = new StringContent(request.UserId.ToString(), Encoding.UTF8, "application/json");
+            HttpResponseMessage responseMessage = await _client.PostAsync(uri + $"/groupmembers/{request.GroupId}", content);
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                throw new Exception("Error "+  responseMessage.StatusCode+" "+" "+responseMessage.ReasonPhrase);
+            }
+            string message = await responseMessage.Content.ReadAsStringAsync();
+            Console.WriteLine(message);
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+
         public async Task<Reply> DeleteUser(UserRequest request, ServerCallContext context)
         {
             HttpResponseMessage responseMessage = await _client.DeleteAsync(uri + "/user/" + request.Id);
@@ -283,22 +301,6 @@ namespace GrpcService.Logic
             }
 
             return null;
-        }
-
-        public async Task<Reply> DeleteGroupMember(UserRequest request, ServerCallContext context)
-        {
-            HttpResponseMessage responseMessage = await _client.DeleteAsync(uri + "/groupmembers/" + request.Id);
-            if (!responseMessage.IsSuccessStatusCode)
-            {
-                throw new Exception(@"Error : (responseMessage.Status), (responseMessage.ReasonPhrase");
-            }
-
-            string message = await responseMessage.Content.ReadAsStringAsync();
-            Console.WriteLine(message);
-            return await Task.FromResult(new Reply
-            {
-                Message = message
-            });
         }
 
         public async Task<Reply> GetNoteList(Request request, ServerCallContext context)
