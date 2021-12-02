@@ -40,9 +40,18 @@ namespace Sep3Blazor.Data.GroupMembersData
             return null;
         }
 
-        public Task<IList<GroupMembers>> DeleteGroupMembersList(int group_id, int user_id)
+        public async Task<IList<GroupMembers>> DeleteGroupMember(int id)
         {
-            throw new NotImplementedException();
+            using var channel = GrpcChannel.ForAddress(URL);
+            var client = new BusinessServer.BusinessServerClient(channel);
+
+            var reply = await client.DeleteGroupMemberAsync(
+                new UserRequest()
+                {
+                    Id = id
+                }
+            );
+            return null;
         }
     }
 }

@@ -25,19 +25,20 @@ namespace GrpcService.Logic
         public Task<RegisterReply> RegisterUser(RegisterRequest request, ServerCallContext context);
         public Task<Reply> ValidateUser(Request request, ServerCallContext context);
         public Task<Reply> EditUser(EditUserRequest request, ServerCallContext context);
-        
+
         // Invitations
         public Task<Reply> GetInvitationList(Request request, ServerCallContext context);
         public Task<Reply> PostInvitation(RegisterInvitationRequest request, ServerCallContext context);
         public Task<Reply> DeleteInvitation(Request request, ServerCallContext context);
 
-        
+
         public Task<Reply> GetUserList(Request request, ServerCallContext context);
-        
+
         public Task<Reply> GetGroupMembersList(Request request, ServerCallContext context);
         public Task<Reply> AddGroupMember(AddGroupMemberRequest request, ServerCallContext context);
 
         public Task<Reply> DeleteUser(UserRequest request, ServerCallContext context);
-       public  Task<Reply> GetUser(GetUserRequest request, ServerCallContext context);
+        public Task<Reply> GetUser(GetUserRequest request, ServerCallContext context);
+        public Task<Reply> DeleteGroupMember(UserRequest request, ServerCallContext context);
     }
 }
