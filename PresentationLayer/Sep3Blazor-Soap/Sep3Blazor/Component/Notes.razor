@@ -1,10 +1,9 @@
-﻿@page "/Notes"
-@page "/Notes/{Id:int}" 
-@using Sep3Blazor.Model
+﻿@using Sep3Blazor.Model
 @using System.Globalization
+@using Sep3Blazor.Authentication
 @using Sep3Blazor.Data.NoteData
-
 @inject INoteService _noteService
+@inject AuthenticationStateProvider _authenticationStateProvider
 
 <div class="container-fluid">
   <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleAddModal"><i class="oi oi-plus"></i> New note</button>
@@ -12,35 +11,35 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content" style="background-color:white">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleAddModalLabel">Add Node in Group @Id</h5>
+          <h5 class="modal-title" id="exampleAddModalLabel">Add Node in Group @GroupId</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
         </div>
         <div class="modal-body">
-          <EditForm Model="@noteToAdd" OnValidSubmit="@SubmitAddNote">
+          <EditForm Model="@_template" OnValidSubmit="@SubmitAddNote">
             <DataAnnotationsValidator />
             <ValidationSummary />
             <p>
               <label>
                 Week:
-                <InputNumber @bind-Value="noteToAdd.week" />
+                <InputNumber @bind-Value="_template.week" />
               </label>
             </p>
             <p>
               <label>
                 Year:
-                <InputNumber @bind-Value="noteToAdd.year" />
+                <InputNumber @bind-Value="_template.year" />
               </label>
             </p>
             <p>
               <label>
                 Name:
-                <InputText @bind-Value="noteToAdd.name"/>
+                <InputText @bind-Value="_template.name"/>
               </label>
             </p>
             <p>
               <label>
                 Status:
-                <InputSelect @bind-Value="noteToAdd.status">
+                <InputSelect @bind-Value="_template.status">
                   <option value="">Not started</option>
                   <option value="Started">Started</option>
                   <option value="Finished">Finished</option>
@@ -50,7 +49,7 @@
             <p>
               <label>
                 Text
-                <InputTextArea @bind-Value="noteToAdd.text" />
+                <InputTextArea @bind-Value="_template.text" />
               </label>
             </p>
             <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
@@ -60,81 +59,39 @@
       </div>
     </div>
   </div>
-<div class="row">
+  <div class="row">
     <div class="col-1">
       <button type="button" class="btn btn-secondary" style="height: 480px; width: 36px;" @onclick="PreviousPage">&lt;</button>
     </div>
     <div class="col-10">
       <div class="row justify-content-between">
-      <div class="col-sm-4">
-        <div class="p-3 mb-2 bg-secondary text-white">
-          Week @(_currentWeek - 1)
-        </div>
-        <table class="table table-sm table-hover table-wrapper-scroll-y my-custom-scrollbar">
-          @if (NoteList == null)
-          {
-            <p>
-              <em>Loading...</em>
-            </p>
-          }
-          else
-          {
-            @foreach (Note note in NoteList)
-            {
-              if (note.week == (_currentWeek - 1))
+        @for (int i = -1; i < 2; i++)
+        {
+          <div class="col-sm-4">
+            <div class="p-3 mb-2 bg-secondary text-white">
+              Week @(_currentWeek + i)
+            </div>
+            <table class="table table-sm table-hover table-wrapper-scroll-y my-custom-scrollbar">
+              @if (NoteList == null)
               {
-                <NoteComponent Note="note"></NoteComponent>
-                <br>
+                <p>
+                  <em>Loading...</em>
+                </p>
               }
-            }
-          }
-        </table>
-      </div>
-      <div class="col-sm-4">
-          <div class="p-3 mb-2 bg-secondary text-white">
-            Week @_currentWeek
-          </div>
-          <table class="table table-sm table-hover table-wrapper-scroll-y my-custom-scrollbar">
-            @if (NoteList == null)
-            {
-              Console.WriteLine("NoteList is empty/non-existing");
-            }
-            else
-            {
-              @foreach (Note note in NoteList)
+              else
               {
-                if (note.week == _currentWeek)
+                @foreach (Note note in NoteList)
                 {
-                  <NoteComponent Note="note"></NoteComponent>
-                  <br>
-                  
+                  if (note.week == (_currentWeek + i))
+                  {
+                    <NoteComponent Note="note"></NoteComponent>
+                    <br>
+                  }
                 }
               }
-            }
-          </table>
-        </div>
-        <div class="col-sm-4">
-          <div class="p-3 mb-2 bg-secondary text-white">
-            Week @(_currentWeek + 1)
+            </table>
           </div>
-          <table class="table table-sm table-hover table-wrapper-scroll-y my-custom-scrollbar">
-            @if (NoteList == null)
-            {
-              Console.WriteLine("NoteList is empty/non-existing");
-            }
-            else
-            {
-              @foreach (Note note in NoteList)
-              {
-                if (note.week == (_currentWeek + 1))
-                {
-                  <NoteComponent Note="note"></NoteComponent>
-                  <br>
-                }
-              }
-            }
-          </table>
-        </div>
+        }
       </div>
     </div>
     <div class="col-1">
@@ -146,13 +103,14 @@
 @code{
 
   [Parameter]
-  public int Id { get; set; }
+  public int GroupId { get; set; }
 
   private IList<Note> NoteList { get; set; }
   private int _currentWeek;
 
-  private Note noteToAdd = new Note(0, 0, 0, 0, 0, "", "", "");
-  private Note note = new Note(0, 0, 0, 0, 0, "", "", "");
+  private Note _template = new Note(0, 0, 0, 0, 0, "", "", "");
+
+  private User _loggedInUser;
 
   // Show the notes further ahead in time and prevent going past week 52.
   private void NextPage()
@@ -202,31 +160,23 @@
   // Method to run, when user enters this page.
   protected override async Task OnInitializedAsync()
   {
-    Console.WriteLine("My id is "+Id);
     // Get the selected group's notes
-    NoteList = await _noteService.GetNoteList(Id.ToString());
+    NoteList = await _noteService.GetNoteList(GroupId.ToString());
     
     // Get today's week
     _currentWeek = GetIsoWeekOfYear(DateTime.Today);
-  }
-
-  private void SubmitAddNote()
-  {
-    Note note = new Note(0, 0, @Id, noteToAdd.week, noteToAdd.year, noteToAdd.name, noteToAdd.status, noteToAdd.text);
-    Console.WriteLine("G: " + @Id + " W: " + note.week + " Y: " + note.year + " N: " + note.name + " S: " + note.status + " T: " + note.text);
-  }
-
-  private async void DeleteNote(int noteIdInput)
-  {
-    Note deletedNote = await _noteService.DeleteNote(noteIdInput);
-  }
-
-  private void SubmitEditNote()
-  {
-    Note noteToEdit = new Note(0, 0, @Id, note.week, note.year, note.name, note.status, note.text);
-    Console.WriteLine("G: " + @Id + " W: " + note.week + " Y: " + note.year + " N: " + note.name + " S: " + note.status + " T: " + note.text);
-
+    
+    // Set the LoggedInUser equal to the User the custom Authentication service gets.
+    _loggedInUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser;
+    
+    // Instantiate Template note for the EditForm component.
+    _template = new Note(0, _loggedInUser.id, GroupId, _currentWeek, CultureInfo.InvariantCulture.Calendar.GetYear(DateTime.Today), "", "", "");
   }
   
-
+  private async void SubmitAddNote()
+  {
+    
+    await _noteService.AddNote(new Note(0, _template.userId, _template.groupId, _template.week, _template.year, _template.name, _template.status, _template.text));
+  }
+  
 }
