@@ -78,7 +78,7 @@ else
     {
         if (!username.Equals(""))
         {
-            users = await UserService.GetUser(username);
+            users = await UserService.GetUserList(username);
             tempUsers = new List<User>();
             foreach (var user in users)
             {
@@ -101,7 +101,7 @@ else
     private async Task InviteUser(User user)
     {
         Invitation invitation = new Invitation(0, GroupId, null, user.id, null, cachedUser.id, null);
-        await invitationService.AddInvitations(invitation);
+        await invitationService.AddInvitation(invitation);
     }
 
 

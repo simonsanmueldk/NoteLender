@@ -12,14 +12,24 @@ namespace Sep3Blazor.Data.GroupMembersData
     {
         private readonly String URL = "https://localhost:5004";
 
-        public async Task<IList<GroupMembers>> GetUserList(int groupId)
+        public async Task<IList<GroupMembers>> GetGroupMemberList(int groupId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
-            var reply = await client.GetUserListAsync(
-                new Request {Name = groupId.ToString()});
-            Console.WriteLine("Group: " + reply.Message);
-            return JsonSerializer.Deserialize<List<GroupMembers>>(reply.Message);
+            try
+            {
+                var reply = await client.GetUserListAsync(
+                    new Request {Name = groupId.ToString()});
+                Console.WriteLine("Group: " + reply.Message);
+                return JsonSerializer.Deserialize<List<GroupMembers>>(reply.Message);
+            }
+            catch (RpcException e)
+            {
+                Console.WriteLine(e.Status.Detail);
+                Console.WriteLine(e.Status.StatusCode);
+                Console.WriteLine((int) e.Status.StatusCode);
+                return null;
+            }
         }
 
 
@@ -32,20 +42,11 @@ namespace Sep3Blazor.Data.GroupMembersData
         {
             Console.WriteLine("G" + groupId + " U " + userId);
             using var channel = GrpcChannel.ForAddress(URL);
-            var client = new BusinessServer.BusinessServerClient(channel);
-            var reply = await client.AddGroupMemberAsync(
-                new AddGroupMemberRequest {GroupId = groupId, UserId = userId});
-            Console.WriteLine("Group: " + reply.Message);
-        }
-
-        public async Task LeaveGroup(int group_id, int user_id)
-        {
-            using var channel = GrpcChannel.ForAddress(URL);
-            var client = new BusinessServer.BusinessServerClient(channel);
             try
             {
-                var reply = await client.LeaveGroupAsync(
-                    new DeleteGroupMemberRequest {GroupId = group_id,UserId = user_id});
+                var client = new BusinessServer.BusinessServerClient(channel);
+                var reply = await client.AddGroupMemberAsync(
+                    new AddGroupMemberRequest {GroupId = groupId, UserId = userId});
                 Console.WriteLine("Group: " + reply.Message);
             }
             catch (RpcException e)
@@ -55,18 +56,45 @@ namespace Sep3Blazor.Data.GroupMembersData
                 Console.WriteLine((int) e.Status.StatusCode);
             }
         }
+
+        public async Task LeaveGroup(int group_id, int user_id)
+        {
+            using var channel = GrpcChannel.ForAddress(URL);
+            var client = new BusinessServer.BusinessServerClient(channel);
+            try
+            {
+                var reply = await client.LeaveGroupAsync(
+                    new DeleteGroupMemberRequest {GroupId = group_id, UserId = user_id});
+                Console.WriteLine("Group: " + reply.Message);
+            }
+            catch (RpcException e)
+            {
+                Console.WriteLine(e.Status.Detail);
+                Console.WriteLine(e.Status.StatusCode);
+                Console.WriteLine((int) e.Status.StatusCode);
+            }
+        }
+
         public async Task DeleteGroupMember(int id)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
-
-            var reply = await client.DeleteGroupMemberAsync(
-                new UserRequest()
-                {
-                    Id = id
-                }
-            );
-            Console.WriteLine("DeleteGroupMember " + reply.Message); 
+            try
+            {
+                var reply = await client.DeleteGroupMemberAsync(
+                    new UserRequest()
+                    {
+                        Id = id
+                    }
+                );
+                Console.WriteLine("DeleteGroupMember " + reply.Message);
+            }
+            catch (RpcException e)
+            {
+                Console.WriteLine(e.Status.Detail);
+                Console.WriteLine(e.Status.StatusCode);
+                Console.WriteLine((int) e.Status.StatusCode);
+            }
         }
     }
 }

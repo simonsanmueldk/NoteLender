@@ -85,7 +85,7 @@
     protected override async Task OnInitializedAsync()
     {
         cachedUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
-        GroupMembersList = await _groupMembersService.GetUserList(GroupId);
+        GroupMembersList = await _groupMembersService.GetGroupMemberList(GroupId);
     }
     
     private async Task LeaveGroup()
@@ -97,7 +97,7 @@
     private async Task DeleteMember(int id)
     {
         await _groupMembersService.DeleteGroupMember(id);
-        GroupMembersList = await _groupMembersService.GetUserList(GroupId);
+        GroupMembersList = await _groupMembersService.GetGroupMemberList(GroupId);
     }
 
 }

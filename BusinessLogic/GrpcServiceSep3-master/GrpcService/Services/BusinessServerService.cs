@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using GrpcService.Logic;
 using Microsoft.Extensions.Logging;
-using Sep3Blazor;
 
-namespace GrpcService
+namespace GrpcService.Services
 {
     public class BusinessServerService : BusinessServer.BusinessServerBase
     {

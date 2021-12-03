@@ -1,5 +1,4 @@
-﻿
-@using Sep3Blazor.Data.GroupData
+﻿@using Sep3Blazor.Data.GroupData
 @using Sep3Blazor.Data.GroupMembersData
 @using Sep3Blazor.Data.Refresh
 @using Sep3Blazor.Model
@@ -70,18 +69,16 @@
 
 @code {
 
-    public IList<Group> GroupList { get; set; }
-
     [Parameter]
     public string UserId { get; set; }
 
+    public IList<Group> GroupList { get; set; }
     private Group groupModel = new Group(0, "");
 
     protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
         _refreshServiceInvGroup.RefreshRequested += RefreshState;
-        Console.WriteLine("GroupListing");
         GroupList = await _groupService.GetGroupList(Convert.ToInt32(UserId));
     }
 

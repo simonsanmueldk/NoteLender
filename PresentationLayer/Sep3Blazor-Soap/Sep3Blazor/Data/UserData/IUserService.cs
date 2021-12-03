@@ -9,7 +9,7 @@ namespace Sep3Blazor.Data.UserData
         public Task<User> ValidateUser(string username, string password);
         public Task RegisterUser(User user);
         public Task EditUser(int id, string newPassword);
-        public Task<List<User>> GetUser(string username);
-        public Task<User> DeleteUser(int id);
+        public Task<List<User>> GetUserList(string username);
+        public Task DeleteUser(int id);
     }
 }

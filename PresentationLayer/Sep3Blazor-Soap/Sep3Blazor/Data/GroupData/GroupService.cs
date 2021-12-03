@@ -14,7 +14,6 @@ namespace Sep3Blazor.Data.GroupData
     public class GroupService : IGroupService
     {
         private readonly String URL = "https://localhost:5004";
-        public IList<Group> GroupList { get; set; }
 
         public async Task AddGroup(string groupName, int memberId)
         {
@@ -35,7 +34,6 @@ namespace Sep3Blazor.Data.GroupData
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
-         
             }
         }
 
