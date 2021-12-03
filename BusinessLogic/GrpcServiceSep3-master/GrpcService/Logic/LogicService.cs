@@ -186,11 +186,11 @@ namespace GrpcService.Logic
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
             Console.WriteLine("edit aleo");
             HttpResponseMessage responseMessage = await _client.PostAsync(uri + $"/user/{request.Id}", content);
-            Console.WriteLine("edit aleo x2");
+            Console.WriteLine(responseMessage.Content.ReadAsStringAsync().Result);
             if (responseMessage.IsSuccessStatusCode)
             {
+                Console.WriteLine("edit aleo x3");
                 string message = await responseMessage.Content.ReadAsStringAsync();
-
                 return await Task.FromResult(new Reply
                 {
                     Message = message
