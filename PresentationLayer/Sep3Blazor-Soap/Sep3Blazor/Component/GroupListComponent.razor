@@ -1,14 +1,15 @@
-﻿@using Sep3Blazor.Data.GroupData
+﻿
+@using Sep3Blazor.Data.GroupData
 @using Sep3Blazor.Data.GroupMembersData
-
 @using Sep3Blazor.Data.Refresh
 @using Sep3Blazor.Model
 @using Sep3Blazor.Authentication
+
 @inject IGroupService _groupService
-@inject IRefreshService _refreshService
-@inject NavigationManager NavigationManager
+@inject IRefreshServiceInvGroup _refreshServiceInvGroup
+@inject NavigationManager _navigationManager
 @inject IGroupMembersService _groupMembersService
-@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject AuthenticationStateProvider _authenticationStateProvider
 
 <div class="container-fluid">
     <div class="col-12">
@@ -23,8 +24,8 @@
                     </div>
                     <div class="modal-body">
                         <EditForm Model="@groupToAdd" OnValidSubmit="SubmitAddGroup">
-                            <DataAnnotationsValidator />
-                            <ValidationSummary />
+                            <DataAnnotationsValidator/>
+                            <ValidationSummary/>
                             <p>
                                 <label>
                                     Name:
@@ -67,8 +68,6 @@
 </div>
 
 
-
-
 @code {
 
     public IList<Group> GroupList { get; set; }
@@ -81,7 +80,7 @@
     protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
-        _refreshService.RefreshRequested += RefreshState;
+        _refreshServiceInvGroup.RefreshRequested += RefreshState;
         Console.WriteLine("GroupListing");
         GroupList = await _groupService.GetGroupList(Convert.ToInt32(Value));
     }
@@ -90,7 +89,7 @@
     {
         Value = group.id.ToString();
         Console.WriteLine(Value);
-        NavigationManager.NavigateTo("/GroupPage/" + group.id);
+        _navigationManager.NavigateTo("/GroupPage/" + group.id);
     }
 
     public async void RefreshState()
@@ -102,7 +101,7 @@
 
     private async void SubmitAddGroup()
     {
-        await _groupService.AddGroup(groupToAdd.name, ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser.id);
+        await _groupService.AddGroup(groupToAdd.name, ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser.id);
         RefreshState();
     }
 

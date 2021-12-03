@@ -129,4 +129,9 @@ public class PersistenceServerController {
         return persistenceService.addGroupMember(json);
     }
 
+    @PostMapping("/groupmembers/{id}")
+    public ResponseEntity<Void> LeaveGroup(@PathVariable(value = "id") int id,@RequestBody String json) {
+        return persistenceService.leaveGroup(id, json);
+    }
+    
 }

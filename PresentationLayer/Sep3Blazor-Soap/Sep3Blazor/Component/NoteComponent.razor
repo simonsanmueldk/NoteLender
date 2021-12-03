@@ -5,95 +5,95 @@
 
 
 <tbody>
-    <tr>
-        <th scope="row">Name</th>
-        <td>@Note.name</td>
-    </tr>
-    <tr>
-        <th scope="row">Year</th>
-        <td>@Note.year</td>
-    </tr>
-    <tr>
-        <th scope="row">Status</th>
-        <td>@Note.status</td>
-    </tr>
-    <tr>
-        <th scope="row">Text</th>
-        <td class="table-warning">@Note.text</td>
-    </tr>
-    </tbody>
-    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="@("#exampleEditModal"+Note.id)">Edit</button>
-    <div class="modal fade" id="@("exampleEditModal"+Note.id)" tabindex="-1" aria-labelledby="@("exampleEditModalLabel"+Note.id)" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="background-color:white">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="@("exampleEditModalLabel"+Note.id)">Note @Note.id in Group @Note.groupId</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
-                </div>
-                <div class="modal-body">
-                    <EditForm Model="@Note" OnValidSubmit="@SubmitEditNote">
-                        <DataAnnotationsValidator/>
-                        <ValidationSummary/>
-                        <p>
-                            <label>
-                                Week:
-                                <InputNumber @bind-Value="Note.week"/>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                Year:
-                                <InputNumber @bind-Value="Note.year"/>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                Name:
-                                <InputText @bind-Value="Note.name"/>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                Status:
-                                <InputSelect @bind-Value="Note.status">
-                                    <option value="">Not started</option>
-                                    <option value="Started">Started</option>
-                                    <option value="Finished">Finished</option>
-                                </InputSelect>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                Text
-                                <InputTextArea @bind-Value="Note.text"/>
-                            </label>
-                        </p>
-                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    </EditForm>
-                </div>
+<tr>
+    <th scope="row">Name</th>
+    <td>@Note.name</td>
+</tr>
+<tr>
+    <th scope="row">Year</th>
+    <td>@Note.year</td>
+</tr>
+<tr>
+    <th scope="row">Status</th>
+    <td>@Note.status</td>
+</tr>
+<tr>
+    <th scope="row">Text</th>
+    <td class="table-warning">@Note.text</td>
+</tr>
+</tbody>
+<button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="@("#exampleEditModal" + Note.id)">Edit</button>
+<div class="modal fade" id="@("exampleEditModal" + Note.id)" tabindex="-1" aria-labelledby="@("exampleEditModalLabel" + Note.id)" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color:white">
+            <div class="modal-header">
+                <h5 class="modal-title" id="@("exampleEditModalLabel" + Note.id)">Note @Note.id in Group @Note.groupId</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
             </div>
-        </div>
-    </div>
-    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="@("#exampleDelete"+Note.id)">
-        Delete
-    </button>
-    <div class="modal fade" id="@("exampleDelete"+Note.id)" tabindex="-1" role="dialog" aria-labelledby="@("exampleModalCenterTitle"+Note.id)" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content" style="background-color: white">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="@("exampleModalLongTitle"+Note.id)">Delete Note @Note.id from group @Note.groupId?</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
-                </div>
-                <div class="modal-footer">
+            <div class="modal-body">
+                <EditForm Model="@Note" OnValidSubmit="@SubmitEditNote">
+                    <DataAnnotationsValidator/>
+                    <ValidationSummary/>
+                    <p>
+                        <label>
+                            Week:
+                            <InputNumber @bind-Value="Note.week"/>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            Year:
+                            <InputNumber @bind-Value="Note.year"/>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            Name:
+                            <InputText @bind-Value="Note.name"/>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            Status:
+                            <InputSelect @bind-Value="Note.status">
+                                <option value="">Not started</option>
+                                <option value="Started">Started</option>
+                                <option value="Finished">Finished</option>
+                            </InputSelect>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            Text
+                            <InputTextArea @bind-Value="Note.text"/>
+                        </label>
+                    </p>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @onclick="@(DeleteNote)">Save changes</button>
-                </div>
+                </EditForm>
             </div>
         </div>
     </div>
+</div>
+<button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="@("#exampleDelete" + Note.id)">
+    Delete
+</button>
+<div class="modal fade" id="@("exampleDelete" + Note.id)" tabindex="-1" role="dialog" aria-labelledby="@("exampleModalCenterTitle" + Note.id)" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="background-color: white">
+            <div class="modal-header">
+                <h5 class="modal-title" id="@("exampleModalLongTitle" + Note.id)">Delete Note @Note.id from group @Note.groupId?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @onclick="@(DeleteNote)">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <br>
+<br>
 
 
 @code {
@@ -101,23 +101,22 @@
     [Parameter]
     public Note Note { get; set; }
 
+    [Parameter]
+    public EventCallback<string> OnClick { get; set; }
+
     private Note _noteToAddModel = new Note(0, 0, 0, 0, 0, "", "", "");
-    
-    
-    
+
+
     private async void SubmitEditNote()
     {
         await _noteService.EditNote(new Note(Note.id, Note.userId, Note.groupId, Note.week, Note.year, Note.name, Note.status, Note.text));
-        
-        // TODO Refresh Notes.razor after editing.
+        await OnClick.InvokeAsync();
     }
-    
+
     private async Task DeleteNote()
     {
         await _noteService.DeleteNote(Note.id);
-        
-        // TODO Refresh Notes.razor after deleting.
+        await OnClick.InvokeAsync();
     }
-    
-}
 
+}
