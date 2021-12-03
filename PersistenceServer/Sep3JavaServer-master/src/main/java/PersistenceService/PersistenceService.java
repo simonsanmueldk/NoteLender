@@ -292,16 +292,19 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public ResponseEntity<Void> editUser(String json, int user_id) {
+        System.out.println("Edit aleox1");
         User temp = gson.fromJson(json, User.class);
-        String editString = "UPDATE notelender.users SET password= ? + WHERE id= ?";
+        System.out.println(temp.getId()+"    "+temp.getUsername());
+        String editString = "UPDATE notelender.users SET password= ? WHERE id= ?";
         try {
             PreparedStatement editUser = connection.prepareStatement(editString, PreparedStatement.RETURN_GENERATED_KEYS);
             editUser.setString(1, temp.getPassword());
-            editUser.setInt(2, temp.getId());
+            editUser.setInt(2, user_id);
             editUser.executeUpdate();
-
+            System.out.println("Edit aleo");
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

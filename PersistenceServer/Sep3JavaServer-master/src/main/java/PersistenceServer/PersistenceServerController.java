@@ -128,5 +128,5 @@ public class PersistenceServerController {
     public ResponseEntity<Void> AddGroupMember(@RequestBody String json) {
         return persistenceService.addGroupMember(json);
     }
-    
+
 }
