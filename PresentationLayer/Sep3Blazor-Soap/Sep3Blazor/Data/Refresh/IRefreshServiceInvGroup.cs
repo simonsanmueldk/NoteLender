@@ -2,7 +2,7 @@
 
 namespace Sep3Blazor.Data.Refresh
 {
-    public interface IRefreshService
+    public interface IRefreshServiceInvGroup
     {
         event Action RefreshRequested;
         void CallRequestRefresh();

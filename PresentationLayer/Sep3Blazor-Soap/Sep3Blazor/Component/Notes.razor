@@ -84,7 +84,7 @@
                 {
                   if (note.week == (_currentWeek + i))
                   {
-                    <NoteComponent Note="note"></NoteComponent>
+                    <NoteComponent OnClick="ClickHandler" Note="note"></NoteComponent>
                     <br>
                   }
                 }
@@ -111,6 +111,22 @@
   private Note _template = new Note(0, 0, 0, 0, 0, "", "", "");
 
   private User _loggedInUser;
+
+  // Method to run, when user enters this page.
+  protected override async Task OnInitializedAsync()
+  {
+  // Get the selected group's notes
+    NoteList = await _noteService.GetNoteList(GroupId.ToString());
+    
+  // Get today's week
+    _currentWeek = GetIsoWeekOfYear(DateTime.Today);
+    
+  // Set the LoggedInUser equal to the User the custom Authentication service gets.
+    _loggedInUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser;
+    
+  // Instantiate Template note for the EditForm component.
+    _template = new Note(0, _loggedInUser.id, GroupId, _currentWeek, CultureInfo.InvariantCulture.Calendar.GetYear(DateTime.Today), "", "", "");
+  }
 
   // Show the notes further ahead in time and prevent going past week 52.
   private void NextPage()
@@ -156,27 +172,17 @@
     }
     return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
   }
-  
-  // Method to run, when user enters this page.
-  protected override async Task OnInitializedAsync()
+
+  async Task ClickHandler()
   {
-    // Get the selected group's notes
     NoteList = await _noteService.GetNoteList(GroupId.ToString());
-    
-    // Get today's week
-    _currentWeek = GetIsoWeekOfYear(DateTime.Today);
-    
-    // Set the LoggedInUser equal to the User the custom Authentication service gets.
-    _loggedInUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser;
-    
-    // Instantiate Template note for the EditForm component.
-    _template = new Note(0, _loggedInUser.id, GroupId, _currentWeek, CultureInfo.InvariantCulture.Calendar.GetYear(DateTime.Today), "", "", "");
   }
   
   private async void SubmitAddNote()
   {
     
     await _noteService.AddNote(new Note(0, _template.userId, _template.groupId, _template.week, _template.year, _template.name, _template.status, _template.text));
+    NoteList = await _noteService.GetNoteList(GroupId.ToString());
   }
   
 }

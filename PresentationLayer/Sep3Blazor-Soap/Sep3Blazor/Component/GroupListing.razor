@@ -5,7 +5,7 @@
 @using Sep3Blazor.Model
 @using Sep3Blazor.Authentication
 @inject IGroupService _groupService
-@inject IRefreshService _refreshService
+@inject IRefreshServiceInvGroup _refreshServiceInvGroup
 @inject NavigationManager NavigationManager
 @inject IGroupMembersService _groupMembersService
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -81,7 +81,7 @@
     protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
-        _refreshService.RefreshRequested += RefreshState;
+        _refreshServiceInvGroup.RefreshRequested += RefreshState;
         Console.WriteLine("GroupListing");
         GroupList = await _groupService.GetGroupList(Convert.ToInt32(Value));
     }
