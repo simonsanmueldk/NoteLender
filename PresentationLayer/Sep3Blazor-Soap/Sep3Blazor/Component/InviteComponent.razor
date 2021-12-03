@@ -5,6 +5,8 @@
 @inject IUserService UserService
 @inject IInvitationService invitationService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+<h3>Invite to group</h3>
+
 @if (!temp)
 {
     <div class="form-group">
@@ -36,16 +38,21 @@ else
         <ul class="list-group">
             @foreach (var user in tempUsers)
             {
-                <div class="form-group">
-                    <div class="input-group">
-                        <li class="list-group-item onHoverChange"><u>Name</u>: <b>@user.firstName @user.lastName</b> <br/> <u>Username</u>: <b>@user.username</b></li>
-                        <button class="btn btn-primary btn-block" @onclick="@(() => InviteUser(user))" style="display:@temp ">Invite </button>
-                    </div>
+                <div class="table">
+                    
+                    <tbody>
+                    <tr>
+                        <td class="list-group-item"><a>Name</a>: <b>@user.firstName @user.lastName</b>
+                            <br/> <a>Username</a>: <b>@user.username</b>
+                            <a class="btn btn-primary"@onclick="@(() => InviteUser(user))" style="display:@temp">Invite</a></td>
+                    </tr>
+                    </tbody>
                 </div>
                 <br>
             }
         </ul>
     </div>
+    
 }
 
 @code {
