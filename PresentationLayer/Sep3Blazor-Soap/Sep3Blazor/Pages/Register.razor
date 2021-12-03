@@ -3,8 +3,6 @@
 @using Sep3Blazor.Data
 @using Sep3Blazor.Data.UserData
 @inject IUserService _userService
-
-<h3>Register</h3>
 @inject NavigationManager NavigationManager
 
 <EditForm Model="@user" OnValidSubmit="@RegisterUser">

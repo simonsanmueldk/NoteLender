@@ -12,8 +12,10 @@
             <aside class="col-sm-4 " style="alignment: center">
                 <div class=" card ">
                     <article class="card-body ">
-                        <h4 class="card-title text-center mb-4 mt-1">Sign in</h4>
-                        <hr>
+                        <header class="card-header">
+                            <h4 class="card-title text-center mb-4 mt-1">Sign in</h4>
+                        </header>
+                        <br/>
                         <div class="d-flex flex-column align-items-center">
                             <div style="color:red">@errorMessage</div>
 
@@ -41,7 +43,7 @@
                                 <button type="submit" class="btn btn-primary btn-block" @onclick="PerformLogin"> Login </button>
                             </div> <!-- form-group// -->
                             <div id="register-link" class="text-right">
-                                <a href="#" @onclick="Register" class="text-info">Register here</a>
+                                <a href="#" @onclick="Register">Register here</a>
                             </div>
                         </div>
 
