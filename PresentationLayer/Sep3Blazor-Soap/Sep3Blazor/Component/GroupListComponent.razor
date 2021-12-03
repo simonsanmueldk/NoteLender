@@ -23,13 +23,13 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
                     </div>
                     <div class="modal-body">
-                        <EditForm Model="@groupToAdd" OnValidSubmit="SubmitAddGroup">
+                        <EditForm Model="@groupModel" OnValidSubmit="SubmitAddGroup">
                             <DataAnnotationsValidator/>
                             <ValidationSummary/>
                             <p>
                                 <label>
                                     Name:
-                                    <InputText @bind-Value="groupToAdd.name"/>
+                                    <InputText @bind-Value="groupModel.name"/>
                                 </label>
                             </p>
                             <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
@@ -73,35 +73,35 @@
     public IList<Group> GroupList { get; set; }
 
     [Parameter]
-    public string Value { get; set; }
+    public string UserId { get; set; }
 
-    private Group groupToAdd = new Group(0, "");
+    private Group groupModel = new Group(0, "");
 
     protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
         _refreshServiceInvGroup.RefreshRequested += RefreshState;
         Console.WriteLine("GroupListing");
-        GroupList = await _groupService.GetGroupList(Convert.ToInt32(Value));
+        GroupList = await _groupService.GetGroupList(Convert.ToInt32(UserId));
     }
 
     private void ChangeSelectedGroup(Group group)
     {
-        Value = group.id.ToString();
-        Console.WriteLine(Value);
+        UserId = group.id.ToString();
+        Console.WriteLine(UserId);
         _navigationManager.NavigateTo("/GroupPage/" + group.id);
     }
 
     public async void RefreshState()
     {
         Console.WriteLine("Hey, i got called from component GroupListing");
-        GroupList = await _groupService.GetGroupList(Convert.ToInt32(Value));
+        GroupList = await _groupService.GetGroupList(Convert.ToInt32(UserId));
         StateHasChanged();
     }
 
     private async void SubmitAddGroup()
     {
-        await _groupService.AddGroup(groupToAdd.name, ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser.id);
+        await _groupService.AddGroup(groupModel.name, ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser.id);
         RefreshState();
     }
 

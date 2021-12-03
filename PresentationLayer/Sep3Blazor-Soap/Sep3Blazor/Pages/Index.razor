@@ -17,16 +17,16 @@
 @using Sep3Blazor.Data.InvitationData
 
 
-<Title Value="Homepage"/>
+<Title Value="Homepage"></Title>
 
 <Login/>
 <AuthorizeView >
     <div class="row d-flex justify-content-between">
         <div class="col-sm-5">
-            <GroupListComponent Value=@context.User.FindFirst("id").Value></GroupListComponent>
+            <GroupListComponent UserID=@context.User.FindFirst("id").Value></GroupListComponent>
         </div>
         <div class="col-sm-5">
-            <InvitationsComponent Value=@context.User.FindFirst("id").Value></InvitationsComponent>
+            <InvitationsComponent UserID=@context.User.FindFirst("id").Value></InvitationsComponent>
         </div>
     </div>
     <br/>
@@ -60,22 +60,11 @@
     protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
-        Console.WriteLine(GetIso8601WeekOfYear(DateTime.Today));
     }
 
     private async void ShowNotification()
     {
         Notification notification = await _groupService.DeleteGroup(50.ToString());
         await NotificationManager.Show(notification);
-    }
-
-    public static int GetIso8601WeekOfYear(DateTime time)
-    {
-        DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
-        if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
-        {
-            time = time.AddDays(3);
-        }
-        return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
     }
 }

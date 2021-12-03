@@ -104,21 +104,19 @@
     [Parameter]
     public EventCallback<string> OnClick { get; set; }
 
-    private Note _noteToAddModel = new Note(0, 0, 0, 0, 0, "", "", "");
+    private Note noteModel = new Note(0, 0, 0, 0, 0, "", "", "");
 
 
     private async void SubmitEditNote()
     {
         await _noteService.EditNote(new Note(Note.id, Note.userId, Note.groupId, Note.week, Note.year, Note.name, Note.status, Note.text));
         await OnClick.InvokeAsync();
-    // TODO Refresh Notes.razor after editing.
     }
 
     private async Task DeleteNote()
     {
         await _noteService.DeleteNote(Note.id);
-
-    // TODO Refresh Notes.razor after deleting.
+        await OnClick.InvokeAsync();
     }
 
 }
