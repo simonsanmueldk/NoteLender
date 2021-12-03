@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Net.Client;
+using Sep3Blazor.Data.Notifications.NotificationModel;
 using Sep3Blazor.Model;
 
 namespace Sep3Blazor.Data.UserData
@@ -33,7 +34,7 @@ namespace Sep3Blazor.Data.UserData
             }
         }
 
-        public async Task RegisterUser(User user)
+        public async Task<Notification> RegisterUser(User user)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
@@ -46,16 +47,19 @@ namespace Sep3Blazor.Data.UserData
                         FirstName = user.firstName, LastName = user.lastName
                     });
                 Console.WriteLine("Greeting: " + reply);
+                return new Notification("Success", "User "+user.username+" was successfully created",
+                    NotificationType.Success);
             }
             catch (RpcException e)
             {
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
+                return new Notification(e.Status.StatusCode+" " +" "+ e.Status.Detail,"User "+user.username+"failed to be created" , NotificationType.Error);
             }
         }
 
-        public async Task EditUser(int id, string newPassword)
+        public async Task<Notification> EditUser(int id, string newPassword)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
@@ -64,12 +68,15 @@ namespace Sep3Blazor.Data.UserData
                 var reply = await client.EditUserAsync(new EditUserRequest
                     {Id = id, NewPassword = newPassword});
                 Console.WriteLine("Greeting: " + reply);
+                return new Notification("Success", "User was successfully edited",
+                    NotificationType.Success);
             }
             catch (RpcException e)
             {
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
+                return new Notification(e.Status.StatusCode+" " +" "+ e.Status.Detail,"User failed to be edited" , NotificationType.Error);
             }
         }
 
@@ -95,25 +102,28 @@ namespace Sep3Blazor.Data.UserData
             return null;
         }
 
-        public async Task DeleteUser(int id)
+        public async Task<Notification> DeleteUser(int id)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
             try
             {
                 var reply = await client.DeleteUserAsync(
-                    new UserRequest()
+                    new UserRequest
                     {
                         Id = id
                     }
                 );
                 Console.WriteLine("Greeting: " + reply.Message);
+                return new Notification("Success", "User was successfully deleted",
+                    NotificationType.Success);
             }
             catch (RpcException e)
             {
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
+                return new Notification(e.Status.StatusCode+" " +" "+ e.Status.Detail,"User failed to be removed from group" , NotificationType.Error);
             }
         }
     }

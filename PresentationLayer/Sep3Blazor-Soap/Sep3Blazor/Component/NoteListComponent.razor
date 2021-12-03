@@ -2,8 +2,11 @@
 @using System.Globalization
 @using Sep3Blazor.Authentication
 @using Sep3Blazor.Data.NoteData
+@using Sep3Blazor.Data.Notifications
+@using Sep3Blazor.Data.Notifications.NotificationModel
 @inject INoteService _noteService
 @inject AuthenticationStateProvider _authenticationStateProvider
+@inject NotificationManager NotificationManager
 
 <div class="container-fluid">
   <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleAddModal"><i class="oi oi-plus"></i> New note</button>
@@ -180,8 +183,8 @@
   
   private async Task SubmitAddNote()
   {
-    await _noteService.AddNote(new Note(0, _template.userId, _template.groupId, _template.week, _template.year, _template.name, _template.status, _template.text));
+    Notification notification = await _noteService.AddNote(new Note(0, _template.userId, _template.groupId, _template.week, _template.year, _template.name, _template.status, _template.text));
     NoteList = await _noteService.GetNoteList(GroupId.ToString());
+    NotificationManager.Show(notification);
   }
-  
 }

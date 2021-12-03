@@ -1,6 +1,9 @@
 @using Microsoft.AspNetCore.Components
 @using Sep3Blazor.Data.NoteData
+@using Sep3Blazor.Data.Notifications
+@using Sep3Blazor.Data.Notifications.NotificationModel
 @using Sep3Blazor.Model
+@inject NotificationManager NotificationManager
 @inject INoteService _noteService
 
 
@@ -109,14 +112,16 @@
 
     private async void SubmitEditNote()
     {
-        await _noteService.EditNote(new Note(Note.id, Note.userId, Note.groupId, Note.week, Note.year, Note.name, Note.status, Note.text));
+        Notification notification = await _noteService.EditNote(new Note(Note.id, Note.userId, Note.groupId, Note.week, Note.year, Note.name, Note.status, Note.text));
         await OnClick.InvokeAsync();
+        await NotificationManager.Show(notification);
     }
 
     private async Task DeleteNote()
     {
-        await _noteService.DeleteNote(Note.id);
+        Notification notification = await _noteService.DeleteNote(Note.id);
         await OnClick.InvokeAsync();
+        await NotificationManager.Show(notification);
     }
 
 }

@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Net.Client;
+using Sep3Blazor.Data.Notifications.NotificationModel;
 using Sep3Blazor.Model;
 
 namespace Sep3Blazor.Data.NoteData
@@ -31,7 +32,7 @@ namespace Sep3Blazor.Data.NoteData
             }
         }
 
-        public async Task AddNote(Note note)
+        public async Task<Notification> AddNote(Note note)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
@@ -50,16 +51,20 @@ namespace Sep3Blazor.Data.NoteData
                         Status = note.status,
                         Text = note.text
                     });
+                return new Notification("Success", "Note " + note.name + " was successfully created",
+                    NotificationType.Success);
             }
             catch (RpcException e)
             {
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
+                return new Notification(e.Status.StatusCode + " " + " " + e.Status.Detail,
+                    "Note " + note.name + " was not successfully added. ", NotificationType.Error);
             }
         }
 
-        public async Task DeleteNote(int noteId)
+        public async Task<Notification> DeleteNote(int noteId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
@@ -71,16 +76,19 @@ namespace Sep3Blazor.Data.NoteData
                         Name = noteId.ToString()
                     }
                 );
+                return new Notification("Success", "Note was successfully deleted",
+                    NotificationType.Success);
             }
             catch (RpcException e)
             {
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
+                return new Notification(e.Status.StatusCode+" " +" "+ e.Status.Detail,"Note failed to be removed from group" , NotificationType.Error);
             }
         }
 
-        public async Task EditNote(Note note)
+        public async Task<Notification> EditNote(Note note)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
@@ -98,12 +106,15 @@ namespace Sep3Blazor.Data.NoteData
                         Status = note.status,
                         Text = note.text
                     });
+                return new Notification("Success", "Note was successfully edited",
+                    NotificationType.Success);
             }
             catch (RpcException e)
             {
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
+                return new Notification(e.Status.StatusCode+" " +" "+ e.Status.Detail,"Note failed to be edited" , NotificationType.Error);
             }
         }
     }

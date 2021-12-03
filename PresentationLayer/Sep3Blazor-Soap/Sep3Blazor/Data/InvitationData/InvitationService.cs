@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Net.Client;
+using Sep3Blazor.Data.Notifications.NotificationModel;
 using Sep3Blazor.Model;
 
 namespace Sep3Blazor.Data.InvitationData
@@ -12,7 +13,7 @@ namespace Sep3Blazor.Data.InvitationData
     {
         private readonly String URL = "https://localhost:5004";
 
-        public async Task AddInvitation(Invitation invitation)
+        public async Task<Notification> AddInvitation(Invitation invitation)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
@@ -27,12 +28,14 @@ namespace Sep3Blazor.Data.InvitationData
                     }
                 );
                 Console.WriteLine("greetings" + reply.Message);
+                return new Notification("Success", "Invitation was successfully sent" , NotificationType.Success);
             }
             catch (RpcException e)
             {
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
+                return new Notification(e.Status.StatusCode+" " +" "+ e.Status.Detail,"Invitation failed to be sent" , NotificationType.Error);
             }
         }
 
@@ -55,7 +58,7 @@ namespace Sep3Blazor.Data.InvitationData
             }
         }
 
-        public async Task DeleteInvitation(string userId)
+        public async Task<Notification> DeleteInvitation(string userId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
@@ -68,12 +71,14 @@ namespace Sep3Blazor.Data.InvitationData
                     }
                 );
                 Console.WriteLine("Delete: " + reply.Message);
+                return new Notification("Success", "Invitation was successfully deleted" , NotificationType.Success);
             }
             catch (RpcException e)
             {
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
+                return new Notification(e.Status.StatusCode+" " +" "+ e.Status.Detail,"Invitation failed to be deleted" , NotificationType.Error);
             }
         }
     }

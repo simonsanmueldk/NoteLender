@@ -2,9 +2,12 @@
 @using Sep3Blazor.Model
 @using Sep3Blazor.Data.InvitationData
 @using Sep3Blazor.Authentication
+@using Sep3Blazor.Data.Notifications
+@using Sep3Blazor.Data.Notifications.NotificationModel
 @inject IUserService UserService
 @inject IInvitationService invitationService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NotificationManager NotificationManager
 <h3>Invite to group</h3>
 
 
@@ -108,7 +111,8 @@
     private async Task InviteUser(User user)
     {
         Invitation invitation = new Invitation(0, GroupId, null, user.id, null, cachedUser.id, null);
-        await invitationService.AddInvitation(invitation);
+        Notification notification = await invitationService.AddInvitation(invitation);
+        await NotificationManager.Show(notification);
     }
 
 

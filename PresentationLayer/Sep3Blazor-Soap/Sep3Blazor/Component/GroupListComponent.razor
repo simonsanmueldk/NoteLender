@@ -3,12 +3,15 @@
 @using Sep3Blazor.Data.Refresh
 @using Sep3Blazor.Model
 @using Sep3Blazor.Authentication
+@using Sep3Blazor.Data.Notifications
+@using Sep3Blazor.Data.Notifications.NotificationModel
 
 @inject IGroupService _groupService
 @inject IRefreshServiceInvGroup _refreshServiceInvGroup
 @inject NavigationManager _navigationManager
 @inject IGroupMembersService _groupMembersService
 @inject AuthenticationStateProvider _authenticationStateProvider
+@inject NotificationManager NotificationManager
 
 <div class="container-fluid">
     <div class="col-12">
@@ -98,7 +101,8 @@
 
     private async void SubmitAddGroup()
     {
-        await _groupService.AddGroup(groupModel.name, ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser.id);
+        Notification notification = await _groupService.AddGroup(groupModel.name, ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser.id);
+        await NotificationManager.Show(notification);
         RefreshState();
     }
 

@@ -2,11 +2,14 @@
 @using Sep3Blazor.Data
 @using Sep3Blazor.Data.GroupMembersData
 @using Sep3Blazor.Data.InvitationData
+@using Sep3Blazor.Data.Notifications
+@using Sep3Blazor.Data.Notifications.NotificationModel
 @using Sep3Blazor.Data.Refresh
 @using Sep3Blazor.Model
 @inject IInvitationService _invitationService
 @inject IRefreshServiceInvGroup _refreshServiceInvGroup
 @inject IGroupMembersService _groupMembersService
+@inject NotificationManager NotificationManager
 
 <h3>Pending invitations</h3>
 
@@ -65,8 +68,10 @@ else
 
     private async Task RemoveInvitation(int id)
     {
-        await _invitationService.DeleteInvitation(id.ToString());
+        Notification notification = await _invitationService.DeleteInvitation(id.ToString());
+        await NotificationManager.Show(notification);
         InvitationList = await _invitationService.GetInvitationList(UserID.ToString());
+          
     }
 
     /*
@@ -82,11 +87,9 @@ else
 
     private async Task AcceptInvitation(int groupId, int userId, int invitationId)
     {
-        await _groupMembersService.AddGroupMember(groupId, userId);
+        Notification notification = await _groupMembersService.AddGroupMember(groupId, userId);
+        await NotificationManager.Show(notification);
         await RemoveInvitation(invitationId);
         _refreshServiceInvGroup.CallRequestRefresh();
-
     }
-
-    
 }
