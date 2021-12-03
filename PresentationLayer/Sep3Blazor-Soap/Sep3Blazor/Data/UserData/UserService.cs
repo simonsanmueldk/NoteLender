@@ -45,18 +45,13 @@ namespace Sep3Blazor.Data.UserData
            
         }
 
-        public async Task<User> EditUser(int id, string newPassword)
+        public async Task EditUser(int id, string newPassword)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
             var reply = await client.EditUserAsync(new EditUserRequest
                 {Id = id, NewPassword = newPassword});
             Console.WriteLine("Greeting: " + reply);
-            if (reply != null)
-            {
-                    
-            }
-            return null;
         }
 
         public async Task<List<User>> GetUser(string username)
