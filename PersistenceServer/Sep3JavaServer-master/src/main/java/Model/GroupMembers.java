@@ -5,7 +5,7 @@ public class GroupMembers {
     private int id, userId, groupId;
     private String username;
 
-    public GroupMembers(int id, int userId, String username, int groupId ) {
+    public GroupMembers(int id, int userId, String username, int groupId) {
         this.id = id;
         this.userId = userId;
         this.username = username;
