@@ -51,12 +51,15 @@ else
 }
 
 @code {
+
+    [Parameter]
+    public int GroupId { get; set; }
+
     public string username;
     public bool temp = false;
     public List<User> users;
     public List<User> tempUsers;
-    [Parameter]
-    public int Value { get; set; }
+
 
     private User cachedUser;
 
@@ -74,10 +77,9 @@ else
             tempUsers = new List<User>();
             foreach (var user in users)
             {
-                
                 if (!user.username.Equals(cachedUser.username))
                 {
-                  tempUsers.Add(user);
+                    tempUsers.Add(user);
                 }
             }
             if (tempUsers != null)
@@ -93,11 +95,10 @@ else
 
     private async Task InviteUser(User user)
     {
-        Invitation invitation = new Invitation(0, Value, null, user.id, null, cachedUser.id, null);
+        Invitation invitation = new Invitation(0, GroupId, null, user.id, null, cachedUser.id, null);
         await invitationService.AddInvitations(invitation);
     }
 
 
 
 }
-

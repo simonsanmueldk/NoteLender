@@ -104,7 +104,7 @@
     [Parameter]
     public EventCallback<string> OnClick { get; set; }
 
-    private Note _noteToAddModel = new Note(0, 0, 0, 0, 0, "", "", "");
+    private Note noteModel = new Note(0, 0, 0, 0, 0, "", "", "");
 
 
     private async void SubmitEditNote()

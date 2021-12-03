@@ -54,7 +54,7 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content" style="background-color:white">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleAddModalLabel">Leave group @Id</h5>
+                        <h5 class="modal-title" id="exampleAddModalLabel">Leave group @GroupId</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
                     </div>
                     <div class="modal-body">
@@ -76,7 +76,7 @@
 @code {
 
     [Parameter]
-    public int Id { get; set; }
+    public int GroupId { get; set; }
 
     public IList<GroupMembers> GroupMembersList { get; set; }
 
@@ -85,21 +85,19 @@
     protected override async Task OnInitializedAsync()
     {
         cachedUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
-        GroupMembersList = await _groupMembersService.GetUserList(Id);
+        GroupMembersList = await _groupMembersService.GetUserList(GroupId);
     }
     
     private async Task LeaveGroup()
     {
-        Console.WriteLine("KSAIDIAD");
-        await _groupMembersService.LeaveGroup(Id, cachedUser.id);
+        await _groupMembersService.LeaveGroup(GroupId, cachedUser.id);
         NavigationManager.NavigateTo("/");
     }
 
     private async Task DeleteMember(int id)
     {
-        Console.WriteLine("HAHAHA" + id);
         await _groupMembersService.DeleteGroupMember(id);
-        GroupMembersList = await _groupMembersService.GetUserList(Id);
+        GroupMembersList = await _groupMembersService.GetUserList(GroupId);
     }
 
 }
