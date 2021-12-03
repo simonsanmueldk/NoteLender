@@ -37,8 +37,8 @@ namespace GrpcService.Services
 
         public override async Task<Reply> GetNoteList(Request request, ServerCallContext context)
         {
-            String Message = $"About page visited at {DateTime.UtcNow.ToLongTimeString()}";
-            _logger.LogInformation(Message);
+            String message = $"About page visited at {DateTime.UtcNow.ToLongTimeString()}";
+            _logger.LogInformation(message);
             return await _logicService.GetNoteList(request, context);
         }
 
@@ -58,8 +58,8 @@ namespace GrpcService.Services
 
         public override async Task<Reply> GetNote(Request request, ServerCallContext context)
         {
-            String Message = $"About page visited at {DateTime.UtcNow.ToLongTimeString()}";
-            _logger.LogInformation(Message);
+            String message = $"About page visited at {DateTime.UtcNow.ToLongTimeString()}";
+            _logger.LogInformation(message);
             return await _logicService.GetNote(request, context);
         }
 

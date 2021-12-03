@@ -7,60 +7,67 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 <h3>Invite to group</h3>
 
-@if (!temp)
-{
-    <div class="form-group">
-        <div class="input-group">
-            <label>Search for a new member </label>
-        </div>
-        <input type="text" placeholder="Type the username " @bind-value="username">
-    </div>
-    <div class="form-group">
-        <button class="btn btn-primary btn-block" @onclick="Search">Search</button>
-    </div>
+
+<div class="container-fluid">
     <br>
-    <br>
-}
-else
-{
-    <div class="form-group">
-        <div class="input-group">
-            <label>Search for a new member </label>
-        </div>
-        <input type="text" placeholder="Type the username " @bind-value="username">
-    </div>
-    <div class="form-group">
-        <button class="btn btn-primary btn-block" @onclick="Search">Search</button>
-    </div>
-    <br>
-    <br>
-    <div class="col-sm-6" style="display:inline">
-        <ul class="list-group">
-            @foreach (var user in tempUsers)
-            {
-                <div class="table">
-                    
-                    <tbody>
-                    <tr>
-                        <td class="list-group-item"><a>Name</a>: <b>@user.firstName @user.lastName</b>
-                            <br/> <a>Username</a>: <b>@user.username</b>
-                            <a class="btn btn-primary"@onclick="@(() => InviteUser(user))" style="display:@temp">Invite</a></td>
-                    </tr>
-                    </tbody>
+    <div class="col-10 ">
+        @if (!temp)
+        {
+            <div class="form-group">
+                <div class="input-group">
+                    <label>Search for a new member </label>
                 </div>
-                <br>
-            }
-        </ul>
+                <input type="text" placeholder="Type the username " @bind-value="username">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-block" @onclick="Search">Search</button>
+            </div>
+            <br>
+            <br>
+        }
+        else
+        {
+            <div class="form-group">
+                <div class="input-group">
+                    <label>Search for a new member </label>
+                </div>
+                <input type="text" placeholder="Type the username " @bind-value="username">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-block" @onclick="Search">Search</button>
+            </div>
+            <br>
+            <br>
+            <div class="col-sm-6" style="display:inline">
+                <ul class="list-group">
+                    @foreach (var user in tempUsers)
+                    {
+                        <div class="table">
+
+                            <tbody>
+                            <tr>
+                                <td class="list-group-item">
+                                    <a>Name</a>: <b>@user.firstName @user.lastName</b>
+                                    <br/> <a>Username</a>: <b>@user.username</b>
+                                    <a class="btn btn-primary"@onclick="@(() => InviteUser(user))" style="display:@temp">Invite</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </div>
+                        <br>
+                    }
+                </ul>
+            </div>
+        }
     </div>
-    
-}
+</div>
 
 @code {
 
     [Parameter]
     public int GroupId { get; set; }
 
-    public string username;
+    public string username ="";
     public bool temp = false;
     public List<User> users;
     public List<User> tempUsers;

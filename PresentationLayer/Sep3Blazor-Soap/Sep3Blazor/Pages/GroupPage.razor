@@ -9,17 +9,21 @@
 @inject IGroupMembersService _groupMembersService
 @using Microsoft.AspNetCore.Components.Web.Extensions.Head
 
-<Title Value="@("Group "+Id)" />
+<Title Value="@("Group " + Id)"/>
 <h3>GroupPage</h3>
 <TabControl>
     <TabPage Text="Notes">
         <NoteListComponent GroupId="@Id"></NoteListComponent>
     </TabPage>
     <TabPage Text="Members">
-        <MemberListComponent GroupId="@Id"></MemberListComponent>
-    </TabPage>
-    <TabPage Text="Invite">
-        <InviteComponent GroupId="@Id"></InviteComponent>
+        <div class="row d-flex justify-content-between">
+            <div class="col-sm-6">
+                <MemberListComponent GroupId="@Id"></MemberListComponent>
+            </div>
+            <div class="col-sm-6">
+                <InviteComponent GroupId="@Id"></InviteComponent>
+            </div>
+        </div>
     </TabPage>
 </TabControl>
 
@@ -27,7 +31,7 @@
 
     [Parameter]
     public int Id { get; set; }
-    
+
     [CascadingParameter]
     protected Task<AuthenticationState> AuthStat { get; set; }
 
@@ -52,7 +56,7 @@
     {
         Value = note.id.ToString();
     }
-    
+
     private void ChangeSelectedGroup(GroupMembers groupMembers)
     {
         Value = groupMembers.id.ToString();
