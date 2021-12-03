@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Grpc.Core;
 using Grpc.Net.Client;
 using Sep3Blazor.Model;
 
@@ -11,50 +12,69 @@ namespace Sep3Blazor.Data.InvitationData
     {
         private readonly String URL = "https://localhost:5004";
 
-        public async Task<Invitation> AddInvitations(Invitation invitation)
+        public async Task AddInvitations(Invitation invitation)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
-
-            Console.WriteLine("ID: " + invitation.id + "Group: " + invitation.groupId, " InviteeId: " +
-                invitation.inviteeId +
-                "InvitorId: " + invitation.invitorId);
-
-            var reply = await client.PostInvitationAsync(new RegisterInvitationRequest
-                {
-                    Id = invitation.id,
-                    GroupId = invitation.groupId,
-                    InviteeId = invitation.inviteeId,
-                    InvitorId = invitation.invitorId,
-                }
-            );
-            Console.WriteLine("greetings" + reply.Message);
-            return null;
+            try
+            {
+                var reply = await client.PostInvitationAsync(new RegisterInvitationRequest
+                    {
+                        Id = invitation.id,
+                        GroupId = invitation.groupId,
+                        InviteeId = invitation.inviteeId,
+                        InvitorId = invitation.invitorId,
+                    }
+                );
+                Console.WriteLine("greetings" + reply.Message);
+            }
+            catch (RpcException e)
+            {
+                Console.WriteLine(e.Status.Detail);
+                Console.WriteLine(e.Status.StatusCode);
+                Console.WriteLine((int) e.Status.StatusCode);
+            }
         }
 
         public async Task<IList<Invitation>> GetInvitations(string userId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
-            var reply = await client.GetInvitationListAsync(
-                new Request {Name = userId});
-            Console.WriteLine("haaland: " + reply.Message);
-            return JsonSerializer.Deserialize<List<Invitation>>(reply.Message);
+            try
+            {
+                var reply = await client.GetInvitationListAsync(
+                    new Request {Name = userId});
+                return JsonSerializer.Deserialize<List<Invitation>>(reply.Message);
+            }
+            catch (RpcException e)
+            {
+                Console.WriteLine(e.Status.Detail);
+                Console.WriteLine(e.Status.StatusCode);
+                Console.WriteLine((int) e.Status.StatusCode);
+                return null;
+            }
         }
 
         public async Task DeleteInvitation(string userId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
-
-            var reply = await client.DeleteInvitationAsync(
-                new Request
-                {
-                    Name = userId
-                }
-            );
-            Console.WriteLine("Delete: " + reply.Message);
-          
+            try
+            {
+                var reply = await client.DeleteInvitationAsync(
+                    new Request
+                    {
+                        Name = userId
+                    }
+                );
+                Console.WriteLine("Delete: " + reply.Message);
+            }
+            catch (RpcException e)
+            {
+                Console.WriteLine(e.Status.Detail);
+                Console.WriteLine(e.Status.StatusCode);
+                Console.WriteLine((int) e.Status.StatusCode);
+            }
         }
     }
 }

@@ -114,7 +114,7 @@
 
         Invitation invitationToAdd = new Invitation(Invitation.id, Invitation.groupId, Invitation.groupName, 
             Invitation.inviteeId, Invitation.inviteeName, Invitation.invitorId, Invitation.invitorName);
-        Invitation temp = await _invitationService.AddInvitations(invitationToAdd);
+        await _invitationService.AddInvitations(invitationToAdd);
     }
 
     private async Task SubmitGetInvitation()

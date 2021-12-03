@@ -84,6 +84,7 @@ else
     {
         await _groupMembersService.AddGroupMember(groupId, userId);
         await RemoveInvitation(invitationId);
+        _refreshServiceInvGroup.CallRequestRefresh();
 
     }
 
