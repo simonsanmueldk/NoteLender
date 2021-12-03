@@ -7,7 +7,6 @@ public class User {
     private String username;
     private String password;
 
-
     public User(int id, String firstName, String lastName, String username, String password) {
         this.id = id;
         this.firstName = firstName;
@@ -15,8 +14,6 @@ public class User {
         this.username = username;
         this.password = password;
     }
-
-
 
     public int getId() {
         return id;
@@ -57,7 +54,4 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
-
-
 }

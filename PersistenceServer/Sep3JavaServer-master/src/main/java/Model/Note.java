@@ -2,8 +2,8 @@ package Model;
 
 public class Note {
 
-   private int id,userId, groupId,week,year;
-   private  String name, status, text;
+    private int id, userId, groupId, week, year;
+    private String name, status, text;
 
     public Note(int id, int userId, int groupId, int week, int year, String name, String status, String text) {
         this.id = id;
@@ -20,9 +20,13 @@ public class Note {
         return id;
     }
 
-    public void setId(int id) {this.id = id;}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public int getUserId() {return userId;}
+    public int getUserId() {
+        return userId;
+    }
 
     public void setUserId(int userId) {
         this.userId = userId;
