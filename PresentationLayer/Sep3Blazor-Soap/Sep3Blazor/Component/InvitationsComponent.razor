@@ -60,13 +60,13 @@ else
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine("Invitation");
-        InvitationList = await _invitationService.GetInvitations(UserID.ToString());
+        InvitationList = await _invitationService.GetInvitationList(UserID.ToString());
     }
 
     private async Task RemoveInvitation(int id)
     {
         await _invitationService.DeleteInvitation(id.ToString());
-        InvitationList = await _invitationService.GetInvitations(UserID.ToString());
+        InvitationList = await _invitationService.GetInvitationList(UserID.ToString());
     }
 
     /*

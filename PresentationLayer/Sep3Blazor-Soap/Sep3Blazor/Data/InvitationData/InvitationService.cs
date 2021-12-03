@@ -12,7 +12,7 @@ namespace Sep3Blazor.Data.InvitationData
     {
         private readonly String URL = "https://localhost:5004";
 
-        public async Task AddInvitations(Invitation invitation)
+        public async Task AddInvitation(Invitation invitation)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
@@ -36,7 +36,7 @@ namespace Sep3Blazor.Data.InvitationData
             }
         }
 
-        public async Task<IList<Invitation>> GetInvitations(string userId)
+        public async Task<IList<Invitation>> GetInvitationList(string userId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
