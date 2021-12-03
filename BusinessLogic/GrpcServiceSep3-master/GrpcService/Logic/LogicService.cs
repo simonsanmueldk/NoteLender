@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Grpc.Core;
 using GrpcService.Model;
-using Sep3Blazor.Model;
 
 namespace GrpcService.Logic
 {
@@ -327,7 +326,6 @@ namespace GrpcService.Logic
 
         public async Task<Reply> LeaveGroup(DeleteGroupMemberRequest request, ServerCallContext context)
         {
-         
             HttpContent content = new StringContent(request.UserId.ToString(), Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage =
                 await _client.PostAsync(uri + $"/groupmembers/{request.GroupId}", content);
@@ -352,6 +350,7 @@ namespace GrpcService.Logic
             {
                 throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
             }
+
             string message = await responseMessage.Content.ReadAsStringAsync();
             return await Task.FromResult(new Reply
             {
@@ -386,6 +385,7 @@ namespace GrpcService.Logic
             {
                 throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
             }
+
             string message = await responseMessage.Content.ReadAsStringAsync();
             return await Task.FromResult(new Reply()
             {

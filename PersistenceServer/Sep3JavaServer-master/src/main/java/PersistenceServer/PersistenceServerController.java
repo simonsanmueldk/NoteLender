@@ -11,18 +11,16 @@ import java.util.List;
 @RestController
 public class PersistenceServerController {
 
-    private IPersistenceService persistenceService;
+    private final IPersistenceService persistenceService;
 
     public PersistenceServerController() {
         this.persistenceService = new PersistenceService();
-        System.out.println("Hello");
     }
 
     @PutMapping("/group/{memberId}")
-    public ResponseEntity<Group> createGroup(@RequestBody String json, @PathVariable(value = "memberId") int memberId) {
+    public ResponseEntity<Void> createGroup(@RequestBody String json, @PathVariable(value = "memberId") int memberId) {
         System.out.println("It's working Post");
         return persistenceService.postGroup(json, memberId);
-
     }
 
     @GetMapping("/users/{username}")
@@ -94,6 +92,7 @@ public class PersistenceServerController {
         System.out.println("It's working Get");
         return persistenceService.getGroupList(id);
     }
+
     @DeleteMapping("/groupmembers/{id}")
     public ResponseEntity<Void> deleteGroupMember(@PathVariable(value = "id") int id) {
         System.out.println("It's working Delete groupMember");
@@ -113,9 +112,7 @@ public class PersistenceServerController {
     }
 
     @GetMapping("/invitation/{id}")
-    public ResponseEntity<List<Invitation>> getInvitationList(
-            @PathVariable(value = "id") String id) {
-        System.out.println("Aleeeoooo");
+    public ResponseEntity<List<Invitation>> getInvitationList(@PathVariable(value = "id") String id) {
         return persistenceService.getInvitationList(id);
     }
 
@@ -130,8 +127,7 @@ public class PersistenceServerController {
     }
 
     @PostMapping("/groupmembers/{id}")
-    public ResponseEntity<Void> LeaveGroup(@PathVariable(value = "id") int id,@RequestBody String json) {
+    public ResponseEntity<Void> LeaveGroup(@PathVariable(value = "id") int id, @RequestBody String json) {
         return persistenceService.leaveGroup(id, json);
     }
-    
 }
