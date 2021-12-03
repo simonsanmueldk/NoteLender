@@ -36,9 +36,9 @@ namespace Sep3Blazor
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<INoteService, NoteService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IRefreshService, RefreshService>();
             services.AddScoped<IInvitationService, InvitationService>();
             services.AddScoped<IGroupMembersService, GroupMembersService>();
+            services.AddScoped<IRefreshServiceInvGroup, RefreshServiceInvGroup>();
             services.AddSingleton<NotificationManager>();
 
         }

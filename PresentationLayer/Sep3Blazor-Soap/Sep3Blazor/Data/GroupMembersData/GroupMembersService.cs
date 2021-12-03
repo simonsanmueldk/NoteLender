@@ -45,7 +45,7 @@ namespace Sep3Blazor.Data.GroupMembersData
             try
             {
                 var reply = await client.LeaveGroupAsync(
-                    new DeleteGroupMemberRequest() {GroupId = group_id,UserId = user_id});
+                    new DeleteGroupMemberRequest {GroupId = group_id,UserId = user_id});
                 Console.WriteLine("Group: " + reply.Message);
             }
             catch (RpcException e)

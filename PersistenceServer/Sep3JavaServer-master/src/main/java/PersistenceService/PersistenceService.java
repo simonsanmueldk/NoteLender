@@ -219,8 +219,6 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public ResponseEntity<Void> leaveGroup(int id, String json) {
-        System.out.println(json);
-        System.out.println(id);
         String deleteString = "DELETE FROM notelender.groupmembers WHERE group_id = ? and user_id = ?";
         try {
             PreparedStatement deleteGroupMember = connection.prepareStatement(deleteString);

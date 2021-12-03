@@ -23,10 +23,10 @@
 <AuthorizeView >
     <div class="row d-flex justify-content-between">
         <div class="col-sm-5">
-            <GroupListing Value=@context.User.FindFirst("id").Value></GroupListing>
+            <GroupListComponent Value=@context.User.FindFirst("id").Value></GroupListComponent>
         </div>
         <div class="col-sm-5">
-            <Invitations Value=@context.User.FindFirst("id").Value></Invitations>
+            <InvitationsComponent Value=@context.User.FindFirst("id").Value></InvitationsComponent>
         </div>
     </div>
     <br/>

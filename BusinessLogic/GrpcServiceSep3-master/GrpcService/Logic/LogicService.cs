@@ -26,7 +26,6 @@ namespace GrpcService.Logic
 
             if (!responseMessage.IsSuccessStatusCode)
             {
-                
                 throw new Exception(responseMessage.StatusCode + responseMessage.ReasonPhrase);
             }
             else
@@ -57,7 +56,7 @@ namespace GrpcService.Logic
             HttpResponseMessage responseMessage = await _client.DeleteAsync(uri + "/group/" + request.Name);
             if (!responseMessage.IsSuccessStatusCode)
             {
-                throw new Exception("Error "+  responseMessage.StatusCode+" "+" "+responseMessage.ReasonPhrase);
+                throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
             }
 
             string message = await responseMessage.Content.ReadAsStringAsync();
@@ -210,7 +209,7 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
-    
+
         public async Task<Reply> PostInvitation(RegisterInvitationRequest request, ServerCallContext context)
         {
             Invitation invitation = new Invitation(request.Id, request.GroupId, null, request.InviteeId, null,
@@ -253,7 +252,7 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
-        
+
 
         public async Task<Reply> DeleteGroupMember(UserRequest request, ServerCallContext context)
         {
@@ -304,12 +303,15 @@ namespace GrpcService.Logic
 
         public async Task<Reply> LeaveGroup(DeleteGroupMemberRequest request, ServerCallContext context)
         {
+            Console.WriteLine("Hej");
             HttpContent content = new StringContent(request.UserId.ToString(), Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await _client.PostAsync(uri + $"/groupmembers/{request.GroupId}", content);
+            HttpResponseMessage responseMessage =
+                await _client.PostAsync(uri + $"/groupmembers/{request.GroupId}", content);
             if (!responseMessage.IsSuccessStatusCode)
             {
-                throw new Exception("Error "+  responseMessage.StatusCode+" "+" "+responseMessage.ReasonPhrase);
+                throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
             }
+
             string message = await responseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(message);
             return await Task.FromResult(new Reply
@@ -350,11 +352,11 @@ namespace GrpcService.Logic
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await _client.PostAsync(uri + "/groupmembers", content);
             string message = await responseMessage.Content.ReadAsStringAsync();
-                Console.WriteLine(message);
-                return await Task.FromResult(new Reply()
-                {
-                    Message = message
-                });
-            }
+            Console.WriteLine(message);
+            return await Task.FromResult(new Reply()
+            {
+                Message = message
+            });
+        }
     }
 }
