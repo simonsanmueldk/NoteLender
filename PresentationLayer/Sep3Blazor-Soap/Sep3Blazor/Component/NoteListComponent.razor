@@ -178,7 +178,7 @@
     NoteList = await _noteService.GetNoteList(GroupId.ToString());
   }
   
-  private async void SubmitAddNote()
+  private async Task SubmitAddNote()
   {
     await _noteService.AddNote(new Note(0, _template.userId, _template.groupId, _template.week, _template.year, _template.name, _template.status, _template.text));
     NoteList = await _noteService.GetNoteList(GroupId.ToString());

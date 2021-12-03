@@ -42,7 +42,7 @@
         Console.WriteLine("AdultPage");
         {
             Notes = await _noteService.GetNoteList(Id.ToString());
-            GroupMembersList = await _groupMembersService.GetUserList(9);
+            GroupMembersList = await _groupMembersService.GetGroupMemberList(9);
             Console.WriteLine(Notes.Count);
             Console.WriteLine(GroupMembersList.Count);
         }

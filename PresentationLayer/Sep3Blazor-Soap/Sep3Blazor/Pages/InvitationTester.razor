@@ -114,14 +114,14 @@
 
         Invitation invitationToAdd = new Invitation(Invitation.id, Invitation.groupId, Invitation.groupName, 
             Invitation.inviteeId, Invitation.inviteeName, Invitation.invitorId, Invitation.invitorName);
-        await _invitationService.AddInvitations(invitationToAdd);
+        await _invitationService.AddInvitation(invitationToAdd);
     }
 
     private async Task SubmitGetInvitation()
     {
         try
         {
-            InvitationList = await _invitationService.GetInvitations(Invitation.id.ToString());
+            InvitationList = await _invitationService.GetInvitationList(Invitation.id.ToString());
             SearchPhrase = InvitationList[0].id.ToString();
         }
         catch (ArgumentOutOfRangeException indexOutOfRangeException)
