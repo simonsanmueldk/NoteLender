@@ -100,16 +100,18 @@
 
 
 @code {
-
+    // Parameter to specify what Note object is in focus.
     [Parameter]
     public Note Note { get; set; }
 
+    // TODO Add relevant comment
     [Parameter]
     public EventCallback<string> OnClick { get; set; }
 
+    // Note object to be used in <EditForm> component. 
     private Note noteModel = new Note(0, 0, 0, 0, 0, "", "", "");
-
-
+    
+    // Method that takes Note from <EditForm> and sends it to business to replace Note with same ID.
     private async void SubmitEditNote()
     {
         Notification notification = await _noteService.EditNote(new Note(Note.id, Note.userId, Note.groupId, Note.week, Note.year, Note.name, Note.status, Note.text));
@@ -117,6 +119,7 @@
         await NotificationManager.Show(notification);
     }
 
+    // Method that takes Note and sends its ID to business to delete it.
     private async Task DeleteNote()
     {
         Notification notification = await _noteService.DeleteNote(Note.id);
