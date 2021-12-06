@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -13,7 +12,7 @@ using Sep3Blazor.Data.NoteData;
 using Sep3Blazor.Data.Notifications;
 using Sep3Blazor.Data.Refresh;
 using Sep3Blazor.Data.UserData;
-using Syncfusion.Blazor;
+
 
 namespace Sep3Blazor
 {
@@ -30,7 +29,6 @@ namespace Sep3Blazor
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();

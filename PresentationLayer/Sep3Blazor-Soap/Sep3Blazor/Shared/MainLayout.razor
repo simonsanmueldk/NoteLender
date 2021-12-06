@@ -1,5 +1,5 @@
-@inject AuthenticationStateProvider AuthenticationStateProvider;
-@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider _authenticationStateProvider;
+@inject NavigationManager _navigationManager
 @using Sep3Blazor.Authentication
 @inherits LayoutComponentBase
 
@@ -37,8 +37,8 @@
     {
         try
         {
-            ((CustomAuthenticationStateProvider) AuthenticationStateProvider).LogOut();
-            NavigationManager.NavigateTo("/");
+            ((CustomAuthenticationStateProvider) _authenticationStateProvider).LogOut();
+            _navigationManager.NavigateTo("/");
         }
         catch (Exception e)
         {

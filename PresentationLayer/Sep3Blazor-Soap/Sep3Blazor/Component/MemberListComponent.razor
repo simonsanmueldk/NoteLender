@@ -5,10 +5,10 @@
 @using Sep3Blazor.Data.Notifications.NotificationModel
 @using Sep3Blazor.Data.Refresh
 @inject IGroupMembersService _groupMembersService
-@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject AuthenticationStateProvider _authenticationStateProvider
 @inject IRefreshServiceNavMem _refreshServiceNavMem
-@inject NavigationManager NavigationManager
-@inject NotificationManager NotificationManager
+@inject NavigationManager _navigationManager
+@inject NotificationManager _notificationManager
 
 
 <div class="container-fluid">
@@ -43,7 +43,7 @@
                         </th>
                         <td>
                             <button @onclick="@(() => DeleteMember(member.id))">
-                                <i class="oi oi-trash" style="color:red"/>
+                                <i class="oi oi-trash" style="color:red"></i>
                             </button>
                         </td>
                     </tr>
@@ -88,29 +88,29 @@
     public IList<GroupMembers> GroupMembersList { get; set; }
 
     // User object to be initialized as the user logged in.
-    private User cachedUser;
+    private User _cachedUser;
 
     // Method that is first to run when component is initialized.
     protected override async Task OnInitializedAsync()
     {
-        cachedUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
+        _cachedUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser;
         GroupMembersList = await _groupMembersService.GetGroupMemberList(GroupId);
     }
     
     // Method to let the user logged in leave to group. 
     private async Task LeaveGroup()
     {
-        Notification notification = await _groupMembersService.LeaveGroup(GroupId, cachedUser.id);
-        NotificationManager.Show(notification);
+        Notification notification = await _groupMembersService.LeaveGroup(GroupId, _cachedUser.id);
+        _notificationManager.Show(notification);
         _refreshServiceNavMem.CallRequestRefresh();
-        NavigationManager.NavigateTo("/");
+        _navigationManager.NavigateTo("/");
     }
 
     // Method to let user logged in remove other members from the group.
     private async Task DeleteMember(int id)
     {
         Notification notification = await _groupMembersService.DeleteGroupMember(id);
-        NotificationManager.Show(notification);
+        _notificationManager.Show(notification);
         GroupMembersList = await _groupMembersService.GetGroupMemberList(GroupId);
     }
 }

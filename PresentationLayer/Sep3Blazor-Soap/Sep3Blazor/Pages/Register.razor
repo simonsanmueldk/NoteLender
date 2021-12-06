@@ -1,9 +1,8 @@
 ﻿@page "/Register"
 @using Sep3Blazor.Model
-@using Sep3Blazor.Data
 @using Sep3Blazor.Data.UserData
 @inject IUserService _userService
-@inject NavigationManager NavigationManager
+@inject NavigationManager _navigationManager
 
 <EditForm Model="@user" OnValidSubmit="@RegisterUser">
     <DataAnnotationsValidator/>
@@ -77,12 +76,12 @@
     private async Task RegisterUser()
     {
         await _userService.RegisterUser(user);
-        NavigationManager.NavigateTo("/");
+        _navigationManager.NavigateTo("/");
     }
 
-    private async Task Back()
+    private void Back()
     {
-        NavigationManager.NavigateTo("/Login");
+        _navigationManager.NavigateTo("/");
     }
 
 }

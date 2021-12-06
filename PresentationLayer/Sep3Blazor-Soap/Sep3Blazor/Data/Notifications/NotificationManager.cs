@@ -12,7 +12,6 @@ namespace Sep3Blazor.Data.Notifications
         public  async Task Show(Notification notification)
         {
             Console.WriteLine("show");
-
             OnShow?.Invoke(notification);
             await Task.Delay(3000);
             try

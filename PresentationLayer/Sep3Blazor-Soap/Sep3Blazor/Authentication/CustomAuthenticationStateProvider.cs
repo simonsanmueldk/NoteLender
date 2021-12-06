@@ -72,7 +72,7 @@ namespace Sep3Blazor.Authentication
             }
             catch (Exception e)
             {
-                throw e;
+                Console.WriteLine( e.StackTrace);
             }
 
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity))));

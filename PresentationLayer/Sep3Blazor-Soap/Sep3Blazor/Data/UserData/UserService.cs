@@ -55,7 +55,7 @@ namespace Sep3Blazor.Data.UserData
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
-                return new Notification(e.Status.StatusCode+" " +" "+ e.Status.Detail,"User "+user.username+"failed to be created" , NotificationType.Error);
+                return new Notification("Error","User "+user.username+"failed to be created" , NotificationType.Error);
             }
         }
 
@@ -76,7 +76,7 @@ namespace Sep3Blazor.Data.UserData
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
-                return new Notification(e.Status.StatusCode+" " +" "+ e.Status.Detail,"User failed to be edited" , NotificationType.Error);
+                return new Notification("Error","User failed to be edited" , NotificationType.Error);
             }
         }
 
@@ -96,10 +96,8 @@ namespace Sep3Blazor.Data.UserData
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
+                 return null;
             }
-
-
-            return null;
         }
 
         public async Task<Notification> DeleteUser(int id)
@@ -123,7 +121,7 @@ namespace Sep3Blazor.Data.UserData
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
-                return new Notification(e.Status.StatusCode+" " +" "+ e.Status.Detail,"User failed to be removed from group" , NotificationType.Error);
+                return new Notification("Error","User failed to be removed from group" , NotificationType.Error);
             }
         }
     }

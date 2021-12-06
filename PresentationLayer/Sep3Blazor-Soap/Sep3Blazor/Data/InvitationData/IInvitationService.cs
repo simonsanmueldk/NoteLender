@@ -10,7 +10,5 @@ namespace Sep3Blazor.Data.InvitationData
         public Task<IList<Invitation>> GetInvitationList(string userId);
         public Task<Notification> AddInvitation(Invitation invitation);
         public Task<Notification> DeleteInvitation(string userId);
-
-        
     }
 }

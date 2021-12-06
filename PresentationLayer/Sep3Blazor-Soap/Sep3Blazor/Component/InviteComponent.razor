@@ -4,23 +4,23 @@
 @using Sep3Blazor.Authentication
 @using Sep3Blazor.Data.Notifications
 @using Sep3Blazor.Data.Notifications.NotificationModel
-@inject IUserService UserService
-@inject IInvitationService invitationService
-@inject AuthenticationStateProvider AuthenticationStateProvider
-@inject NotificationManager NotificationManager
+@inject IUserService _userService
+@inject IInvitationService _invitationService
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject NotificationManager _notificationManager
 <h3>Invite to group</h3>
 
 
 <div class="container-fluid">
     <br>
     <div class="col-10 ">
-        @if (!temp)
+        @if (!Temp)
         {
             <div class="form-group">
                 <div class="input-group">
                     <label>Search for a new member </label>
                 </div>
-                <input type="text" placeholder="Type the username " @bind-value="username">
+                <input type="text" placeholder="Type the username " @bind-value="Username">
             </div>
             <div class="form-group">
                 <button class="btn btn-primary btn-block" @onclick="Search">Search</button>
@@ -34,7 +34,7 @@
                 <div class="input-group">
                     <label>Search for a new member </label>
                 </div>
-                <input type="text" placeholder="Type the username " @bind-value="username">
+                <input type="text" placeholder="Type the username " @bind-value="Username">
             </div>
             <div class="form-group">
                 <button class="btn btn-primary btn-block" @onclick="Search">Search</button>
@@ -43,7 +43,7 @@
             <br>
             <div class="col-sm-6" style="display:inline">
                 <ul class="list-group">
-                    @foreach (var user in tempUsers)
+                    @foreach (var user in TempUsers)
                     {
                         <div class="table">
 
@@ -52,7 +52,7 @@
                                 <td class="list-group-item">
                                     <a>Name</a>: <b>@user.firstName @user.lastName</b>
                                     <br/> <a>Username</a>: <b>@user.username</b>
-                                    <a class="btn btn-primary"@onclick="@(() => InviteUser(user))" style="display:@temp">Invite</a>
+                                    <a class="btn btn-primary" @onclick="@(() => InviteUser(user))" style="display:@Temp">Invite</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -72,54 +72,54 @@
     public int GroupId { get; set; }
 
     // Object for <EditForm> to use as a username when inviting.
-    public string username ="";
+    public string Username ="";
     
     // ???
-    public bool temp = false;
+    public bool Temp = false;
     
     // Lists of users used when searching.
-    public List<User> users;
-    public List<User> tempUsers;
+    public List<User> Users;
+    public List<User> TempUsers;
     
     // User object reserved for the user which opens the component.
-    private User cachedUser;
+    private User _cachedUser;
 
     // Method that is first to run when component is initialized.
     protected override async Task OnInitializedAsync()
     {
-        cachedUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
+        _cachedUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser;
     }
 
     // Method to search for users.
     private async Task Search()
     {
-        if (!username.Equals(""))
+        if (!Username.Equals(""))
         {
-            users = await UserService.GetUserList(username);
-            tempUsers = new List<User>();
-            foreach (var user in users)
+            Users = await _userService.GetUserList(Username);
+            TempUsers = new List<User>();
+            foreach (var user in Users)
             {
-                if (!user.username.Equals(cachedUser.username))
+                if (!user.username.Equals(_cachedUser.username))
                 {
-                    tempUsers.Add(user);
+                    TempUsers.Add(user);
                 }
             }
-            if (tempUsers != null)
+            if (TempUsers != null)
             {
-                temp = true;
+                Temp = true;
             }
         }
         else
         {
-            temp = false;
+            Temp = false;
         }
     }
 
     // Method to invite a user to group the component is opened in.
     private async Task InviteUser(User user)
     {
-        Invitation invitation = new Invitation(0, GroupId, null, user.id, null, cachedUser.id, null);
-        Notification notification = await invitationService.AddInvitation(invitation);
-        await NotificationManager.Show(notification);
+        Invitation invitation = new Invitation(0, GroupId, null, user.id, null, _cachedUser.id, null);
+        Notification notification = await _invitationService.AddInvitation(invitation);
+        await _notificationManager.Show(notification);
     }
 }

@@ -6,7 +6,7 @@
 @using Sep3Blazor.Data.Notifications.NotificationModel
 @inject INoteService _noteService
 @inject AuthenticationStateProvider _authenticationStateProvider
-@inject NotificationManager NotificationManager
+@inject NotificationManager _notificationManager
 
 <div class="container-fluid">
   <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleAddModal"><i class="oi oi-plus"></i> New note</button>
@@ -192,6 +192,6 @@
     Notification notification = await _noteService.AddNote(new Note(0, _template.userId, GroupId, _template.week, _template.year, _template.name, _template.status, _template.text));
     NoteList = await _noteService.GetNoteList(GroupId.ToString());
     _template = new Note(0, _loggedInUser.id, GroupId, _currentWeek, CultureInfo.InvariantCulture.Calendar.GetYear(DateTime.Today), "", "Not started", "");
-    NotificationManager.Show(notification);
+    _notificationManager.Show(notification);
   }
 }

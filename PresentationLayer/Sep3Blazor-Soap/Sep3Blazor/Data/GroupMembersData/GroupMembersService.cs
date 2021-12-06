@@ -21,7 +21,6 @@ namespace Sep3Blazor.Data.GroupMembersData
             {
                 var reply = await client.GetUserListAsync(
                     new Request {Name = groupId.ToString()});
-                Console.WriteLine("Group: " + reply.Message);
                 return JsonSerializer.Deserialize<List<GroupMembers>>(reply.Message);
             }
             catch (RpcException e)
@@ -31,12 +30,6 @@ namespace Sep3Blazor.Data.GroupMembersData
                 Console.WriteLine((int) e.Status.StatusCode);
                 return null;
             }
-        }
-
-
-        public Task<IList<GroupMembers>> GetGroupMembersList(int group_id)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<Notification> AddGroupMember(int groupId, int userId)
@@ -56,7 +49,7 @@ namespace Sep3Blazor.Data.GroupMembersData
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
-                return new Notification(e.Status.StatusCode+" " +" "+ e.Status.Detail,"User with Id= "+userId+" was not successfully added to group with Id = "+groupId , NotificationType.Error);
+                return new Notification("Error","User with Id= "+userId+" was not successfully added to group with Id = "+groupId , NotificationType.Error);
             }
         }
 
@@ -76,7 +69,7 @@ namespace Sep3Blazor.Data.GroupMembersData
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
-                return new Notification(e.Status.StatusCode+" " +" "+ e.Status.Detail,"User with Id= "+userId+" failed to leave group with Id = "+groupId , NotificationType.Error);
+                return new Notification("Error","User with Id= "+userId+" failed to leave group with Id = "+groupId , NotificationType.Error);
             }
         }
 
@@ -100,7 +93,7 @@ namespace Sep3Blazor.Data.GroupMembersData
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
-                return new Notification(e.Status.StatusCode+" " +" "+ e.Status.Detail,"User failed to be removed from group" , NotificationType.Error);
+                return new Notification("Error","User failed to be removed from group" , NotificationType.Error);
             }
         }
     }

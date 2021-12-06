@@ -35,7 +35,7 @@ namespace Sep3Blazor.Data.InvitationData
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
-                return new Notification(e.Status.StatusCode+" " +" "+ e.Status.Detail,"Invitation failed to be sent" , NotificationType.Error);
+                return new Notification("Error","Invitation failed to be sent" , NotificationType.Error);
             }
         }
 
@@ -78,7 +78,7 @@ namespace Sep3Blazor.Data.InvitationData
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
-                return new Notification(e.Status.StatusCode+" " +" "+ e.Status.Detail,"Invitation failed to be deleted" , NotificationType.Error);
+                return new Notification("Error","Invitation failed to be deleted" , NotificationType.Error);
             }
         }
     }

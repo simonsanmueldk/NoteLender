@@ -12,6 +12,6 @@ namespace Sep3Blazor.Data.GroupMembersData
         public Task<Notification> LeaveGroup(int groupId, int userId);
         public Task<Notification> DeleteGroupMember(int id);
         
-        public Task<IList<GroupMembers>> GetGroupMemberList(int group_id);
+        public Task<IList<GroupMembers>> GetGroupMemberList(int groupId);
     }
 }

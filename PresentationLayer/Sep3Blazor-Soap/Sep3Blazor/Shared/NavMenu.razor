@@ -48,29 +48,29 @@
 
 @code {
     public IList<Group> GroupList { get; set; }
-    private User cachedUser;
+    private User _cachedUser;
 
 
-    private bool collapseNavMenu = true;
+    private bool _collapseNavMenu = true;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
     {
-        collapseNavMenu = !collapseNavMenu;
+        _collapseNavMenu = !_collapseNavMenu;
     }
 
     protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
         _refreshServiceNavMem.RefreshRequested += RefreshState;
-        cachedUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
-        GroupList = await _groupService.GetGroupList(cachedUser.id);
+        _cachedUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
+        GroupList = await _groupService.GetGroupList(_cachedUser.id);
     }
     
     public async void RefreshState()
     {
-        GroupList = await _groupService.GetGroupList(cachedUser.id);
+        GroupList = await _groupService.GetGroupList(_cachedUser.id);
         StateHasChanged();
     }
 

@@ -27,9 +27,9 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public ResponseEntity<Void> postGroup(String json, int memberId) {
-        String sqlStatement = "with groupcreation as ( insert into notelender.groups (groupname) values (?) " +
-                "RETURNING id) insert into notelender.groupmembers (user_id, group_id)\n" +
-                "values ( ?, (select id from groupcreation))";
+        String sqlStatement = "WITH groupcreation AS ( INSERT INTO notelender.groups (groupname) VALUES (?) " +
+                "RETURNING id) INSERT INTO notelender.groupmembers (user_id, group_id)\n" +
+                "VALUES ( ?, (SELECT id FROM groupcreation))";
         try {
             PreparedStatement insertGroup = connection.prepareStatement(sqlStatement, PreparedStatement.RETURN_GENERATED_KEYS);
             insertGroup.setString(1, json);
@@ -43,41 +43,6 @@ public class PersistenceService implements IPersistenceService {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
-//    @Override
-//    public ResponseEntity<Void> postGroup(String json, int memberId) {
-//        String sqlStatement = "INSERT INTO notelender.groups (groupname) VALUES (?)";
-//        try {
-//            connection.setAutoCommit(false);
-//            PreparedStatement insertGroup = connection.prepareStatement(sqlStatement, PreparedStatement.RETURN_GENERATED_KEYS);
-//            insertGroup.setString(1, json);
-//            insertGroup.executeUpdate();
-//            ResultSet generatedKeys = insertGroup.getGeneratedKeys();
-//            if (generatedKeys.next()) {
-//                String insertGroupMemberString = "INSERT INTO notelender.groupmembers (user_id, group_id)  VALUES (?,?)";
-//                PreparedStatement insertMember = connection.prepareStatement(insertGroupMemberString);
-//                insertMember.setInt(1, memberId);
-//                insertMember.setInt(2, generatedKeys.getInt(1));
-//                insertMember.executeUpdate();
-//                connection.commit();
-//                connection.setAutoCommit(true);
-//                return new ResponseEntity<>(HttpStatus.OK);
-//            } else {
-//                connection.setAutoCommit(true);
-//                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//            }
-//        } catch (Exception e) {
-//            try {
-//                connection.rollback();
-//                connection.setAutoCommit(true);
-//            } catch (SQLException ex) {
-//                ex.printStackTrace();
-//            }
-//            e.printStackTrace();
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//
-//    }
 
     @Override
     public ResponseEntity<Void> editNote(String json) {
@@ -177,8 +142,8 @@ public class PersistenceService implements IPersistenceService {
         List<GroupMembers> GroupMembersList = new ArrayList<>();
         try {
             String sqlStatement = "SELECT notelender.groupmembers.id,user_id,u.username,group_id " +
-                    "from notelender.groupmembers INNER JOIN notelender.users u on u.id = groupmembers.user_id " +
-                    "where notelender.groupmembers.group_id = ?";
+                    "FROM notelender.groupmembers INNER JOIN notelender.users u ON u.id = groupmembers.user_id " +
+                    "WHERE notelender.groupmembers.group_id = ?";
             PreparedStatement getUserList = connection.prepareStatement(sqlStatement);
             getUserList.setInt(1, id);
             ResultSet rs = getUserList.executeQuery();
@@ -198,9 +163,9 @@ public class PersistenceService implements IPersistenceService {
     public ResponseEntity<List<Group>> getGroupList(int id) {
         List<Group> GroupList = new ArrayList<>();
         try {
-            String sqlStatement = "SELECT g.id, groupname from notelender.groupmembers\n" +
-                    " inner join notelender.groups g on g.id = groupmembers.group_id\n" +
-                    "where user_id = ?";
+            String sqlStatement = "SELECT g.id, groupname FROM notelender.groupmembers\n" +
+                    " INNER JOIN notelender.groups g ON g.id = groupmembers.group_id\n" +
+                    "WHERE user_id = ?";
             PreparedStatement getGroupMembersList = connection.prepareStatement(sqlStatement);
             getGroupMembersList.setInt(1, id);
             ResultSet rs = getGroupMembersList.executeQuery();
@@ -231,7 +196,7 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public ResponseEntity<Void> leaveGroup(int id, String json) {
-        String sqlStatement = "DELETE FROM notelender.groupmembers WHERE group_id = ? and user_id = ?";
+        String sqlStatement = "DELETE FROM notelender.groupmembers WHERE group_id = ? AND user_id = ?";
         try {
             PreparedStatement deleteGroupMember = connection.prepareStatement(sqlStatement);
             deleteGroupMember.setInt(1, id);
@@ -340,7 +305,7 @@ public class PersistenceService implements IPersistenceService {
     public ResponseEntity<List<User>> getUser(String json) {
         try {
             List<User> users = new ArrayList<>();
-            String sqlStatement = "SELECT * FROM notelender.users WHERE username LIKE  ?";
+            String sqlStatement = "SELECT * FROM notelender.users WHERE username LIKE ?";
             PreparedStatement getGroup = connection.prepareStatement(sqlStatement);
             getGroup.setString(1, "%" + json + "%");
             ResultSet rs = getGroup.executeQuery();
@@ -393,9 +358,9 @@ public class PersistenceService implements IPersistenceService {
         try {
             String sqlStatement = "SELECT invitations.id, g.id, g.groupname, invitations.invitee_id, u2.username, " +
                     "invitations.invitor_id, u.username FROM notelender.invitations\n" +
-                    "         inner join notelender.groups g on g.id = invitations.group_id\n" +
-                    "         inner join notelender.users u on u.id = invitations.invitor_id\n" +
-                    "         inner join notelender.users u2 on u2.id = invitations.invitee_id\n" +
+                    "         INNER JOIN notelender.groups g ON g.id = invitations.group_id\n" +
+                    "         INNER JOIN notelender.users u ON u.id = invitations.invitor_id\n" +
+                    "         INNER JOIN notelender.users u2 ON u2.id = invitations.invitee_id\n" +
                     "WHERE invitee_id = ?";
             PreparedStatement getInvitation = connection.prepareStatement(sqlStatement);
             getInvitation.setInt(1, Integer.parseInt(id));

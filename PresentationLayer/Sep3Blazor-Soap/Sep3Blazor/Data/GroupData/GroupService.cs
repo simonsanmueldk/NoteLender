@@ -4,7 +4,6 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Net.Client;
-using Sep3Blazor.Data.Notifications;
 using Sep3Blazor.Data.Notifications.NotificationModel;
 using Sep3Blazor.Model;
 
@@ -14,7 +13,6 @@ namespace Sep3Blazor.Data.GroupData
     public class GroupService : IGroupService
     {
         private readonly String URL = "https://localhost:5004";
-
         public async Task<Notification> AddGroup(string groupName, int memberId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -35,7 +33,7 @@ namespace Sep3Blazor.Data.GroupData
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
-                return new Notification(e.Status.StatusCode+" " +" "+ e.Status.Detail,"Group "+groupName+" was not successfully added. " , NotificationType.Error);
+                return new Notification("Error","Group "+groupName+" was not successfully added. " , NotificationType.Error);
             }
         }
 
@@ -75,7 +73,7 @@ namespace Sep3Blazor.Data.GroupData
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
-                return new Notification(e.Status.StatusCode+" " +" "+ e.Status.Detail,"Group "+s+" was not successfully deleted. " , NotificationType.Error);
+                return new Notification("Error","Group "+s+" was not successfully deleted. " , NotificationType.Error);
             }
         }
 
@@ -87,7 +85,6 @@ namespace Sep3Blazor.Data.GroupData
             {
                 var reply = await client.GetGroupMembersListAsync(
                     new Request {Name = groupId.ToString()});
-                Console.WriteLine("Group: " + reply.Message);
                 return JsonSerializer.Deserialize<List<Group>>(reply.Message);
             }
             catch (RpcException e)

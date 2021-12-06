@@ -2,10 +2,11 @@
 @using Microsoft.AspNetCore.Components
 @using Sep3Blazor.Model
 @using Sep3Blazor.Authentication
-@using Sep3Blazor.Data
 @using Sep3Blazor.Data.UserData
-@inject AuthenticationStateProvider AuthenticationStateProvider
-@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject NavigationManager _navigationManager
+@inject IUserService _userService
+
 <AuthorizeView>
     <div class="d-flex justify-content-center">
         <aside class="col-sm-4 " style="alignment: center">
@@ -18,40 +19,38 @@
                     </header>
                     <div class="d-flex flex-column align-items-center">
                         <div class="mt-3 mb-4">
-                            <img
-                                src="images/avatar.png"
-                                class="rounded-circle img-fluid" style="width: 100px;"/>
+                            <img src="images/avatar.png" class="rounded-circle img-fluid" style="width: 100px;" alt="It's not loaded"/>
                         </div>
                         <div class="col form-group">
+                            <h2>
+                                <b>@context.User.FindFirst("FirstName").Value @context.User.FindFirst("LastName").Value</b>
+                            </h2>
+                        </div>
+                        <div class="col form-group">
+                            <label class="labelAcc">Username :</label>
                             <p>
-                                <h2>
-                                    <b>@context.User.FindFirst("FirstName").Value @context.User.FindFirst("LastName").Value</b>
-                                </h2>
+                                <i> @context.User.Identity.Name</i>
                             </p>
                         </div>
-                        <div class="col form-group">
-                            <label id="labelAcc">Username :</label>
-                            <p><i> @context.User.Identity.Name</i></p>
+                        <div class=" form-group" style="display:@_temp">
+                            <label class="labelAcc">Password :</label>
+                            <input class="form-control" type="password" @bind-value="@_password"/>
                         </div>
-                        <div class=" form-group" style="display:@temp">
-                            <label id="labelAcc">Password :</label>
-                            <input class="form-control" type="password" @bind-value="@password"/>
-                        </div>
-                        <div class=" form-group" style="display:@temp">
+                        <div class=" form-group" style="display:@_temp">
                             <div class="">
-                                <label id="labelAcc">Change password :</label>
-                                <input class="form-control" type="password" @bind-value="@changedPassword"/>
+                                <label class="labelAcc">Change password :</label>
+                                <input class="form-control" type="password" @bind-value="@_changedPassword"/>
                             </div>
                         </div>
-                        <div class="form-group" style="display:@temp">
-                            <label id="labelAcc">Confirm password :</label>
-                            <input class="form-control" type="password" @bind-value="@confirmedPassword"/>
+                        <div class="form-group" style="display:@_temp">
+                            <label class="labelAcc">Confirm password :</label>
+                            <input class="form-control" type="password" @bind-value="@_confirmedPassword"/>
                         </div>
                         <div class="form-group">
-                            <button class="btn btn-primary btn-block" @onclick="Change" style="display:@temp2 ">Change passsword</button>
+                            <button class="btn btn-primary btn-block" @onclick="Change" style="display:@_temp2 ">Change passsword</button>
                         </div>
                         <div class="form-group">
-                            <button class="btn btn-primary btn-block" @onclick="EditAccount" style="display:@temp ">Save changes</button>
+                            <button class="btn btn-primary btn-block" @onclick="EditAccount" style="display:@_temp ">Save changes</button>
                         </div>
                     </div>
                 </article>
@@ -61,37 +60,35 @@
 </AuthorizeView>
 
 @code {
-    private string temp = "none";
-    private string temp2 = "block";
-    private string password = "";
-    private string changedPassword = "";
-    private string confirmedPassword = "";
-    private IUserService _userService = new UserService();
-    private User cachedUser;
-
-
+    private string _temp = "none";
+    private string _temp2 = "block";
+    private string _password = "";
+    private string _changedPassword = "";
+    private string _confirmedPassword = "";
+    private User _cachedUser;
+    
     protected override async Task OnInitializedAsync()
     {
-        cachedUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
+        _cachedUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser;
     }
 
     private void Change()
     {
-        temp2 = "none";
-        temp = "block";
+        _temp2 = "none";
+        _temp = "block";
     }
 
     private async Task EditAccount()
     {
-        if (!string.IsNullOrEmpty(password) || !string.IsNullOrEmpty(changedPassword)
-            || !string.IsNullOrEmpty(confirmedPassword))
+        if (!string.IsNullOrEmpty(_password) || !string.IsNullOrEmpty(_changedPassword)
+            || !string.IsNullOrEmpty(_confirmedPassword))
         {
-            if (cachedUser.password.Equals(password))
+            if (_cachedUser.password.Equals(_password))
             {
-                if (changedPassword == confirmedPassword)
+                if (_changedPassword == _confirmedPassword)
                 {
-                    await _userService.EditUser(cachedUser.id, changedPassword);
-                    NavigationManager.NavigateTo("/");
+                    await _userService.EditUser(_cachedUser.id, _changedPassword);
+                    _navigationManager.NavigateTo("/");
                 }
             }
         }

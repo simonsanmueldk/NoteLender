@@ -13,7 +13,7 @@
 <h3>GroupPage @Id</h3>
 <TabControl>
     <TabPage Text="Notes">
-        <NoteListComponent  GroupId="@Id"></NoteListComponent>
+        <NoteListComponent GroupId="@Id"></NoteListComponent>
     </TabPage>
     <TabPage Text="Members">
         <div class="row d-flex justify-content-between">
@@ -35,8 +35,6 @@
     [CascadingParameter]
     protected Task<AuthenticationState> AuthStat { get; set; }
 
-    public string Value { get; set; }
-
     public IList<Note> Notes { get; set; }
     public IList<GroupMembers> GroupMembersList { get; set; }
 
@@ -54,16 +52,6 @@
     protected override void OnParametersSet()
     {
         StateHasChanged();
-    }
-
-    private void ChangeSelectedNote(Note note)
-    {
-        Value = note.id.ToString();
-    }
-
-    private void ChangeSelectedGroup(GroupMembers groupMembers)
-    {
-        Value = groupMembers.id.ToString();
     }
 
 }

@@ -14,6 +14,6 @@ namespace Sep3Blazor.Data.GroupData
 
         public Task<Notification> DeleteGroup(string s);
         
-        public Task<IList<Group>> GetGroupList(int group_id);
+        public Task<IList<Group>> GetGroupList(int groupId);
     }
 }

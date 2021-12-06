@@ -3,7 +3,7 @@
 @using Sep3Blazor.Data.Notifications
 @using Sep3Blazor.Data.Notifications.NotificationModel
 @using Sep3Blazor.Model
-@inject NotificationManager NotificationManager
+@inject NotificationManager _notificationManager
 @inject INoteService _noteService
 
 
@@ -103,15 +103,13 @@
     // Parameter to specify what Note object is in focus.
     [Parameter]
     public Note Note { get; set; }
-    
-    private Note _note;
 
     // TODO Add relevant comment
     [Parameter]
     public EventCallback<string> OnClick { get; set; }
 
     // Note object to be used in <EditForm> component. 
-    private Note noteModel = new Note(0, 0, 0, 0, 0, "", "", "");
+    private Note _noteModel = new Note(0, 0, 0, 0, 0, "", "", "");
     
     protected override async Task OnInitializedAsync()
     {
@@ -131,7 +129,7 @@
     {
         Notification notification = await _noteService.EditNote(new Note(Note.id, Note.userId, Note.groupId, Note.week, Note.year, Note.name, Note.status, Note.text));
         await OnClick.InvokeAsync();
-        await NotificationManager.Show(notification);
+        await _notificationManager.Show(notification);
     }
 
     // Method that takes Note and sends its ID to business to delete it.
@@ -139,7 +137,7 @@
     {
         Notification notification = await _noteService.DeleteNote(Note.id);
         await OnClick.InvokeAsync();
-        await NotificationManager.Show(notification);
+        await _notificationManager.Show(notification);
     }
 
 }

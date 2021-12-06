@@ -9,7 +9,7 @@
 @inject IInvitationService _invitationService
 @inject IRefreshServiceInvGroup _refreshServiceInvGroup
 @inject IGroupMembersService _groupMembersService
-@inject NotificationManager NotificationManager
+@inject NotificationManager _notificationManager
 
 <h3>Pending invitations</h3>
 
@@ -51,7 +51,7 @@ else
 
     // Parameter to specify which user opens the InvitationsComponent component
     [Parameter]
-    public String UserID { get; set; }
+    public String UserId { get; set; }
 
     // List of invitations where the user which opened the component is the invitee of.
     public IList<Invitation> InvitationList { get; set; }
@@ -60,15 +60,15 @@ else
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine("Invitation");
-        InvitationList = await _invitationService.GetInvitationList(UserID.ToString());
+        InvitationList = await _invitationService.GetInvitationList(UserId);
     }
 
     // Method used by <EditForm> component to remove an invitation.
     private async Task RemoveInvitation(int id)
     {
         Notification notification = await _invitationService.DeleteInvitation(id.ToString());
-        await NotificationManager.Show(notification);
-        InvitationList = await _invitationService.GetInvitationList(UserID.ToString());
+        await _notificationManager.Show(notification);
+        InvitationList = await _invitationService.GetInvitationList(UserId);
           
     }
 
@@ -76,9 +76,9 @@ else
     private async Task AcceptInvitation(int groupId, int userId, int invitationId)
     {
         Notification notification = await _groupMembersService.AddGroupMember(groupId, userId);
-        NotificationManager.Show(notification);
+        _notificationManager.Show(notification);
         _refreshServiceInvGroup.CallRequestRefresh();
         await _invitationService.DeleteInvitation(invitationId.ToString());
-        InvitationList = await _invitationService.GetInvitationList(UserID.ToString());
+        InvitationList = await _invitationService.GetInvitationList(UserId);
     }
 }
