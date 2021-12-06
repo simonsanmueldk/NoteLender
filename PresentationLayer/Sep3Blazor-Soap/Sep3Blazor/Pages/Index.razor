@@ -12,7 +12,6 @@
 @using Sep3Blazor.Data.NoteData
 @using Sep3Blazor.Data.Notifications
 @using Sep3Blazor.Data.Notifications.NotificationModel
-@using System.Globalization
 @using Microsoft.AspNetCore.Components.Web.Extensions.Head
 @using Sep3Blazor.Data.InvitationData
 
@@ -21,18 +20,16 @@
 <Login/>
 <AuthorizeView >
     <div class="row d-flex justify-content-between">
-        <div class="col-sm-5">
+        <div class="col-sm-5" style="background-color: white">
             <GroupListComponent UserID=@context.User.FindFirst("id").Value></GroupListComponent>
+             <br>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-5" style="background-color: white">
             <InvitationsComponent UserID=@context.User.FindFirst("id").Value></InvitationsComponent>
         </div>
     </div>
     <br/>
 </AuthorizeView>
-<div class="main-title-big" @onclick="ShowNotification">
-    Welcome
-</div>
 
 @code
 {

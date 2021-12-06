@@ -40,6 +40,7 @@ namespace Sep3Blazor
             services.AddScoped<IInvitationService, InvitationService>();
             services.AddScoped<IGroupMembersService, GroupMembersService>();
             services.AddScoped<IRefreshServiceInvGroup, RefreshServiceInvGroup>();
+            services.AddScoped<IRefreshServiceNavMem, RefreshServiceNavMem>();
             services.AddSingleton<NotificationManager>();
 
         }

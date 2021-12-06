@@ -31,11 +31,9 @@ else
     {
         <div class="card mb-2">
             <div class="card-header">
-                @invitation.id
+              User <b>@invitation.invitorName</b> wants you to pe apart of group <b>@invitation.groupName</b>
             </div>
             <div class="card-body">
-                <p>User @invitation.invitorName Wants you to pe apart of group @invitation.groupName </p>
-
                 <button type="button" style="background-color: darkgreen "
                         @onclick="@(() => AcceptInvitation(invitation.inviteeId, invitation.groupId, invitation.id))">
                     Accept
@@ -78,8 +76,9 @@ else
     private async Task AcceptInvitation(int groupId, int userId, int invitationId)
     {
         Notification notification = await _groupMembersService.AddGroupMember(groupId, userId);
-        await NotificationManager.Show(notification);
-        await RemoveInvitation(invitationId);
+        NotificationManager.Show(notification);
         _refreshServiceInvGroup.CallRequestRefresh();
+        await _invitationService.DeleteInvitation(invitationId.ToString());
+        InvitationList = await _invitationService.GetInvitationList(UserID.ToString());
     }
 }

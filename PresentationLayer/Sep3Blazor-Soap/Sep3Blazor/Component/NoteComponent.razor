@@ -103,6 +103,8 @@
     // Parameter to specify what Note object is in focus.
     [Parameter]
     public Note Note { get; set; }
+    
+    private Note _note;
 
     // TODO Add relevant comment
     [Parameter]
@@ -110,6 +112,19 @@
 
     // Note object to be used in <EditForm> component. 
     private Note noteModel = new Note(0, 0, 0, 0, 0, "", "", "");
+    
+    protected override async Task OnInitializedAsync()
+    {
+        {
+            
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        StateHasChanged();
+    }
+    
     
     // Method that takes Note from <EditForm> and sends it to business to replace Note with same ID.
     private async void SubmitEditNote()

@@ -10,10 +10,10 @@
 @using Microsoft.AspNetCore.Components.Web.Extensions.Head
 
 <Title Value="@("Group " + Id)"></Title>
-<h3>GroupPage</h3>
+<h3>GroupPage @Id</h3>
 <TabControl>
     <TabPage Text="Notes">
-        <NoteListComponent GroupId="@Id"></NoteListComponent>
+        <NoteListComponent  GroupId="@Id"></NoteListComponent>
     </TabPage>
     <TabPage Text="Members">
         <div class="row d-flex justify-content-between">
@@ -43,13 +43,17 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine("AdultPage");
         {
             Notes = await _noteService.GetNoteList(Id.ToString());
-            GroupMembersList = await _groupMembersService.GetGroupMemberList(9);
+            GroupMembersList = await _groupMembersService.GetGroupMemberList(Id);
             Console.WriteLine(Notes.Count);
             Console.WriteLine(GroupMembersList.Count);
         }
+    }
+
+    protected override void OnParametersSet()
+    {
+        StateHasChanged();
     }
 
     private void ChangeSelectedNote(Note note)

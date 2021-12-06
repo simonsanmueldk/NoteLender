@@ -13,11 +13,11 @@
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject NotificationManager NotificationManager
 
-<div class="row">
-    <div class="col-12">
+<div class="d-flex flex-column">
+    <div >
         <h3 class="d-inline">My groups</h3>
-        </div>
-           <div class="col-12">
+    </div>
+    <div >
         <button type="button" class="btn btn-primary d-inline " data-bs-toggle="modal" data-bs-target="#exampleAddModal"><i class="oi oi-plus"></i> Create group</button>
         <div class="modal fade" id="exampleAddModal" tabindex="-1" aria-labelledby="exampleAddModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -44,6 +44,7 @@
             </div>
         </div>
     </div>
+    <br>
 
 
     @if (GroupList == null)
@@ -71,6 +72,7 @@
             </ul>
         </div>
     }
+
 </div>
 
 

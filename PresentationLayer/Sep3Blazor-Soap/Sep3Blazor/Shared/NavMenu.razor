@@ -1,5 +1,13 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">NoteLender</a>
+﻿@using Sep3Blazor.Data.GroupData
+@using Sep3Blazor.Model
+@using Sep3Blazor.Authentication
+@using Sep3Blazor.Data.Refresh
+@inject IGroupService _groupService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IRefreshServiceNavMem _refreshServiceNavMem
+
+<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href=""> NoteLender</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -20,13 +28,29 @@
                     <span class="oi oi-file" aria-hidden="true"></span> Account
                 </NavLink>
             </AuthorizeView>
-             
         </li>
-        
+
+        @if (GroupList != null)
+        {
+            foreach (var group in GroupList)
+            {
+                <li class="nav-item px-3">
+                    <AuthorizeView>
+                        <NavLink class="nav-link" href="@("GroupPage/" + group.id)" Match="NavLinkMatch.All">
+                            <span class="oi oi-people" aria-hidden="true"></span> @("Group " + group.name)
+                        </NavLink>
+                    </AuthorizeView>
+                </li>
+            }
+        }
     </ul>
 </div>
 
 @code {
+    public IList<Group> GroupList { get; set; }
+    private User cachedUser;
+
+
     private bool collapseNavMenu = true;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
@@ -34,6 +58,20 @@
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        _refreshServiceNavMem.RefreshRequested += RefreshState;
+        cachedUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
+        GroupList = await _groupService.GetGroupList(cachedUser.id);
+    }
+    
+    public async void RefreshState()
+    {
+        GroupList = await _groupService.GetGroupList(cachedUser.id);
+        StateHasChanged();
     }
 
 }

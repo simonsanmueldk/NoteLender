@@ -43,7 +43,7 @@
               <label>
                 Status:
                 <InputSelect @bind-Value="_template.status">
-                  <option value="">Not started</option>
+                  <option value="Not started">Not started</option>
                   <option value="Started">Started</option>
                   <option value="Finished">Finished</option>
                 </InputSelect>
@@ -128,7 +128,13 @@
     _loggedInUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser;
     
   // Instantiate Template note for the EditForm component.
-    _template = new Note(0, _loggedInUser.id, GroupId, _currentWeek, CultureInfo.InvariantCulture.Calendar.GetYear(DateTime.Today), "", "", "");
+    _template = new Note(0, _loggedInUser.id, GroupId, _currentWeek, CultureInfo.InvariantCulture.Calendar.GetYear(DateTime.Today), "", "Not started", "");
+  }
+  
+  protected override async void OnParametersSet()
+  {
+    NoteList = await _noteService.GetNoteList(GroupId.ToString());
+    StateHasChanged();
   }
 
   // Show the notes further ahead in time and prevent going past week 52.
@@ -183,8 +189,9 @@
   
   private async Task SubmitAddNote()
   {
-    Notification notification = await _noteService.AddNote(new Note(0, _template.userId, _template.groupId, _template.week, _template.year, _template.name, _template.status, _template.text));
+    Notification notification = await _noteService.AddNote(new Note(0, _template.userId, GroupId, _template.week, _template.year, _template.name, _template.status, _template.text));
     NoteList = await _noteService.GetNoteList(GroupId.ToString());
+    _template = new Note(0, _loggedInUser.id, GroupId, _currentWeek, CultureInfo.InvariantCulture.Calendar.GetYear(DateTime.Today), "", "Not started", "");
     NotificationManager.Show(notification);
   }
 }

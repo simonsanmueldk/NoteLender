@@ -3,8 +3,10 @@
 @using Sep3Blazor.Authentication
 @using Sep3Blazor.Data.Notifications
 @using Sep3Blazor.Data.Notifications.NotificationModel
+@using Sep3Blazor.Data.Refresh
 @inject IGroupMembersService _groupMembersService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IRefreshServiceNavMem _refreshServiceNavMem
 @inject NavigationManager NavigationManager
 @inject NotificationManager NotificationManager
 
@@ -99,7 +101,8 @@
     private async Task LeaveGroup()
     {
         Notification notification = await _groupMembersService.LeaveGroup(GroupId, cachedUser.id);
-        await NotificationManager.Show(notification);
+        NotificationManager.Show(notification);
+        _refreshServiceNavMem.CallRequestRefresh();
         NavigationManager.NavigateTo("/");
     }
 
@@ -107,7 +110,7 @@
     private async Task DeleteMember(int id)
     {
         Notification notification = await _groupMembersService.DeleteGroupMember(id);
-        await NotificationManager.Show(notification);
+        NotificationManager.Show(notification);
         GroupMembersList = await _groupMembersService.GetGroupMemberList(GroupId);
     }
 }
