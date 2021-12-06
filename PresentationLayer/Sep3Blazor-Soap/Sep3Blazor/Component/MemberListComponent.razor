@@ -78,19 +78,24 @@
 
 @code {
 
+    // Parameter to specify which group the members are in.
     [Parameter]
     public int GroupId { get; set; }
 
+    // List of object GroupMembers.
     public IList<GroupMembers> GroupMembersList { get; set; }
 
+    // User object to be initialized as the user logged in.
     private User cachedUser;
 
+    // Method that is first to run when component is initialized.
     protected override async Task OnInitializedAsync()
     {
         cachedUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
         GroupMembersList = await _groupMembersService.GetGroupMemberList(GroupId);
     }
     
+    // Method to let the user logged in leave to group. 
     private async Task LeaveGroup()
     {
         Notification notification = await _groupMembersService.LeaveGroup(GroupId, cachedUser.id);
@@ -98,11 +103,11 @@
         NavigationManager.NavigateTo("/");
     }
 
+    // Method to let user logged in remove other members from the group.
     private async Task DeleteMember(int id)
     {
         Notification notification = await _groupMembersService.DeleteGroupMember(id);
         await NotificationManager.Show(notification);
         GroupMembersList = await _groupMembersService.GetGroupMemberList(GroupId);
     }
-
 }

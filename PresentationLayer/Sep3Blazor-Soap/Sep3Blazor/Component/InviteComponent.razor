@@ -67,23 +67,30 @@
 
 @code {
 
+    // Parameter to specify which group the invitee will be invited to.
     [Parameter]
     public int GroupId { get; set; }
 
+    // Object for <EditForm> to use as a username when inviting.
     public string username ="";
+    
+    // ???
     public bool temp = false;
+    
+    // Lists of users used when searching.
     public List<User> users;
     public List<User> tempUsers;
-
-
+    
+    // User object reserved for the user which opens the component.
     private User cachedUser;
 
-
+    // Method that is first to run when component is initialized.
     protected override async Task OnInitializedAsync()
     {
         cachedUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
     }
 
+    // Method to search for users.
     private async Task Search()
     {
         if (!username.Equals(""))
@@ -108,13 +115,11 @@
         }
     }
 
+    // Method to invite a user to group the component is opened in.
     private async Task InviteUser(User user)
     {
         Invitation invitation = new Invitation(0, GroupId, null, user.id, null, cachedUser.id, null);
         Notification notification = await invitationService.AddInvitation(invitation);
         await NotificationManager.Show(notification);
     }
-
-
-
 }

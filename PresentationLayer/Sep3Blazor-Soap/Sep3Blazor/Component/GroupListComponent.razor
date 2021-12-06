@@ -72,12 +72,17 @@
 
 @code {
 
+    // Parameter to specify which user opens the groupList component
     [Parameter]
     public string UserId { get; set; }
 
+    // GroupList showing the groups the user with user id equal to previous variable is in.
     public IList<Group> GroupList { get; set; }
+    
+    // Group object to use in the <EditForm> component from Blazor.
     private Group groupModel = new Group(0, "");
 
+    // Method that is first to run when component is initialized.
     protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
@@ -85,6 +90,7 @@
         GroupList = await _groupService.GetGroupList(Convert.ToInt32(UserId));
     }
 
+    // Method to navigate to a specific group instead of a list of the groups.
     private void ChangeSelectedGroup(Group group)
     {
         UserId = group.id.ToString();
@@ -92,6 +98,7 @@
         _navigationManager.NavigateTo("/GroupPage/" + group.id);
     }
 
+    // Method to refresh the component contents. Such as when changes are made to the user's groups.
     public async void RefreshState()
     {
         Console.WriteLine("Hey, i got called from component GroupListing");
@@ -99,11 +106,11 @@
         StateHasChanged();
     }
 
+    // Method used by <EditForm> component to add a group.
     private async void SubmitAddGroup()
     {
         Notification notification = await _groupService.AddGroup(groupModel.name, ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser.id);
         await NotificationManager.Show(notification);
         RefreshState();
     }
-
 }

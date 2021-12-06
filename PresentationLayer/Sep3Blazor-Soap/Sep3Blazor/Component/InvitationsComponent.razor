@@ -51,21 +51,21 @@ else
 
 @code {
 
+    // Parameter to specify which user opens the InvitationsComponent component
     [Parameter]
     public String UserID { get; set; }
 
+    // List of invitations where the user which opened the component is the invitee of.
     public IList<Invitation> InvitationList { get; set; }
-    public IList<GroupMembers> GroupMembersList { get; set; }
-    public IList<Group> GroupList { get; set; }
-    public string SearchPhrase;
-    private Invitation _invitation;
 
+    // Method that is first to run when component is initialized.
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine("Invitation");
         InvitationList = await _invitationService.GetInvitationList(UserID.ToString());
     }
 
+    // Method used by <EditForm> component to remove an invitation.
     private async Task RemoveInvitation(int id)
     {
         Notification notification = await _invitationService.DeleteInvitation(id.ToString());
@@ -74,17 +74,7 @@ else
           
     }
 
-    /*
-    private async void HandleValidSubmit()
-    {
-        Invitation invitationToAdd = new Invitation(Invitation.id, Invitation.groupId, Invitation.inviteeId, Invitation.invitorId);
-        Invitation temp = await _invitationService.AddInvitations(invitationToAdd);
-    }
-    */
-
-   
-
-
+    // Method used by <EditForm> component to accept an invitation.
     private async Task AcceptInvitation(int groupId, int userId, int invitationId)
     {
         Notification notification = await _groupMembersService.AddGroupMember(groupId, userId);
