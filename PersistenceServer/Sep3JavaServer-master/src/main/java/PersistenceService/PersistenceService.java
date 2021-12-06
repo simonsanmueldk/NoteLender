@@ -27,38 +27,57 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public ResponseEntity<Void> postGroup(String json, int memberId) {
-        String sqlStatement = "INSERT INTO notelender.groups (groupname) VALUES (?)";
+        String sqlStatement = "with groupcreation as ( insert into notelender.groups (groupname) values (?) " +
+                "RETURNING id) insert into notelender.groupmembers (user_id, group_id)\n" +
+                "values ( ?, (select id from groupcreation))";
         try {
-            connection.setAutoCommit(false);
             PreparedStatement insertGroup = connection.prepareStatement(sqlStatement, PreparedStatement.RETURN_GENERATED_KEYS);
             insertGroup.setString(1, json);
+            insertGroup.setInt(2, memberId);
             insertGroup.executeUpdate();
-            ResultSet generatedKeys = insertGroup.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                String insertGroupMemberString = "INSERT INTO notelender.groupmembers (user_id, group_id)  VALUES (?,?)";
-                PreparedStatement insertMember = connection.prepareStatement(insertGroupMemberString);
-                insertMember.setInt(1, memberId);
-                insertMember.setInt(2, generatedKeys.getInt(1));
-                insertMember.executeUpdate();
-                connection.commit();
-                connection.setAutoCommit(true);
-                return new ResponseEntity<>(HttpStatus.OK);
-            } else {
-                connection.setAutoCommit(true);
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
+            return new ResponseEntity<>(HttpStatus.OK);
+
         } catch (Exception e) {
-            try {
-                connection.rollback();
-                connection.setAutoCommit(true);
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
             e.printStackTrace();
+
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
     }
+
+//    @Override
+//    public ResponseEntity<Void> postGroup(String json, int memberId) {
+//        String sqlStatement = "INSERT INTO notelender.groups (groupname) VALUES (?)";
+//        try {
+//            connection.setAutoCommit(false);
+//            PreparedStatement insertGroup = connection.prepareStatement(sqlStatement, PreparedStatement.RETURN_GENERATED_KEYS);
+//            insertGroup.setString(1, json);
+//            insertGroup.executeUpdate();
+//            ResultSet generatedKeys = insertGroup.getGeneratedKeys();
+//            if (generatedKeys.next()) {
+//                String insertGroupMemberString = "INSERT INTO notelender.groupmembers (user_id, group_id)  VALUES (?,?)";
+//                PreparedStatement insertMember = connection.prepareStatement(insertGroupMemberString);
+//                insertMember.setInt(1, memberId);
+//                insertMember.setInt(2, generatedKeys.getInt(1));
+//                insertMember.executeUpdate();
+//                connection.commit();
+//                connection.setAutoCommit(true);
+//                return new ResponseEntity<>(HttpStatus.OK);
+//            } else {
+//                connection.setAutoCommit(true);
+//                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//            }
+//        } catch (Exception e) {
+//            try {
+//                connection.rollback();
+//                connection.setAutoCommit(true);
+//            } catch (SQLException ex) {
+//                ex.printStackTrace();
+//            }
+//            e.printStackTrace();
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//
+//    }
 
     @Override
     public ResponseEntity<Void> editNote(String json) {
@@ -197,7 +216,7 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public ResponseEntity<Void> addGroupMember(String json) {
-        String sqlStatement ="INSERT INTO notelender.groupmembers (user_id,group_id) VALUES (?,?)";
+        String sqlStatement = "INSERT INTO notelender.groupmembers (user_id,group_id) VALUES (?,?)";
         GroupMembers groupMembers = gson.fromJson(json, GroupMembers.class);
         try {
             PreparedStatement addGroupMember = connection.prepareStatement(sqlStatement, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -226,7 +245,7 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public ResponseEntity<Void> deleteGroupMember(int id) {
-        String sqlStatement ="DELETE FROM notelender.groupmembers WHERE id=?";
+        String sqlStatement = "DELETE FROM notelender.groupmembers WHERE id=?";
         try {
             PreparedStatement statement = connection.prepareStatement(sqlStatement, PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setInt(1, id);
