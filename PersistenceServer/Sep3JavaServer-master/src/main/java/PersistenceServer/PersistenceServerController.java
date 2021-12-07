@@ -26,7 +26,7 @@ public class PersistenceServerController {
     @GetMapping("/users/{username}")
     public ResponseEntity<List<User>> getUser(@PathVariable(value = "username") String username) {
         System.out.println("Get user");
-        return persistenceService.getUser(username);
+        return persistenceService.getUsers(username);
     }
 
     @PostMapping("/user")
