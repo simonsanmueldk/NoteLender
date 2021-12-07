@@ -90,12 +90,13 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<Void> deleteGroup(int id) {
+    public ResponseEntity<Void> deleteGroup(int group_id) {
         String sqlStatement = "DELETE FROM notelender.groups WHERE id= ?";
         try {
-            PreparedStatement deleteGroup = connection.prepareStatement(sqlStatement);
-            deleteGroup.setInt(1, id);
+            PreparedStatement deleteGroup = connection.prepareStatement(sqlStatement,PreparedStatement.RETURN_GENERATED_KEYS);
+            deleteGroup.setInt(1, group_id);
             deleteGroup.executeUpdate();
+            System.out.println("aleooo");
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
