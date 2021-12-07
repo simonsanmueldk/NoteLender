@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
+using Sep3Blazor.Data.Notifications.NotificationModel;
 using Sep3Blazor.Data.UserData;
 using Sep3Blazor.Model;
 
@@ -56,10 +57,10 @@ namespace Sep3Blazor.Authentication
             return identity;
         }
 
-        public async Task ValidateLogin(string tempUserName, string tempPassword)
+        public async Task<Notification> ValidateLogin(string tempUserName, string tempPassword)
         {
             Console.WriteLine("Validating log in");
-
+            Notification notification = null;
             ClaimsIdentity identity = new ClaimsIdentity();
             try
             {
@@ -68,14 +69,19 @@ namespace Sep3Blazor.Authentication
                 string serialisedData = JsonSerializer.Serialize(user);
                 await jsRunTime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
                 cachedUser = user;
-                Console.WriteLine(user.username);
+                notification = new Notification("Success", "User successfully logged in ",
+                    NotificationType.Success);
             }
             catch (Exception e)
             {
                 Console.WriteLine( e.StackTrace);
+                notification = new Notification("Error", "Invalid Login",
+                    NotificationType.Error);
             }
 
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity))));
+            return notification;
+
         }
 
         public void LogOut()

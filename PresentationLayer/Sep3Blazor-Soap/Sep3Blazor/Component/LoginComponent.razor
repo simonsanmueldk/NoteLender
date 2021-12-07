@@ -1,7 +1,10 @@
 ﻿@using Sep3Blazor.Authentication
+@using Sep3Blazor.Data.Notifications
+@using Sep3Blazor.Data.Notifications.NotificationModel
 
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject NavigationManager _navigationManager
+@inject NotificationManager _notificationManager
 
 <AuthorizeView>
     <NotAuthorized>
@@ -14,8 +17,6 @@
                         </header>
                         <br/>
                         <div class="d-flex flex-column align-items-center">
-                            <div style="color:red">@_errorMessage</div>
-
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -54,23 +55,15 @@
 @code {
     private string _username;
     private string _password;
-    private string _errorMessage;
+
 
     public async Task PerformLogin()
     {
-        _errorMessage = "";
-        try
-        {
-            await ((CustomAuthenticationStateProvider) _authenticationStateProvider).ValidateLogin(_username, _password);
-            _navigationManager.NavigateTo("/");
-            _username = "";
-            _password = "";
-        }
-        catch (Exception e)
-        {
-            _errorMessage = e.Message.Contains('U') ? "UserName not found" : "Invalid Login";
-            Console.WriteLine(e.Message);
-        }
+        Notification notification = await ((CustomAuthenticationStateProvider) _authenticationStateProvider).ValidateLogin(_username, _password);
+        _notificationManager.Show(notification);
+        _navigationManager.NavigateTo("/");
+        _username = "";
+        _password = "";
     }
 
     public void Register()

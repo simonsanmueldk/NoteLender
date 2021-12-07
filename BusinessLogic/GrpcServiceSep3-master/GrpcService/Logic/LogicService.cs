@@ -171,6 +171,7 @@ namespace GrpcService.Logic
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string message = await responseMessage.Content.ReadAsStringAsync();
+                    Console.WriteLine(message);
                     User user = JsonSerializer.Deserialize<User>(message);
                     if (request.Type.Equals(user.password))
                     {

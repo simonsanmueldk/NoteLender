@@ -74,7 +74,7 @@ public class PersistenceService implements IPersistenceService {
         String sqlStatement = "INSERT INTO notelender.notes (user_id,group_id,week,year,name,status,text) " +
                 "VALUES (?,?,?,?,?,?,?)";
         try {
-            PreparedStatement addNote = connection.prepareStatement(sqlStatement, PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement addNote = connection.prepareStatement(sqlStatement);
             addNote.setInt(1, note.getUserId());
             addNote.setInt(2, note.getGroupId());
             addNote.setInt(3, note.getWeek());
@@ -93,7 +93,7 @@ public class PersistenceService implements IPersistenceService {
     public ResponseEntity<Void> deleteGroup(int group_id) {
         String sqlStatement = "DELETE FROM notelender.groups WHERE id= ?";
         try {
-            PreparedStatement deleteGroup = connection.prepareStatement(sqlStatement,PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement deleteGroup = connection.prepareStatement(sqlStatement);
             deleteGroup.setInt(1, group_id);
             deleteGroup.executeUpdate();
             System.out.println("aleooo");
@@ -191,7 +191,7 @@ public class PersistenceService implements IPersistenceService {
         String sqlStatement = "INSERT INTO notelender.groupmembers (user_id,group_id) VALUES (?,?)";
         GroupMembers groupMembers = gson.fromJson(json, GroupMembers.class);
         try {
-            PreparedStatement addGroupMember = connection.prepareStatement(sqlStatement, PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement addGroupMember = connection.prepareStatement(sqlStatement);
             addGroupMember.setInt(1, groupMembers.getUserId());
             addGroupMember.setInt(2, groupMembers.getGroupId());
             addGroupMember.executeUpdate();

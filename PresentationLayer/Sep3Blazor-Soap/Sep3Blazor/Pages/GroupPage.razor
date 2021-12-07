@@ -7,10 +7,12 @@
 @using Sep3Blazor.Data.NoteData
 @inject INoteService _noteService
 @inject IGroupMembersService _groupMembersService
+@inject IRefreshServiceNavMem _refreshServiceNavMem
 @inject NavigationManager _navigationManager;
 @inject IGroupService _groupService
 @using Microsoft.AspNetCore.Components.Web.Extensions.Head
 @using Sep3Blazor.Data.GroupData
+@using Sep3Blazor.Data.Refresh
 
 <Title Value="@("Group " + Id)"></Title>
 <h3>GroupPage @Id</h3>
@@ -78,6 +80,7 @@
     {
         await _groupService.DeleteGroup(Id.ToString());
         _navigationManager.NavigateTo("/");
+        _refreshServiceNavMem.CallRequestRefresh();
     }
 
 }

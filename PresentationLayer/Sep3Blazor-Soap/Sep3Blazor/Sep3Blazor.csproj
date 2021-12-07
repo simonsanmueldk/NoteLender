@@ -41,7 +41,6 @@
     
     <ItemGroup>
       <Folder Include="obj\" />
-      <Folder Include="wwwroot\js\custom" />
     </ItemGroup>
 
 </Project>

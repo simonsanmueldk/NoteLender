@@ -2,10 +2,13 @@
 @using Microsoft.AspNetCore.Components
 @using Sep3Blazor.Model
 @using Sep3Blazor.Authentication
+@using Sep3Blazor.Data.Notifications
+@using Sep3Blazor.Data.Notifications.NotificationModel
 @using Sep3Blazor.Data.UserData
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject NavigationManager _navigationManager
 @inject IUserService _userService
+@inject NotificationManager _notificationManager
 
 <AuthorizeView>
     <div class="d-flex justify-content-center">
@@ -66,7 +69,7 @@
     private string _changedPassword = "";
     private string _confirmedPassword = "";
     private User _cachedUser;
-    
+
     protected override async Task OnInitializedAsync()
     {
         _cachedUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser;
@@ -80,17 +83,29 @@
 
     private async Task EditAccount()
     {
-        if (!string.IsNullOrEmpty(_password) || !string.IsNullOrEmpty(_changedPassword)
-            || !string.IsNullOrEmpty(_confirmedPassword))
+        if (!string.IsNullOrEmpty(_changedPassword) || !string.IsNullOrEmpty(_confirmedPassword))
         {
             if (_cachedUser.password.Equals(_password))
             {
                 if (_changedPassword == _confirmedPassword)
                 {
-                    await _userService.EditUser(_cachedUser.id, _changedPassword);
+                    Notification notification = await _userService.EditUser(_cachedUser.id, _changedPassword);
+                    _notificationManager.Show(notification);
                     _navigationManager.NavigateTo("/");
                 }
+                else
+                {
+                    _notificationManager.Show(new Notification("Error", "Provide the new password doesn't match it's confirmation password", NotificationType.Info));
+                }
             }
+            else
+            {
+                _notificationManager.Show(new Notification("Error", "Input your password", NotificationType.Info));
+            }
+        }
+        else
+        {
+            _notificationManager.Show(new Notification("Error", "Input your new password", NotificationType.Info));
         }
     }
 

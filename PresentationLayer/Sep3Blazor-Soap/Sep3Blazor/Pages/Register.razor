@@ -79,8 +79,15 @@
     private async Task RegisterUser()
     {
         Notification notification = await _userService.RegisterUser(user);
-        _notificationManager.Show(notification);
-        _navigationManager.NavigateTo("/");
+        if (notification.Title.Equals("Success"))
+        {
+            _navigationManager.NavigateTo("/");
+        }
+        else
+        {
+            user = new User(0, "", "", "", "");
+        }
+         _notificationManager.Show(notification);
     }
 
     private void Back()

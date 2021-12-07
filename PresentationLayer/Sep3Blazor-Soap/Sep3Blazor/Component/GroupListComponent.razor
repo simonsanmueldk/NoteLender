@@ -8,6 +8,7 @@
 
 @inject IGroupService _groupService
 @inject IRefreshServiceInvGroup _refreshServiceInvGroup
+@inject IRefreshServiceNavMem _refreshServiceNavMem
 @inject NavigationManager _navigationManager
 @inject IGroupMembersService _groupMembersService
 @inject AuthenticationStateProvider _authenticationStateProvider
@@ -118,6 +119,7 @@
         Notification notification = await _groupService.AddGroup(groupModel.name, ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser.id);
         _notificationManager.Show(notification);
         RefreshState();
+        _refreshServiceNavMem.CallRequestRefresh();
     }
 
 }
