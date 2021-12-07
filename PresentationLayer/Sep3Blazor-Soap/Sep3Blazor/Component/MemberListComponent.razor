@@ -97,6 +97,12 @@
         GroupMembersList = await _groupMembersService.GetGroupMemberList(GroupId);
     }
     
+    protected override async void OnParametersSet()
+    {
+        GroupMembersList = await _groupMembersService.GetGroupMemberList(GroupId);
+        StateHasChanged();
+    }
+    
     // Method to let the user logged in leave to group. 
     private async Task LeaveGroup()
     {

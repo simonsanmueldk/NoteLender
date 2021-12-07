@@ -1,8 +1,11 @@
 ﻿@page "/Register"
 @using Sep3Blazor.Model
 @using Sep3Blazor.Data.UserData
+@using Sep3Blazor.Data.Notifications.NotificationModel
+@using Sep3Blazor.Data.Notifications
 @inject IUserService _userService
 @inject NavigationManager _navigationManager
+@inject NotificationManager _notificationManager
 
 <EditForm Model="@user" OnValidSubmit="@RegisterUser">
     <DataAnnotationsValidator/>
@@ -75,7 +78,8 @@
 
     private async Task RegisterUser()
     {
-        await _userService.RegisterUser(user);
+        Notification notification = await _userService.RegisterUser(user);
+        _notificationManager.Show(notification);
         _navigationManager.NavigateTo("/");
     }
 

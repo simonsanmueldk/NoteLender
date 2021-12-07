@@ -44,5 +44,5 @@ public interface IPersistenceService {
 
     ResponseEntity<Void> deleteUser(int userId);
 
-    ResponseEntity<List<User>> getUser(String json);
+    ResponseEntity<List<User>> getUsers(String json);
 }
