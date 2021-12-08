@@ -33,17 +33,17 @@
                         <th scope="col">
                             <i>Username</i>
                         </th>
+                        <tH scope="col">
+                             <i>Remove</i>
+                        </tH>
+                    </tr>
+                    <tr>
                         <td>
                             <b>@member.username</b>
                         </td>
-                    </tr>
-                    <tr>
-                        <th scope="col">
-                            <i>Remove</i>
-                        </th>
                         <td>
                             <button @onclick="@(() => DeleteMember(member.id))">
-                                <i class="oi oi-trash" style="color:red"></i>
+                                <i class="oi oi-delete iconClass" style="color:red"></i>
                             </button>
                         </td>
                     </tr>
@@ -93,7 +93,7 @@
     // Method that is first to run when component is initialized.
     protected override async Task OnInitializedAsync()
     {
-        _cachedUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser;
+        _cachedUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).CachedUser;
         GroupMembersList = await _groupMembersService.GetGroupMemberList(GroupId);
     }
     

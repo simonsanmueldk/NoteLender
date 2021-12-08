@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
+using Sep3Blazor.Data.GroupData;
 using Sep3Blazor.Data.Notifications.NotificationModel;
 using Sep3Blazor.Data.UserData;
 using Sep3Blazor.Model;
@@ -13,22 +14,25 @@ namespace Sep3Blazor.Authentication
 {
     public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {
-        private readonly IJSRuntime jsRunTime;
-        private readonly IUserService userService;
-        public User cachedUser { get; set; }
+        private readonly IJSRuntime _jsRunTime;
+        private readonly IUserService _userService;
+        private readonly IGroupService _groupService;
+        public User CachedUser { get; set; }
+        public IList<Group> GroupList { get; set; }
 
-        public CustomAuthenticationStateProvider(IJSRuntime jsRunTime, IUserService userService)
+        public CustomAuthenticationStateProvider(IJSRuntime jsRunTime, IUserService userService, IGroupService groupService)
         {
-            this.jsRunTime = jsRunTime;
-            this.userService = userService;
+            this._jsRunTime = jsRunTime;
+            this._userService = userService;
+            this._groupService = groupService;
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var identity = new ClaimsIdentity();
-            if (cachedUser == null)
+            if (CachedUser == null)
             {
-                string userAsJson = await jsRunTime.InvokeAsync<string>("sessionStorage.getItem", "currentUser");
+                string userAsJson = await _jsRunTime.InvokeAsync<string>("sessionStorage.getItem", "currentUser");
                 if (!string.IsNullOrEmpty(userAsJson))
                 {
                     User temp = JsonSerializer.Deserialize<User>(userAsJson);
@@ -37,18 +41,22 @@ namespace Sep3Blazor.Authentication
             }
             else
             {
-                identity = SetupClaimsForUser(cachedUser);
+                identity = SetupClaimsForUser(CachedUser,GroupList);
             }
 
             ClaimsPrincipal cachedClaimsPrincipal = new ClaimsPrincipal(identity);
             return await Task.FromResult(new AuthenticationState(cachedClaimsPrincipal));
         }
 
-        private ClaimsIdentity SetupClaimsForUser(User user)
+        private  ClaimsIdentity SetupClaimsForUser(User user,IList<Group> groupList)
         {
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.Name, user.username));
             claims.Add(new Claim("Id", user.id.ToString()));
+            foreach (var group in groupList)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, group.id.ToString()));
+            }
             claims.Add(new Claim("FirstName", user.firstName));
             claims.Add(new Claim("LastName", user.lastName));
             claims.Add(new Claim("Password", user.password));
@@ -64,11 +72,13 @@ namespace Sep3Blazor.Authentication
             ClaimsIdentity identity = new ClaimsIdentity();
             try
             {
-                User user = await userService.ValidateUser(tempUserName, tempPassword);
-                identity = SetupClaimsForUser(user);
+                User user = await _userService.ValidateUser(tempUserName, tempPassword);
+                IList<Group> groupList = await _groupService.GetGroupList(user.id);
+                identity = SetupClaimsForUser(user,groupList);
                 string serialisedData = JsonSerializer.Serialize(user);
-                await jsRunTime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
-                cachedUser = user;
+                await _jsRunTime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
+                CachedUser = user;
+                GroupList = groupList;
                 notification = new Notification("Success", "User successfully logged in ",
                     NotificationType.Success);
             }
@@ -86,10 +96,18 @@ namespace Sep3Blazor.Authentication
 
         public void LogOut()
         {
-            cachedUser = null;
+            CachedUser = null;
+            GroupList = null;
             var user = new ClaimsPrincipal(new ClaimsIdentity());
-            jsRunTime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", "");
+            _jsRunTime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", "");
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
+        }
+
+        public async Task AddClaim()
+        {
+            IList<Group> groupList = await _groupService.GetGroupList(CachedUser.id);
+            ClaimsIdentity identity = SetupClaimsForUser(CachedUser,groupList);
+            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity))));
         }
     }
 }

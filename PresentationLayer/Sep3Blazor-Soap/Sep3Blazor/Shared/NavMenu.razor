@@ -3,11 +3,11 @@
 @using Sep3Blazor.Authentication
 @using Sep3Blazor.Data.Refresh
 @inject IGroupService _groupService
-@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject AuthenticationStateProvider _authenticationStateProvider
 @inject IRefreshServiceNavMem _refreshServiceNavMem
 
-<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href=""> NoteLender</a>
+<div class="top-row mx-auto navbar navbar-dark">
+    <a class="navbar-brand navbar-text " href=""> <text>&emsp;</text>NoteLender</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -29,18 +29,27 @@
                 </NavLink>
             </AuthorizeView>
         </li>
-
         @if (GroupList != null)
         {
-            foreach (var group in GroupList)
+            <li class="nav-item px-3">
+                <AuthorizeView>
+                    <NavLink class="nav-link" @onclick="() => expandSubNav = !expandSubNav">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> My Groups
+                    </NavLink>
+                </AuthorizeView>
+            </li>
+            @if (expandSubNav)
             {
-                <li class="nav-item px-3">
-                    <AuthorizeView>
-                        <NavLink class="nav-link" href="@("GroupPage/" + group.id)" Match="NavLinkMatch.All">
-                            <span class="oi oi-people" aria-hidden="true"></span> @("Group " + group.name)
-                        </NavLink>
-                    </AuthorizeView>
-                </li>
+                @foreach (var group in GroupList)
+                {
+                    <li class="nav-item px-3 ">
+                        <AuthorizeView>
+                            <NavLink class="nav-link navBorder"  href="@("GroupPage/" + group.id)" Match="NavLinkMatch.All">
+                                <span class="oi oi-people" aria-hidden="true"></span> @("Group " + group.name)
+                            </NavLink>
+                        </AuthorizeView>
+                    </li>
+                }
             }
         }
     </ul>
@@ -50,6 +59,7 @@
     public IList<Group> GroupList { get; set; }
     private User _cachedUser;
 
+    private bool expandSubNav;
 
     private bool _collapseNavMenu = true;
 
@@ -64,10 +74,10 @@
     {
         base.OnInitialized();
         _refreshServiceNavMem.RefreshRequested += RefreshState;
-        _cachedUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
+        _cachedUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).CachedUser;
         GroupList = await _groupService.GetGroupList(_cachedUser.id);
     }
-    
+
     public async void RefreshState()
     {
         GroupList = await _groupService.GetGroupList(_cachedUser.id);

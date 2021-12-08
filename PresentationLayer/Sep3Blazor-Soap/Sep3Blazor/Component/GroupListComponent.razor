@@ -67,7 +67,7 @@
                 @foreach (var group in GroupList)
                 {
                     <li class="list-group-item onHoverChange" @onclick="@(() => ChangeSelectedGroup(group))">
-                        <p style="text-decoration: underline">@group.name group</p>
+                     <u>@group.name group</u>
                     </li>
                 }
             </ul>
@@ -116,8 +116,9 @@
     // Method used by <EditForm> component to add a group.
     private async void SubmitAddGroup()
     {
-        Notification notification = await _groupService.AddGroup(groupModel.name, ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser.id);
+        Notification notification = await _groupService.AddGroup(groupModel.name, ((CustomAuthenticationStateProvider) _authenticationStateProvider).CachedUser.id);
         _notificationManager.Show(notification);
+        await ((CustomAuthenticationStateProvider) _authenticationStateProvider).AddClaim();
         RefreshState();
         _refreshServiceNavMem.CallRequestRefresh();
     }

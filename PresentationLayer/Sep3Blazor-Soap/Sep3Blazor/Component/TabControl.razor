@@ -3,7 +3,7 @@
     {
         <button type="button"
                 class="btn @GetButtonClass(tabPage)"
-                @onclick=@( () => ActivatePage(tabPage) )>
+                @onclick=@(() => ActivatePage(tabPage))>
             @tabPage.Text
         </button>
     }
@@ -17,6 +17,9 @@
     // Next line is needed so we are able to add <TabPage> components inside
     [Parameter]
     public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public int Page { get; set; }
 
     public TabPage ActivePage { get; set; }
     public List<TabPage> Pages = new List<TabPage>();
@@ -33,8 +36,19 @@
     {
         return page == ActivePage ? "btn-primary" : "btn-secondary";
     }
+
     void ActivatePage(TabPage page)
     {
         ActivePage = page;
     }
+
+    protected override void OnParametersSet()
+    {
+        if (Pages.Count > 0)
+        {
+            ActivePage = Pages[0];
+            StateHasChanged();
+        }
+    }
+
 }

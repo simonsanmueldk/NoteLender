@@ -22,7 +22,7 @@ public interface IPersistenceService {
 
     ResponseEntity<Void> deleteGroupMember(int id);
 
-    ResponseEntity<List<Note>> getNote(int groupId);
+    ResponseEntity<List<Note>> getNotes(int groupId);
 
     ResponseEntity<Void> addNote(String json);
 

@@ -17,10 +17,45 @@ public class PersistenceServerController {
         this.persistenceService = new PersistenceService();
     }
 
+    @PostMapping("/note")
+    public ResponseEntity<Void> addNote(@RequestBody String json) {
+        System.out.println("It's working AddNote");
+        return persistenceService.addNote(json);
+    }
+
+    @PutMapping("/note")
+    public ResponseEntity<Void> editNote(@RequestBody String json) {
+        System.out.println("EDIT BABYYY");
+        return persistenceService.editNote(json);
+    }
+
+    @DeleteMapping("/note/{noteId}")
+    public ResponseEntity<Void> deleteNote(@PathVariable(value = "noteId") int noteId) {
+        System.out.println("DELETE NOTE");
+        return persistenceService.deleteNote(noteId);
+    }
+
+    @GetMapping("/note/{groupId}")
+    public ResponseEntity<List<Note>> getNote(@PathVariable(value = "groupId") int groupId) {
+        return persistenceService.getNotes(groupId);
+    }
+
     @PutMapping("/group/{memberId}")
     public ResponseEntity<Void> createGroup(@RequestBody String json, @PathVariable(value = "memberId") int memberId) {
         System.out.println("It's working Post");
         return persistenceService.postGroup(json, memberId);
+    }
+
+//    @GetMapping("/group/{id}")
+//    public ResponseEntity<List<Group>> getGroup(@PathVariable(value = "id") int id) {
+//        System.out.println("It's working Get");
+//        return persistenceService.getGroup(id);
+//    }
+
+    @GetMapping("/groupmemberslist/{id}")
+    public ResponseEntity<List<Group>> getGroupList(@PathVariable(value = "id") int id) {
+        System.out.println("It's working Get");
+        return persistenceService.getGroupList(id);
     }
 
     @GetMapping("/users/{username}")
@@ -52,45 +87,10 @@ public class PersistenceServerController {
         return persistenceService.deleteUser(userId);
     }
 
-    @PostMapping("/note")
-    public ResponseEntity<Void> addNote(@RequestBody String json) {
-        System.out.println("It's working AddNote");
-        return persistenceService.addNote(json);
-    }
-
-    @PutMapping("/note")
-    public ResponseEntity<Void> editNote(@RequestBody String json) {
-        System.out.println("EDIT BABYYY");
-        return persistenceService.editNote(json);
-    }
-
-    @DeleteMapping("/note/{noteId}")
-    public ResponseEntity<Void> deleteNote(@PathVariable(value = "noteId") int noteId) {
-        System.out.println("DELETE NOTE");
-        return persistenceService.deleteNote(noteId);
-    }
-
-    @GetMapping("/note/{groupId}")
-    public ResponseEntity<List<Note>> getNote(@PathVariable(value = "groupId") int groupId) {
-        return persistenceService.getNote(groupId);
-    }
-
-    @GetMapping("/group/{id}")
-    public ResponseEntity<List<Group>> getGroup(@PathVariable(value = "id") int id) {
-        System.out.println("It's working Get");
-        return persistenceService.getGroup(id);
-    }
-
     @GetMapping("/userlist/{id}")
     public ResponseEntity<List<GroupMembers>> getUserList(@PathVariable(value = "id") int id) {
         System.out.println("It's working Get");
         return persistenceService.getUserList(id);
-    }
-
-    @GetMapping("/groupmemberslist/{id}")
-    public ResponseEntity<List<Group>> getGroupList(@PathVariable(value = "id") int id) {
-        System.out.println("It's working Get");
-        return persistenceService.getGroupList(id);
     }
 
     @DeleteMapping("/groupmembers/{id}")

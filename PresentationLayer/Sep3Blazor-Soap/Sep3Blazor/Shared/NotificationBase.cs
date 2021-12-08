@@ -40,7 +40,7 @@ namespace Sep3Blazor.Shared
             switch (notification.Type)
             {
                 case NotificationType.Info:
-                    Color = "blue";
+                    Color = "yellow";
                     break;
                 case NotificationType.Success:
                     Color = "green";

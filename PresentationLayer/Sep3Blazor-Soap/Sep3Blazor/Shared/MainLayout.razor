@@ -5,13 +5,15 @@
 
 
 <div class="page">
-
-    <div class="sidebar">
-            <AuthorizeView>
-            <NavMenu/>
-              </AuthorizeView>
-    </div>
-  
+    <AuthorizeView>
+        <Authorized>
+            <div class="sidebar">
+                <NavMenu/>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+        </NotAuthorized>
+    </AuthorizeView>
     <div class="main">
         <div class="top-row px-4">
             <AuthorizeView>

@@ -65,3 +65,22 @@ a, .btn-link {
     overflow-y: scroll;
 }
 
+.iconClass{
+    height: 16px;
+    width: 16px;
+}
+
+.height100{
+    height: 100%;
+}
+
+.textCenterer{
+    display: flex;
+    align-items: center;
+}
+
+.navBorder{
+    border-left:  5px outset rgba(0, 0, 255, .375);
+    border-right:  5px outset rgba(0, 0, 255, .375);
+}
+

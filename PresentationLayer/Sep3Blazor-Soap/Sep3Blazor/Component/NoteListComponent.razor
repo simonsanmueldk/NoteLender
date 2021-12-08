@@ -22,27 +22,27 @@
             <DataAnnotationsValidator />
             <ValidationSummary />
             <p>
-              <label>
-                Week:
-                <InputNumber @bind-Value="_template.week" />
+              <label class="d-flex flex-row">
+                <text class="col-2"> Week:</text>
+                <InputNumber class="col-2" @bind-Value="_template.week" />
               </label>
             </p>
             <p>
-              <label>
-                Year:
-                <InputNumber @bind-Value="_template.year" />
+              <label class="d-flex flex-row">
+                <text class="col-2"> Year:</text>
+                <InputNumber class="col-2" @bind-Value="_template.year" />
               </label>
             </p>
             <p>
-              <label>
-                Name:
-                <InputText @bind-Value="_template.name"/>
+              <label class="d-flex flex-row">
+                <text class="col-2"> Name:</text>
+                <InputText class="col-6" @bind-Value="_template.name"/>
               </label>
             </p>
             <p>
-              <label>
-                Status:
-                <InputSelect @bind-Value="_template.status">
+              <label class="d-flex flex-row">
+               <text class="col-2">  Status:</text>
+                <InputSelect class="col-2" @bind-Value="_template.status">
                   <option value="Not started">Not started</option>
                   <option value="Started">Started</option>
                   <option value="Finished">Finished</option>
@@ -50,9 +50,9 @@
               </label>
             </p>
             <p>
-              <label>
-                Text
-                <InputTextArea @bind-Value="_template.text" />
+              <label class="d-flex flex-row">
+               <text class="col-2 textCenterer">  Text:</text>
+                <InputTextArea class="col-6" @bind-Value="_template.text" />
               </label>
             </p>
             <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
@@ -107,6 +107,9 @@
 
   [Parameter]
   public int GroupId { get; set; }
+  
+  [CascadingParameter]
+  protected Task<AuthenticationState> AuthStat { get; set; }
 
   private IList<Note> NoteList { get; set; }
   private int _currentWeek;
@@ -123,12 +126,14 @@
     
   // Get today's week
     _currentWeek = GetIsoWeekOfYear(DateTime.Today);
-    
+    var user = (await AuthStat).User;
+    int userID = Convert.ToInt32(user.FindFirst(claim => claim.Type.Equals("Id")).Value);
   // Set the LoggedInUser equal to the User the custom Authentication service gets.
-    _loggedInUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser;
+    _loggedInUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).CachedUser;
     
+    Console.WriteLine( userID +"  "+ _loggedInUser.id);
   // Instantiate Template note for the EditForm component.
-    _template = new Note(0, _loggedInUser.id, GroupId, _currentWeek, CultureInfo.InvariantCulture.Calendar.GetYear(DateTime.Today), "", "Not started", "");
+    _template = new Note(0,  userID, GroupId, _currentWeek, CultureInfo.InvariantCulture.Calendar.GetYear(DateTime.Today), "", "Not started", "");
   }
   
   protected override async void OnParametersSet()
