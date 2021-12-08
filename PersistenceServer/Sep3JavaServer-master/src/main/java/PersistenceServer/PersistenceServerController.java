@@ -112,12 +112,12 @@ public class PersistenceServerController {
     }
 
     @GetMapping("/invitation/{id}")
-    public ResponseEntity<List<Invitation>> getInvitationList(@PathVariable(value = "id") String id) {
+    public ResponseEntity<List<Invitation>> getInvitationList(@PathVariable(value = "id") int id) {
         return persistenceService.getInvitationList(id);
     }
 
     @DeleteMapping("/invitation/{id}")
-    public ResponseEntity<Void> deleteInvitation(@PathVariable(value = "id") String id) {
+    public ResponseEntity<Void> deleteInvitation(@PathVariable(value = "id") int id) {
         return persistenceService.deleteInvitation(id);
     }
 

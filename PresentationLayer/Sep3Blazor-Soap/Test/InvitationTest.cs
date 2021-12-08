@@ -29,7 +29,7 @@ namespace Test
         }
         
         [Test]
-        public void addInvitation()
+        public void AddInvitationReturnsNewInvitation()
         {
             var invitation = new Invitation(9, 5, "", 4, "Sim", 6, "Dorin");
             Assert.AreEqual(invitation,_invitationService.AddInvitation(invitation));
