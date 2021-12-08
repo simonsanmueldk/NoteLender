@@ -51,7 +51,7 @@ else
 
     // Parameter to specify which user opens the InvitationsComponent component
     [Parameter]
-    public String UserId { get; set; }
+    public string UserId { get; set; }
 
     // List of invitations where the user which opened the component is the invitee of.
     public IList<Invitation> InvitationList { get; set; }
@@ -60,15 +60,15 @@ else
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine("Invitation");
-        InvitationList = await _invitationService.GetInvitationList(UserId);
+        InvitationList = await _invitationService.GetInvitationList(int.Parse(UserId));
     }
 
     // Method used by <EditForm> component to remove an invitation.
     private async Task RemoveInvitation(int id)
     {
-        Notification notification = await _invitationService.DeleteInvitation(id.ToString());
+        Notification notification = await _invitationService.DeleteInvitation(id);
         await _notificationManager.Show(notification);
-        InvitationList = await _invitationService.GetInvitationList(UserId);
+        InvitationList = await _invitationService.GetInvitationList(int.Parse(UserId));
           
     }
 
@@ -78,7 +78,7 @@ else
         Notification notification = await _groupMembersService.AddGroupMember(groupId, userId);
         _notificationManager.Show(notification);
         _refreshServiceInvGroup.CallRequestRefresh();
-        await _invitationService.DeleteInvitation(invitationId.ToString());
-        InvitationList = await _invitationService.GetInvitationList(UserId);
+        await _invitationService.DeleteInvitation(invitationId);
+        InvitationList = await _invitationService.GetInvitationList(int.Parse(UserId));
     }
 }

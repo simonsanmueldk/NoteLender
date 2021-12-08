@@ -34,9 +34,9 @@ public interface IPersistenceService {
 
     ResponseEntity<Void> addInvitation(String json);
 
-    ResponseEntity<List<Invitation>> getInvitationList(String id);
+    ResponseEntity<List<Invitation>> getInvitationList(int id);
 
-    ResponseEntity<Void> deleteInvitation(String id);
+    ResponseEntity<Void> deleteInvitation(int id);
 
     ResponseEntity<Void> editUser(String json, int user_id);
 

@@ -39,14 +39,14 @@ namespace Sep3Blazor.Data.InvitationData
             }
         }
 
-        public async Task<IList<Invitation>> GetInvitationList(string userId)
+        public async Task<IList<Invitation>> GetInvitationList(int userId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
             try
             {
                 var reply = await client.GetInvitationListAsync(
-                    new Request {Name = userId});
+                    new Request {Name = userId.ToString()});
                 return JsonSerializer.Deserialize<List<Invitation>>(reply.Message);
             }
             catch (RpcException e)
@@ -58,7 +58,7 @@ namespace Sep3Blazor.Data.InvitationData
             }
         }
 
-        public async Task<Notification> DeleteInvitation(string userId)
+        public async Task<Notification> DeleteInvitation(int userId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
@@ -67,7 +67,7 @@ namespace Sep3Blazor.Data.InvitationData
                 var reply = await client.DeleteInvitationAsync(
                     new Request
                     {
-                        Name = userId
+                        Name = userId.ToString()
                     }
                 );
                 Console.WriteLine("Delete: " + reply.Message);
