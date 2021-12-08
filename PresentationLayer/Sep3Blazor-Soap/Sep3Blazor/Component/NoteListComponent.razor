@@ -72,7 +72,20 @@
         {
           <div class="col-sm-4">
             <div class="p-3 mb-2 bg-secondary text-white">
-              Week @(_currentWeek + i)
+              @switch (i)
+              {
+                case -1:
+                  var subtractedTime = _time.Subtract(TimeSpan.FromDays(7));
+                  <p>Week @(GetIsoWeekOfYear(subtractedTime)) / Year @(GetIsoYear(subtractedTime)) </p>
+                  break;
+                case 0:
+                  <p>Week @(GetIsoWeekOfYear(_time)) / Year @(GetIsoYear(_time))</p>
+                  break;
+                case 1:
+                  var addedTime = _time.Add(TimeSpan.FromDays(7));
+                  <p>Week @(GetIsoWeekOfYear(addedTime)) / Year @(GetIsoYear(addedTime)) </p>
+                  break;
+              }
             </div>
             <table class="table table-sm table-hover table-wrapper-scroll-y my-custom-scrollbar">
               @if (NoteList == null)
@@ -85,10 +98,29 @@
               {
                 @foreach (Note note in NoteList)
                 {
-                  if (note.week == (_currentWeek + i))
+                  @switch (i)
                   {
-                    <NoteComponent OnClick="ClickHandler" Note="note"></NoteComponent>
-                    <br>
+                    case -1:
+                      var subtractedTime = _time.Subtract(TimeSpan.FromDays(7));
+                      if (note.year == GetIsoYear(subtractedTime) && note.week == GetIsoWeekOfYear(subtractedTime))
+                      {
+                        <NoteComponent OnClick="ClickHandler" Note="note"></NoteComponent>
+                        <br>
+                      }
+                      break;
+                    case 0:
+                      if (note.year == GetIsoYear(_time) && note.week == GetIsoWeekOfYear(_time)){
+                        <NoteComponent OnClick="ClickHandler" Note="note"></NoteComponent>
+                        <br>
+                      }
+                      break;
+                    case 1:
+                      var addedTime = _time.Add(TimeSpan.FromDays(7));
+                      if (note.year == GetIsoYear(addedTime) && note.week == GetIsoWeekOfYear(addedTime)){
+                        <NoteComponent OnClick="ClickHandler" Note="note"></NoteComponent>
+                        <br>
+                      }
+                      break;
                   }
                 }
               }
@@ -107,12 +139,12 @@
 
   [Parameter]
   public int GroupId { get; set; }
-  
+
   [CascadingParameter]
   protected Task<AuthenticationState> AuthStat { get; set; }
 
   private IList<Note> NoteList { get; set; }
-  private int _currentWeek;
+  private DateTime _time = DateTime.Today;
 
   private Note _template = new Note(0, 0, 0, 0, 0, "", "", "");
 
@@ -123,17 +155,12 @@
   {
   // Get the selected group's notes
     NoteList = await _noteService.GetNoteList(GroupId.ToString());
-    
-  // Get today's week
-    _currentWeek = GetIsoWeekOfYear(DateTime.Today);
-    var user = (await AuthStat).User;
-    int userID = Convert.ToInt32(user.FindFirst(claim => claim.Type.Equals("Id")).Value);
+
   // Set the LoggedInUser equal to the User the custom Authentication service gets.
-    _loggedInUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).CachedUser;
+    _loggedInUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser;
     
-    Console.WriteLine( userID +"  "+ _loggedInUser.id);
   // Instantiate Template note for the EditForm component.
-    _template = new Note(0,  userID, GroupId, _currentWeek, CultureInfo.InvariantCulture.Calendar.GetYear(DateTime.Today), "", "Not started", "");
+    _template = new Note(0, _loggedInUser.id, GroupId, GetIsoWeekOfYear(_time), GetIsoYear(_time), "", "Not started", "");
   }
   
   protected override async void OnParametersSet()
@@ -145,6 +172,10 @@
   // Show the notes further ahead in time and prevent going past week 52.
   private void NextPage()
   {
+    var dateTime = _time.Add(TimeSpan.FromDays(7*3));
+    _time = dateTime;
+
+  /*
     switch (_currentWeek)
     {
       case 50:
@@ -156,13 +187,15 @@
       case <= 48:
         _currentWeek += 3;
         break;
-    }
+    }*/
   }
 
   // Show the notes further behind in time and prevent going before week 1.
   private void PreviousPage()
   {
-    switch (_currentWeek)
+    var dateTime = _time.Subtract(TimeSpan.FromDays(7*3));
+    _time = dateTime;
+    /*switch (_currentWeek)
     {
       case 3:
         _currentWeek--;
@@ -173,7 +206,7 @@
       case >= 5:
         _currentWeek -= 3;
         break;
-    }
+    }*/
   }
   
   // Using Calender Library method to get the week of today´.
@@ -187,6 +220,11 @@
     return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
   }
 
+  private static int GetIsoYear(DateTime time)
+  {
+    return CultureInfo.InvariantCulture.Calendar.GetYear(time);
+  }
+
   async Task ClickHandler()
   {
     NoteList = await _noteService.GetNoteList(GroupId.ToString());
@@ -196,7 +234,7 @@
   {
     Notification notification = await _noteService.AddNote(new Note(0, _template.userId, GroupId, _template.week, _template.year, _template.name, _template.status, _template.text));
     NoteList = await _noteService.GetNoteList(GroupId.ToString());
-    _template = new Note(0, _loggedInUser.id, GroupId, _currentWeek, CultureInfo.InvariantCulture.Calendar.GetYear(DateTime.Today), "", "Not started", "");
+    _template = new Note(0, _loggedInUser.id, GroupId, GetIsoWeekOfYear(_time),GetIsoYear(_time), "", "Not started", "");
     _notificationManager.Show(notification);
   }
 }
