@@ -49,7 +49,7 @@
                                 <div class="modal-dialog modal-dialog-centered">
                                   <div class="modal-content" style="background-color:white">
                                     <div class="modal-header">
-                                      <h5 class="modal-title" id="@("RemoveUserModalLabel"+member.id)">Remove member @member.userId?</h5>
+                                      <h5 class="modal-title" id="@("RemoveUserModalLabel"+member.id)">Remove member @member.username from group?</h5>
                                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
                                     </div>
                                     <div class="modal-body">
@@ -73,7 +73,7 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content" style="background-color:white">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleAddModalLabel">Leave group @GroupId</h5>
+                        <h5 class="modal-title" id="exampleAddModalLabel">Leave group @GroupName</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
                     </div>
                     <div class="modal-body">
@@ -97,6 +97,9 @@
     // Parameter to specify which group the members are in.
     [Parameter]
     public int GroupId { get; set; }
+    
+    [Parameter]
+    public string GroupName { get; set; }
 
     // List of object GroupMembers.
     public IList<GroupMembers> GroupMembersList { get; set; }
@@ -107,7 +110,7 @@
     // Method that is first to run when component is initialized.
     protected override async Task OnInitializedAsync()
     {
-        _cachedUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser;
+        _cachedUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).CachedUser;
         GroupMembersList = await _groupMembersService.GetGroupMemberList(GroupId);
     }
     

@@ -14,7 +14,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content" style="background-color:white">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleAddModalLabel">Add Node in Group @GroupId</h5>
+          <h5 class="modal-title" id="exampleAddModalLabel">Add Node in Group @GroupName</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
         </div>
         <div class="modal-body">
@@ -108,20 +108,20 @@
                       var subtractedTime = _time.Subtract(TimeSpan.FromDays(7));
                       if (note.year == GetIsoYear(subtractedTime) && note.week == GetIsoWeekOfYear(subtractedTime))
                       {
-                        <NoteComponent OnClick="ClickHandler" Note="note"></NoteComponent>
+                        <NoteComponent OnClick="ClickHandler" Note="note" GroupName="@GroupName"></NoteComponent>
                         <br>
                       }
                       break;
                     case 0:
                       if (note.year == GetIsoYear(_time) && note.week == GetIsoWeekOfYear(_time)){
-                        <NoteComponent OnClick="ClickHandler" Note="note"></NoteComponent>
+                        <NoteComponent OnClick="ClickHandler" Note="note" GroupName="@GroupName"></NoteComponent>
                         <br>
                       }
                       break;
                     case 1:
                       var addedTime = _time.Add(TimeSpan.FromDays(7));
                       if (note.year == GetIsoYear(addedTime) && note.week == GetIsoWeekOfYear(addedTime)){
-                        <NoteComponent OnClick="ClickHandler" Note="note"></NoteComponent>
+                        <NoteComponent OnClick="ClickHandler" Note="note" GroupName="@GroupName"></NoteComponent>
                         <br>
                       }
                       break;
@@ -145,6 +145,9 @@
 
   [Parameter]
   public int GroupId { get; set; }
+  
+  [Parameter]
+  public string GroupName { get; set; }
 
   [CascadingParameter]
   protected Task<AuthenticationState> AuthStat { get; set; }

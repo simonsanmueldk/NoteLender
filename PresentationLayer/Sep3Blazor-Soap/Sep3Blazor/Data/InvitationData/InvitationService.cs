@@ -71,7 +71,7 @@ namespace Sep3Blazor.Data.InvitationData
                     }
                 );
                 Console.WriteLine("Delete: " + reply.Message);
-                return new Notification("Success", "Invitation was successfully deleted" , NotificationType.Success);
+                return new Notification("Success", "Invitation was declined" , NotificationType.Success);
             }
             catch (RpcException e)
             {
