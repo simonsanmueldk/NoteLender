@@ -9,90 +9,90 @@
 @inject NotificationManager _notificationManager
 
 <div class="container-fluid">
-    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleAddModal"><i class="oi oi-plus"></i> New note</button>
-    <div class="modal fade" id="exampleAddModal" tabindex="-1" aria-labelledby="exampleAddModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="background-color:white">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleAddModalLabel">Add Node in Group @GroupName</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
-                </div>
-                <div class="modal-body">
-                    <EditForm Model="@_template" OnValidSubmit="@SubmitAddNote">
-                        <DataAnnotationsValidator/>
-                        <ValidationSummary/>
-                        <p>
-                            <label class="d-flex flex-row">
-                                <text class="col-2"> Week:</text>
-                                <InputNumber class="col-2" @bind-Value="_template.week"/>
-                            </label>
-                        </p>
-                        <p>
-                            <label class="d-flex flex-row">
-                                <text class="col-2"> Year:</text>
-                                <InputNumber class="col-2" @bind-Value="_template.year"/>
-                            </label>
-                        </p>
-                        <p>
-                            <label class="d-flex flex-row">
-                                <text class="col-2"> Name:</text>
-                                <InputText class="col-6" @bind-Value="_template.name"/>
-                            </label>
-                        </p>
-                        <p>
-                            <label class="d-flex flex-row">
-                                <text class="col-2"> Status:</text>
-                                <InputSelect class="col-2" @bind-Value="_template.status">
-                                    <option value="Not started">Not started</option>
-                                    <option value="Started">Started</option>
-                                    <option value="Finished">Finished</option>
-                                </InputSelect>
-                            </label>
-                        </p>
-                        <p>
-                            <label class="d-flex flex-row">
-                                <text class="col-2 textCenterer"> Text:</text>
-                                <InputTextArea class="col-6" @bind-Value="_template.text"/>
-                            </label>
-                        </p>
-                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    </EditForm>
+    <div class="d-flex flex-row align-items-center justify-content-around">
+        <div class="col-6">
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleAddModal"><i class="oi oi-plus"></i> New note</button>
+            <div class="modal fade" id="exampleAddModal" tabindex="-1" aria-labelledby="exampleAddModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" style="background-color:white">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleAddModalLabel">Add Node in Group @GroupName</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+                        </div>
+                        <div class="modal-body">
+                            <EditForm Model="@_template" OnValidSubmit="@SubmitAddNote">
+                                <DataAnnotationsValidator/>
+                                <ValidationSummary/>
+                                <p>
+                                    <label class="d-flex flex-row">
+                                        <text class="col-2"> Week:</text>
+                                        <InputNumber class="col-2" @bind-Value="_template.week"/>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label class="d-flex flex-row">
+                                        <text class="col-2"> Year:</text>
+                                        <InputNumber class="col-2" @bind-Value="_template.year"/>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label class="d-flex flex-row">
+                                        <text class="col-2"> Name:</text>
+                                        <InputText class="col-6" @bind-Value="_template.name"/>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label class="d-flex flex-row">
+                                        <text class="col-2"> Status:</text>
+                                        <InputSelect class="col-2" @bind-Value="_template.status">
+                                            <option value="Not started">Not started</option>
+                                            <option value="Started">Started</option>
+                                            <option value="Finished">Finished</option>
+                                        </InputSelect>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label class="d-flex flex-row">
+                                        <text class="col-2 textCenterer"> Text:</text>
+                                        <InputTextArea class="col-6" @bind-Value="_template.text"/>
+                                    </label>
+                                </p>
+                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            </EditForm>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="d-flex flex-row">
-        <div class="p-2">
-            <p>
-
-                Search by week: <input type="number" @bind="@searchedWeek" style="width:50px"/>
-            </p>
-        </div>
-
-        <div class="p-2">
-            <p>
-
-                Search by year: <input type="number" @bind="@searchedYear" style="width:50px"/>
-            </p>
-        </div>
-        <div class="form-group">
-            <button class="btn btn-primary btn-block" @onclick="Search">Search</button>
+        <div class="col-6">
+            <div class="d-flex flex-row align-items-center">
+                <div class="p-2">
+                    Search by week: <input type="number" @bind="@searchedWeek" style="width:3em"/>
+                </div>
+                <div class="p-2">
+                    Search by year: <input type="number" @bind="@searchedYear" style="width:4em"/>
+                </div>
+                <div  class="p-2">
+                <div class="form-group">
+                    <button class="btn btn-primary btn-block" @onclick="Search">Search</button>
+                </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">
         <div class="col-1">
             <div style="display:flex; flex-direction: row; justify-content: center; align-items: center; width: 100%">
-                <button type="button" class="btn btn-primary" style="height: 480px; width: 36px;" @onclick="PreviousPage">&lt;</button>
+                <button type="button" class="btn btn-primary" style="height: 28em; width: 3em;" @onclick="PreviousPage">&lt;</button>
             </div>
-
         </div>
         <div class="col-10">
             <div class="row justify-content-between">
                 @for (int i = -1; i < 2; i++)
                 {
                     <div class="col-sm-4">
-                        <div class="p-3 mb-2 bg-secondary text-white">
+                        <div class="p-3 bg-secondary text-white">
                             @switch (i)
                             {
                                 case -1:
@@ -126,14 +126,14 @@
                                             if (note.year == GetIsoYear(subtractedTime) && note.week == GetIsoWeekOfYear(subtractedTime))
                                             {
                                                 <NoteComponent OnClick="ClickHandler" Note="note" GroupName="@GroupName"></NoteComponent>
-                                                <br>
+                                             
                                             }
                                             break;
                                         case 0:
                                             if (note.year == GetIsoYear(_time) && note.week == GetIsoWeekOfYear(_time))
                                             {
                                                 <NoteComponent OnClick="ClickHandler" Note="note" GroupName="@GroupName"></NoteComponent>
-                                                <br>
+                                             
                                             }
                                             break;
                                         case 1:
@@ -141,7 +141,6 @@
                                             if (note.year == GetIsoYear(addedTime) && note.week == GetIsoWeekOfYear(addedTime))
                                             {
                                                 <NoteComponent OnClick="ClickHandler" Note="note" GroupName="@GroupName"></NoteComponent>
-                                                <br>
                                             }
                                             break;
                                     }
@@ -152,10 +151,9 @@
                 }
             </div>
         </div>
-
         <div class="col-1">
             <div style="display:flex; flex-direction: row; justify-content: center; align-items: center; width: 100%">
-                <button type="button" class="btn btn-primary" style="height: 480px; width: 36px;" @onclick="NextPage">&gt;</button>
+                <button type="button" class="btn btn-primary" style="height: 28em; width: 3em;" @onclick="NextPage">&gt;</button>
             </div>
         </div>
     </div>

@@ -46,8 +46,6 @@
         </div>
     </div>
     <br>
-
-
     @if (GroupList == null)
     {
         <progress></progress>
@@ -67,18 +65,16 @@
                 @foreach (var group in GroupList)
                 {
                     <li class="list-group-item onHoverChange" @onclick="@(() => ChangeSelectedGroup(group))">
-                     <u>@group.name group</u>
+                        <u>@group.name group</u>
                     </li>
                 }
             </ul>
         </div>
     }
-
 </div>
 
 
 @code {
-
     // Parameter to specify which user opens the groupList component
     [Parameter]
     public string UserId { get; set; }
@@ -100,9 +96,7 @@
     // Method to navigate to a specific group instead of a list of the groups.
     private void ChangeSelectedGroup(Group group)
     {
-        // UserId = group.id.ToString();
-        // Console.WriteLine(UserId);
-        _navigationManager.NavigateTo("/GroupPage/" + group.id+"/"+group.name);
+        _navigationManager.NavigateTo("/GroupPage/" + group.id + "/" + group.name);
     }
 
     // Method to refresh the component contents. Such as when changes are made to the user's groups.
@@ -118,7 +112,7 @@
     {
         Notification notification = await _groupService.AddGroup(groupModel.name, ((CustomAuthenticationStateProvider) _authenticationStateProvider).CachedUser.id);
         _notificationManager.Show(notification);
-        await ((CustomAuthenticationStateProvider) _authenticationStateProvider).AddClaim();
+        await ((CustomAuthenticationStateProvider) _authenticationStateProvider).ModifyClaims();
         RefreshState();
         _refreshServiceNavMem.CallRequestRefresh();
     }

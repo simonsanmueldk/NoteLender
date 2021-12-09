@@ -7,6 +7,7 @@
 @inject INoteService _noteService
 
 
+
 <tbody>
 <tr>
     <th scope="row">Name</th>
@@ -25,6 +26,7 @@
     <td style="width: 100%" class="table-warning">@Note.text</td>
 </tr>
 </tbody>
+
 <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="@("#exampleEditModal" + Note.id)">Edit</button>
 <div class="modal fade" id="@("exampleEditModal" + Note.id)" tabindex="-1" aria-labelledby="@("exampleEditModalLabel" + Note.id)" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
