@@ -87,72 +87,6 @@
       </div>
      
     </div>
-    @* <div class="col-10"> *@
-    @*             <div class="row justify-content-between"> *@
-    @*                 @for (int i = -1; i < 2; i++) *@
-    @*                 { *@
-    @*                     <div class="col-sm-4"> *@
-    @*                         <div class="p-3 mb-2 bg-secondary text-white"> *@
-    @*                             @switch (i) *@
-    @*                             { *@
-    @*                                 case -1: *@
-    @*                                     var subtractedTime = _time.Subtract(TimeSpan.FromDays(7)); *@
-    @*                                     <p>Week @(Week-1) / Year @(GetIsoYear(subtractedTime)) </p> *@
-    @*                                     break; *@
-    @*                                 case 0: *@
-    @*                                     <p>Week @(Week) / Year @(GetIsoYear(_time))</p> *@
-    @*                                     break; *@
-    @*                                 case 1: *@
-    @*                                     var addedTime = _time.Add(TimeSpan.FromDays(7)); *@
-    @*                                     <p>Week @(Week+1) / Year @(GetIsoYear(addedTime)) </p> *@
-    @*                                     break; *@
-    @*                             } *@
-    @*                         </div> *@
-    @*                         <table class="table table-sm table-hover table-wrapper-scroll-y my-custom-scrollbar"> *@
-    @*                             @if (NoteList == null) *@
-    @*                             { *@
-    @*                                 <p> *@
-    @*                                     <em>Loading...</em> *@
-    @*                                 </p> *@
-    @*                             } *@
-    @*                             else *@
-    @*                             { *@
-    @*                                 @foreach (Note note in NoteList) *@
-    @*                                 { *@
-    @*                                     @switch (i) *@
-    @*                                     { *@
-    @*                                         case -1: *@
-    @*                                             var subtractedTime = _time.Subtract(TimeSpan.FromDays(7)); *@
-    @*                                             if (note.year == GetIsoYear(subtractedTime) && note.week == GetIsoWeekOfYear(subtractedTime)) *@
-    @*                                             { *@
-    @*                                                 <NoteComponent OnClick="ClickHandler" Note="note"></NoteComponent> *@
-    @*                                                 <br> *@
-    @*                                             } *@
-    @*                                             break; *@
-    @*                                         case 0: *@
-    @*                                             if (note.year == GetIsoYear(_time) && note.week == Week) *@
-    @*                                             { *@
-    @*                                                 <NoteComponent OnClick="ClickHandler" Note="note"></NoteComponent> *@
-    @*                                                 <br> *@
-    @*                                             } *@
-    @*                                             break; *@
-    @*                                         case 1: *@
-    @*                                             var addedTime = _time.Add(TimeSpan.FromDays(7)); *@
-    @*                                             if (note.year == GetIsoYear(addedTime) && note.week ==GetIsoWeekOfYear(addedTime)) *@
-    @*                                             { *@
-    @*                                                 <NoteComponent OnClick="ClickHandler" Note="note"></NoteComponent> *@
-    @*                                                 <br> *@
-    @*                                             } *@
-    @*                                             break; *@
-    @*                                     } *@
-    @*                                 } *@
-    @*                             } *@
-    @*                         </table> *@
-    @*                     </div> *@
-    @*                 } *@
-    @*             </div> *@
-    @*         </div> *@
-    @* *@
     <div class="col-10">
       <div class="row justify-content-between">
         @for (int i = -1; i < 2; i++)
@@ -330,10 +264,10 @@
   // Use first Thursday in January to get first week of the year as
   // it will never be in Week 52/53
     DateTime firstThursday = jan1.AddDays(daysOffset);
-    var cal = CultureInfo.CurrentCulture.Calendar;
+    Calendar cal = CultureInfo.CurrentCulture.Calendar;
     int firstWeek = cal.GetWeekOfYear(firstThursday, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
 
-    var weekNum = weekOfYear;
+    int weekNum = weekOfYear;
   // As we're adding days to a date in Week 1,
   // we need to subtract 1 in order to get the right date for week #1
     if (firstWeek == 1)
@@ -343,7 +277,7 @@
 
   // Using the first Thursday as starting week ensures that we are starting in the right year
   // then we add number of weeks multiplied with days
-    var result = firstThursday.AddDays(weekNum * 7);
+    DateTime result = firstThursday.AddDays(weekNum * 7);
 
   // Subtract 3 days from Thursday to get Monday, which is the first weekday in ISO8601
     return result.AddDays(-3);
