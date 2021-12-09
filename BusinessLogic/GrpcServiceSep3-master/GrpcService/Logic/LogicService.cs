@@ -41,7 +41,7 @@ namespace GrpcService.Logic
             HttpResponseMessage responseMessage = await _client.GetAsync(uri + "/group/" + request.Name);
             if (!responseMessage.IsSuccessStatusCode)
             {
-                throw new Exception("ser" + responseMessage.StatusCode + responseMessage.ReasonPhrase);
+                throw new Exception("Error" + responseMessage.StatusCode + responseMessage.ReasonPhrase);
             }
 
             string message = await responseMessage.Content.ReadAsStringAsync();
@@ -57,7 +57,7 @@ namespace GrpcService.Logic
             HttpResponseMessage responseMessage = await _client.DeleteAsync(uri + "/group/" + request.Name);
             if (!responseMessage.IsSuccessStatusCode)
             {
-                throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
+                throw new Exception("Error " + responseMessage.StatusCode + " " + responseMessage.ReasonPhrase);
             }
 
             string message = await responseMessage.Content.ReadAsStringAsync();
@@ -77,7 +77,7 @@ namespace GrpcService.Logic
             HttpResponseMessage responseMessage = await _client.PostAsync(uri + "/note", content);
             if (!responseMessage.IsSuccessStatusCode)
             {
-                throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
+                throw new Exception("Error " + responseMessage.StatusCode + " " + responseMessage.ReasonPhrase);
             }
 
             string message = await responseMessage.Content.ReadAsStringAsync();
@@ -96,7 +96,7 @@ namespace GrpcService.Logic
             HttpResponseMessage responseMessage = await _client.PutAsync(uri + "/note", content);
             if (!responseMessage.IsSuccessStatusCode)
             {
-                throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
+                throw new Exception("Error " + responseMessage.StatusCode + " " + responseMessage.ReasonPhrase);
             }
 
             string message = await responseMessage.Content.ReadAsStringAsync();
@@ -128,7 +128,7 @@ namespace GrpcService.Logic
             HttpResponseMessage responseMessage = await _client.DeleteAsync(uri + "/note/" + request.Name);
             if (!responseMessage.IsSuccessStatusCode)
             {
-                throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
+                throw new Exception("Error " + responseMessage.StatusCode + " " + responseMessage.ReasonPhrase);
             }
 
             string message = await responseMessage.Content.ReadAsStringAsync();
@@ -148,7 +148,7 @@ namespace GrpcService.Logic
             HttpResponseMessage responseMessage = await _client.PostAsync(uri + "/unregisteruser", content);
             if (!responseMessage.IsSuccessStatusCode)
             {
-                throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
+                throw new Exception("Error " + responseMessage.StatusCode + " " + responseMessage.ReasonPhrase);
             }
 
             string message = await responseMessage.Content.ReadAsStringAsync();
@@ -199,7 +199,7 @@ namespace GrpcService.Logic
             HttpResponseMessage responseMessage = await _client.PostAsync(uri + $"/user/{request.Id}", content);
             if (!responseMessage.IsSuccessStatusCode)
             {
-                throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
+                throw new Exception("Error " + responseMessage.StatusCode + " " + responseMessage.ReasonPhrase);
             }
 
             string message = await responseMessage.Content.ReadAsStringAsync();

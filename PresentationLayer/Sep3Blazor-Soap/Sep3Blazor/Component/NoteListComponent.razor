@@ -62,14 +62,97 @@
       </div>
     </div>
   </div>
+ <div class="d-flex flex-row">
+         <div class="p-2">
+             <p>
  
+                 Search by week: <input type="number" @bind="@searchedWeek" style="width:50px"/>
+             </p>
+         </div>
+ 
+         <div class="p-2">
+             <p>
+ 
+                 Search by year: <input type="number" @bind="@searchedYear" style="width:50px"/>
+             </p>
+         </div>
+         <div class="form-group">
+             <button class="btn btn-primary btn-block" @onclick="Search">Search</button>
+         </div>
+     </div>
   <div class="row">
     <div class="col-1" >
       <div style="display:flex; flex-direction: row; justify-content: center; align-items: center; width: 100%">
-         <button type="button" class="btn btn-primary" style="height: 480px; width: 36px;" @onclick="PreviousPage">&lt;</button>
+        <button type="button" class="btn btn-primary" style="height: 480px; width: 36px;" @onclick="PreviousPage">&lt;</button>
       </div>
      
     </div>
+    @* <div class="col-10"> *@
+    @*             <div class="row justify-content-between"> *@
+    @*                 @for (int i = -1; i < 2; i++) *@
+    @*                 { *@
+    @*                     <div class="col-sm-4"> *@
+    @*                         <div class="p-3 mb-2 bg-secondary text-white"> *@
+    @*                             @switch (i) *@
+    @*                             { *@
+    @*                                 case -1: *@
+    @*                                     var subtractedTime = _time.Subtract(TimeSpan.FromDays(7)); *@
+    @*                                     <p>Week @(Week-1) / Year @(GetIsoYear(subtractedTime)) </p> *@
+    @*                                     break; *@
+    @*                                 case 0: *@
+    @*                                     <p>Week @(Week) / Year @(GetIsoYear(_time))</p> *@
+    @*                                     break; *@
+    @*                                 case 1: *@
+    @*                                     var addedTime = _time.Add(TimeSpan.FromDays(7)); *@
+    @*                                     <p>Week @(Week+1) / Year @(GetIsoYear(addedTime)) </p> *@
+    @*                                     break; *@
+    @*                             } *@
+    @*                         </div> *@
+    @*                         <table class="table table-sm table-hover table-wrapper-scroll-y my-custom-scrollbar"> *@
+    @*                             @if (NoteList == null) *@
+    @*                             { *@
+    @*                                 <p> *@
+    @*                                     <em>Loading...</em> *@
+    @*                                 </p> *@
+    @*                             } *@
+    @*                             else *@
+    @*                             { *@
+    @*                                 @foreach (Note note in NoteList) *@
+    @*                                 { *@
+    @*                                     @switch (i) *@
+    @*                                     { *@
+    @*                                         case -1: *@
+    @*                                             var subtractedTime = _time.Subtract(TimeSpan.FromDays(7)); *@
+    @*                                             if (note.year == GetIsoYear(subtractedTime) && note.week == GetIsoWeekOfYear(subtractedTime)) *@
+    @*                                             { *@
+    @*                                                 <NoteComponent OnClick="ClickHandler" Note="note"></NoteComponent> *@
+    @*                                                 <br> *@
+    @*                                             } *@
+    @*                                             break; *@
+    @*                                         case 0: *@
+    @*                                             if (note.year == GetIsoYear(_time) && note.week == Week) *@
+    @*                                             { *@
+    @*                                                 <NoteComponent OnClick="ClickHandler" Note="note"></NoteComponent> *@
+    @*                                                 <br> *@
+    @*                                             } *@
+    @*                                             break; *@
+    @*                                         case 1: *@
+    @*                                             var addedTime = _time.Add(TimeSpan.FromDays(7)); *@
+    @*                                             if (note.year == GetIsoYear(addedTime) && note.week ==GetIsoWeekOfYear(addedTime)) *@
+    @*                                             { *@
+    @*                                                 <NoteComponent OnClick="ClickHandler" Note="note"></NoteComponent> *@
+    @*                                                 <br> *@
+    @*                                             } *@
+    @*                                             break; *@
+    @*                                     } *@
+    @*                                 } *@
+    @*                             } *@
+    @*                         </table> *@
+    @*                     </div> *@
+    @*                 } *@
+    @*             </div> *@
+    @*         </div> *@
+    @* *@
     <div class="col-10">
       <div class="row justify-content-between">
         @for (int i = -1; i < 2; i++)
@@ -133,6 +216,7 @@
         }
       </div>
     </div>
+    
     <div class="col-1">
       <div style="display:flex; flex-direction: row; justify-content: center; align-items: center; width: 100%">
          <button type="button" class="btn btn-primary" style="height: 480px; width: 36px;" @onclick="NextPage">&gt;</button>
@@ -152,6 +236,12 @@
   [CascadingParameter]
   protected Task<AuthenticationState> AuthStat { get; set; }
 
+  private static int Week;
+  private int searchedWeek=Week;
+  private int searchedYear=Year;
+  private static int Year;
+
+  
   private IList<Note> NoteList { get; set; }
   private DateTime _time = DateTime.Today;
 
@@ -183,20 +273,6 @@
   {
     var dateTime = _time.Add(TimeSpan.FromDays(7*3));
     _time = dateTime;
-
-  /*
-    switch (_currentWeek)
-    {
-      case 50:
-        _currentWeek++;
-        break;
-      case 49:
-        _currentWeek += 2;
-        break;
-      case <= 48:
-        _currentWeek += 3;
-        break;
-    }*/
   }
 
   // Show the notes further behind in time and prevent going before week 1.
@@ -204,18 +280,6 @@
   {
     var dateTime = _time.Subtract(TimeSpan.FromDays(7*3));
     _time = dateTime;
-    /*switch (_currentWeek)
-    {
-      case 3:
-        _currentWeek--;
-        break;
-      case 4:
-        _currentWeek -= 2;
-        break;
-      case >= 5:
-        _currentWeek -= 3;
-        break;
-    }*/
   }
   
   // Using Calender Library method to get the week of today´.
@@ -226,7 +290,9 @@
     {
       time = time.AddDays(3);
     }
-    return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+    Week = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+
+    return Week;
   }
 
   private static int GetIsoYear(DateTime time)
@@ -246,4 +312,40 @@
     _template = new Note(0, _loggedInUser.id, GroupId, GetIsoWeekOfYear(_time),GetIsoYear(_time), "", "Not started", "");
     _notificationManager.Show(notification);
   }
+  
+  private void Search()
+  {
+    Console.WriteLine(_time.ToString());
+      DateTime temp = FirstDateOfWeekISO8601(searchedYear,searchedWeek);
+      Console.WriteLine(temp.ToString()+"bolo");
+    _time = temp;
+    
+  }
+  
+  public static DateTime FirstDateOfWeekISO8601(int year, int weekOfYear)
+  {
+    DateTime jan1 = new DateTime(year, 1, 1);
+    int daysOffset = DayOfWeek.Thursday - jan1.DayOfWeek;
+
+  // Use first Thursday in January to get first week of the year as
+  // it will never be in Week 52/53
+    DateTime firstThursday = jan1.AddDays(daysOffset);
+    var cal = CultureInfo.CurrentCulture.Calendar;
+    int firstWeek = cal.GetWeekOfYear(firstThursday, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+
+    var weekNum = weekOfYear;
+  // As we're adding days to a date in Week 1,
+  // we need to subtract 1 in order to get the right date for week #1
+    if (firstWeek == 1)
+    {
+      weekNum -= 1;
+    }
+
+  // Using the first Thursday as starting week ensures that we are starting in the right year
+  // then we add number of weeks multiplied with days
+    var result = firstThursday.AddDays(weekNum * 7);
+
+  // Subtract 3 days from Thursday to get Monday, which is the first weekday in ISO8601
+    return result.AddDays(-3);
+  } 
 }
