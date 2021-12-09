@@ -19,7 +19,7 @@ namespace Sep3Blazor.Data.InvitationData
             var client = new BusinessServer.BusinessServerClient(channel);
             try
             {
-                var reply = await client.PostInvitationAsync(new RegisterInvitationRequest
+                var reply = await client.PostInvitationAsync(new PostInvitationRequest
                     {
                         Id = invitation.id,
                         GroupId = invitation.groupId,
