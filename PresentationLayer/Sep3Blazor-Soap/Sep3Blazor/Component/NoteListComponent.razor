@@ -97,14 +97,14 @@
                             {
                                 case -1:
                                     var subtractedTime = _time.Subtract(TimeSpan.FromDays(7));
-                                    <p>Week @(GetIsoWeekOfYear(subtractedTime)) / Year @(GetIsoYear(subtractedTime)) </p>
+                                    <p class="m-sm-0" style="text-align:center;">Week @(GetIsoWeekOfYear(subtractedTime)) / Year @(GetIsoYear(subtractedTime)) </p>
                                     break;
                                 case 0:
-                                    <p>Week @(GetIsoWeekOfYear(_time)) / Year @(GetIsoYear(_time))</p>
+                                    <p class="m-sm-0" style="text-align:center;">Week @(GetIsoWeekOfYear(_time)) / Year @(GetIsoYear(_time))</p>
                                     break;
                                 case 1:
                                     var addedTime = _time.Add(TimeSpan.FromDays(7));
-                                    <p>Week @(GetIsoWeekOfYear(addedTime)) / Year @(GetIsoYear(addedTime)) </p>
+                                    <p class="m-sm-0" style="text-align:center;">Week @(GetIsoWeekOfYear(addedTime)) / Year @(GetIsoYear(addedTime)) </p>
                                     break;
                             }
                         </div>
