@@ -102,6 +102,7 @@ namespace Sep3Blazor.Data.UserData
 
         public async Task<Notification> DeleteUser(int id)
         {
+            Console.WriteLine("aleoo");
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
             try
