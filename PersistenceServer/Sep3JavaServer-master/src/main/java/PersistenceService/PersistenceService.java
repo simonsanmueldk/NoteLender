@@ -260,6 +260,7 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public ResponseEntity<Void> deleteUser(int userId) {
+        System.out.println("aleoo");
         String sqlStatement = "DELETE FROM notelender.users WHERE id = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sqlStatement);

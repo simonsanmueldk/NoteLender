@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -293,12 +294,14 @@ namespace GrpcService.Logic
 
         public async Task<Reply> DeleteUser(UserRequest request, ServerCallContext context)
         {
+            Console.WriteLine("aleoo");
             HttpResponseMessage responseMessage = await _client.DeleteAsync(uri + "/user/" + request.Id);
+            Console.WriteLine("aleoox2");
             if (!responseMessage.IsSuccessStatusCode)
             {
                 throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
             }
-
+            Console.WriteLine("aleoox3");
             string message = await responseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(message);
             return await Task.FromResult(new Reply
@@ -331,7 +334,6 @@ namespace GrpcService.Logic
             {
                 throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
             }
-
             string message = await responseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(message);
             return await Task.FromResult(new Reply
@@ -364,7 +366,6 @@ namespace GrpcService.Logic
             {
                 throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
             }
-
             string message = await responseMessage.Content.ReadAsStringAsync();
             return await Task.FromResult(new Reply
             {

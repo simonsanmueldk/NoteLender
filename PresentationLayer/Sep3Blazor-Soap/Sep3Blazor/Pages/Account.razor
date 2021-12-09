@@ -28,6 +28,7 @@
                             <h2>
                                 <b>@context.User.FindFirst("FirstName").Value @context.User.FindFirst("LastName").Value</b>
                             </h2>
+                       
                         </div>
                         <div class="col form-group">
                             <label class="labelAcc">Username :</label>
@@ -50,10 +51,14 @@
                             <input class="form-control" type="password" @bind-value="@_confirmedPassword"/>
                         </div>
                         <div class="form-group">
-                            <button class="btn btn-primary btn-block" @onclick="Change" style="display:@_temp2 ">Change passsword</button>
+                            <button class="btn btn-primary btn-block" @onclick="Change" style="display:@_temp2 ">Edit account</button>
                         </div>
                         <div class="form-group">
                             <button class="btn btn-primary btn-block" @onclick="EditAccount" style="display:@_temp ">Save changes</button>
+                        </div>
+                        <br/>
+                        <div class="form-group" style="display:@_temp">
+                              <button class="btnn" @onclick="DeleteAccount"><i class="fa fa-trash" ></i> Delete Account</button>
                         </div>
                     </div>
                 </article>
@@ -107,6 +112,13 @@
         {
             _notificationManager.Show(new Notification("Error", "Input your new password", NotificationType.Info));
         }
+    }
+
+    private async Task DeleteAccount()
+    {
+        Console.WriteLine("aleo");
+       await _userService.DeleteUser(_cachedUser.id);
+        _navigationManager.NavigateTo("/");
     }
 
 }
