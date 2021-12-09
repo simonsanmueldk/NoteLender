@@ -84,3 +84,15 @@ a, .btn-link {
     border-right:  5px outset rgba(0, 0, 255, .375);
 }
 
+.btn-special {
+    color: rgba(255, 255, 255, .55);
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+    border: 0 #6c757d;
+}
+
+.btn-special:hover {
+    color: #fff;
+    background-color: #5c636a;
+    border: 0 #565e64
+}
