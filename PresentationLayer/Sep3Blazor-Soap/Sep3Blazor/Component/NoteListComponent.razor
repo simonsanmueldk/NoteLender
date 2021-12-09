@@ -71,7 +71,7 @@
                     Search by week: <input type="number" @bind="@searchedWeek" min="1" max="52" style="width:3em"/>
                 </div>
                 <div class="p-2">
-                    Search by year: <input type="number" @bind="@searchedYear"  min="2019" max="2023" style="width:4em"/>
+                    Search by year: <input type="number" @bind="@searchedYear"  style="width:4em"/>
                 </div>
                 <div  class="p-2">
                 <div class="form-group">
@@ -207,8 +207,12 @@
     // Show the notes further ahead in time and prevent going past week 52.
     private void NextPage()
     {
+        
         var dateTime = _time.Add(TimeSpan.FromDays(7 * 3));
-        _time = dateTime;
+       
+            _time = dateTime; 
+        
+        
     }
 
     // Show the notes further behind in time and prevent going before week 1.
@@ -258,15 +262,6 @@
         {
             searchedWeek = 52;
         }
-        if (searchedYear<2016)
-        {
-            searchedYear = 2016;
-        }
-        else if (searchedYear > 2023)
-        {
-            searchedYear = 2023;
-        }
-
         DateTime temp = FirstDateOfWeek(searchedYear, searchedWeek);
         _time = temp;
     }
