@@ -13,9 +13,33 @@
 
 <div class="container-fluid">
     <br>
-    <div class="col-10 ">
-        <div class="p-3 mb-2 bg-secondary text-white">
-            Members
+    <div class="col-12 ">
+        <div class="p-3 mb-2 bg-secondary text-white d-flex flex-row align-items-center justify-content-between">
+            <div>
+                Members
+            </div>
+            <div>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleAddModal"><i class="oi oi-minus"></i> Leave Group</button>
+                <div class="modal fade" id="exampleAddModal" tabindex="-1" aria-labelledby="exampleAddModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content" style="background-color:white">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleAddModalLabel">Leave group @GroupName</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    <label>
+                                        Are you sure you want to leave this group?
+                                    </label>
+                                </p>
+                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" @onclick="@(() => LeaveGroup())">Save changes</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         @if (GroupMembersList == null)
         {
@@ -23,72 +47,60 @@
                 <em>Loading...</em>
             </p>
         }
+        else if (GroupMembersList.Count == 1)
+        {
+            <p>
+                You are the sole member of this group.
+                <br/>
+                Try to invite someone on the right
+            </p>
+        }
         else
         {
             <table class="table table-sm table-hover">
                 @foreach (var member in GroupMembersList)
                 {
-                    <tbody>
-                    <tr>
-                        <th scope="col">
-                            <i>Username</i>
-                        </th>
-                        <td>
-                            <b>@member.username</b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="col">
-                            <i>Remove</i>
-                        </th>
-                        <td>
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="@("#RemoveUserModal"+member.id)">
-                                <i class="oi oi-trash" style="color:red"></i>
-                            </button>
-                            <div class="modal fade" id="@("RemoveUserModal"+member.id)" tabindex="-1" aria-labelledby="@("RemoveUserModalLabel"+member.id)" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                  <div class="modal-content" style="background-color:white">
-                                    <div class="modal-header">
-                                      <h5 class="modal-title" id="@("RemoveUserModalLabel"+member.id)">Remove member @member.username from group?</h5>
-                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+                    if (member.userId != _cachedUser.id)
+                    {
+                        <tbody>
+                        <tr>
+                            <th scope="col">
+                                <i>Username</i>
+                            </th>
+                            <td>
+                                <b>@member.username</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col">
+                                <i>Remove</i>
+                            </th>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="@("#RemoveUserModal" + member.id)">
+                                    <i class="oi oi-trash" style="color:red"></i>
+                                </button>
+                                <div class="modal fade" id="@("RemoveUserModal" + member.id)" tabindex="-1" aria-labelledby="@("RemoveUserModalLabel" + member.id)" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content" style="background-color:white">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="@("RemoveUserModalLabel" + member.id)">Remove member @member.username from group?</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" @onclick="@(() => DeleteMember(member.id))">Confirm</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-body">
-                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" @onclick="@(() => DeleteMember(member.id))" >Confirm</button>
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    </div>
-                                  </div>
                                 </div>
-                              </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                    <br>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <br>
+                    }
                 }
             </table>
         }
-    </div>
-    <div class="col-3 offset-1">
-        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleAddModal"><i class="oi oi-plus"></i> Leave Group</button>
-        <div class="modal fade" id="exampleAddModal" tabindex="-1" aria-labelledby="exampleAddModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content" style="background-color:white">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleAddModalLabel">Leave group @GroupName</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
-                    </div>
-                    <div class="modal-body">
-
-                        <p>
-                            <label>
-                                Are you sure you want to leave this group?
-                            </label>
-                        </p>
-                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" @onclick="@(() => LeaveGroup())">Save changes</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -97,7 +109,7 @@
     // Parameter to specify which group the members are in.
     [Parameter]
     public int GroupId { get; set; }
-    
+
     [Parameter]
     public string GroupName { get; set; }
 
@@ -113,13 +125,13 @@
         _cachedUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).CachedUser;
         GroupMembersList = await _groupMembersService.GetGroupMemberList(GroupId);
     }
-    
+
     protected override async void OnParametersSet()
     {
         GroupMembersList = await _groupMembersService.GetGroupMemberList(GroupId);
         StateHasChanged();
     }
-    
+
     // Method to let the user logged in leave to group. 
     private async Task LeaveGroup()
     {
@@ -137,4 +149,5 @@
         _notificationManager.Show(notification);
         GroupMembersList = await _groupMembersService.GetGroupMemberList(GroupId);
     }
+
 }

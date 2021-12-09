@@ -41,10 +41,4 @@
     {
         await base.OnInitializedAsync();
     }
-
-    private async void ShowNotification()
-    {
-        Notification notification = await _groupService.DeleteGroup(50.ToString());
-        await _notificationManager.Show(notification);
-    }
 }

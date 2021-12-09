@@ -11,58 +11,67 @@
 @inject NotificationManager _notificationManager
 
 
-<h3>Invite to group</h3>
 <div class="container-fluid">
     <br>
-    <div class="col-10 ">
+    <div class="col-12 ">
+        <div class="p-3 mb-2 bg-primary text-white">
+            Invite to group
+        </div>
         @if (!Temp)
         {
-            <div class="form-group">
-                <div class="input-group">
-                    <label>Search for a new member </label>
+            <div class="form-group d-flex flex-row align-items-center justify-content-start m-1">
+                <div class="d-flex flex-column">
+                    <div class="input-group">
+                        <label>Search for a new member </label>
+                    </div>
+                    <div>
+                        <input type="text" placeholder="Type the username " @bind-value="Username">
+                    </div>
                 </div>
-                <input type="text" placeholder="Type the username " @bind-value="Username">
+                <div>
+                    <div>
+                        <button class="btn btn-primary btn-block" @onclick="Search">Search</button>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <button class="btn btn-primary btn-block" @onclick="Search">Search</button>
-            </div>
-            <br>
-            <br>
         }
         else
         {
-            <div class="form-group">
-                <div class="input-group">
-                    <label>Search for a new member </label>
+            <div class="d-flex flex-row align-items-center justify-content-start m-1">
+                <div class="d-flex flex-column">
+                    <div class="input-group">
+                        <label>Search for a new member </label>
+                    </div>
+                    <div>
+                        <input type="text" placeholder="Type the username " @bind-value="Username">
+                    </div>
                 </div>
-                <input type="text" placeholder="Type the username " @bind-value="Username">
+                <div>
+                    <div>
+                        <button class="btn btn-primary btn-block" @onclick="Search">Search</button>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <button class="btn btn-primary btn-block" @onclick="Search">Search</button>
-            </div>
-            <br>
-            <br>
             <div class="col-sm-6" style="display:inline">
-
-                <ul class="list-group">
-                    @foreach (var user in TempUsers)
-                    {
-                        <div class="table">
-
-                            <tbody>
-                            <tr>
-                                <td class="list-group-item">
-                                    <a>Name</a>: <b>@user.firstName @user.lastName</b>
-                                    <br/> <a>Username</a>: <b>@user.username</b>
-                                    <a class="btn btn-primary" @onclick="@(() => InviteUser(user))" style="display:@Temp">Invite</a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </div>
-
-
-                        <br>
-                    }
+                <ul class="list-group d-flex flex-row align-items-center justify-content-between">
+                    <div class="col-8">
+                        @foreach (var user in TempUsers)
+                        {
+                            <div class="card mb-2">
+                                <div class="card-body row">
+                                    <div class="col-6">
+                                        <a>Name</a>: <b>@user.firstName @user.lastName</b>
+                                    </div>
+                                    <div class="col-6">
+                                        <a>Username</a>: <b>@user.username</b>
+                                    </div>
+                                    <div class="card-header container d-flex flex-row align-items-center justify-content-center">
+                                        <a class="btn btn-primary" @onclick="@(() => InviteUser(user))" style="display:@Temp">Invite</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
                 </ul>
             </div>
         }
@@ -74,7 +83,7 @@
     // Parameter to specify which group the invitee will be invited to.
     [Parameter]
     public int GroupId { get; set; }
-    
+
     [Parameter]
     public string GroupName { get; set; }
 
