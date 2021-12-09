@@ -173,7 +173,7 @@
     private IList<Note> NoteList { get; set; }
     private DateTime _time = DateTime.Today;
 
-    private Note _template = new Note(0, 0, 0, 0, 0, "", "", "");
+    private Note _template = new Note(0, 0, 0, 0, "", "", "");
 
     private User _loggedInUser;
 
@@ -189,7 +189,7 @@
         _loggedInUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).CachedUser;
 
     // Instantiate Template note for the EditForm component.
-        _template = new Note(0, _loggedInUser.id, GroupId, GetIsoWeekOfYear(_time), GetIsoYear(_time), "", "Not started", "");
+        _template = new Note(0, GroupId, GetIsoWeekOfYear(_time), GetIsoYear(_time), "", "Not started", "");
     }
 
     protected override async void OnParametersSet()
@@ -235,9 +235,9 @@
 
     private async Task SubmitAddNote()
     {
-        Notification notification = await _noteService.AddNote(new Note(0, _template.userId, GroupId, _template.week, _template.year, _template.name, _template.status, _template.text));
+        Notification notification = await _noteService.AddNote(new Note(0,  GroupId, _template.week, _template.year, _template.name, _template.status, _template.text));
         NoteList = await _noteService.GetNoteList(GroupId.ToString());
-        _template = new Note(0, _loggedInUser.id, GroupId, GetIsoWeekOfYear(_time), GetIsoYear(_time), "", "Not started", "");
+        _template = new Note(0, GroupId, GetIsoWeekOfYear(_time), GetIsoYear(_time), "", "Not started", "");
         _notificationManager.Show(notification);
     }
 

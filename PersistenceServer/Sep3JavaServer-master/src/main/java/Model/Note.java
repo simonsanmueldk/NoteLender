@@ -2,12 +2,11 @@ package Model;
 
 public class Note {
 
-    private int id, userId, groupId, week, year;
+    private int id, groupId, week, year;
     private String name, status, text;
 
-    public Note(int id, int userId, int groupId, int week, int year, String name, String status, String text) {
+    public Note(int id, int groupId, int week, int year, String name, String status, String text) {
         this.id = id;
-        this.userId = userId;
         this.groupId = groupId;
         this.week = week;
         this.year = year;
@@ -22,14 +21,6 @@ public class Note {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public int getGroupId() {
