@@ -33,18 +33,32 @@
                         <th scope="col">
                             <i>Username</i>
                         </th>
-                        <tH scope="col">
-                             <i>Remove</i>
-                        </tH>
-                    </tr>
-                    <tr>
                         <td>
                             <b>@member.username</b>
                         </td>
+                    </tr>
+                    <tr>
+                        <th scope="col">
+                            <i>Remove</i>
+                        </th>
                         <td>
-                            <button @onclick="@(() => DeleteMember(member.id))">
-                                <i class="oi oi-delete iconClass" style="color:red"></i>
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="@("#RemoveUserModal"+member.id)">
+                                <i class="oi oi-trash" style="color:red"></i>
                             </button>
+                            <div class="modal fade" id="@("RemoveUserModal"+member.id)" tabindex="-1" aria-labelledby="@("RemoveUserModalLabel"+member.id)" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                  <div class="modal-content" style="background-color:white">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="@("RemoveUserModalLabel"+member.id)">Remove member @member.userId?</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" @onclick="@(() => DeleteMember(member.id))" >Confirm</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                         </td>
                     </tr>
                     </tbody>
@@ -78,8 +92,6 @@
     </div>
 </div>
 
-
-
 @code {
 
     // Parameter to specify which group the members are in.
@@ -95,7 +107,7 @@
     // Method that is first to run when component is initialized.
     protected override async Task OnInitializedAsync()
     {
-        _cachedUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).CachedUser;
+        _cachedUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser;
         GroupMembersList = await _groupMembersService.GetGroupMemberList(GroupId);
     }
     

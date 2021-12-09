@@ -359,11 +359,11 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<Void> deleteInvitation(String id) {
+    public ResponseEntity<Void> deleteInvitation(int id) {
         String sqlStatement = "DELETE FROM notelender.invitations WHERE id= ?";
         try {
             PreparedStatement deleteInvitation = connection.prepareStatement(sqlStatement);
-            deleteInvitation.setInt(1, Integer.parseInt(id));
+            deleteInvitation.setInt(1, id);
             deleteInvitation.executeUpdate();
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
@@ -373,7 +373,7 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<List<Invitation>> getInvitationList(String id) {
+    public ResponseEntity<List<Invitation>> getInvitationList(int id) {
         List<Invitation> InvitationList = new ArrayList<>();
         try {
             String sqlStatement = "SELECT invitations.id, g.id, g.groupname, invitations.invitee_id, u2.username, " +
@@ -383,7 +383,7 @@ public class PersistenceService implements IPersistenceService {
                     "         INNER JOIN notelender.users u2 ON u2.id = invitations.invitee_id\n" +
                     "WHERE invitee_id = ?";
             PreparedStatement getInvitation = connection.prepareStatement(sqlStatement);
-            getInvitation.setInt(1, Integer.parseInt(id));
+            getInvitation.setInt(1, id);
             ResultSet rs = getInvitation.executeQuery();
             while (rs.next()) {
                 InvitationList.add(new Invitation(rs.getInt(1), rs.getInt(2),
