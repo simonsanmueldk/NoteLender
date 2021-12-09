@@ -58,8 +58,19 @@ public class PersistenceServerController {
         return persistenceService.getGroupList(id);
     }
 
+    @DeleteMapping("/group/{id}")
+    public ResponseEntity<Void> deleteGroup(@PathVariable(value = "id") int id) {
+        System.out.println("It's working Deleted");
+        return persistenceService.deleteGroup(id);
+    }
+
+    @PostMapping("/groupmembers/{id}")
+    public ResponseEntity<Void> LeaveGroup(@PathVariable(value = "id") int id, @RequestBody String json) {
+        return persistenceService.leaveGroup(id, json);
+    }
+
     @GetMapping("/users/{username}")
-    public ResponseEntity<List<User>> getUser(@PathVariable(value = "username") String username) {
+    public ResponseEntity<List<User>> getUsers(@PathVariable(value = "username") String username) {
         System.out.println("Get user");
         return persistenceService.getUsers(username);
     }
@@ -70,18 +81,20 @@ public class PersistenceServerController {
         return persistenceService.validateUser(json);
     }
 
+    @PostMapping("/unregisteruser")
+    public ResponseEntity<Void> registerUser(@RequestBody String json) {
+        return persistenceService.registerUser(json);
+    }
+
+
     @PostMapping("/user/{user_id}")
     public ResponseEntity<Void> EditUser(@RequestBody String json, @PathVariable(value = "user_id") int user_id) {
         System.out.println("It's working Validate");
         return persistenceService.editUser(json, user_id);
     }
 
-    @PostMapping("/unregisteruser")
-    public ResponseEntity<Void> registerUser(@RequestBody String json) {
-        return persistenceService.registerUser(json);
-    }
 
-    @DeleteMapping("/User/{userId}")
+    @DeleteMapping("/user/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable(value = "userId") int userId) {
         System.out.println("DELETE User");
         return persistenceService.deleteUser(userId);
@@ -99,11 +112,7 @@ public class PersistenceServerController {
         return persistenceService.deleteGroupMember(id);
     }
 
-    @DeleteMapping("/group/{id}")
-    public ResponseEntity<Void> deleteGroup(@PathVariable(value = "id") int id) {
-        System.out.println("It's working Deleted");
-        return persistenceService.deleteGroup(id);
-    }
+
 
     @PostMapping("/invitation")
     public ResponseEntity<Void> addInvitation(@RequestBody String json) {
@@ -124,10 +133,5 @@ public class PersistenceServerController {
     @PostMapping("/groupmembers")
     public ResponseEntity<Void> AddGroupMember(@RequestBody String json) {
         return persistenceService.addGroupMember(json);
-    }
-
-    @PostMapping("/groupmembers/{id}")
-    public ResponseEntity<Void> LeaveGroup(@PathVariable(value = "id") int id, @RequestBody String json) {
-        return persistenceService.leaveGroup(id, json);
     }
 }

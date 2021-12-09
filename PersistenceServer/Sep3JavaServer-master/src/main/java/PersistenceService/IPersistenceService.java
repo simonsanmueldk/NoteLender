@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface IPersistenceService {
-    ResponseEntity<List<Group>> getGroup(int id);
+//    ResponseEntity<List<Group>> getGroup(int id);
 
     ResponseEntity<Void> postGroup(String json, int memberId);
 

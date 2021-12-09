@@ -3,34 +3,47 @@
 @using Sep3Blazor.Authentication
 @inherits LayoutComponentBase
 
-
-<div class="page">
-    <AuthorizeView>
-        <Authorized>
-            <div class="sidebar">
-                <NavMenu/>
-            </div>
-        </Authorized>
-        <NotAuthorized>
-        </NotAuthorized>
-    </AuthorizeView>
-    <div class="main">
-        <div class="top-row px-4">
-            <AuthorizeView>
-                <div class="form-group">
-                    <button class="btn btn-primary btn-block" href="" @onclick="PerformLogout">
-
-                        Log out
-                    </button>
-                </div>
-            </AuthorizeView>
-        </div>
-        <div class="content px-4">
-            @Body
-        </div>
-        <NotificationComponent/>
-    </div>
+<body>
+<AuthorizeView>
+    <NavMenu/>
+</AuthorizeView>
+@*  <div class="main">  *@
+@*  <div class="content px-4">  *@
+@*          @Body *@
+@*      </div> *@
+@* </div> *@
+<div class="container">
+    @Body
 </div>
+<NotificationComponent/>
+</body>
+@* <div class="page"> *@
+@*     <AuthorizeView> *@
+@*         <Authorized> *@
+@*             <div class="sidebar"> *@
+@*                 <NavMenu/> *@
+@*             </div> *@
+@*         </Authorized> *@
+@*         <NotAuthorized> *@
+@*         </NotAuthorized> *@
+@*     </AuthorizeView> *@
+@*     <div class="main"> *@
+@*         <div class="top-row px-4"> *@
+@*             <AuthorizeView> *@
+@*                 <div class="form-group"> *@
+@*                     <button class="btn btn-primary btn-block" href="" @onclick="PerformLogout"> *@
+@* *@
+@*                         Log out *@
+@*                     </button> *@
+@*                 </div> *@
+@*             </AuthorizeView> *@
+@*         </div> *@
+@*         <div class="content px-4"> *@
+@*             @Body *@
+@*         </div> *@
+@*         <NotificationComponent/> *@
+@*     </div> *@
+@* </div> *@
 
 @code
 {

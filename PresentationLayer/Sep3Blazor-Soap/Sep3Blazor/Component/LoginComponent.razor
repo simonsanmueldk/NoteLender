@@ -56,6 +56,11 @@
     private string _username;
     private string _password;
 
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
 
     public async Task PerformLogin()
     {

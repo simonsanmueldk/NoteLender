@@ -4,13 +4,14 @@
 @using Sep3Blazor.Authentication
 @using Sep3Blazor.Data.Notifications
 @using Sep3Blazor.Data.Notifications.NotificationModel
+
 @inject IUserService _userService
 @inject IInvitationService _invitationService
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject NotificationManager _notificationManager
+
+
 <h3>Invite to group</h3>
-
-
 <div class="container-fluid">
     <br>
     <div class="col-10 ">
@@ -42,6 +43,7 @@
             <br>
             <br>
             <div class="col-sm-6" style="display:inline">
+
                 <ul class="list-group">
                     @foreach (var user in TempUsers)
                     {
@@ -57,30 +59,32 @@
                             </tr>
                             </tbody>
                         </div>
+
+
                         <br>
                     }
                 </ul>
             </div>
         }
-    </div>
-</div>
+    </div >
+</div >
 
-@code {
-
+@code
+{
     // Parameter to specify which group the invitee will be invited to.
     [Parameter]
     public int GroupId { get; set; }
 
     // Object for <EditForm> to use as a username when inviting.
-    public string Username ="";
-    
+    public string Username = "";
+
     // ???
     public bool Temp = false;
-    
+
     // Lists of users used when searching.
     public List<User> Users;
     public List<User> TempUsers;
-    
+
     // User object reserved for the user which opens the component.
     private User _cachedUser;
 
