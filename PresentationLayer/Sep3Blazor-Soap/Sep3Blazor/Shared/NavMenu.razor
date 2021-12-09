@@ -2,15 +2,14 @@
 @using Sep3Blazor.Model
 @using Sep3Blazor.Authentication
 @using Sep3Blazor.Data.Refresh
+
 @inject IGroupService _groupService
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject IRefreshServiceNavMem _refreshServiceNavMem
 @inject NavigationManager _navigationManager
 
 <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-2 top-row">
-
     <div class="container">
-
         <div>
             <button class="navbar-toggler" @onclick="ToggleNavMenu" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -18,7 +17,7 @@
             </button>
         </div>
         <a class="navbar-brand text-light" asp-area="" asp-page="/Index">NoteLender</a>
-        @if (!collapseNavMenu)
+        @if (!_collapseNavMenu)
         {
             <AuthorizeView>
                 <div class="form-group navbar-brand" asp-area="" asp-page="/Index">
@@ -50,9 +49,9 @@
                         <div class="dropdown">
                             <AuthorizeView>
                                 <button class=" nav-link btn-special dropdown-toggle" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded="false"
-                                        @onclick="e => this._show = !this._show"
+                                        @onclick="e => _show = !_show"
                                         @onfocusout="OutFocus">
-                                    <span class="oi oi-spreadsheet" aria-hidden="true"></span> 
+                                    <span class="oi oi-spreadsheet" aria-hidden="true"></span>
                                     My Groups
                                 </button>
                             </AuthorizeView>
@@ -60,7 +59,7 @@
                                 @foreach (var group in GroupList)
                                 {
                                     <AuthorizeView>
-                                        <NavLink class="dropdown-item" href="@("GroupPage/" + group.id+"/"+group.name)" @onclick="OutFocus" Match="NavLinkMatch.All">
+                                        <NavLink class="dropdown-item" href="@("GroupPage/" + group.id + "/" + group.name)" @onclick="OutFocus" Match="NavLinkMatch.All">
                                             <span class="oi oi-people" aria-hidden="true"></span> @("Group " + group.name)
                                         </NavLink>
                                     </AuthorizeView>
@@ -71,98 +70,45 @@
                 }
             </ul>
         </div>
-        @if (collapseNavMenu)
+        @if (_collapseNavMenu)
         {
             <AuthorizeView>
                 <div class="form-group navbar-brand" asp-area="" asp-page="/Index">
-                    <button class="btn btn-primary btn-block" href="" @onclick="PerformLogout">
-                        Log out
-                    </button>
+                    <button class="btn btn-primary btn-block" href="" @onclick="PerformLogout">Log out</button>
                 </div>
             </AuthorizeView>
         }
     </div>
 </nav>
 
-@* <div class="top-row mx-auto navbar navbar-dark"> *@
-@*     <a class="navbar-brand navbar-text " href=""> <text>&emsp;</text>NoteLender</a> *@
-@*     <button class="navbar-toggler" @onclick="ToggleNavMenu"> *@
-@*         <span class="navbar-toggler-icon"></span> *@
-@*     </button> *@
-@* </div> *@
-
-@* <div class="@NavMenuCssClass" @onclick="ToggleNavMenu"> *@
-@*     <ul class="nav flex-column"> *@
-@*         <li class="nav-item px-3"> *@
-@*             <AuthorizeView> *@
-@*                 <NavLink class="nav-link" href="" Match="NavLinkMatch.All"> *@
-@*                     <span class="oi oi-home" aria-hidden="true"></span> Home *@
-@*                 </NavLink> *@
-@*             </AuthorizeView> *@
-@*         </li> *@
-@*         <li class="nav-item px-3"> *@
-@*             <AuthorizeView> *@
-@*                 <NavLink class="nav-link" href="Account" Match="NavLinkMatch.All"> *@
-@*                     <span class="oi oi-file" aria-hidden="true"></span> Account *@
-@*                 </NavLink> *@
-@*             </AuthorizeView> *@
-@*         </li> *@
-@* @if (GroupList != null) *@
-@* { *@
-@*     <li class="nav-item px-3"> *@
-@*         <AuthorizeView> *@
-@*             <NavLink class="nav-link" @onclick="() => expandSubNav = !expandSubNav"> *@
-@*                 <span class="oi oi-list-rich" aria-hidden="true"></span> My Groups *@
-@*             </NavLink> *@
-@*         </AuthorizeView> *@
-@*     </li> *@
-@*     @if (expandSubNav) *@
-@*     { *@
-@*         @foreach (var group in GroupList) *@
-@*         { *@
-@*             <li class="nav-item px-3 "> *@
-@*                 <AuthorizeView> *@
-@*                     <NavLink class="nav-link navBorder"  href="@("GroupPage/" + group.id)" Match="NavLinkMatch.All"> *@
-@*                         <span class="oi oi-people" aria-hidden="true"></span> @("Group " + group.name) *@
-@*                     </NavLink> *@
-@*                 </AuthorizeView> *@
-@*             </li> *@
-@*         } *@
-@*     } *@
-@* } *@
-@*     </ul> *@
-@* </div> *@
-
 @code {
-
     private bool _show = false;
-    
-    bool collapseNavMenu = true;
 
-    string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-    
+    bool _collapseNavMenu = true;
 
+    string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
+
+    public IList<Group> GroupList { get; set; }
+    
+    private User _cachedUser;
+    
     private async Task OutFocus()
     {
-        collapseNavMenu = true;
+        _collapseNavMenu = true;
         await Task.Delay(200);
         _show = false;
     }
 
     void ToggleNavMenu()
     {
-        collapseNavMenu = !collapseNavMenu;
+        _collapseNavMenu = !_collapseNavMenu;
     }
 
     void CollapseNavMenu()
     {
-        collapseNavMenu = true;
+        _collapseNavMenu = true;
     }
-
-    public IList<Group> GroupList { get; set; }
-    private User _cachedUser;
-
-
+    
     protected override async Task OnInitializedAsync()
     {
         base.OnInitializedAsync();

@@ -4,6 +4,7 @@
 @using Sep3Blazor.Data.Notifications
 @using Sep3Blazor.Data.Notifications.NotificationModel
 @using Sep3Blazor.Data.Refresh
+
 @inject IGroupMembersService _groupMembersService
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject IRefreshServiceNavMem _refreshServiceNavMem
@@ -15,9 +16,7 @@
     <br>
     <div class="col-12 ">
         <div class="p-3 mb-2 bg-secondary text-white d-flex flex-row align-items-center justify-content-between">
-            <div>
-                Members
-            </div>
+            <div>Members</div>
             <div>
                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleAddModal"><i class="oi oi-minus"></i> Leave Group</button>
                 <div class="modal fade" id="exampleAddModal" tabindex="-1" aria-labelledby="exampleAddModalLabel" aria-hidden="true">
@@ -29,9 +28,7 @@
                             </div>
                             <div class="modal-body">
                                 <p>
-                                    <label>
-                                        Are you sure you want to leave this group?
-                                    </label>
+                                    <label>Are you sure you want to leave this group?</label>
                                 </p>
                                 <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" @onclick="@(() => LeaveGroup())">Save changes</button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -43,9 +40,7 @@
         </div>
         @if (GroupMembersList == null)
         {
-            <p>
-                <em>Loading...</em>
-            </p>
+            <p><em>Loading...</em></p>
         }
         else if (GroupMembersList.Count == 1)
         {
@@ -105,7 +100,6 @@
 </div>
 
 @code {
-
     // Parameter to specify which group the members are in.
     [Parameter]
     public int GroupId { get; set; }

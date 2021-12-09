@@ -7,6 +7,7 @@
 @using Sep3Blazor.Data.Notifications.NotificationModel
 @using Sep3Blazor.Data.Refresh
 @using Sep3Blazor.Model
+
 @inject IInvitationService _invitationService
 @inject IRefreshServiceInvGroup _refreshServiceInvGroup
 @inject IGroupMembersService _groupMembersService
@@ -41,7 +42,6 @@ else
                     Accept
                 </button>
                 <button type="button" class="col-6" style="background-color: red" @onclick="@(() => RemoveInvitation(invitation.id))">Decline</button>
-
             </div>
         </div>
     }
@@ -50,7 +50,6 @@ else
 
 
 @code {
-
     // Parameter to specify which user opens the InvitationsComponent component
     [Parameter]
     public String UserId { get; set; }
@@ -61,7 +60,6 @@ else
     // Method that is first to run when component is initialized.
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine("Invitation");
         InvitationList = await _invitationService.GetInvitationList(int.Parse(UserId));
     }
 
@@ -71,7 +69,6 @@ else
         Notification notification = await _invitationService.DeleteInvitation(id);
         await _notificationManager.Show(notification);
         InvitationList = await _invitationService.GetInvitationList(int.Parse(UserId));
-          
     }
 
     // Method used by <EditForm> component to accept an invitation.

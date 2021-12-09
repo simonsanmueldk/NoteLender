@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -22,9 +23,9 @@ namespace Sep3Blazor.Authentication
 
         public CustomAuthenticationStateProvider(IJSRuntime jsRunTime, IUserService userService, IGroupService groupService)
         {
-            this._jsRunTime = jsRunTime;
-            this._userService = userService;
-            this._groupService = groupService;
+            _jsRunTime = jsRunTime;
+            _userService = userService;
+            _groupService = groupService;
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -53,10 +54,7 @@ namespace Sep3Blazor.Authentication
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.Name, user.username));
             claims.Add(new Claim("Id", user.id.ToString()));
-            foreach (var group in groupList)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, group.id.ToString()));
-            }
+            claims.AddRange(groupList.Select(@group => new Claim(ClaimTypes.Role, @group.id.ToString())));
             claims.Add(new Claim("FirstName", user.firstName));
             claims.Add(new Claim("LastName", user.lastName));
             claims.Add(new Claim("Password", user.password));

@@ -12,7 +12,6 @@ namespace Sep3Blazor.Data.NoteData
     public class NoteService : INoteService
     {
         private readonly String URL = "https://localhost:5004";
-
         public async Task<IList<Note>> GetNoteList(string s)
         {
             using var channel = GrpcChannel.ForAddress(URL);

@@ -3,10 +3,9 @@
 @using Sep3Blazor.Data.Notifications
 @using Sep3Blazor.Data.Notifications.NotificationModel
 @using Sep3Blazor.Model
+
 @inject NotificationManager _notificationManager
 @inject INoteService _noteService
-
-
 
 <tbody>
 <tr>
@@ -47,19 +46,19 @@
                     </p>
                     <p>
                         <label class="d-flex flex-row">
-                            <text class="col-2">  Year:</text>
+                            <text class="col-2"> Year:</text>
                             <InputNumber class="col-2" @bind-Value="Note.year"/>
                         </label>
                     </p>
                     <p>
                         <label class="d-flex flex-row">
-                           <text class="col-2"> Name:</text>
+                            <text class="col-2"> Name:</text>
                             <InputText class="col-6" @bind-Value="Note.name"/>
                         </label>
                     </p>
                     <p>
                         <label class="d-flex flex-row">
-                           <text class="col-2"> Status:</text>
+                            <text class="col-2"> Status:</text>
                             <InputSelect class="col-3" @bind-Value="Note.status">
                                 <option value="">Not started</option>
                                 <option value="Started">Started</option>
@@ -80,14 +79,12 @@
         </div>
     </div>
 </div>
-<button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="@("#exampleDelete" + Note.id)">
-    Delete
-</button>
+<button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="@("#exampleDelete" + Note.id)">Delete</button>
 <div class="modal fade" id="@("exampleDelete" + Note.id)" tabindex="-1" role="dialog" aria-labelledby="@("exampleModalCenterTitle" + Note.id)" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content" style="background-color: white">
             <div class="modal-header">
-                <h5 class="modal-title" id="@("exampleModalLongTitle" + Note.id)">Are you sure you want to delete  note @Note.name?</h5>
+                <h5 class="modal-title" id="@("exampleModalLongTitle" + Note.id)">Are you sure you want to delete note @Note.name?</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
             </div>
             <div class="modal-footer">
@@ -97,7 +94,6 @@
         </div>
     </div>
 </div>
-
 <br>
 
 
@@ -105,7 +101,7 @@
     // Parameter to specify what Note object is in focus.
     [Parameter]
     public Note Note { get; set; }
-    
+
     [Parameter]
     public string? GroupName { get; set; }
 
@@ -115,20 +111,18 @@
 
     // Note object to be used in <EditForm> component. 
     private Note _noteModel = new Note(0, 0, 0, 0, 0, "", "", "");
-    
+
     protected override async Task OnInitializedAsync()
     {
-        {
-            Console.WriteLine(GroupName+"LOL");
-        }
+       
     }
 
     protected override void OnParametersSet()
     {
         StateHasChanged();
     }
-    
-    
+
+
     // Method that takes Note from <EditForm> and sends it to business to replace Note with same ID.
     private async void SubmitEditNote()
     {

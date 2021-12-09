@@ -1,11 +1,9 @@
 ﻿@if (Parent.ActivePage == this)
 {
     @ChildContent
-    
 }
 
 @code {
-
     [CascadingParameter]
     private TabControl Parent { get; set; }
 

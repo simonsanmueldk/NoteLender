@@ -21,8 +21,8 @@
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject NotificationManager _notificationManager
 
-<Title Value="@("Group " + Id)"></Title>
 
+<Title Value="@("Group " + Id)"></Title>
 <AuthorizeView Roles="@Id.ToString()">
     <NotAuthorized>
         <p>You don't belong to this group</p>

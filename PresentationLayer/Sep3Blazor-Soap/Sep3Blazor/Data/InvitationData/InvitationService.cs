@@ -28,14 +28,14 @@ namespace Sep3Blazor.Data.InvitationData
                     }
                 );
                 Console.WriteLine("greetings" + reply.Message);
-                return new Notification("Success", "Invitation was successfully sent" , NotificationType.Success);
+                return new Notification("Success", "Invitation was successfully sent", NotificationType.Success);
             }
             catch (RpcException e)
             {
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
-                return new Notification("Error","Invitation failed to be sent" , NotificationType.Error);
+                return new Notification("Error", "Invitation failed to be sent", NotificationType.Error);
             }
         }
 
@@ -71,14 +71,14 @@ namespace Sep3Blazor.Data.InvitationData
                     }
                 );
                 Console.WriteLine("Delete: " + reply.Message);
-                return new Notification("Success", "Invitation was declined" , NotificationType.Success);
+                return new Notification("Success", "Invitation was declined", NotificationType.Success);
             }
             catch (RpcException e)
             {
                 Console.WriteLine(e.Status.Detail);
                 Console.WriteLine(e.Status.StatusCode);
                 Console.WriteLine((int) e.Status.StatusCode);
-                return new Notification("Error","Invitation failed to be deleted" , NotificationType.Error);
+                return new Notification("Error", "Invitation failed to be deleted", NotificationType.Error);
             }
         }
     }

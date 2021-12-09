@@ -68,15 +68,15 @@
         <div class="col-6">
             <div class="d-flex flex-row align-items-center">
                 <div class="p-2">
-                    Search by week: <input type="number" @bind="@searchedWeek" min="1" max="52" style="width:3em"/>
+                    Search by week: <input type="number" @bind="@_searchedWeek" min="1" max="52" style="width:3em"/>
                 </div>
                 <div class="p-2">
-                    Search by year: <input type="number" @bind="@searchedYear"  style="width:4em"/>
+                    Search by year: <input type="number" @bind="@_searchedYear" style="width:4em"/>
                 </div>
-                <div  class="p-2">
-                <div class="form-group">
-                    <button class="btn btn-primary btn-block" @onclick="Search">Search</button>
-                </div>
+                <div class="p-2">
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" @onclick="Search">Search</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -126,14 +126,12 @@
                                             if (note.year == GetIsoYear(subtractedTime) && note.week == GetIsoWeekOfYear(subtractedTime))
                                             {
                                                 <NoteComponent OnClick="ClickHandler" Note="note" GroupName="@GroupName"></NoteComponent>
-                                             
                                             }
                                             break;
                                         case 0:
                                             if (note.year == GetIsoYear(_time) && note.week == GetIsoWeekOfYear(_time))
                                             {
                                                 <NoteComponent OnClick="ClickHandler" Note="note" GroupName="@GroupName"></NoteComponent>
-                                             
                                             }
                                             break;
                                         case 1:
@@ -160,7 +158,6 @@
 </div>
 
 @code{
-
     [Parameter]
     public int GroupId { get; set; }
 
@@ -169,13 +166,10 @@
 
     [CascadingParameter]
     protected Task<AuthenticationState> AuthStat { get; set; }
-
     
-    private  int searchedWeek;
-    private  int searchedYear;
-
-
-
+    private int _searchedWeek;
+    private int _searchedYear;
+    
     private IList<Note> NoteList { get; set; }
     private DateTime _time = DateTime.Today;
 
@@ -186,8 +180,8 @@
     // Method to run, when user enters this page.
     protected override async Task OnInitializedAsync()
     {
-        searchedWeek = GetIsoWeekOfYear(_time);
-        searchedYear = GetIsoYear(_time);
+        _searchedWeek = GetIsoWeekOfYear(_time);
+        _searchedYear = GetIsoYear(_time);
     // Get the selected group's notes
         NoteList = await _noteService.GetNoteList(GroupId.ToString());
 
@@ -207,12 +201,8 @@
     // Show the notes further ahead in time and prevent going past week 52.
     private void NextPage()
     {
-        
         var dateTime = _time.Add(TimeSpan.FromDays(7 * 3));
-       
-            _time = dateTime; 
-        
-        
+        _time = dateTime;
     }
 
     // Show the notes further behind in time and prevent going before week 1.
@@ -231,7 +221,6 @@
             time = time.AddDays(3);
         }
         return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-       
     }
 
     private static int GetIsoYear(DateTime time)
@@ -254,15 +243,15 @@
 
     private void Search()
     {
-        if (searchedWeek<0)
+        if (_searchedWeek < 0)
         {
-            searchedWeek = 1;
+            _searchedWeek = 1;
         }
-        else if (searchedWeek>52)
+        else if (_searchedWeek > 52)
         {
-            searchedWeek = 52;
+            _searchedWeek = 52;
         }
-        DateTime temp = FirstDateOfWeek(searchedYear, searchedWeek);
+        DateTime temp = FirstDateOfWeek(_searchedYear, _searchedWeek);
         _time = temp;
     }
 
