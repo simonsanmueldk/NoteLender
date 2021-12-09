@@ -103,7 +103,7 @@ namespace Sep3Blazor.Authentication
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
         }
 
-        public async Task AddClaim()
+        public async Task ModifyClaims()
         {
             IList<Group> groupList = await _groupService.GetGroupList(CachedUser.id);
             ClaimsIdentity identity = SetupClaimsForUser(CachedUser,groupList);

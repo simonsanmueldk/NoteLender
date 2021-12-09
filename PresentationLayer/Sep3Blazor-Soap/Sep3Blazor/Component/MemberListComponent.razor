@@ -125,6 +125,7 @@
     {
         Notification notification = await _groupMembersService.LeaveGroup(GroupId, _cachedUser.id);
         _notificationManager.Show(notification);
+        await ((CustomAuthenticationStateProvider) _authenticationStateProvider).ModifyClaims();
         _refreshServiceNavMem.CallRequestRefresh();
         _navigationManager.NavigateTo("/");
     }
