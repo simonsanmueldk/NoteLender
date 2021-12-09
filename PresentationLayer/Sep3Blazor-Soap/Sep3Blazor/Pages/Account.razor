@@ -28,7 +28,7 @@
                             <h2>
                                 <b>@context.User.FindFirst("FirstName").Value @context.User.FindFirst("LastName").Value</b>
                             </h2>
-                       
+
                         </div>
                         <div class="col form-group">
                             <label class="labelAcc">Username :</label>
@@ -58,7 +58,7 @@
                         </div>
                         <br/>
                         <div class="form-group" style="display:@_temp">
-                              <button class="btnn" @onclick="DeleteAccount"><i class="fa fa-trash" ></i> Delete Account</button>
+                            <button class="btnn" @onclick="DeleteAccount"><i class="fa fa-trash"></i> Delete Account</button>
                         </div>
                     </div>
                 </article>
@@ -116,8 +116,8 @@
 
     private async Task DeleteAccount()
     {
-        Console.WriteLine("aleo");
-       await _userService.DeleteUser(_cachedUser.id);
+        await _userService.DeleteUser(_cachedUser.id);
+        ((CustomAuthenticationStateProvider) _authenticationStateProvider).LogOut();
         _navigationManager.NavigateTo("/");
     }
 
