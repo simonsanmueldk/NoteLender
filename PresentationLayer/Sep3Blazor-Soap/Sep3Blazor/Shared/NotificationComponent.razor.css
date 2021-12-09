@@ -11,11 +11,11 @@
     padding:20px;
     width: 30vw;
     border-radius: 15px;
-    background-color: black;
+    background-color: darkblue;
     color: white;
 }
 
-.notifictaion-visible{
+.notification-visible{
     display: flex;
 }
 

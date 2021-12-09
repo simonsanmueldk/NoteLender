@@ -38,27 +38,27 @@
                     <DataAnnotationsValidator/>
                     <ValidationSummary/>
                     <p>
-                        <label>
-                            Week:
-                            <InputNumber @bind-Value="Note.week"/>
+                        <label class="d-flex flex-row">
+                            <text class="col-2">Week:</text>
+                            <InputNumber class="col-2" @bind-Value="Note.week"/>
                         </label>
                     </p>
                     <p>
-                        <label>
-                            Year:
-                            <InputNumber @bind-Value="Note.year"/>
+                        <label class="d-flex flex-row">
+                            <text class="col-2">  Year:</text>
+                            <InputNumber class="col-2" @bind-Value="Note.year"/>
                         </label>
                     </p>
                     <p>
-                        <label>
-                            Name:
-                            <InputText @bind-Value="Note.name"/>
+                        <label class="d-flex flex-row">
+                           <text class="col-2"> Name:</text>
+                            <InputText class="col-6" @bind-Value="Note.name"/>
                         </label>
                     </p>
                     <p>
-                        <label>
-                            Status:
-                            <InputSelect @bind-Value="Note.status">
+                        <label class="d-flex flex-row">
+                           <text class="col-2"> Status:</text>
+                            <InputSelect class="col-3" @bind-Value="Note.status">
                                 <option value="">Not started</option>
                                 <option value="Started">Started</option>
                                 <option value="Finished">Finished</option>
@@ -66,9 +66,9 @@
                         </label>
                     </p>
                     <p>
-                        <label>
-                            Text
-                            <InputTextArea @bind-Value="Note.text"/>
+                        <label class="d-flex flex-row">
+                            <text class="col-2 textCenterer"> Text:</text>
+                            <InputTextArea class="col-6" @bind-Value="Note.text"/>
                         </label>
                     </p>
                     <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>

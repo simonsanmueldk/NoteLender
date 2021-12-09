@@ -16,6 +16,7 @@
 
 
 <Title Value="Homepage"></Title>
+
 <LoginComponent></LoginComponent>
 <AuthorizeView >
     <div class="row d-flex justify-content-between">
@@ -32,9 +33,13 @@
 
 @code
 {
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthStat { get; set; }
+
+    
     protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        await base.OnInitializedAsync();
     }
 
     private async void ShowNotification()

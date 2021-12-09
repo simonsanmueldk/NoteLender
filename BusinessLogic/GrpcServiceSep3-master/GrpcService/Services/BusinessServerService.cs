@@ -53,6 +53,7 @@ namespace GrpcService.Services
 
         public override async Task<Reply> GetGroup(Request request, ServerCallContext context)
         {
+            //check this one
             return await _logicService.GetGroup(request, context);
         }
 
