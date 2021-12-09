@@ -37,25 +37,7 @@ namespace Sep3Blazor.Data.GroupData
             }
         }
 
-        public async Task<IList<Group>> GetGroupList(string s)
-        {
-            using var channel = GrpcChannel.ForAddress(URL);
-            var client = new BusinessServer.BusinessServerClient(channel);
-            try
-            {
-                var reply = await client.GetGroupAsync(
-                    new Request {Name = s});
-                Console.WriteLine("Group: " + reply.Message);
-                return JsonSerializer.Deserialize<List<Group>>(reply.Message);
-            }
-            catch (RpcException e)
-            {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
-                return null;
-            }
-        }
+      
 
         public async Task<Notification> DeleteGroup(string s)
         {

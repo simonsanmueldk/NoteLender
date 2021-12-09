@@ -1,4 +1,5 @@
 @using System.Drawing
+@using Sep3Blazor.Authentication
 @using Sep3Blazor.Data
 @using Sep3Blazor.Data.GroupMembersData
 @using Sep3Blazor.Data.InvitationData
@@ -10,6 +11,7 @@
 @inject IRefreshServiceInvGroup _refreshServiceInvGroup
 @inject IGroupMembersService _groupMembersService
 @inject NotificationManager _notificationManager
+@inject AuthenticationStateProvider _authenticationStateProvider
 
 <h3>Pending invitations</h3>
 
@@ -30,15 +32,15 @@ else
     foreach (Invitation invitation in InvitationList)
     {
         <div class="card mb-2">
-            <div class="card-header">
-              User <b>@invitation.invitorName</b> wants you to be apart of group <b>@invitation.groupName</b>
+            <div class="card-header container">
+                User <b>@invitation.invitorName</b> wants you to be apart of group <b>@invitation.groupName</b>
             </div>
-            <div class="card-body">
-                <button type="button" style="background-color: darkgreen "
+            <div class="card-body row">
+                <button type="button" class="col-6" style="background-color: darkgreen "
                         @onclick="@(() => AcceptInvitation(invitation.inviteeId, invitation.groupId, invitation.id))">
                     Accept
                 </button>
-                <button type="button" style="background-color: red" @onclick="@(() => RemoveInvitation(invitation.id))">Decline</button>
+                <button type="button" class="col-6" style="background-color: red" @onclick="@(() => RemoveInvitation(invitation.id))">Decline</button>
 
             </div>
         </div>
@@ -51,7 +53,7 @@ else
 
     // Parameter to specify which user opens the InvitationsComponent component
     [Parameter]
-    public string UserId { get; set; }
+    public String UserId { get; set; }
 
     // List of invitations where the user which opened the component is the invitee of.
     public IList<Invitation> InvitationList { get; set; }
@@ -78,6 +80,7 @@ else
         Notification notification = await _groupMembersService.AddGroupMember(groupId, userId);
         _notificationManager.Show(notification);
         _refreshServiceInvGroup.CallRequestRefresh();
+        await ((CustomAuthenticationStateProvider) _authenticationStateProvider).AddClaim();
         await _invitationService.DeleteInvitation(invitationId);
         InvitationList = await _invitationService.GetInvitationList(int.Parse(UserId));
     }

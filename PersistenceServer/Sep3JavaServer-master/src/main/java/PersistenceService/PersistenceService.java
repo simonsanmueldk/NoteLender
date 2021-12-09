@@ -4,11 +4,13 @@ import Model.*;
 import com.google.gson.Gson;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class PersistenceService implements IPersistenceService {
 
     private static final Gson gson = new Gson();
@@ -22,27 +24,6 @@ public class PersistenceService implements IPersistenceService {
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        }
-    }
-
-    @Override
-    public ResponseEntity<Void> postGroup(String json, int memberId) {
-        System.out.println(json);
-
-        String sqlStatement = "WITH groupcreation AS ( INSERT INTO notelender.groups (groupname) VALUES (?) " +
-                "RETURNING id) INSERT INTO notelender.groupmembers (user_id, group_id)\n" +
-                "VALUES ( ?, (SELECT id FROM groupcreation))";
-        try {
-            PreparedStatement insertGroup = connection.prepareStatement(sqlStatement);
-            insertGroup.setString(1, json);
-            insertGroup.setInt(2, memberId);
-            insertGroup.executeUpdate();
-            return new ResponseEntity<>(HttpStatus.OK);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -90,21 +71,7 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<Void> deleteGroup(int group_id) {
-        String sqlStatement = "DELETE FROM notelender.groups WHERE id= ?";
-        try {
-            PreparedStatement deleteGroup = connection.prepareStatement(sqlStatement);
-            deleteGroup.setInt(1, group_id);
-            deleteGroup.executeUpdate();
-            System.out.println("aleooo");
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @Override
-    public ResponseEntity<List<Note>> getNote(int id) {
+    public ResponseEntity<List<Note>> getNotes(int id) {
         List<Note> NoteList = new ArrayList<>();
         try {
             String sqlStatement = "SELECT * FROM notelender.notes WHERE group_id = ? ORDER BY year ASC, week";
@@ -126,44 +93,43 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<List<Group>> getGroup(int id) {
-        List<Group> GroupList = new ArrayList<>();
+    public ResponseEntity<Void> postGroup(String json, int memberId) {
+        System.out.println(json);
+
+        String sqlStatement = "WITH groupcreation AS ( INSERT INTO notelender.groups (groupname) VALUES (?) " +
+                "RETURNING id) INSERT INTO notelender.groupmembers (user_id, group_id)\n" +
+                "VALUES ( ?, (SELECT id FROM groupcreation))";
         try {
-            String sqlStatement = "SELECT * FROM notelender.groups WHERE id =  ?";
-            PreparedStatement getGroup = connection.prepareStatement(sqlStatement);
-            getGroup.setInt(1, id);
-            ResultSet rs = getGroup.executeQuery();
-            while (rs.next()) {
-                GroupList.add(new Group(rs.getInt(1), rs.getString(2)));
-            }
-            return new ResponseEntity<>(GroupList, HttpStatus.OK);
+            PreparedStatement insertGroup = connection.prepareStatement(sqlStatement);
+            insertGroup.setString(1, json);
+            insertGroup.setInt(2, memberId);
+            insertGroup.executeUpdate();
+            return new ResponseEntity<>(HttpStatus.OK);
+
         } catch (Exception e) {
             e.printStackTrace();
+
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
-    @Override
-    public ResponseEntity<List<GroupMembers>> getUserList(int id) {
-        List<GroupMembers> GroupMembersList = new ArrayList<>();
-        try {
-            String sqlStatement = "SELECT notelender.groupmembers.id,user_id,u.username,group_id " +
-                    "FROM notelender.groupmembers INNER JOIN notelender.users u ON u.id = groupmembers.user_id " +
-                    "WHERE notelender.groupmembers.group_id = ?";
-            PreparedStatement getUserList = connection.prepareStatement(sqlStatement);
-            getUserList.setInt(1, id);
-            ResultSet rs = getUserList.executeQuery();
-            while (rs.next()) {
-                GroupMembers groupMembers = new GroupMembers(rs.getInt(1), rs.getInt(2),
-                        rs.getString(3), rs.getInt(4));
-                GroupMembersList.add(groupMembers);
-            }
-            return new ResponseEntity<>(GroupMembersList, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @Override
+//    public ResponseEntity<List<Group>> getGroup(int id) {
+//        List<Group> GroupList = new ArrayList<>();
+//        try {
+//            String sqlStatement = "SELECT * FROM notelender.groups WHERE id =  ?";
+//            PreparedStatement getGroup = connection.prepareStatement(sqlStatement);
+//            getGroup.setInt(1, id);
+//            ResultSet rs = getGroup.executeQuery();
+//            while (rs.next()) {
+//                GroupList.add(new Group(rs.getInt(1), rs.getString(2)));
+//            }
+//            return new ResponseEntity<>(GroupList, HttpStatus.OK);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//    }
 
     @Override
     public ResponseEntity<List<Group>> getGroupList(int id) {
@@ -186,15 +152,12 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<Void> addGroupMember(String json) {
-        System.out.println(json);
-        String sqlStatement = "INSERT INTO notelender.groupmembers (user_id,group_id) VALUES (?,?)";
-        GroupMembers groupMembers = gson.fromJson(json, GroupMembers.class);
+    public ResponseEntity<Void> deleteGroup(int group_id) {
+        String sqlStatement = "DELETE FROM notelender.groups WHERE id= ?";
         try {
-            PreparedStatement addGroupMember = connection.prepareStatement(sqlStatement);
-            addGroupMember.setInt(1, groupMembers.getUserId());
-            addGroupMember.setInt(2, groupMembers.getGroupId());
-            addGroupMember.executeUpdate();
+            PreparedStatement deleteGroup = connection.prepareStatement(sqlStatement);
+            deleteGroup.setInt(1, group_id);
+            deleteGroup.executeUpdate();
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -217,16 +180,24 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<Void> deleteGroupMember(int id) {
-        String sqlStatement = "DELETE FROM notelender.groupmembers WHERE id=?";
+    public ResponseEntity<List<User>> getUsers(String json) {
+        System.out.println(json);
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
-            statement.setInt(1, id);
-            statement.executeUpdate();
-            return new ResponseEntity<>(HttpStatus.OK);
+            List<User> users = new ArrayList<>();
+            String sqlStatement = "SELECT * FROM notelender.users WHERE username LIKE ?";
+            PreparedStatement getGroup = connection.prepareStatement(sqlStatement);
+            getGroup.setString(1, "%" + json + "%");
+            ResultSet rs = getGroup.executeQuery();
+            while (rs.next()) {
+                users.add(new User(rs.getInt(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4), null));
+            }
+            return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
     }
 
     @Override
@@ -288,20 +259,6 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<Void> deleteNote(int noteId) {
-        String sqlStatement = "DELETE FROM notelender.notes WHERE id = ?";
-        try {
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
-            statement.setInt(1, noteId);
-            statement.executeUpdate();
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @Override
     public ResponseEntity<Void> deleteUser(int userId) {
         String sqlStatement = "DELETE FROM notelender.users WHERE id = ?";
         try {
@@ -316,24 +273,69 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<List<User>> getUsers(String json) {
-        System.out.println(json);
+    public ResponseEntity<List<GroupMembers>> getUserList(int id) {
+        List<GroupMembers> GroupMembersList = new ArrayList<>();
         try {
-            List<User> users = new ArrayList<>();
-            String sqlStatement = "SELECT * FROM notelender.users WHERE username LIKE ?";
-            PreparedStatement getGroup = connection.prepareStatement(sqlStatement);
-            getGroup.setString(1, "%" + json + "%");
-            ResultSet rs = getGroup.executeQuery();
+            String sqlStatement = "SELECT notelender.groupmembers.id,user_id,u.username,group_id " +
+                    "FROM notelender.groupmembers INNER JOIN notelender.users u ON u.id = groupmembers.user_id " +
+                    "WHERE notelender.groupmembers.group_id = ?";
+            PreparedStatement getUserList = connection.prepareStatement(sqlStatement);
+            getUserList.setInt(1, id);
+            ResultSet rs = getUserList.executeQuery();
             while (rs.next()) {
-                users.add(new User(rs.getInt(1), rs.getString(2),
-                        rs.getString(3), rs.getString(4), null));
+                GroupMembers groupMembers = new GroupMembers(rs.getInt(1), rs.getInt(2),
+                        rs.getString(3), rs.getInt(4));
+                GroupMembersList.add(groupMembers);
             }
-            return new ResponseEntity<>(users, HttpStatus.OK);
+            return new ResponseEntity<>(GroupMembersList, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
 
+
+    @Override
+    public ResponseEntity<Void> addGroupMember(String json) {
+        System.out.println(json);
+        String sqlStatement = "INSERT INTO notelender.groupmembers (user_id,group_id) VALUES (?,?)";
+        GroupMembers groupMembers = gson.fromJson(json, GroupMembers.class);
+        try {
+            PreparedStatement addGroupMember = connection.prepareStatement(sqlStatement);
+            addGroupMember.setInt(1, groupMembers.getUserId());
+            addGroupMember.setInt(2, groupMembers.getGroupId());
+            addGroupMember.executeUpdate();
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteGroupMember(int id) {
+        String sqlStatement = "DELETE FROM notelender.groupmembers WHERE id=?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteNote(int noteId) {
+        String sqlStatement = "DELETE FROM notelender.notes WHERE id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sqlStatement);
+            statement.setInt(1, noteId);
+            statement.executeUpdate();
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Override

@@ -67,7 +67,7 @@
                 @foreach (var group in GroupList)
                 {
                     <li class="list-group-item onHoverChange" @onclick="@(() => ChangeSelectedGroup(group))">
-                        <p style="text-decoration: underline">@group.name group</p>
+                     <u>@group.name group</u>
                     </li>
                 }
             </ul>
@@ -100,9 +100,9 @@
     // Method to navigate to a specific group instead of a list of the groups.
     private void ChangeSelectedGroup(Group group)
     {
-        UserId = group.id.ToString();
-        Console.WriteLine(UserId);
-        _navigationManager.NavigateTo("/GroupPage/" + group.id);
+        // UserId = group.id.ToString();
+        // Console.WriteLine(UserId);
+        _navigationManager.NavigateTo("/GroupPage/" + group.id+"/"+group.name);
     }
 
     // Method to refresh the component contents. Such as when changes are made to the user's groups.
@@ -116,8 +116,9 @@
     // Method used by <EditForm> component to add a group.
     private async void SubmitAddGroup()
     {
-        Notification notification = await _groupService.AddGroup(groupModel.name, ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser.id);
+        Notification notification = await _groupService.AddGroup(groupModel.name, ((CustomAuthenticationStateProvider) _authenticationStateProvider).CachedUser.id);
         _notificationManager.Show(notification);
+        await ((CustomAuthenticationStateProvider) _authenticationStateProvider).AddClaim();
         RefreshState();
         _refreshServiceNavMem.CallRequestRefresh();
     }

@@ -41,12 +41,12 @@
                         </div>
                         <div class=" form-group" style="display:@_temp">
                             <div class="">
-                                <label class="labelAcc">Change password :</label>
+                                <label class="labelAcc">New password :</label>
                                 <input class="form-control" type="password" @bind-value="@_changedPassword"/>
                             </div>
                         </div>
                         <div class="form-group" style="display:@_temp">
-                            <label class="labelAcc">Confirm password :</label>
+                            <label class="labelAcc">Confirm new password :</label>
                             <input class="form-control" type="password" @bind-value="@_confirmedPassword"/>
                         </div>
                         <div class="form-group">
@@ -72,7 +72,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _cachedUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser;
+        _cachedUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).CachedUser;
     }
 
     private void Change()

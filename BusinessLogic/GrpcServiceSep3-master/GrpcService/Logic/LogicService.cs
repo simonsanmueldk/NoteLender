@@ -224,7 +224,7 @@ namespace GrpcService.Logic
             });
         }
 
-        public async Task<Reply> PostInvitation(RegisterInvitationRequest request, ServerCallContext context)
+        public async Task<Reply> PostInvitation(PostInvitationRequest request, ServerCallContext context)
         {
             Invitation invitation = new Invitation(request.Id, request.GroupId, null, request.InviteeId, null,
                 request.InvitorId, null);

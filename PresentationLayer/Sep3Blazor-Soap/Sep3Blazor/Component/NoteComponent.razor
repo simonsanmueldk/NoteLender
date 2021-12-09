@@ -30,7 +30,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="background-color:white">
             <div class="modal-header">
-                <h5 class="modal-title" id="@("exampleEditModalLabel" + Note.id)">Note @Note.id in Group @Note.groupId</h5>
+                <h5 class="modal-title" id="@("exampleEditModalLabel" + Note.id)">Note @Note.name in Group @GroupName hey</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
             </div>
             <div class="modal-body">
@@ -38,27 +38,27 @@
                     <DataAnnotationsValidator/>
                     <ValidationSummary/>
                     <p>
-                        <label>
-                            Week:
-                            <InputNumber @bind-Value="Note.week"/>
+                        <label class="d-flex flex-row">
+                            <text class="col-2">Week:</text>
+                            <InputNumber class="col-2" @bind-Value="Note.week"/>
                         </label>
                     </p>
                     <p>
-                        <label>
-                            Year:
-                            <InputNumber @bind-Value="Note.year"/>
+                        <label class="d-flex flex-row">
+                            <text class="col-2">  Year:</text>
+                            <InputNumber class="col-2" @bind-Value="Note.year"/>
                         </label>
                     </p>
                     <p>
-                        <label>
-                            Name:
-                            <InputText @bind-Value="Note.name"/>
+                        <label class="d-flex flex-row">
+                           <text class="col-2"> Name:</text>
+                            <InputText class="col-6" @bind-Value="Note.name"/>
                         </label>
                     </p>
                     <p>
-                        <label>
-                            Status:
-                            <InputSelect @bind-Value="Note.status">
+                        <label class="d-flex flex-row">
+                           <text class="col-2"> Status:</text>
+                            <InputSelect class="col-3" @bind-Value="Note.status">
                                 <option value="">Not started</option>
                                 <option value="Started">Started</option>
                                 <option value="Finished">Finished</option>
@@ -66,9 +66,9 @@
                         </label>
                     </p>
                     <p>
-                        <label>
-                            Text
-                            <InputTextArea @bind-Value="Note.text"/>
+                        <label class="d-flex flex-row">
+                            <text class="col-2 textCenterer"> Text:</text>
+                            <InputTextArea class="col-6" @bind-Value="Note.text"/>
                         </label>
                     </p>
                     <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
@@ -85,7 +85,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content" style="background-color: white">
             <div class="modal-header">
-                <h5 class="modal-title" id="@("exampleModalLongTitle" + Note.id)">Are you sure you want to delete this note?</h5>
+                <h5 class="modal-title" id="@("exampleModalLongTitle" + Note.id)">Are you sure you want to delete  note @Note.name?</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
             </div>
             <div class="modal-footer">
@@ -103,6 +103,9 @@
     // Parameter to specify what Note object is in focus.
     [Parameter]
     public Note Note { get; set; }
+    
+    [Parameter]
+    public string? GroupName { get; set; }
 
     // TODO Add relevant comment
     [Parameter]
@@ -114,7 +117,7 @@
     protected override async Task OnInitializedAsync()
     {
         {
-            
+            Console.WriteLine(GroupName+"LOL");
         }
     }
 

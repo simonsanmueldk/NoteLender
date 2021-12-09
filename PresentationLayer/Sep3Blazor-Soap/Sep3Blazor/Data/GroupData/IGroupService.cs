@@ -8,8 +8,6 @@ namespace Sep3Blazor.Data.GroupData
 {
     public interface IGroupService
     {
-        public Task<IList<Group>> GetGroupList(String s);
-
         public Task<Notification> AddGroup(string groupName, int memberId);
 
         public Task<Notification> DeleteGroup(string s);

@@ -53,6 +53,7 @@ namespace GrpcService.Services
 
         public override async Task<Reply> GetGroup(Request request, ServerCallContext context)
         {
+            //check this one
             return await _logicService.GetGroup(request, context);
         }
 
@@ -95,7 +96,7 @@ namespace GrpcService.Services
         /*
          * Invitation Methods
          */
-        public override async Task<Reply> PostInvitation(RegisterInvitationRequest request, ServerCallContext context)
+        public override async Task<Reply> PostInvitation(PostInvitationRequest request, ServerCallContext context)
         {
             return await _logicService.PostInvitation(request, context);
         }

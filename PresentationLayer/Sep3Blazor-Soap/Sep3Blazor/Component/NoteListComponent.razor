@@ -14,7 +14,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content" style="background-color:white">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleAddModalLabel">Add Node in Group @GroupId</h5>
+          <h5 class="modal-title" id="exampleAddModalLabel">Add Node in Group @GroupName</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
         </div>
         <div class="modal-body">
@@ -22,27 +22,27 @@
             <DataAnnotationsValidator />
             <ValidationSummary />
             <p>
-              <label>
-                Week:
-                <InputNumber @bind-Value="_template.week" />
+              <label class="d-flex flex-row">
+                <text class="col-2"> Week:</text>
+                <InputNumber class="col-2" @bind-Value="_template.week" />
               </label>
             </p>
             <p>
-              <label>
-                Year:
-                <InputNumber @bind-Value="_template.year" />
+              <label class="d-flex flex-row">
+                <text class="col-2"> Year:</text>
+                <InputNumber class="col-2" @bind-Value="_template.year" />
               </label>
             </p>
             <p>
-              <label>
-                Name:
-                <InputText @bind-Value="_template.name"/>
+              <label class="d-flex flex-row">
+                <text class="col-2"> Name:</text>
+                <InputText class="col-6" @bind-Value="_template.name"/>
               </label>
             </p>
             <p>
-              <label>
-                Status:
-                <InputSelect @bind-Value="_template.status">
+              <label class="d-flex flex-row">
+                <text class="col-2">  Status:</text>
+                <InputSelect class="col-2" @bind-Value="_template.status">
                   <option value="Not started">Not started</option>
                   <option value="Started">Started</option>
                   <option value="Finished">Finished</option>
@@ -50,9 +50,9 @@
               </label>
             </p>
             <p>
-              <label>
-                Text
-                <InputTextArea @bind-Value="_template.text" />
+              <label class="d-flex flex-row">
+                <text class="col-2 textCenterer">  Text:</text>
+                <InputTextArea class="col-6" @bind-Value="_template.text" />
               </label>
             </p>
             <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
@@ -62,9 +62,13 @@
       </div>
     </div>
   </div>
+ 
   <div class="row">
-    <div class="col-1">
-      <button type="button" class="btn btn-secondary" style="height: 480px; width: 36px;" @onclick="PreviousPage">&lt;</button>
+    <div class="col-1" >
+      <div style="display:flex; flex-direction: row; justify-content: center; align-items: center; width: 100%">
+         <button type="button" class="btn btn-primary" style="height: 480px; width: 36px;" @onclick="PreviousPage">&lt;</button>
+      </div>
+     
     </div>
     <div class="col-10">
       <div class="row justify-content-between">
@@ -104,20 +108,20 @@
                       var subtractedTime = _time.Subtract(TimeSpan.FromDays(7));
                       if (note.year == GetIsoYear(subtractedTime) && note.week == GetIsoWeekOfYear(subtractedTime))
                       {
-                        <NoteComponent OnClick="ClickHandler" Note="note"></NoteComponent>
+                        <NoteComponent OnClick="ClickHandler" Note="note" GroupName="@GroupName"></NoteComponent>
                         <br>
                       }
                       break;
                     case 0:
                       if (note.year == GetIsoYear(_time) && note.week == GetIsoWeekOfYear(_time)){
-                        <NoteComponent OnClick="ClickHandler" Note="note"></NoteComponent>
+                        <NoteComponent OnClick="ClickHandler" Note="note" GroupName="@GroupName"></NoteComponent>
                         <br>
                       }
                       break;
                     case 1:
                       var addedTime = _time.Add(TimeSpan.FromDays(7));
                       if (note.year == GetIsoYear(addedTime) && note.week == GetIsoWeekOfYear(addedTime)){
-                        <NoteComponent OnClick="ClickHandler" Note="note"></NoteComponent>
+                        <NoteComponent OnClick="ClickHandler" Note="note" GroupName="@GroupName"></NoteComponent>
                         <br>
                       }
                       break;
@@ -130,7 +134,9 @@
       </div>
     </div>
     <div class="col-1">
-      <button type="button" class="btn btn-primary" style="height: 480px; width: 36px;" @onclick="NextPage">&gt;</button>
+      <div style="display:flex; flex-direction: row; justify-content: center; align-items: center; width: 100%">
+         <button type="button" class="btn btn-primary" style="height: 480px; width: 36px;" @onclick="NextPage">&gt;</button>
+      </div>
     </div>
   </div>
 </div>
@@ -139,6 +145,12 @@
 
   [Parameter]
   public int GroupId { get; set; }
+  
+  [Parameter]
+  public string GroupName { get; set; }
+
+  [CascadingParameter]
+  protected Task<AuthenticationState> AuthStat { get; set; }
 
   private IList<Note> NoteList { get; set; }
   private DateTime _time = DateTime.Today;
@@ -154,7 +166,7 @@
     NoteList = await _noteService.GetNoteList(GroupId.ToString());
 
   // Set the LoggedInUser equal to the User the custom Authentication service gets.
-    _loggedInUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).cachedUser;
+    _loggedInUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).CachedUser;
     
   // Instantiate Template note for the EditForm component.
     _template = new Note(0, _loggedInUser.id, GroupId, GetIsoWeekOfYear(_time), GetIsoYear(_time), "", "Not started", "");

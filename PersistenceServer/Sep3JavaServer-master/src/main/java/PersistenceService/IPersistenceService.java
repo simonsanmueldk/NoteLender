@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface IPersistenceService {
-    ResponseEntity<List<Group>> getGroup(int id);
+//    ResponseEntity<List<Group>> getGroup(int id);
 
     ResponseEntity<Void> postGroup(String json, int memberId);
 
@@ -22,7 +22,7 @@ public interface IPersistenceService {
 
     ResponseEntity<Void> deleteGroupMember(int id);
 
-    ResponseEntity<List<Note>> getNote(int groupId);
+    ResponseEntity<List<Note>> getNotes(int groupId);
 
     ResponseEntity<Void> addNote(String json);
 
