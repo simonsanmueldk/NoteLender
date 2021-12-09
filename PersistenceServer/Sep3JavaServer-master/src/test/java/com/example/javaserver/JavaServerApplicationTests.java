@@ -230,7 +230,7 @@ class JavaServerApplicationTests {
 
     @Test
     public void addInvitationTest() throws Exception {
-        Invitation invitation = new Invitation(26, 73,"No",8,"r",3,"esben");
+        Invitation invitation = new Invitation(26, 73, "No", 8, "r", 3, "esben");
         String str = gson.toJson(invitation);
         this.mockMvc.perform(MockMvcRequestBuilders
                         .post("/invitation")
@@ -243,7 +243,7 @@ class JavaServerApplicationTests {
 
     @Test
     public void getInvitationTest() throws Exception {
-        Invitation invitation = new Invitation(26, 75,"No",8,"r",3,"esben");
+        Invitation invitation = new Invitation(26, 75, "No", 8, "r", 3, "esben");
         List<Invitation> invitationList = new ArrayList<>();
         invitationList.add(invitation);
         String str = gson.toJson(invitationList);
