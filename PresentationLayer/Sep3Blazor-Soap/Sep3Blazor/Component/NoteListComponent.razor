@@ -172,10 +172,10 @@
     [CascadingParameter]
     protected Task<AuthenticationState> AuthStat { get; set; }
 
-    private static int Week;
-    private static int searchedWeek;
-    private static int searchedYear;
-    private static int Year;
+    
+    private  int searchedWeek;
+    private  int searchedYear;
+
 
 
     private IList<Note> NoteList { get; set; }
@@ -188,8 +188,6 @@
     // Method to run, when user enters this page.
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine(Week);
-        Console.WriteLine(Year);
         searchedWeek = GetIsoWeekOfYear(_time);
         searchedYear = GetIsoYear(_time);
     // Get the selected group's notes
@@ -230,8 +228,8 @@
         {
             time = time.AddDays(3);
         }
-        Week = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-        return Week;
+        return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+       
     }
 
     private static int GetIsoYear(DateTime time)
