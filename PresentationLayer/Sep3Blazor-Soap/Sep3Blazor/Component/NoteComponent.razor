@@ -30,7 +30,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="background-color:white">
             <div class="modal-header">
-                <h5 class="modal-title" id="@("exampleEditModalLabel" + Note.id)">Note @Note.id in Group @Note.groupId</h5>
+                <h5 class="modal-title" id="@("exampleEditModalLabel" + Note.id)">Note @Note.name in Group @GroupName hey</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
             </div>
             <div class="modal-body">
@@ -85,7 +85,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content" style="background-color: white">
             <div class="modal-header">
-                <h5 class="modal-title" id="@("exampleModalLongTitle" + Note.id)">Are you sure you want to delete this note?</h5>
+                <h5 class="modal-title" id="@("exampleModalLongTitle" + Note.id)">Are you sure you want to delete  note @Note.name?</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
             </div>
             <div class="modal-footer">
@@ -103,6 +103,9 @@
     // Parameter to specify what Note object is in focus.
     [Parameter]
     public Note Note { get; set; }
+    
+    [Parameter]
+    public string? GroupName { get; set; }
 
     // TODO Add relevant comment
     [Parameter]
@@ -114,7 +117,7 @@
     protected override async Task OnInitializedAsync()
     {
         {
-            
+            Console.WriteLine(GroupName+"LOL");
         }
     }
 

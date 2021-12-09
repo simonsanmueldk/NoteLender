@@ -60,7 +60,7 @@
                                 @foreach (var group in GroupList)
                                 {
                                     <AuthorizeView>
-                                        <NavLink class="dropdown-item" href="@("GroupPage/" + group.id)" @onclick="OutFocus" Match="NavLinkMatch.All">
+                                        <NavLink class="dropdown-item" href="@("GroupPage/" + group.id+"/"+group.name)" @onclick="OutFocus" Match="NavLinkMatch.All">
                                             <span class="oi oi-people" aria-hidden="true"></span> @("Group " + group.name)
                                         </NavLink>
                                     </AuthorizeView>
