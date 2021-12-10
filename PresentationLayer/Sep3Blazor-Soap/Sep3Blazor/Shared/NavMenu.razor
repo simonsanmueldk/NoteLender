@@ -8,8 +8,8 @@
 @inject IRefreshServiceNavMem _refreshServiceNavMem
 @inject NavigationManager _navigationManager
 
-<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-2 top-row">
-    <div class="container">
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-2 top-row sticky-top">
+    <div class="container-fluid">
         <div>
             <button class="navbar-toggler" @onclick="ToggleNavMenu" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -45,10 +45,10 @@
                 </li>
                 @if (GroupList != null)
                 {
-                    <li class="nav-item px-3">
+                    <li class="nav-item px-3 d-flex flex-row align-items-center justify-content-between">
                         <div class="dropdown">
                             <AuthorizeView>
-                                <button class=" nav-link btn-special dropdown-toggle" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded="false"
+                                <button class="nav-link btn-special dropdown-toggle" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded="false"
                                         @onclick="e => _show = !_show"
                                         @onfocusout="OutFocus">
                                     <span class="oi oi-spreadsheet" aria-hidden="true"></span>
