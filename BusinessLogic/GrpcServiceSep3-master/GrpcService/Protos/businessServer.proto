@@ -5,31 +5,36 @@ option csharp_namespace = "GrpcService";
 
 package BusinessServ;
 
-// The greeting service definition.
+// The business service definition.
 service BusinessServer {
+  //Note
+  rpc GetNoteList (Request) returns (Reply);
   rpc PostNote (NoteRequest) returns (Reply);
-   rpc PutNote (NoteRequest) returns (Reply);
-   rpc GetNoteList (Request) returns (Reply);
-   rpc DeleteNote (Request) returns (Reply);
-   
-   rpc GetGroupMemberList (Request) returns (Reply);
-   rpc RegisterUser(RegisterRequest) returns (RegisterReply);
-   rpc ValidateUser(Request) returns (Reply);
-     
-   rpc GetGroupList (Request) returns (Reply);
-   rpc PostGroup (PostGroupRequest) returns (Reply);
-   rpc DeleteGroup  (Request) returns (Reply);
-    rpc DeleteUser(UserRequest) returns (Reply);
-    
-   rpc GetInvitationList(Request) returns (Reply);
-   rpc EditUser(EditUserRequest) returns (Reply);
-   rpc PostInvitation(PostInvitationRequest) returns (Reply);
-   rpc DeleteInvitation(Request) returns (Reply);
+  rpc PutNote (NoteRequest) returns (Reply);
+  rpc DeleteNote (Request) returns (Reply);
+  
+  //Group
+  rpc GetGroupList (Request) returns (Reply);
+  rpc PostGroup (PostGroupRequest) returns (Reply);
+  rpc DeleteGroup  (Request) returns (Reply);
  
-   rpc AddGroupMember(AddGroupMemberRequest) returns (Reply);
-   rpc LeaveGroup(DeleteGroupMemberRequest) returns (Reply);
-   rpc DeleteGroupMember(UserRequest) returns (Reply);
-   rpc GetUserList(GetUserRequest) returns  (Reply);
+  //GroupMember
+  rpc GetGroupMemberList (Request) returns (Reply);
+  rpc AddGroupMember(AddGroupMemberRequest) returns (Reply);
+  rpc DeleteGroupMember(UserRequest) returns (Reply);
+  rpc LeaveGroup(DeleteGroupMemberRequest) returns (Reply);
+   
+  //User 
+  rpc ValidateUser(Request) returns (Reply);
+  rpc RegisterUser(RegisterRequest) returns (RegisterReply);
+  rpc GetUserList(GetUserRequest) returns  (Reply);
+  rpc EditUser(EditUserRequest) returns (Reply);
+  rpc DeleteUser(UserRequest) returns (Reply);
+   
+  //Invitation 
+  rpc GetInvitationList(Request) returns (Reply);
+  rpc PostInvitation(PostInvitationRequest) returns (Reply);
+  rpc DeleteInvitation(Request) returns (Reply);
 }
 
 
@@ -84,12 +89,6 @@ message RegisterRequest {
   string password = 4;
 }
 
-// The response message containing the greetings.
-message Reply {
-  string message = 1;
-  string type = 2;
-}
-
 message NoteRequest {
   int32 noteId = 1;
   int32 groupId = 2;
@@ -98,6 +97,12 @@ message NoteRequest {
   string name = 5;
   string status = 6;
   string text = 7;
+}
+
+// The response message containing the greetings.
+message Reply {
+  string message = 1;
+  string type = 2;
 }
 
 // The request message containing the user's name.

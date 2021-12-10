@@ -35,7 +35,7 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
-        
+
         public async Task<Reply> PostNote(NoteRequest request, ServerCallContext context)
         {
             Note note = new Note(request.NoteId, request.GroupId,
@@ -54,7 +54,7 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
-        
+
         public async Task<Reply> PutNote(NoteRequest request, ServerCallContext context)
         {
             Note note = new Note(request.NoteId, request.GroupId,
@@ -73,7 +73,7 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
-        
+
         public async Task<Reply> DeleteNote(Request request, ServerCallContext context)
         {
             Console.WriteLine("Name " + request);
@@ -90,7 +90,7 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
-        
+
         //Group
         public async Task<Reply> GetGroupList(Request request, ServerCallContext context)
         {
@@ -100,13 +100,14 @@ namespace GrpcService.Logic
             {
                 throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
             }
+
             string message = await responseMessage.Content.ReadAsStringAsync();
             return await Task.FromResult(new Reply
             {
                 Message = message
             });
         }
-        
+
         public async Task<Reply> PostGroup(PostGroupRequest request, ServerCallContext context)
         {
             HttpContent content = new StringContent(request.GroupName, Encoding.UTF8, "application/json");
@@ -141,24 +142,9 @@ namespace GrpcService.Logic
             });
         }
 
-        public async Task<Reply> LeaveGroup(DeleteGroupMemberRequest request, ServerCallContext context)
-        {
-            HttpContent content = new StringContent(request.UserId.ToString(), Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage =
-                await _client.PostAsync(uri + $"/groupmembers/{request.GroupId}", content);
-            if (!responseMessage.IsSuccessStatusCode)
-            {
-                throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
-            }
-            string message = await responseMessage.Content.ReadAsStringAsync();
-            Console.WriteLine(message);
-            return await Task.FromResult(new Reply
-            {
-                Message = message
-            });
-        }
+      
 
-        
+
         //GroupMember
         public async Task<Reply> GetGroupMemberList(Request request, ServerCallContext context)
         {
@@ -211,6 +197,24 @@ namespace GrpcService.Logic
             });
         }
 
+        public async Task<Reply> LeaveGroup(DeleteGroupMemberRequest request, ServerCallContext context)
+        {
+            HttpContent content = new StringContent(request.UserId.ToString(), Encoding.UTF8, "application/json");
+            HttpResponseMessage responseMessage =
+                await _client.PostAsync(uri + $"/groupmembers/{request.GroupId}", content);
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
+            }
+
+            string message = await responseMessage.Content.ReadAsStringAsync();
+            Console.WriteLine(message);
+            return await Task.FromResult(new Reply
+            {
+                Message = message
+            });
+        }
+        
         //User
         public async Task<Reply> ValidateUser(Request request, ServerCallContext context)
         {
@@ -242,7 +246,7 @@ namespace GrpcService.Logic
 
             return null;
         }
-        
+
         public async Task<RegisterReply> RegisterUser(RegisterRequest request, ServerCallContext context)
         {
             User temp = new User(0, request.FirstName, request.LastName, request.Username, request.Password);
@@ -261,7 +265,7 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
-        
+
         public async Task<Reply> GetUserList(GetUserRequest request, ServerCallContext context)
         {
             HttpResponseMessage responseMessage = await _client.GetAsync(uri + "/users/" + request.Username);
@@ -276,6 +280,7 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
+
         public async Task<Reply> EditUser(EditUserRequest request, ServerCallContext context)
         {
             User temp = new User(request.Id, "", "", "", request.NewPassword);
@@ -301,6 +306,7 @@ namespace GrpcService.Logic
             {
                 throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
             }
+
             string message = await responseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(message);
             return await Task.FromResult(new Reply
@@ -310,7 +316,6 @@ namespace GrpcService.Logic
         }
 
         //Invitation
-        
         public async Task<Reply> GetInvitationList(Request request, ServerCallContext context)
         {
             HttpResponseMessage responseMessage = await _client.GetAsync(uri + "/invitations/" + request.Name);
@@ -359,11 +364,5 @@ namespace GrpcService.Logic
                 Message = message
             });
         }
-
-       
-
-
-       
-       
     }
 }
