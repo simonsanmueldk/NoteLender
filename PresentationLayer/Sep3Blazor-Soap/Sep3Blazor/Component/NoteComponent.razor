@@ -110,7 +110,7 @@
     public EventCallback<string> OnClick { get; set; }
 
     // Note object to be used in <EditForm> component. 
-    private Note _noteModel = new Note(0, 0, 0, 0, 0, "", "", "");
+    private Note _noteModel = new Note(0,  0, 0, 0, "", "", "");
 
     protected override async Task OnInitializedAsync()
     {
@@ -126,7 +126,7 @@
     // Method that takes Note from <EditForm> and sends it to business to replace Note with same ID.
     private async void SubmitEditNote()
     {
-        Notification notification = await _noteService.EditNote(new Note(Note.id, Note.userId, Note.groupId, Note.week, Note.year, Note.name, Note.status, Note.text));
+        Notification notification = await _noteService.EditNote(new Note(Note.id, Note.groupId, Note.week, Note.year, Note.name, Note.status, Note.text));
         await OnClick.InvokeAsync();
         await _notificationManager.Show(notification);
     }

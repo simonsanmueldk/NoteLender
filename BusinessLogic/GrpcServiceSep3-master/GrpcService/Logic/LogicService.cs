@@ -71,7 +71,7 @@ namespace GrpcService.Logic
 
         public async Task<Reply> PostNote(NoteRequest request, ServerCallContext context)
         {
-            Note note = new Note(request.NoteId, request.UserId, request.GroupId,
+            Note note = new Note(request.NoteId, request.GroupId,
                 request.Week, request.Year, request.Name, request.Status, request.Text);
             string str = JsonSerializer.Serialize(note);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
@@ -90,7 +90,7 @@ namespace GrpcService.Logic
 
         public async Task<Reply> PutNote(NoteRequest request, ServerCallContext context)
         {
-            Note note = new Note(request.NoteId, request.UserId, request.GroupId,
+            Note note = new Note(request.NoteId, request.GroupId,
                 request.Week, request.Year, request.Name, request.Status, request.Text);
             string str = JsonSerializer.Serialize(note);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");

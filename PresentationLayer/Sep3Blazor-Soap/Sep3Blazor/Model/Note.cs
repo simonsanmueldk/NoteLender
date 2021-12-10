@@ -13,7 +13,7 @@ namespace Sep3Blazor.Model
         public String status { get; set; }
         public String text { get; set; }
 
-        public Note(int id, int userId, int groupId, int week, int year, string name, string status, string text)
+        public Note(int id, int groupId, int week, int year, string name, string status, string text)
         {
             this.id = id;
             this.userId = userId;

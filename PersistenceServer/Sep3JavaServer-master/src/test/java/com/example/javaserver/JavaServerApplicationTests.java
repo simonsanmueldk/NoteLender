@@ -33,7 +33,7 @@ class JavaServerApplicationTests {
 
     @Test
     public void getNotesTest() throws Exception {
-        Note note = new Note(17, 3, 76, 49, 2021, "wqe", "Started", "qew");
+        Note note = new Note(17, 76, 49, 2021, "wqe", "Started", "qew");
         List<Note> noteList = new ArrayList<>();
         noteList.add(note);
         String str = gson.toJson(noteList);
@@ -47,7 +47,7 @@ class JavaServerApplicationTests {
 
     @Test
     public void addNotesTest() throws Exception {
-        Note note = new Note(17, 3, 77, 49, 2021, "wqe", "Started", "qew");
+        Note note = new Note(17, 77, 49, 2021, "wqe", "Started", "qew");
         String str = gson.toJson(note);
         this.mockMvc.perform(MockMvcRequestBuilders
                         .post("/note")
@@ -60,7 +60,7 @@ class JavaServerApplicationTests {
 
     @Test
     public void editNotesTest() throws Exception {
-        Note note = new Note(20, 3, 77, 33, 2021, "wqe", "Finished", "qew");
+        Note note = new Note(20, 77, 33, 2021, "wqe", "Finished", "qew");
         String str = gson.toJson(note);
         this.mockMvc.perform(MockMvcRequestBuilders
                         .put("/note")

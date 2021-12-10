@@ -52,17 +52,16 @@ public class PersistenceService implements IPersistenceService {
     public ResponseEntity<Void> addNote(String json) {
         System.out.println(json);
         Note note = gson.fromJson(json, Note.class);
-        String sqlStatement = "INSERT INTO notelender.notes (user_id,group_id,week,year,name,status,text) " +
-                "VALUES (?,?,?,?,?,?,?)";
+        String sqlStatement = "INSERT INTO notelender.notes (group_id,week,year,name,status,text) " +
+                "VALUES (?,?,?,?,?,?)";
         try {
             PreparedStatement addNote = connection.prepareStatement(sqlStatement);
-            addNote.setInt(1, note.getUserId());
-            addNote.setInt(2, note.getGroupId());
-            addNote.setInt(3, note.getWeek());
-            addNote.setInt(4, note.getYear());
-            addNote.setString(5, note.getName());
-            addNote.setString(6, note.getStatus());
-            addNote.setString(7, note.getText());
+            addNote.setInt(1, note.getGroupId());
+            addNote.setInt(2, note.getWeek());
+            addNote.setInt(3, note.getYear());
+            addNote.setString(4, note.getName());
+            addNote.setString(5, note.getStatus());
+            addNote.setString(6, note.getText());
             addNote.executeUpdate();
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
@@ -79,10 +78,10 @@ public class PersistenceService implements IPersistenceService {
             getNote.setInt(1, id);
             ResultSet rs = getNote.executeQuery();
             while (rs.next()) {
-                Note noteToAdd = new Note(rs.getInt(1), rs.getInt(2),
-                        rs.getInt(3), rs.getInt(4),
-                        rs.getInt(5), rs.getString(6),
-                        rs.getString(7), rs.getString(8));
+                Note noteToAdd = new Note(rs.getInt(1),
+                        rs.getInt(2), rs.getInt(3),
+                        rs.getInt(4), rs.getString(5),
+                        rs.getString(6), rs.getString(7));
                 NoteList.add(noteToAdd);
             }
             return new ResponseEntity<>(NoteList, HttpStatus.OK);

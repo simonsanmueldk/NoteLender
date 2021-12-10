@@ -42,7 +42,6 @@ namespace Sep3Blazor.Data.NoteData
                     new NoteRequest
                     {
                         NoteId = note.id,
-                        UserId = note.userId,
                         GroupId = note.groupId,
                         Week = note.week,
                         Year = note.year,
@@ -97,7 +96,6 @@ namespace Sep3Blazor.Data.NoteData
                     new NoteRequest
                     {
                         NoteId = note.id,
-                        UserId = note.userId,
                         GroupId = note.groupId,
                         Week = note.week,
                         Year = note.year,
