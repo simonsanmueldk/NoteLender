@@ -51,18 +51,8 @@ namespace GrpcService.Services
             return await _logicService.PostGroup(request, context);
         }
 
-        public override async Task<Reply> GetGroup(Request request, ServerCallContext context)
-        {
-            //check this one
-            return await _logicService.GetGroup(request, context);
-        }
-
-        public override async Task<Reply> GetNote(Request request, ServerCallContext context)
-        {
-            String message = $"About page visited at {DateTime.UtcNow.ToLongTimeString()}";
-            _logger.LogInformation(message);
-            return await _logicService.GetNote(request, context);
-        }
+        
+        
 
         public override async Task<Reply> DeleteGroup(Request request, ServerCallContext context)
         {

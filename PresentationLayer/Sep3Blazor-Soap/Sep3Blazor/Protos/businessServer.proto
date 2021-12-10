@@ -8,11 +8,9 @@ package BusinessServ;
 service BusinessServer {
   // Sends a greeting
   rpc PostNote (NoteRequest) returns (Reply);
-  rpc GetNote (Request) returns (Reply);
   rpc PutNote (NoteRequest) returns (Reply);
   rpc GetNoteList (Request) returns (Reply);
   rpc DeleteNote (Request) returns (Reply);
-  rpc GetGroup (Request) returns (Reply);
   rpc GetUserList (Request) returns (Reply);
   rpc GetGroupMembersList (Request) returns (Reply);
   rpc PostGroup (PostGroupRequest) returns (Reply);

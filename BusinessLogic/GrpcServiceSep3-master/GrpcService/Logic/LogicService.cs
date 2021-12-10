@@ -107,7 +107,7 @@ namespace GrpcService.Logic
             });
         }
 
-        public async Task<Reply> GetNote(Request request, ServerCallContext context)
+        public async Task<Reply> GetNoteList(Request request, ServerCallContext context)
         {
             Console.WriteLine(request.Name);
             HttpResponseMessage responseMessage = await _client.GetAsync(uri + "/note/" + request.Name);
@@ -342,21 +342,7 @@ namespace GrpcService.Logic
             });
         }
 
-        public async Task<Reply> GetNoteList(Request request, ServerCallContext context)
-        {
-            Console.WriteLine(request.Name);
-            HttpResponseMessage responseMessage = await _client.GetAsync(uri + "/notelist/" + request.Name);
-            if (!responseMessage.IsSuccessStatusCode)
-            {
-                throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
-            }
-
-            string message = await responseMessage.Content.ReadAsStringAsync();
-            return await Task.FromResult(new Reply
-            {
-                Message = message
-            });
-        }
+    
 
         public async Task<Reply> GetGroupMembersList(Request request, ServerCallContext context)
         {

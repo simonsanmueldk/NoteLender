@@ -18,7 +18,7 @@ namespace Sep3Blazor.Data.NoteData
             var client = new BusinessServer.BusinessServerClient(channel);
             try
             {
-                var reply = await client.GetNoteAsync(
+                var reply = await client.GetNoteListAsync(
                     new Request {Name = s});
                 return JsonSerializer.Deserialize<List<Note>>(reply.Message);
             }

@@ -9,7 +9,6 @@ namespace GrpcService.Logic
         // Note
         public Task<Reply> PostNote(NoteRequest request, ServerCallContext context);
         public Task<Reply> PutNote(NoteRequest request, ServerCallContext context);
-        public Task<Reply> GetNote(Request request, ServerCallContext context);
         public Task<Reply> DeleteNote(Request request, ServerCallContext context);
         public Task<Reply> GetNoteList(Request request, ServerCallContext context);
 
