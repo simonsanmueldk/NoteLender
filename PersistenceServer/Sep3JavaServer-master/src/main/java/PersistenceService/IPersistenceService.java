@@ -6,13 +6,13 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface IPersistenceService {
-//    ResponseEntity<List<Group>> getGroup(int id);
+
 
     ResponseEntity<Void> postGroup(String json, int memberId);
 
     ResponseEntity<Void> deleteGroup(int id);
 
-    ResponseEntity<List<GroupMembers>> getUserList(int id);
+    ResponseEntity<List<GroupMembers>> getGroupMemberList(int id);
 
     ResponseEntity<List<Group>> getGroupList(int id);
 
@@ -22,7 +22,7 @@ public interface IPersistenceService {
 
     ResponseEntity<Void> deleteGroupMember(int id);
 
-    ResponseEntity<List<Note>> getNotes(int groupId);
+    ResponseEntity<List<Note>> getNoteList(int groupId);
 
     ResponseEntity<Void> addNote(String json);
 
@@ -44,5 +44,5 @@ public interface IPersistenceService {
 
     ResponseEntity<Void> deleteUser(int userId);
 
-    ResponseEntity<List<User>> getUsers(String json);
+    ResponseEntity<List<User>> getUserList(String json);
 }

@@ -17,16 +17,21 @@ public class PersistenceServerController {
         this.persistenceService = new PersistenceService();
     }
 
+    @GetMapping("/notes/{groupId}")
+    public ResponseEntity<List<Note>> getNoteList(@PathVariable(value = "groupId") int groupId) {
+        return persistenceService.getNoteList(groupId);
+    }
+
     @PostMapping("/note")
-    public ResponseEntity<Void> addNote(@RequestBody String json) {
+    public ResponseEntity<Void> addNote(@RequestBody String requestBody) {
         System.out.println("It's working AddNote");
-        return persistenceService.addNote(json);
+        return persistenceService.addNote(requestBody);
     }
 
     @PutMapping("/note")
-    public ResponseEntity<Void> editNote(@RequestBody String json) {
+    public ResponseEntity<Void> editNote(@RequestBody String requestBody) {
         System.out.println("EDIT BABYYY");
-        return persistenceService.editNote(json);
+        return persistenceService.editNote(requestBody);
     }
 
     @DeleteMapping("/note/{noteId}")
@@ -35,27 +40,16 @@ public class PersistenceServerController {
         return persistenceService.deleteNote(noteId);
     }
 
-    @GetMapping("/note/{groupId}")
-    public ResponseEntity<List<Note>> getNote(@PathVariable(value = "groupId") int groupId) {
-        return persistenceService.getNotes(groupId);
-    }
-
-    @PutMapping("/group/{memberId}")
-    public ResponseEntity<Void> createGroup(@RequestBody String json, @PathVariable(value = "memberId") int memberId) {
-        System.out.println("It's working Post");
-        return persistenceService.postGroup(json, memberId);
-    }
-
-//    @GetMapping("/group/{id}")
-//    public ResponseEntity<List<Group>> getGroup(@PathVariable(value = "id") int id) {
-//        System.out.println("It's working Get");
-//        return persistenceService.getGroup(id);
-//    }
-
-    @GetMapping("/groupmemberslist/{id}")
+    @GetMapping("/groups/{id}")
     public ResponseEntity<List<Group>> getGroupList(@PathVariable(value = "id") int id) {
         System.out.println("It's working Get");
         return persistenceService.getGroupList(id);
+    }
+
+    @PostMapping("/group/{memberId}")
+    public ResponseEntity<Void> createGroup(@RequestBody String requestBody, @PathVariable(value = "memberId") int memberId) {
+        System.out.println("It's working Post");
+        return persistenceService.postGroup(requestBody, memberId);
     }
 
     @DeleteMapping("/group/{id}")
@@ -65,32 +59,32 @@ public class PersistenceServerController {
     }
 
     @PostMapping("/groupmembers/{id}")
-    public ResponseEntity<Void> LeaveGroup(@PathVariable(value = "id") int id, @RequestBody String json) {
-        return persistenceService.leaveGroup(id, json);
+    public ResponseEntity<Void> LeaveGroup(@PathVariable(value = "id") int id, @RequestBody String requestBody) {
+        return persistenceService.leaveGroup(id, requestBody);
     }
 
     @GetMapping("/users/{username}")
-    public ResponseEntity<List<User>> getUsers(@PathVariable(value = "username") String username) {
+    public ResponseEntity<List<User>> getUserList(@PathVariable(value = "username") String username) {
         System.out.println("Get user");
-        return persistenceService.getUsers(username);
+        return persistenceService.getUserList(username);
     }
 
     @PostMapping("/user")
-    public ResponseEntity<User> ValidateUser(@RequestBody String json) {
+    public ResponseEntity<User> ValidateUser(@RequestBody String requestBody) {
         System.out.println("It's working Validate");
-        return persistenceService.validateUser(json);
+        return persistenceService.validateUser(requestBody);
     }
 
     @PostMapping("/unregisteruser")
-    public ResponseEntity<Void> registerUser(@RequestBody String json) {
-        return persistenceService.registerUser(json);
+    public ResponseEntity<Void> registerUser(@RequestBody String requestBody) {
+        return persistenceService.registerUser(requestBody);
     }
 
 
     @PostMapping("/user/{user_id}")
-    public ResponseEntity<Void> EditUser(@RequestBody String json, @PathVariable(value = "user_id") int user_id) {
+    public ResponseEntity<Void> EditUser(@RequestBody String requestBody, @PathVariable(value = "user_id") int user_id) {
         System.out.println("It's working Validate");
-        return persistenceService.editUser(json, user_id);
+        return persistenceService.editUser(requestBody, user_id);
     }
 
 
@@ -100,10 +94,10 @@ public class PersistenceServerController {
         return persistenceService.deleteUser(userId);
     }
 
-    @GetMapping("/userlist/{id}")
-    public ResponseEntity<List<GroupMembers>> getUserList(@PathVariable(value = "id") int id) {
+    @GetMapping("/groupmemberslist/{id}")
+    public ResponseEntity<List<GroupMembers>> getGroupMemberList(@PathVariable(value = "id") int id) {
         System.out.println("It's working Get");
-        return persistenceService.getUserList(id);
+        return persistenceService.getGroupMemberList(id);
     }
 
     @DeleteMapping("/groupmembers/{id}")
@@ -115,12 +109,12 @@ public class PersistenceServerController {
 
 
     @PostMapping("/invitation")
-    public ResponseEntity<Void> addInvitation(@RequestBody String json) {
+    public ResponseEntity<Void> addInvitation(@RequestBody String requestBody) {
         System.out.println("its working post invitation");
-        return persistenceService.addInvitation(json);
+        return persistenceService.addInvitation(requestBody);
     }
 
-    @GetMapping("/invitation/{id}")
+    @GetMapping("/invitations/{id}")
     public ResponseEntity<List<Invitation>> getInvitationList(@PathVariable(value = "id") int id) {
         return persistenceService.getInvitationList(id);
     }
@@ -131,7 +125,7 @@ public class PersistenceServerController {
     }
 
     @PostMapping("/groupmembers")
-    public ResponseEntity<Void> AddGroupMember(@RequestBody String json) {
-        return persistenceService.addGroupMember(json);
+    public ResponseEntity<Void> AddGroupMember(@RequestBody String requestBody) {
+        return persistenceService.addGroupMember(requestBody);
     }
 }

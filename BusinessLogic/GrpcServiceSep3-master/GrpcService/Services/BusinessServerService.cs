@@ -101,19 +101,19 @@ namespace GrpcService.Services
             return await _logicService.DeleteInvitation(request, context);
         }
         
-        public override async Task<Reply> GetUserList(Request request, ServerCallContext context)
+        public override async Task<Reply> GetGroupMemberList(Request request, ServerCallContext context)
+        {
+            return await _logicService.GetGroupMemberList(request, context);
+        }
+
+        public override async Task<Reply> GetUserList(GetUserRequest request, ServerCallContext context)
         {
             return await _logicService.GetUserList(request, context);
         }
-
-        public override async Task<Reply> GetUser(GetUserRequest request, ServerCallContext context)
-        {
-            return await _logicService.GetUser(request, context);
-        }
         
-        public override async Task<Reply> GetGroupMembersList(Request request, ServerCallContext context)
+        public override async Task<Reply> GetGroupList(Request request, ServerCallContext context)
         {
-            return await _logicService.GetGroupMembersList(request, context);
+            return await _logicService.GetGroupList(request, context);
         }
 
         public override async Task<Reply> AddGroupMember(AddGroupMemberRequest request, ServerCallContext context)

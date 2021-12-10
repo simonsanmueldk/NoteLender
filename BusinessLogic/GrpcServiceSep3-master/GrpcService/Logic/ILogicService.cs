@@ -14,7 +14,7 @@ namespace GrpcService.Logic
 
         // Group
         public Task<Reply> PostGroup(PostGroupRequest request, ServerCallContext context);
-        public Task<Reply> GetGroup(Request request, ServerCallContext context);
+    
         public Task<Reply> DeleteGroup(Request request, ServerCallContext context);
 
         // User
@@ -28,15 +28,15 @@ namespace GrpcService.Logic
         public Task<Reply> DeleteInvitation(Request request, ServerCallContext context);
 
         
-        public Task<Reply> GetUserList(Request request, ServerCallContext context);
+        public Task<Reply> GetGroupMemberList(Request request, ServerCallContext context);
         
-        public Task<Reply> GetGroupMembersList(Request request, ServerCallContext context);
+        public Task<Reply> GetGroupList(Request request, ServerCallContext context);
         public Task<Reply> AddGroupMember(AddGroupMemberRequest request, ServerCallContext context);
         
         public Task<Reply> DeleteGroupMember(UserRequest request, ServerCallContext context);
 
         public Task<Reply> DeleteUser(UserRequest request, ServerCallContext context);
-       public  Task<Reply> GetUser(GetUserRequest request, ServerCallContext context);
+       public  Task<Reply> GetUserList(GetUserRequest request, ServerCallContext context);
        public Task<Reply> LeaveGroup(DeleteGroupMemberRequest request, ServerCallContext context);
     }
 }

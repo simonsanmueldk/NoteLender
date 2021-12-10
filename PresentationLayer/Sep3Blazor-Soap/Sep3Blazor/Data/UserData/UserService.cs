@@ -58,6 +58,26 @@ namespace Sep3Blazor.Data.UserData
                 return new Notification("Error","User "+user.username+"failed to be created" , NotificationType.Error);
             }
         }
+        
+        public async Task<List<User>> GetUserList(string username)
+        {
+            using var channel = GrpcChannel.ForAddress(URL);
+            var client = new BusinessServer.BusinessServerClient(channel);
+            try
+            {
+                var reply = await client.GetUserListAsync(
+                    new GetUserRequest {Username = username});
+                Console.WriteLine("User" + reply);
+                return JsonSerializer.Deserialize<List<User>>(reply.Message);
+            }
+            catch (RpcException e)
+            {
+                Console.WriteLine(e.Status.Detail);
+                Console.WriteLine(e.Status.StatusCode);
+                Console.WriteLine((int) e.Status.StatusCode);
+                return null;
+            }
+        }
 
         public async Task<Notification> EditUser(int id, string newPassword)
         {
@@ -80,29 +100,10 @@ namespace Sep3Blazor.Data.UserData
             }
         }
 
-        public async Task<List<User>> GetUserList(string username)
-        {
-            using var channel = GrpcChannel.ForAddress(URL);
-            var client = new BusinessServer.BusinessServerClient(channel);
-            try
-            {
-                var reply = await client.GetUserAsync(
-                    new GetUserRequest {Username = username});
-                Console.WriteLine("User" + reply);
-                return JsonSerializer.Deserialize<List<User>>(reply.Message);
-            }
-            catch (RpcException e)
-            {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
-                 return null;
-            }
-        }
+        
 
         public async Task<Notification> DeleteUser(int id)
         {
-            Console.WriteLine("aleoo");
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
             try

@@ -70,7 +70,7 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<List<Note>> getNotes(int id) {
+    public ResponseEntity<List<Note>> getNoteList(int id) {
         List<Note> NoteList = new ArrayList<>();
         try {
             String sqlStatement = "SELECT * FROM notelender.notes WHERE group_id = ? ORDER BY year ASC, week";
@@ -111,24 +111,6 @@ public class PersistenceService implements IPersistenceService {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
-//    @Override
-//    public ResponseEntity<List<Group>> getGroup(int id) {
-//        List<Group> GroupList = new ArrayList<>();
-//        try {
-//            String sqlStatement = "SELECT * FROM notelender.groups WHERE id =  ?";
-//            PreparedStatement getGroup = connection.prepareStatement(sqlStatement);
-//            getGroup.setInt(1, id);
-//            ResultSet rs = getGroup.executeQuery();
-//            while (rs.next()) {
-//                GroupList.add(new Group(rs.getInt(1), rs.getString(2)));
-//            }
-//            return new ResponseEntity<>(GroupList, HttpStatus.OK);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//    }
 
     @Override
     public ResponseEntity<List<Group>> getGroupList(int id) {
@@ -179,7 +161,7 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<List<User>> getUsers(String json) {
+    public ResponseEntity<List<User>> getUserList(String json) {
         System.out.println(json);
         try {
             List<User> users = new ArrayList<>();
@@ -273,7 +255,7 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<List<GroupMembers>> getUserList(int id) {
+    public ResponseEntity<List<GroupMembers>> getGroupMemberList(int id) {
         List<GroupMembers> GroupMembersList = new ArrayList<>();
         try {
             String sqlStatement = "SELECT notelender.groupmembers.id,user_id,u.username,group_id " +

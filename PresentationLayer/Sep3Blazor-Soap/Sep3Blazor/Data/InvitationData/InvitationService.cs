@@ -13,6 +13,24 @@ namespace Sep3Blazor.Data.InvitationData
     {
         private readonly String URL = "https://localhost:5004";
 
+        public async Task<IList<Invitation>> GetInvitationList(int userId)
+        {
+            using var channel = GrpcChannel.ForAddress(URL);
+            var client = new BusinessServer.BusinessServerClient(channel);
+            try
+            {
+                var reply = await client.GetInvitationListAsync(
+                    new Request {Name = userId.ToString()});
+                return JsonSerializer.Deserialize<List<Invitation>>(reply.Message);
+            }
+            catch (RpcException e)
+            {
+                Console.WriteLine(e.Status.Detail);
+                Console.WriteLine(e.Status.StatusCode);
+                Console.WriteLine((int) e.Status.StatusCode);
+                return null;
+            }
+        }
         public async Task<Notification> AddInvitation(Invitation invitation)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -39,24 +57,7 @@ namespace Sep3Blazor.Data.InvitationData
             }
         }
 
-        public async Task<IList<Invitation>> GetInvitationList(int userId)
-        {
-            using var channel = GrpcChannel.ForAddress(URL);
-            var client = new BusinessServer.BusinessServerClient(channel);
-            try
-            {
-                var reply = await client.GetInvitationListAsync(
-                    new Request {Name = userId.ToString()});
-                return JsonSerializer.Deserialize<List<Invitation>>(reply.Message);
-            }
-            catch (RpcException e)
-            {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
-                return null;
-            }
-        }
+       
 
         public async Task<Notification> DeleteInvitation(int userId)
         {

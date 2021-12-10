@@ -13,6 +13,24 @@ namespace Sep3Blazor.Data.GroupData
     {
         private readonly String URL = "https://localhost:5004";
 
+        public async Task<IList<Group>> GetGroupList(int groupId)
+        {
+            using var channel = GrpcChannel.ForAddress(URL);
+            var client = new BusinessServer.BusinessServerClient(channel);
+            try
+            {
+                var reply = await client.GetGroupListAsync(
+                    new Request {Name = groupId.ToString()});
+                return JsonSerializer.Deserialize<List<Group>>(reply.Message);
+            }
+            catch (RpcException e)
+            {
+                Console.WriteLine(e.Status.Detail);
+                Console.WriteLine(e.Status.StatusCode);
+                Console.WriteLine((int) e.Status.StatusCode);
+                return null;
+            }
+        }
         public async Task<Notification> AddGroup(string groupName, int memberId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -38,8 +56,7 @@ namespace Sep3Blazor.Data.GroupData
                     NotificationType.Error);
             }
         }
-
-
+        
         public async Task<Notification> DeleteGroup(string s)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -59,25 +76,6 @@ namespace Sep3Blazor.Data.GroupData
                 Console.WriteLine((int) e.Status.StatusCode);
                 return new Notification("Error", "Group " + s + " was not successfully deleted. ",
                     NotificationType.Error);
-            }
-        }
-
-        public async Task<IList<Group>> GetGroupList(int groupId)
-        {
-            using var channel = GrpcChannel.ForAddress(URL);
-            var client = new BusinessServer.BusinessServerClient(channel);
-            try
-            {
-                var reply = await client.GetGroupMembersListAsync(
-                    new Request {Name = groupId.ToString()});
-                return JsonSerializer.Deserialize<List<Group>>(reply.Message);
-            }
-            catch (RpcException e)
-            {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
-                return null;
             }
         }
     }

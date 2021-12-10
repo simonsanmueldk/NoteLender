@@ -13,46 +13,6 @@ namespace Sep3Blazor.Data.GroupMembersData
     {
         private readonly String URL = "https://localhost:5004";
 
-        public async Task<IList<GroupMembers>> GetGroupMemberList(int groupId)
-        {
-            using var channel = GrpcChannel.ForAddress(URL);
-            var client = new BusinessServer.BusinessServerClient(channel);
-            try
-            {
-                var reply = await client.GetUserListAsync(
-                    new Request {Name = groupId.ToString()});
-                return JsonSerializer.Deserialize<List<GroupMembers>>(reply.Message);
-            }
-            catch (RpcException e)
-            {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
-                return null;
-            }
-        }
-
-        public async Task<Notification> AddGroupMember(int groupId, int userId)
-        {
-            Console.WriteLine("G" + groupId + " U " + userId);
-            using var channel = GrpcChannel.ForAddress(URL);
-            try
-            {
-                var client = new BusinessServer.BusinessServerClient(channel);
-                var reply = await client.AddGroupMemberAsync(
-                    new AddGroupMemberRequest {GroupId = groupId, UserId = userId});
-                Console.WriteLine("Group: " + reply.Message);
-                return new Notification("Success", "User was successfully added to group", NotificationType.Success);
-            }
-            catch (RpcException e)
-            {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
-                return new Notification("Error", "User  was not successfully added to group", NotificationType.Error);
-            }
-        }
-
         public async Task<Notification> LeaveGroup(int groupId, int userId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -75,6 +35,46 @@ namespace Sep3Blazor.Data.GroupMembersData
                     "User with Id= " + userId + " failed to leave group with Id = " + groupId, NotificationType.Error);
             }
         }
+        public async Task<IList<GroupMembers>> GetGroupMemberList(int groupId)
+        {
+            using var channel = GrpcChannel.ForAddress(URL);
+            var client = new BusinessServer.BusinessServerClient(channel);
+            try
+            {
+                var reply = await client.GetGroupMemberListAsync(
+                    new Request {Name = groupId.ToString()});
+                return JsonSerializer.Deserialize<List<GroupMembers>>(reply.Message);
+            }
+            catch (RpcException e)
+            {
+                Console.WriteLine(e.Status.Detail);
+                Console.WriteLine(e.Status.StatusCode);
+                Console.WriteLine((int) e.Status.StatusCode);
+                return null;
+            }
+        }
+
+        public async Task<Notification> AddGroupMember(int groupId, int userId)
+        {
+            using var channel = GrpcChannel.ForAddress(URL);
+            try
+            {
+                var client = new BusinessServer.BusinessServerClient(channel);
+                var reply = await client.AddGroupMemberAsync(
+                    new AddGroupMemberRequest {GroupId = groupId, UserId = userId});
+                Console.WriteLine("Group: " + reply.Message);
+                return new Notification("Success", "User was successfully added to group", NotificationType.Success);
+            }
+            catch (RpcException e)
+            {
+                Console.WriteLine(e.Status.Detail);
+                Console.WriteLine(e.Status.StatusCode);
+                Console.WriteLine((int) e.Status.StatusCode);
+                return new Notification("Error", "User  was not successfully added to group", NotificationType.Error);
+            }
+        }
+
+       
 
         public async Task<Notification> DeleteGroupMember(int id)
         {

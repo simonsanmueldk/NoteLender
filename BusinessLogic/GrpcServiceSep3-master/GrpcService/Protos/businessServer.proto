@@ -7,26 +7,29 @@ package BusinessServ;
 
 // The greeting service definition.
 service BusinessServer {
-  // Sends a greeting
   rpc PostNote (NoteRequest) returns (Reply);
-  rpc PutNote (NoteRequest) returns (Reply);
-  rpc GetNoteList (Request) returns (Reply);
-  rpc DeleteNote (Request) returns (Reply);
-  rpc GetUserList (Request) returns (Reply);
-  rpc GetGroupMembersList (Request) returns (Reply);
-  rpc PostGroup (PostGroupRequest) returns (Reply);
-  rpc DeleteGroup  (Request) returns (Reply);
-  rpc RegisterUser(RegisterRequest) returns (RegisterReply);
-  rpc ValidateUser(Request) returns (Reply);
-  rpc GetInvitationList(Request) returns (Reply);
-  rpc EditUser(EditUserRequest) returns (Reply);
-  rpc PostInvitation(PostInvitationRequest) returns (Reply);
-  rpc DeleteInvitation(Request) returns (Reply);
-  rpc DeleteUser(UserRequest) returns (Reply);
-  rpc AddGroupMember(AddGroupMemberRequest) returns (Reply);
-  rpc LeaveGroup(DeleteGroupMemberRequest) returns (Reply);
-  rpc DeleteGroupMember(UserRequest) returns (Reply);
-  rpc GetUser(GetUserRequest) returns  (Reply);
+   rpc PutNote (NoteRequest) returns (Reply);
+   rpc GetNoteList (Request) returns (Reply);
+   rpc DeleteNote (Request) returns (Reply);
+   
+   rpc GetGroupMemberList (Request) returns (Reply);
+   rpc RegisterUser(RegisterRequest) returns (RegisterReply);
+   rpc ValidateUser(Request) returns (Reply);
+     
+   rpc GetGroupList (Request) returns (Reply);
+   rpc PostGroup (PostGroupRequest) returns (Reply);
+   rpc DeleteGroup  (Request) returns (Reply);
+    rpc DeleteUser(UserRequest) returns (Reply);
+    
+   rpc GetInvitationList(Request) returns (Reply);
+   rpc EditUser(EditUserRequest) returns (Reply);
+   rpc PostInvitation(PostInvitationRequest) returns (Reply);
+   rpc DeleteInvitation(Request) returns (Reply);
+ 
+   rpc AddGroupMember(AddGroupMemberRequest) returns (Reply);
+   rpc LeaveGroup(DeleteGroupMemberRequest) returns (Reply);
+   rpc DeleteGroupMember(UserRequest) returns (Reply);
+   rpc GetUserList(GetUserRequest) returns  (Reply);
 }
 
 
