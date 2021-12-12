@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IPersistenceService {
 
-
+    ResponseEntity<Void> addInvitation(String json);
     ResponseEntity<Void> postGroup(String json, int memberId);
 
     ResponseEntity<Void> deleteGroup(int id);
@@ -32,7 +32,7 @@ public interface IPersistenceService {
 
     ResponseEntity<Void> registerUser(String json);
 
-    ResponseEntity<Void> addInvitation(String json);
+
 
     ResponseEntity<List<Invitation>> getInvitationList(int id);
 
