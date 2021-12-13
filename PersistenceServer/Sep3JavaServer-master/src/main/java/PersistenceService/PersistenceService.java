@@ -157,12 +157,13 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<List<User>> getUserList(String users) {
+    public ResponseEntity<List<User>> getUserList(String usersName) {
+
         try {
             List<User> userList = new ArrayList<>();
             String sqlStatement = "SELECT * FROM notelender.users WHERE username LIKE ?";
             PreparedStatement getGroup = connection.prepareStatement(sqlStatement);
-            getGroup.setString(1, "%" + userList + "%");
+            getGroup.setString(1, "%" + usersName + "%");
             ResultSet rs = getGroup.executeQuery();
             while (rs.next()) {
                 userList.add(new User(rs.getInt(1), rs.getString(2),
