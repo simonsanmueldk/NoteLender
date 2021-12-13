@@ -235,6 +235,11 @@
 
     private async Task SubmitAddNote()
     {
+        Console.WriteLine(_template.name +"aleoooo");
+        if (_template.name.Equals("") || _template.name.Equals(null))
+        {
+            _template.name = "Note";
+        }
         Notification notification = await _noteService.AddNote(new Note(0,  GroupId, _template.week, _template.year, _template.name, _template.status, _template.text));
         NoteList = await _noteService.GetNoteList(GroupId.ToString());
         _template = new Note(0, GroupId, GetIsoWeekOfYear(_time), GetIsoYear(_time), "", "Not started", "");
