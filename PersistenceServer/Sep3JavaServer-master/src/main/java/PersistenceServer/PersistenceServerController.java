@@ -110,7 +110,6 @@ public class PersistenceServerController {
 
     @PostMapping("/invitation")
     public ResponseEntity<Void> addInvitation(@RequestBody String requestBody) {
-        System.out.println("its working post invitation");
         return persistenceService.addInvitation(requestBody);
     }
 

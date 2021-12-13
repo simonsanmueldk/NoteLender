@@ -28,18 +28,18 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<Void> editNote(String json) {
-        System.out.println(json);
-        Note note = gson.fromJson(json, Note.class);
+    public ResponseEntity<Void> editNote(String note) {
+        System.out.println(note);
+        Note temp = gson.fromJson(note, Note.class);
         String sqlStatement = "UPDATE notelender.notes SET week = ?, year = ?, name = ?, status = ?, text = ? WHERE id = ?";
         try {
             PreparedStatement editNote = connection.prepareStatement(sqlStatement);
-            editNote.setInt(1, note.getWeek());
-            editNote.setInt(2, note.getYear());
-            editNote.setString(3, note.getName());
-            editNote.setString(4, note.getStatus());
-            editNote.setString(5, note.getText());
-            editNote.setInt(6, note.getId());
+            editNote.setInt(1, temp.getWeek());
+            editNote.setInt(2, temp.getYear());
+            editNote.setString(3, temp.getName());
+            editNote.setString(4, temp.getStatus());
+            editNote.setString(5, temp.getText());
+            editNote.setInt(6, temp.getId());
             editNote.executeUpdate();
 
             return new ResponseEntity<>(HttpStatus.OK);
@@ -49,19 +49,19 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<Void> addNote(String json) {
-        System.out.println(json);
-        Note note = gson.fromJson(json, Note.class);
+    public ResponseEntity<Void> addNote(String note) {
+        System.out.println(note);
+        Note temp = gson.fromJson(note, Note.class);
         String sqlStatement = "INSERT INTO notelender.notes (group_id,week,year,name,status,text) " +
                 "VALUES (?,?,?,?,?,?)";
         try {
             PreparedStatement addNote = connection.prepareStatement(sqlStatement);
-            addNote.setInt(1, note.getGroupId());
-            addNote.setInt(2, note.getWeek());
-            addNote.setInt(3, note.getYear());
-            addNote.setString(4, note.getName());
-            addNote.setString(5, note.getStatus());
-            addNote.setString(6, note.getText());
+            addNote.setInt(1, temp.getGroupId());
+            addNote.setInt(2, temp.getWeek());
+            addNote.setInt(3, temp.getYear());
+            addNote.setString(4, temp.getName());
+            addNote.setString(5, temp.getStatus());
+            addNote.setString(6, temp.getText());
             addNote.executeUpdate();
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
@@ -92,15 +92,15 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<Void> postGroup(String json, int memberId) {
-        System.out.println(json);
+    public ResponseEntity<Void> postGroup(String name, int memberId) {
+        System.out.println(name);
 
         String sqlStatement = "WITH groupcreation AS ( INSERT INTO notelender.groups (groupname) VALUES (?) " +
                 "RETURNING id) INSERT INTO notelender.groupmembers (user_id, group_id)\n" +
                 "VALUES ( ?, (SELECT id FROM groupcreation))";
         try {
             PreparedStatement insertGroup = connection.prepareStatement(sqlStatement);
-            insertGroup.setString(1, json);
+            insertGroup.setString(1, name);
             insertGroup.setInt(2, memberId);
             insertGroup.executeUpdate();
             return new ResponseEntity<>(HttpStatus.OK);
@@ -161,19 +161,19 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<List<User>> getUserList(String json) {
-        System.out.println(json);
+    public ResponseEntity<List<User>> getUserList(String users) {
+        System.out.println(users);
         try {
-            List<User> users = new ArrayList<>();
+            List<User> userList = new ArrayList<>();
             String sqlStatement = "SELECT * FROM notelender.users WHERE username LIKE ?";
             PreparedStatement getGroup = connection.prepareStatement(sqlStatement);
-            getGroup.setString(1, "%" + json + "%");
+            getGroup.setString(1, "%" + userList + "%");
             ResultSet rs = getGroup.executeQuery();
             while (rs.next()) {
-                users.add(new User(rs.getInt(1), rs.getString(2),
+                userList.add(new User(rs.getInt(1), rs.getString(2),
                         rs.getString(3), rs.getString(4), null));
             }
-            return new ResponseEntity<>(users, HttpStatus.OK);
+            return new ResponseEntity<>(userList, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -182,21 +182,20 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<User> validateUser(String json) {
-        System.out.println(json);
-        User user = null;
-        User temp = gson.fromJson(json, User.class);
+    public ResponseEntity<User> validateUser(String user) {
+        User validatedUser = null;
+        User temp = gson.fromJson(user, User.class);
         String sqlStatement = "SELECT * FROM notelender.users WHERE username =  ?";
         try {
             PreparedStatement validateUser = connection.prepareStatement(sqlStatement);
             validateUser.setString(1, temp.getUsername());
             ResultSet rs = validateUser.executeQuery();
             while (rs.next()) {
-                user = new User(rs.getInt(1), rs.getString(2),
+                validatedUser = new User(rs.getInt(1), rs.getString(2),
                         rs.getString(3), rs.getString(4),
                         rs.getString(5));
             }
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            return new ResponseEntity<>(validatedUser, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -204,9 +203,8 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<Void> registerUser(String json) {
-        System.out.println(json);
-        User temp = gson.fromJson(json, User.class);
+    public ResponseEntity<Void> registerUser(String user) {
+        User temp = gson.fromJson(user, User.class);
         String sqlStatement = "INSERT INTO notelender.users (firstname,lastname,username,password) VALUES (?,?,?,?)";
         try {
             PreparedStatement registerUser = connection.prepareStatement(sqlStatement);
@@ -223,9 +221,9 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<Void> editUser(String json, int user_id) {
-        System.out.println(json);
-        User temp = gson.fromJson(json, User.class);
+    public ResponseEntity<Void> editUser(String user, int user_id) {
+        System.out.println(user);
+        User temp = gson.fromJson(user, User.class);
         String sqlStatement = "UPDATE notelender.users SET password= ? WHERE id= ?";
         try {
             PreparedStatement editUser = connection.prepareStatement(sqlStatement);
@@ -278,10 +276,10 @@ public class PersistenceService implements IPersistenceService {
 
 
     @Override
-    public ResponseEntity<Void> addGroupMember(String json) {
-        System.out.println(json);
+    public ResponseEntity<Void> addGroupMember(String groupMember) {
+        System.out.println(groupMember);
         String sqlStatement = "INSERT INTO notelender.groupmembers (user_id,group_id) VALUES (?,?)";
-        GroupMembers groupMembers = gson.fromJson(json, GroupMembers.class);
+        GroupMembers groupMembers = gson.fromJson(groupMember, GroupMembers.class);
         try {
             PreparedStatement addGroupMember = connection.prepareStatement(sqlStatement);
             addGroupMember.setInt(1, groupMembers.getUserId());
@@ -321,16 +319,16 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<Void> addInvitation(String json) {
+    public ResponseEntity<Void> addInvitation(String invitation) {
         {
-            System.out.println(json);
-            Invitation invitation = gson.fromJson(json, Invitation.class);
+
+            Invitation temp = gson.fromJson(invitation, Invitation.class);
             String sqlStatement = "INSERT INTO notelender.invitations (invitor_id,invitee_id,group_id) VALUES (?,?,?)";
             try {
                 PreparedStatement addInvitation = connection.prepareStatement(sqlStatement);
-                addInvitation.setInt(1, invitation.getInvitorId());
-                addInvitation.setInt(2, invitation.getInviteeId());
-                addInvitation.setInt(3, invitation.getGroupId());
+                addInvitation.setInt(1, temp.getInvitorId());
+                addInvitation.setInt(2, temp.getInviteeId());
+                addInvitation.setInt(3, temp.getGroupId());
                 addInvitation.executeUpdate();
                 return new ResponseEntity<>(HttpStatus.OK);
             } catch (Exception e) {
