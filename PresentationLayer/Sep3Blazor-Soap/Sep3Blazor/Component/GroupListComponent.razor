@@ -102,7 +102,6 @@
     // Method to refresh the component contents. Such as when changes are made to the user's groups.
     public async void RefreshState()
     {
-        Console.WriteLine("Hey, i got called from component GroupListing");
         GroupList = await _groupService.GetGroupList(Convert.ToInt32(UserId));
         StateHasChanged();
     }

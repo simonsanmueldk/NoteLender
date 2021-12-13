@@ -21,15 +21,12 @@ namespace Sep3Blazor.Data.UserData
             {
                 var reply = await client.ValidateUserAsync(
                     new Request {Name = username, Type = password});
-                Console.WriteLine("Greeting: " + reply.Message);
                 User user = JsonSerializer.Deserialize<User>(reply.Message);
                 return user;
             }
             catch (RpcException e)
             {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
+                Console.WriteLine(e.StackTrace);
                 return null;
             }
         }
@@ -46,15 +43,12 @@ namespace Sep3Blazor.Data.UserData
                         Username = user.username, Password = user.password,
                         FirstName = user.firstName, LastName = user.lastName
                     });
-                Console.WriteLine("Greeting: " + reply);
                 return new Notification("Success", "User "+user.username+" was successfully created",
                     NotificationType.Success);
             }
             catch (RpcException e)
             {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
+                Console.WriteLine(e.StackTrace);
                 return new Notification("Error","User "+user.username+"failed to be created" , NotificationType.Error);
             }
         }
@@ -67,14 +61,11 @@ namespace Sep3Blazor.Data.UserData
             {
                 var reply = await client.GetUserListAsync(
                     new GetUserRequest {Username = username});
-                Console.WriteLine("User" + reply);
                 return JsonSerializer.Deserialize<List<User>>(reply.Message);
             }
             catch (RpcException e)
             {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
+                Console.WriteLine(e.StackTrace);
                 return null;
             }
         }
@@ -87,15 +78,12 @@ namespace Sep3Blazor.Data.UserData
             {
                 var reply = await client.EditUserAsync(new EditUserRequest
                     {Id = id, NewPassword = newPassword});
-                Console.WriteLine("Greeting: " + reply);
                 return new Notification("Success", "User was successfully edited",
                     NotificationType.Success);
             }
             catch (RpcException e)
             {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
+                Console.WriteLine(e.StackTrace);
                 return new Notification("Error","User failed to be edited" , NotificationType.Error);
             }
         }
@@ -114,15 +102,11 @@ namespace Sep3Blazor.Data.UserData
                         Id = id
                     }
                 );
-                Console.WriteLine("Greeting: " + reply.Message);
                 return new Notification("Success", "User was successfully deleted",
                     NotificationType.Success);
             }
             catch (RpcException e)
             {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
                 return new Notification("Error","User failed to be removed from group" , NotificationType.Error);
             }
         }

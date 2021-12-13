@@ -22,7 +22,6 @@ namespace GrpcService.Logic
         //Note
         public async Task<Reply> GetNoteList(Request request, ServerCallContext context)
         {
-            Console.WriteLine(request.Name);
             HttpResponseMessage responseMessage = await _client.GetAsync(uri + "/notes/" + request.Name);
             if (!responseMessage.IsSuccessStatusCode)
             {
@@ -76,7 +75,6 @@ namespace GrpcService.Logic
 
         public async Task<Reply> DeleteNote(Request request, ServerCallContext context)
         {
-            Console.WriteLine("Name " + request);
             HttpResponseMessage responseMessage = await _client.DeleteAsync(uri + "/note/" + request.Name);
             if (!responseMessage.IsSuccessStatusCode)
             {
@@ -84,7 +82,6 @@ namespace GrpcService.Logic
             }
 
             string message = await responseMessage.Content.ReadAsStringAsync();
-            Console.WriteLine(message);
             return await Task.FromResult(new Reply
             {
                 Message = message
@@ -94,7 +91,6 @@ namespace GrpcService.Logic
         //Group
         public async Task<Reply> GetGroupList(Request request, ServerCallContext context)
         {
-            Console.WriteLine(request.Name);
             HttpResponseMessage responseMessage = await _client.GetAsync(uri + "/groups/" + request.Name);
             if (!responseMessage.IsSuccessStatusCode)
             {
@@ -118,7 +114,6 @@ namespace GrpcService.Logic
             }
 
             string message = await responseMessage.Content.ReadAsStringAsync();
-            Console.WriteLine(message);
             return await Task.FromResult(new Reply
             {
                 Message = message
@@ -127,7 +122,6 @@ namespace GrpcService.Logic
 
         public async Task<Reply> DeleteGroup(Request request, ServerCallContext context)
         {
-            Console.WriteLine(request);
             HttpResponseMessage responseMessage = await _client.DeleteAsync(uri + "/group/" + request.Name);
             if (!responseMessage.IsSuccessStatusCode)
             {
@@ -135,20 +129,18 @@ namespace GrpcService.Logic
             }
 
             string message = await responseMessage.Content.ReadAsStringAsync();
-            Console.WriteLine(message);
             return await Task.FromResult(new Reply
             {
                 Message = message
             });
         }
 
-      
+
 
 
         //GroupMember
         public async Task<Reply> GetGroupMemberList(Request request, ServerCallContext context)
         {
-            Console.WriteLine(request.Name);
             HttpResponseMessage responseMessage = await _client.GetAsync(uri + "/groupmemberslist/" + request.Name);
             if (!responseMessage.IsSuccessStatusCode)
             {
@@ -164,7 +156,6 @@ namespace GrpcService.Logic
 
         public async Task<Reply> AddGroupMember(AddGroupMemberRequest request, ServerCallContext context)
         {
-            Console.WriteLine(request.GroupId + ":" + request.UserId);
             GroupMembers temp = new GroupMembers(0, request.GroupId, null, request.UserId);
             string str = JsonSerializer.Serialize(temp);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
@@ -190,7 +181,6 @@ namespace GrpcService.Logic
             }
 
             string message = await responseMessage.Content.ReadAsStringAsync();
-            Console.WriteLine(message);
             return await Task.FromResult(new Reply
             {
                 Message = message
@@ -208,13 +198,12 @@ namespace GrpcService.Logic
             }
 
             string message = await responseMessage.Content.ReadAsStringAsync();
-            Console.WriteLine(message);
             return await Task.FromResult(new Reply
             {
                 Message = message
             });
         }
-        
+
         //User
         public async Task<Reply> ValidateUser(Request request, ServerCallContext context)
         {
@@ -222,30 +211,25 @@ namespace GrpcService.Logic
             string str = JsonSerializer.Serialize(temp);
             HttpContent content = new StringContent(str, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await _client.PostAsync(uri + "/user", content);
-            try
+            if (responseMessage.IsSuccessStatusCode)
             {
-                if (responseMessage.IsSuccessStatusCode)
+                string message = await responseMessage.Content.ReadAsStringAsync();
+                User user = JsonSerializer.Deserialize<User>(message);
+                if (request.Type.Equals(user.password))
                 {
-                    string message = await responseMessage.Content.ReadAsStringAsync();
-                    Console.WriteLine(message);
-                    User user = JsonSerializer.Deserialize<User>(message);
-                    if (request.Type.Equals(user.password))
+                    return await Task.FromResult(new Reply
                     {
-                        return await Task.FromResult(new Reply
-                        {
-                            Message = message
-                        });
-                    }
+                        Message = message
+                    });
                 }
             }
-            catch (Exception e)
+            else
             {
-                Console.WriteLine(e);
                 return null;
             }
-
             return null;
         }
+
 
         public async Task<RegisterReply> RegisterUser(RegisterRequest request, ServerCallContext context)
         {
@@ -257,9 +241,7 @@ namespace GrpcService.Logic
             {
                 throw new Exception("Error " + responseMessage.StatusCode + " " + responseMessage.ReasonPhrase);
             }
-
             string message = await responseMessage.Content.ReadAsStringAsync();
-            Console.WriteLine(message);
             return await Task.FromResult(new RegisterReply
             {
                 Message = message
@@ -308,7 +290,6 @@ namespace GrpcService.Logic
             }
 
             string message = await responseMessage.Content.ReadAsStringAsync();
-            Console.WriteLine(message);
             return await Task.FromResult(new Reply
             {
                 Message = message

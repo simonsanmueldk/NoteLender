@@ -65,7 +65,6 @@ namespace Sep3Blazor.Authentication
 
         public async Task<Notification> ValidateLogin(string tempUserName, string tempPassword)
         {
-            Console.WriteLine("Validating log in");
             Notification notification = null;
             ClaimsIdentity identity = new ClaimsIdentity();
             try
