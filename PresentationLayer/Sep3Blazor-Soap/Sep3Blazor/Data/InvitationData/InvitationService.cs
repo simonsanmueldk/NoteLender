@@ -54,7 +54,7 @@ namespace Sep3Blazor.Data.InvitationData
 
        
 
-        public async Task<Notification> DeleteInvitation(int userId)
+        public async Task<Notification> DeleteInvitation(int invitationId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
@@ -63,7 +63,7 @@ namespace Sep3Blazor.Data.InvitationData
                 var reply = await client.DeleteInvitationAsync(
                     new Request
                     {
-                        Name = userId.ToString()
+                        Name = invitationId.ToString()
                     }
                 );
                 return new Notification("Success", "Invitation was declined", NotificationType.Success);
