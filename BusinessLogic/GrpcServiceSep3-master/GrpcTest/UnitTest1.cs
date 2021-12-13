@@ -18,7 +18,7 @@ namespace GrpcTest
         }
         
         [Fact]
-        public async void success_SayHello()
+        public async void success_GetGroupList()
         {
             var reply = await greeterClient.GetGroupListAsync(
                 new Request {Name = "76"});
