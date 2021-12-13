@@ -7,9 +7,9 @@
 @inject NavigationManager _navigationManager
 @inject NotificationManager _notificationManager
 
+
 <EditForm Model="@user" OnValidSubmit="@RegisterUser">
     <DataAnnotationsValidator/>
-    <ValidationSummary/>
     <br/>
     <div class="d-flex justify-content-center">
         <aside class="col-sm-4 " style="alignment: center">
@@ -59,8 +59,13 @@
                                     </span>
                                 </div>
                                 <InputText class="form-control" type="password" placeholder="Password" @bind-Value="user.password"/>
+                               
                             </div> <!-- input-group.// -->
                         </div> <!-- form-group// -->
+                        <div class="d-flex flex-row align-items-center justify-content-between">
+                            <ValidationMessage For="@(() => user.password)" />
+                        </div>
+                         
                         <div class="form-group">
                             <button class="btn btn-primary btn-block" type="submit">Create account</button>
                         </div>

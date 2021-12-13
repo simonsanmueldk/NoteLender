@@ -340,7 +340,7 @@ namespace GrpcService.Logic
             HttpResponseMessage responseMessage = await _client.PostAsync(uri + "/invitation", content);
             if (!responseMessage.IsSuccessStatusCode)
             {
-                throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
+                throw new Exception("Error " + responseMessage.StatusCode + " " + responseMessage.ReasonPhrase);
             }
 
             string message = await responseMessage.Content.ReadAsStringAsync();

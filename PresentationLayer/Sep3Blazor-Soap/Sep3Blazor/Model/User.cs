@@ -14,7 +14,7 @@ namespace Sep3Blazor.Model
         [Required] [StringLength(15)] 
         public String username { get; set; }
 
-        [Required] /*[Range(7,15,ErrorMessage = "Please enter a value between 7-15 characters for Password")]*/
+        [Required] [Range(7,15,ErrorMessage = "Password must be between 7-15 characters")]
         public String password { get; set; }
         
         public User(int id, string firstName, string lastName, string username, string password)
