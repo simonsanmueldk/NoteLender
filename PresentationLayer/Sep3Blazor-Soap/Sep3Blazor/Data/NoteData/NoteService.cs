@@ -24,9 +24,7 @@ namespace Sep3Blazor.Data.NoteData
             }
             catch (RpcException e)
             {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
+                Console.WriteLine(e.StackTrace);
                 return null;
             }
         }
@@ -54,9 +52,7 @@ namespace Sep3Blazor.Data.NoteData
             }
             catch (RpcException e)
             {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
+                Console.WriteLine(e.StackTrace);
                 return new Notification("Error",
                     "Note " + note.name + " was not successfully added. ", NotificationType.Error);
             }
@@ -84,9 +80,7 @@ namespace Sep3Blazor.Data.NoteData
             }
             catch (RpcException e)
             {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
+                Console.WriteLine(e.StackTrace);
                 return new Notification("Error", "Note failed to be edited", NotificationType.Error);
             }
         }
@@ -108,9 +102,7 @@ namespace Sep3Blazor.Data.NoteData
             }
             catch (RpcException e)
             {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
+                Console.WriteLine(e.StackTrace);
                 return new Notification("Error", "Note failed to be removed from group", NotificationType.Error);
             }
         }

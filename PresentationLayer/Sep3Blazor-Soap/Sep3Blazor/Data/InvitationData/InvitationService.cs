@@ -25,9 +25,7 @@ namespace Sep3Blazor.Data.InvitationData
             }
             catch (RpcException e)
             {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
+                Console.WriteLine(e.StackTrace);
                 return null;
             }
         }
@@ -45,21 +43,18 @@ namespace Sep3Blazor.Data.InvitationData
                         InvitorId = invitation.invitorId,
                     }
                 );
-                Console.WriteLine("greetings" + reply.Message);
                 return new Notification("Success", "Invitation was successfully sent", NotificationType.Success);
             }
             catch (RpcException e)
             {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
+                Console.WriteLine(e.StackTrace);
                 return new Notification("Error", "Invitation failed to be sent", NotificationType.Error);
             }
         }
 
        
 
-        public async Task<Notification> DeleteInvitation(int userId)
+        public async Task<Notification> DeleteInvitation(int invitationId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
             var client = new BusinessServer.BusinessServerClient(channel);
@@ -68,17 +63,14 @@ namespace Sep3Blazor.Data.InvitationData
                 var reply = await client.DeleteInvitationAsync(
                     new Request
                     {
-                        Name = userId.ToString()
+                        Name = invitationId.ToString()
                     }
                 );
-                Console.WriteLine("Delete: " + reply.Message);
                 return new Notification("Success", "Invitation was declined", NotificationType.Success);
             }
             catch (RpcException e)
             {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
+                Console.WriteLine(e.StackTrace);
                 return new Notification("Error", "Invitation failed to be deleted", NotificationType.Error);
             }
         }

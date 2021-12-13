@@ -25,9 +25,7 @@ namespace Sep3Blazor.Data.GroupData
             }
             catch (RpcException e)
             {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
+                Console.WriteLine(e.StackTrace);
                 return null;
             }
         }
@@ -43,15 +41,12 @@ namespace Sep3Blazor.Data.GroupData
                         GroupName = groupName,
                         MemberId = memberId
                     });
-                Console.WriteLine("Greeting: " + reply.Message);
                 return new Notification("Success", "Group " + groupName + " was successfully created. ",
                     NotificationType.Success);
             }
             catch (RpcException e)
             {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
+                Console.WriteLine(e.StackTrace);
                 return new Notification("Error", "Group " + groupName + " was not successfully added. ",
                     NotificationType.Error);
             }
@@ -65,15 +60,12 @@ namespace Sep3Blazor.Data.GroupData
             {
                 var reply = await client.DeleteGroupAsync(
                     new Request {Name = s});
-                Console.WriteLine("Greeting: " + reply.Message);
                 return new Notification("Success", "Group " + s + " was successfully deleted. ",
                     NotificationType.Success);
             }
             catch (RpcException e)
             {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
+                Console.WriteLine(e.StackTrace);
                 return new Notification("Error", "Group " + s + " was not successfully deleted. ",
                     NotificationType.Error);
             }
