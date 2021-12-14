@@ -29,7 +29,7 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public ResponseEntity<Void> editNote(String note) {
-        System.out.println(note);
+
         Note temp = gson.fromJson(note, Note.class);
         String sqlStatement = "UPDATE notelender.notes SET week = ?, year = ?, name = ?, status = ?, text = ? WHERE id = ?";
         try {
@@ -50,7 +50,6 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public ResponseEntity<Void> addNote(String note) {
-        System.out.println(note);
         Note temp = gson.fromJson(note, Note.class);
         String sqlStatement = "INSERT INTO notelender.notes (group_id,week,year,name,status,text) " +
                 "VALUES (?,?,?,?,?,?)";
@@ -93,8 +92,6 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public ResponseEntity<Void> postGroup(String name, int memberId) {
-        System.out.println(name);
-
         String sqlStatement = "WITH groupcreation AS ( INSERT INTO notelender.groups (groupname) VALUES (?) " +
                 "RETURNING id) INSERT INTO notelender.groupmembers (user_id, group_id)\n" +
                 "VALUES ( ?, (SELECT id FROM groupcreation))";
@@ -147,7 +144,6 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public ResponseEntity<Void> leaveGroup(int id, String groupMember) {
-        System.out.println(groupMember);
         String sqlStatement = "DELETE FROM notelender.groupmembers WHERE group_id = ? AND user_id = ?";
         try {
             PreparedStatement deleteGroupMember = connection.prepareStatement(sqlStatement);
@@ -161,13 +157,13 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<List<User>> getUserList(String users) {
-        System.out.println(users);
+    public ResponseEntity<List<User>> getUserList(String usersName) {
+
         try {
             List<User> userList = new ArrayList<>();
             String sqlStatement = "SELECT * FROM notelender.users WHERE username LIKE ?";
             PreparedStatement getGroup = connection.prepareStatement(sqlStatement);
-            getGroup.setString(1, "%" + userList + "%");
+            getGroup.setString(1, "%" + usersName + "%");
             ResultSet rs = getGroup.executeQuery();
             while (rs.next()) {
                 userList.add(new User(rs.getInt(1), rs.getString(2),
@@ -222,7 +218,6 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public ResponseEntity<Void> editUser(String user, int user_id) {
-        System.out.println(user);
         User temp = gson.fromJson(user, User.class);
         String sqlStatement = "UPDATE notelender.users SET password= ? WHERE id= ?";
         try {
@@ -239,7 +234,6 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public ResponseEntity<Void> deleteUser(int userId) {
-        System.out.println("aleoo");
         String sqlStatement = "DELETE FROM notelender.users WHERE id = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sqlStatement);
@@ -277,7 +271,6 @@ public class PersistenceService implements IPersistenceService {
 
     @Override
     public ResponseEntity<Void> addGroupMember(String groupMember) {
-        System.out.println(groupMember);
         String sqlStatement = "INSERT INTO notelender.groupmembers (user_id,group_id) VALUES (?,?)";
         GroupMembers groupMembers = gson.fromJson(groupMember, GroupMembers.class);
         try {

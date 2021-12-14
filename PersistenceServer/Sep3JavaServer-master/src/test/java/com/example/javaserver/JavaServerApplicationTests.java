@@ -32,13 +32,13 @@ class JavaServerApplicationTests {
     private MockMvc mockMvc;
 
     @Test
-    public void getNotesTest() throws Exception {
+    public void getNoteListTest() throws Exception {
         Note note = new Note(17, 76, 49, 2021, "wqe", "Started", "qew");
         List<Note> noteList = new ArrayList<>();
         noteList.add(note);
         String str = gson.toJson(noteList);
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/note/{groupId}", 76)
+                        .get("/notes/{groupId}", 76)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -46,7 +46,7 @@ class JavaServerApplicationTests {
     }
 
     @Test
-    public void addNotesTest() throws Exception {
+    public void addNoteTest() throws Exception {
         Note note = new Note(17, 77, 49, 2021, "wqe", "Started", "qew");
         String str = gson.toJson(note);
         this.mockMvc.perform(MockMvcRequestBuilders
@@ -59,7 +59,7 @@ class JavaServerApplicationTests {
     }
 
     @Test
-    public void editNotesTest() throws Exception {
+    public void editNoteTest() throws Exception {
         Note note = new Note(20, 77, 33, 2021, "wqe", "Finished", "qew");
         String str = gson.toJson(note);
         this.mockMvc.perform(MockMvcRequestBuilders
@@ -72,7 +72,7 @@ class JavaServerApplicationTests {
     }
 
     @Test
-    public void deleteNotesTest() throws Exception {
+    public void deleteNoteTest() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders
                         .delete("/note/{noteId}", 20)
                         .accept(MediaType.APPLICATION_JSON))
@@ -87,7 +87,7 @@ class JavaServerApplicationTests {
         groupMembersList.add(groupMembers);
         String str = gson.toJson(groupMembersList);
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/userlist/{id}", 77)
+                        .get("/users/{id}", 77)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -113,7 +113,7 @@ class JavaServerApplicationTests {
         groupList.add(group);
         String str = gson.toJson(groupList);
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/groupmemberslist/{id}", 3)
+                        .get("/groups/{id}", 3)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())

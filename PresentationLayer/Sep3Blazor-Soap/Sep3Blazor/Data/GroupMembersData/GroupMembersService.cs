@@ -21,16 +21,13 @@ namespace Sep3Blazor.Data.GroupMembersData
             {
                 var reply = await client.LeaveGroupAsync(
                     new DeleteGroupMemberRequest {GroupId = groupId, UserId = userId});
-                Console.WriteLine("Group: " + reply.Message);
                 return new Notification("Success",
                     "User with Id= " + userId + "  successfully left group with Id = " + groupId,
                     NotificationType.Success);
             }
             catch (RpcException e)
             {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
+                Console.WriteLine(e.StackTrace);
                 return new Notification("Error",
                     "User with Id= " + userId + " failed to leave group with Id = " + groupId, NotificationType.Error);
             }
@@ -47,9 +44,7 @@ namespace Sep3Blazor.Data.GroupMembersData
             }
             catch (RpcException e)
             {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
+                Console.WriteLine(e.StackTrace);
                 return null;
             }
         }
@@ -62,14 +57,11 @@ namespace Sep3Blazor.Data.GroupMembersData
                 var client = new BusinessServer.BusinessServerClient(channel);
                 var reply = await client.AddGroupMemberAsync(
                     new AddGroupMemberRequest {GroupId = groupId, UserId = userId});
-                Console.WriteLine("Group: " + reply.Message);
                 return new Notification("Success", "User was successfully added to group", NotificationType.Success);
             }
             catch (RpcException e)
             {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
+                Console.WriteLine(e.StackTrace);
                 return new Notification("Error", "User  was not successfully added to group", NotificationType.Error);
             }
         }
@@ -88,15 +80,12 @@ namespace Sep3Blazor.Data.GroupMembersData
                         Id = id
                     }
                 );
-                Console.WriteLine("DeleteGroupMember " + reply.Message);
                 return new Notification("Success", "User was successfully removed from group",
                     NotificationType.Success);
             }
             catch (RpcException e)
             {
-                Console.WriteLine(e.Status.Detail);
-                Console.WriteLine(e.Status.StatusCode);
-                Console.WriteLine((int) e.Status.StatusCode);
+                Console.WriteLine(e.StackTrace);
                 return new Notification("Error", "User failed to be removed from group", NotificationType.Error);
             }
         }
