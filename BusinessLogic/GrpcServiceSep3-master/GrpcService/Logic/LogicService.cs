@@ -255,7 +255,6 @@ namespace GrpcService.Logic
             {
                 throw new Exception("Error " + responseMessage.StatusCode + " " + " " + responseMessage.ReasonPhrase);
             }
-
             string message = await responseMessage.Content.ReadAsStringAsync();
             return await Task.FromResult(new Reply
             {

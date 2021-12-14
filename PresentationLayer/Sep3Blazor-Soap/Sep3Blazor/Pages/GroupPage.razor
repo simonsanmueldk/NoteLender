@@ -38,10 +38,10 @@
                     Delete group
                 </button>
                 <div class="modal fade" id="@("exampleDelete" + Id)" tabindex="-1" role="dialog" aria-labelledby="@("exampleModalCenterTitle" + Id)" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content" style="background-color: white">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="@("exampleModalLongTitle" + Id)">Are you sure you want to delete this group?</h5>
+                                <h5 class="modal-title" id="@("#exampleModalLongTitle" + Id)" style="color: black;">Are you sure you want to delete this group?</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
                             </div>
                             <div class="modal-footer">
