@@ -162,7 +162,7 @@ public class PersistenceService implements IPersistenceService {
             List<User> userList = new ArrayList<>();
             String sqlStatement = "SELECT * FROM notelender.users WHERE username LIKE ?";
             PreparedStatement getGroup = connection.prepareStatement(sqlStatement);
-            getGroup.setString(1, "%" + userList + "%");
+            getGroup.setString(1, "%" + users + "%");
             ResultSet rs = getGroup.executeQuery();
             while (rs.next()) {
                 userList.add(new User(rs.getInt(1), rs.getString(2),
@@ -173,7 +173,6 @@ public class PersistenceService implements IPersistenceService {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
     }
 
     @Override
