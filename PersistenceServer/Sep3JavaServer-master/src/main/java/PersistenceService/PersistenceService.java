@@ -143,12 +143,12 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<Void> leaveGroup(int id, String json) {
+    public ResponseEntity<Void> leaveGroup(int id, String groupMember) {
         String sqlStatement = "DELETE FROM notelender.groupmembers WHERE group_id = ? AND user_id = ?";
         try {
             PreparedStatement deleteGroupMember = connection.prepareStatement(sqlStatement);
             deleteGroupMember.setInt(1, id);
-            deleteGroupMember.setInt(2, Integer.parseInt(json));
+            deleteGroupMember.setInt(2, Integer.parseInt(groupMember));
             deleteGroupMember.executeUpdate();
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
@@ -157,12 +157,13 @@ public class PersistenceService implements IPersistenceService {
     }
 
     @Override
-    public ResponseEntity<List<User>> getUserList(String users) {
+    public ResponseEntity<List<User>> getUserList(String usersName) {
+
         try {
             List<User> userList = new ArrayList<>();
             String sqlStatement = "SELECT * FROM notelender.users WHERE username LIKE ?";
             PreparedStatement getGroup = connection.prepareStatement(sqlStatement);
-            getGroup.setString(1, "%" + users + "%");
+            getGroup.setString(1, "%" + usersName + "%");
             ResultSet rs = getGroup.executeQuery();
             while (rs.next()) {
                 userList.add(new User(rs.getInt(1), rs.getString(2),

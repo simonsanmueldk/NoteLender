@@ -18,20 +18,19 @@
         <div class="p-3 mb-2 bg-secondary text-white d-flex flex-row align-items-center justify-content-between">
             <div>Members</div>
             <div>
-                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleAddModal"><i class="oi oi-minus"></i> Leave Group</button>
-                <div class="modal fade" id="exampleAddModal" tabindex="-1" aria-labelledby="exampleAddModalLabel" aria-hidden="true">
+                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="@("#exampleLeaveGroup" + GroupId)">
+                    Leave group
+                </button>
+                <div class="modal fade" id="@("exampleLeaveGroup" + GroupId)" tabindex="-1" role="dialog" aria-labelledby="@("exampleLeaveGroupTitle" + GroupId)" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content" style="background-color:white">
+                        <div class="modal-content" style="background-color: white">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleAddModalLabel">Leave group @GroupName</h5>
+                                <h5 class="modal-title" id="@("#exampleLeaveGroupTitle" + GroupId)" style="color: black;">Are you sure you want to leave this group?</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
                             </div>
-                            <div class="modal-body">
-                                <p>
-                                    <label>Are you sure you want to leave this group?</label>
-                                </p>
-                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" @onclick="@(() => LeaveGroup())">Save changes</button>
+                            <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @onclick="@(LeaveGroup)">Save changes</button>
                             </div>
                         </div>
                     </div>
