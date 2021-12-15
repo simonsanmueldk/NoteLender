@@ -1,6 +1,6 @@
 # NoteLender
 
-Semester Project 3
+Semester Project 3 by Esben Fogh, Krzysztof Pacierz, Dorin Pascal and Simon Samuel
 
    The major purpose of the project was to develop a multi-user system, which provides user-friendly software that will allow them to share notes between them.
 
