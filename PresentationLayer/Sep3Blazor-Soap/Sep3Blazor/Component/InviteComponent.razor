@@ -109,6 +109,7 @@
     // Method to search for users.
     private async Task Search()
     {
+      
         if (!Username.Equals(""))
         {
             Users = await _userService.GetUserList(Username);
