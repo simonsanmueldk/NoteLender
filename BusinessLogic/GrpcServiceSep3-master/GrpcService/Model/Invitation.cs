@@ -12,6 +12,9 @@ namespace GrpcService.Model
         public int invitorId { get; set; }
         public String invitorName { get; set; }
         
+        /*
+         * 
+         */
         public Invitation(int id, int groupId, String groupName, int inviteeId, String inviteeName, int invitorId,
             String invitorName)
         {
