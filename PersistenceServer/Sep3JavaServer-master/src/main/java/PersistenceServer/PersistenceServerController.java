@@ -1,87 +1,219 @@
 package PersistenceServer;
 
-
-import com.google.gson.Gson;
+import Model.*;
+import PersistenceService.IPersistenceService;
+import PersistenceService.PersistenceService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-
 
 @RestController
 public class PersistenceServerController {
 
-    private static final Gson gson = new Gson();
-    private final Connection connection =
-            DriverManager.getConnection("jdbc:postgresql://tai.db.elephantsql.com:5432/seitjdhj",
-                    "seitjdhj", "9LEmAjua_Uo0YR5sGqAFHn0Kgm9DDKu1");
+    /**
+     * Instance variable
+     */
+    private final IPersistenceService persistenceService;
 
-
-    public PersistenceServerController() throws SQLException {
+    /**
+     * Constructor for PersistenceServerController
+     */
+    public PersistenceServerController() {
+        this.persistenceService = new PersistenceService();
     }
 
-
-    @GetMapping("/Group/{id}")
-    public synchronized String getGroup(@PathVariable(value = "id") int id) throws SQLException {
-        System.out.println("It's working Get");
-        List<Group> AdultsList = new ArrayList<>();
-        ResultSet resultSet = connection.createStatement().executeQuery
-                ("SELECT * FROM notelender.groups WHERE id = " + id);
-        while (resultSet.next()) {
-            Group groupToAdd = new Group(resultSet.getInt(1),resultSet.getString(2));
-            AdultsList.add(groupToAdd);
-        }
-
-
-        return gson.toJson(AdultsList);
+    /**
+     * Get note list
+     * @param groupId
+     * @return persistenceService.getNoteList(groupId)
+     */
+    @GetMapping("/notes/{groupId}")
+    public ResponseEntity<List<Note>> getNoteList(@PathVariable(value = "groupId") int groupId) {
+        return persistenceService.getNoteList(groupId);
     }
 
-    @PutMapping("/Group")
-    public synchronized String createGroup(@RequestBody String json) {
-        System.out.println("It's working Post");
-        System.out.println(json);
-        try {
-            connection.createStatement().execute("INSERT INTO sep3.notes (id,string) VALUES ("
-                    + '5' + ",'" + json + "')");
-            return getGroup(5);
-        } catch (SQLException e) {
-            System.out.println("Connection failure.");
-            e.printStackTrace();
-        }
-        return null;
+    /**
+     * Add note
+     * @param requestBody
+     * @return persistenceService.addNote(requestBody)
+     */
+    @PostMapping("/note")
+    public ResponseEntity<Void> addNote(@RequestBody String requestBody) {
+        return persistenceService.addNote(requestBody);
     }
 
-    @GetMapping("/NoteList/{id}")
-    public synchronized String getNoteList(@PathVariable(value = "id") int id) throws SQLException {
-        System.out.println("It's working GetNoteList");
-        List<Note> NoteList = new ArrayList<>();
-        ResultSet resultSet = connection.createStatement().executeQuery
-                ("SELECT * FROM notelender.note WHERE group_id = " + id);
-        while (resultSet.next()) {
-            Note noteToAdd = new Note(resultSet.getInt(1), resultSet.getInt(2),
-                    resultSet.getInt(3), resultSet.getString(4),
-                    resultSet.getString(5), resultSet.getString(6));
-            NoteList.add(noteToAdd);
-        }
-        return gson.toJson(NoteList);
+    /**
+     * Edit note
+     * @param requestBody
+     * @return persistenceService.editNote(requestBody)
+     */
+    @PutMapping("/note")
+    public ResponseEntity<Void> editNote(@RequestBody String requestBody) {
+        return persistenceService.editNote(requestBody);
     }
 
-    @GetMapping("/UserList/{id}")
-    public synchronized String getUserList(@PathVariable(value = "id") int id) throws SQLException {
-        System.out.println("It's working Get");
-        String text = "";
-        ResultSet resultSet = connection.createStatement().executeQuery
-                ("SELECT * FROM sep3.notes WHERE id = " + id);
-        while (resultSet.next()) {
-            text = resultSet.getString(2);
-            System.out.println(text);
-        }
-        List<String> AdultsList = new ArrayList<>();
-        AdultsList.add(text);
-        return gson.toJson(AdultsList);
+    /**
+     * Delete note
+     * @param noteId
+     * @return persistenceService.deleteNote(noteId)
+     */
+    @DeleteMapping("/note/{noteId}")
+    public ResponseEntity<Void> deleteNote(@PathVariable(value = "noteId") int noteId) {
+        return persistenceService.deleteNote(noteId);
+    }
+
+    /**
+     * Get group list
+     * @param id
+     * @return persistenceService.getGroupList(id)
+     */
+    @GetMapping("/groups/{id}")
+    public ResponseEntity<List<Group>> getGroupList(@PathVariable(value = "id") int id) {
+        return persistenceService.getGroupList(id);
+    }
+
+    /**
+     * Create grouå
+     * @param requestBody
+     * @param memberId
+     * @return persistenceService.postGroup(requestBody, memberId)
+     */
+    @PostMapping("/group/{memberId}")
+    public ResponseEntity<Void> createGroup(@RequestBody String requestBody, @PathVariable(value = "memberId") int memberId) {
+        return persistenceService.postGroup(requestBody, memberId);
+    }
+
+    /**
+     * Delete group
+     * @param id
+     * @return persistenceService.deleteGroup(id)
+     */
+    @DeleteMapping("/group/{id}")
+    public ResponseEntity<Void> deleteGroup(@PathVariable(value = "id") int id) {
+        return persistenceService.deleteGroup(id);
+    }
+
+    /**
+     * Leave group
+     * @param id
+     * @param requestBody
+     * @return
+     */
+    @PostMapping("/groupmembers/{id}")
+    public ResponseEntity<Void> LeaveGroup(@PathVariable(value = "id") int id, @RequestBody String requestBody) {
+        return persistenceService.leaveGroup(id, requestBody);
+    }
+
+    /**
+     * Get userList
+     * @param username
+     * @return persistenceService.getUserList(username)
+     */
+    @GetMapping("/users/{username}")
+    public ResponseEntity<List<User>> getUserList(@PathVariable(value = "username") String username) {
+        return persistenceService.getUserList(username);
+    }
+
+    /**
+     * Validate user
+     * @param requestBody
+     * @return persistenceService.validateUser(requestBody)
+     */
+    @PostMapping("/user")
+    public ResponseEntity<User> ValidateUser(@RequestBody String requestBody) {
+        return persistenceService.validateUser(requestBody);
+    }
+
+    /**
+     * Registers user
+     * @param requestBody
+     * @return persistenceService.registerUser(requestBody)
+     */
+    @PostMapping("/unregisteruser")
+    public ResponseEntity<Void> registerUser(@RequestBody String requestBody) {
+        return persistenceService.registerUser(requestBody);
+    }
+
+    /**
+     * Edit user
+     * @param requestBody
+     * @param user_id
+     * @return persistenceService.editUser(requestBody, user_id)
+     */
+    @PostMapping("/user/{user_id}")
+    public ResponseEntity<Void> EditUser(@RequestBody String requestBody, @PathVariable(value = "user_id") int user_id) {
+        return persistenceService.editUser(requestBody, user_id);
+    }
+
+    /**
+     * Delete user
+     * @param userId
+     * @return persistenceService.deleteUser(userId)
+     */
+    @DeleteMapping("/user/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable(value = "userId") int userId) {
+        return persistenceService.deleteUser(userId);
+    }
+
+    /**
+     * Get GroupMemberList
+     * @param id
+     * @return persistenceService.getGroupMemberList(id)
+     */
+    @GetMapping("/groupmemberslist/{id}")
+    public ResponseEntity<List<GroupMembers>> getGroupMemberList(@PathVariable(value = "id") int id) {
+        return persistenceService.getGroupMemberList(id);
+    }
+
+    /**
+     * Delete group member
+     * @param id
+     * @return persistenceService.deleteGroupMember(id)
+     */
+    @DeleteMapping("/groupmembers/{id}")
+    public ResponseEntity<Void> deleteGroupMember(@PathVariable(value = "id") int id) {
+        return persistenceService.deleteGroupMember(id);
+    }
+
+    /**
+     * Add invitation
+     * @param requestBody
+     * @return persistenceService.addInvitation(requestBody)
+     */
+
+    @PostMapping("/invitation")
+    public ResponseEntity<Void> addInvitation(@RequestBody String requestBody) {
+        return persistenceService.addInvitation(requestBody);
+    }
+
+    /**
+     * Get invitationlist
+     * @param id
+     * @return persistenceService.getInvitationList(id)
+     */
+    @GetMapping("/invitations/{id}")
+    public ResponseEntity<List<Invitation>> getInvitationList(@PathVariable(value = "id") int id) {
+        return persistenceService.getInvitationList(id);
+    }
+
+    /**
+     * Delete invitation
+     * @param id
+     * @return persistenceService.deleteInvitation(id)
+     */
+    @DeleteMapping("/invitation/{id}")
+    public ResponseEntity<Void> deleteInvitation(@PathVariable(value = "id") int id) {
+        return persistenceService.deleteInvitation(id);
+    }
+
+    /**
+     * Add group member
+     * @param requestBody
+     * @return persistenceService.addGroupMember(requestBody)
+     */
+    @PostMapping("/groupmembers")
+    public ResponseEntity<Void> AddGroupMember(@RequestBody String requestBody) {
+        return persistenceService.addGroupMember(requestBody);
     }
 }

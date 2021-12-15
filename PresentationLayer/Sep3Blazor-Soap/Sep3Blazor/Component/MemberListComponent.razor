@@ -1,0 +1,146 @@
+﻿@using Sep3Blazor.Model
+@using Sep3Blazor.Data.GroupMembersData
+@using Sep3Blazor.Authentication
+@using Sep3Blazor.Data.Notifications
+@using Sep3Blazor.Data.Notifications.NotificationModel
+@using Sep3Blazor.Data.Refresh
+
+@inject IGroupMembersService _groupMembersService
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject IRefreshServiceNavMem _refreshServiceNavMem
+@inject NavigationManager _navigationManager
+@inject NotificationManager _notificationManager
+
+
+<div class="container-fluid">
+    <br>
+    <div class="col-12 ">
+        <div class="p-3 mb-2 bg-secondary text-white d-flex flex-row align-items-center justify-content-between">
+            <div>Members</div>
+            <div>
+                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="@("#exampleLeaveGroup" + GroupId)">
+                    Leave group
+                </button>
+                <div class="modal fade" id="@("exampleLeaveGroup" + GroupId)" tabindex="-1" role="dialog" aria-labelledby="@("exampleLeaveGroupTitle" + GroupId)" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content" style="background-color: white">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="@("#exampleLeaveGroupTitle" + GroupId)" style="color: black;">Are you sure you want to leave this group?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @onclick="@(LeaveGroup)">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (GroupMembersList == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else if (GroupMembersList.Count == 1)
+        {
+            <p>
+                You are the sole member of this group.
+                <br/>
+                Try to invite someone on the right
+            </p>
+        }
+        else
+        {
+            <table class="table table-sm table-hover">
+                @foreach (var member in GroupMembersList)
+                {
+                    if (member.userId != _cachedUser.id)
+                    {
+                        <tbody>
+                        <tr>
+                            <th scope="col">
+                                <i>Username</i>
+                            </th>
+                            <td>
+                                <b>@member.username</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col">
+                                <i>Remove</i>
+                            </th>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="@("#RemoveUserModal" + member.id)">
+                                    <i class="oi oi-trash" style="color:red"></i>
+                                </button>
+                                <div class="modal fade" id="@("RemoveUserModal" + member.id)" tabindex="-1" aria-labelledby="@("RemoveUserModalLabel" + member.id)" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content" style="background-color:white">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="@("RemoveUserModalLabel" + member.id)">Remove member @member.username from group?</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" @onclick="@(() => DeleteMember(member.id))">Confirm</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <br>
+                    }
+                }
+            </table>
+        }
+    </div>
+</div>
+
+@code {
+    // Parameter to specify which group the members are in.
+    [Parameter]
+    public int GroupId { get; set; }
+
+    [Parameter]
+    public string GroupName { get; set; }
+
+    // List of object GroupMembers.
+    public IList<GroupMembers> GroupMembersList { get; set; }
+
+    // User object to be initialized as the user logged in.
+    private User _cachedUser;
+
+    // Method that is first to run when component is initialized.
+    protected override async Task OnInitializedAsync()
+    {
+        _cachedUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).CachedUser;
+        GroupMembersList = await _groupMembersService.GetGroupMemberList(GroupId);
+    }
+
+    protected override async void OnParametersSet()
+    {
+        GroupMembersList = await _groupMembersService.GetGroupMemberList(GroupId);
+        StateHasChanged();
+    }
+
+    // Method to let the user logged in leave to group. 
+    private async Task LeaveGroup()
+    {
+        Notification notification = await _groupMembersService.LeaveGroup(GroupId, _cachedUser.id);
+        _notificationManager.Show(notification);
+        await ((CustomAuthenticationStateProvider) _authenticationStateProvider).ModifyClaims();
+        _refreshServiceNavMem.CallRequestRefresh();
+        _navigationManager.NavigateTo("/");
+    }
+
+    // Method to let user logged in remove other members from the group.
+    private async Task DeleteMember(int id)
+    {
+        Notification notification = await _groupMembersService.DeleteGroupMember(id);
+        _notificationManager.Show(notification);
+        GroupMembersList = await _groupMembersService.GetGroupMemberList(GroupId);
+    }
+
+}

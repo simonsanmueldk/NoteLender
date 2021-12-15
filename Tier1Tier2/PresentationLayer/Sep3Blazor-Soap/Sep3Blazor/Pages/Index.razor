@@ -1,52 +1,42 @@
 @page "/"
-@using Sep3Blazor.Data
-@using Sep3Blazor.Model
+
+@using Sep3Blazor.Component
+@using Sep3Blazor.Data.GroupData
+@using Sep3Blazor.Data.NoteData
+@using Sep3Blazor.Data.Notifications
+@using Microsoft.AspNetCore.Components.Web.Extensions.Head
+@using Sep3Blazor.Data.InvitationData
+
 @inject IGroupService _groupService
-@inject NavigationManager NavigationManager;
+@inject IInvitationService _invitationService
+@inject INoteService _noteService
+@inject NavigationManager _navigationManager;
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject NotificationManager _notificationManager
 
-<h1>Hello, world!</h1>
+<Title Value="Homepage"></Title>
 
-Welcome to your new app.
-<input type="submit" value="Get the second object from database" @onclick="Get">
-
-@if (SearchPhrase == null)
-{
-    <p>
-        <em>Loading...</em>
-    </p>
-}
-else
-{
-    <p>@SearchPhrase</p>
-    <p>@SearchPhrase2</p>
-}
-
+<LoginComponent></LoginComponent>
+<AuthorizeView >
+    <div class="row d-flex justify-content-between">
+        <div class="col-sm-5" style="background-color: white">
+            <GroupListComponent UserID=@context.User.FindFirst("id").Value></GroupListComponent>
+            <br>
+        </div>
+        <div class="col-sm-5" style="background-color: white">
+            <InvitationsComponent UserId=@context.User.FindFirst("id").Value></InvitationsComponent>
+        </div>
+    </div>
+    <br/>
+</AuthorizeView>
 
 @code
 {
-    public string SearchPhrase;
-    public string SearchPhrase2;
-    public IList<Note> NoteList { get; set; }
-    public IList<Group> GroupList { get; set; }
-
-
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthStat { get; set; }
+    
     protected override async Task OnInitializedAsync()
     {
-       // base.OnInitialized();
-        Console.WriteLine("2str");
-        NoteList = await _groupService.GetNoteList("3");
-        GroupList = await _groupService.GetGroupList("1");
-        SearchPhrase = NoteList[0].text;
-        SearchPhrase2 = GroupList[0].name;
-    }
-
-    
-
-    public async Task Get()
-    {
-        NoteList =await _groupService.AddNote("Dorin Smart");
-        // Adults = await AdultService.Connect("5");
-        SearchPhrase = NoteList[0].text;
-
+        await base.OnInitializedAsync();
     }
 }

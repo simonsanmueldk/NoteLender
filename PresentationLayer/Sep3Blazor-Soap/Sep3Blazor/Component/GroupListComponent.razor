@@ -1,0 +1,119 @@
+﻿@using Sep3Blazor.Data.GroupData
+@using Sep3Blazor.Data.GroupMembersData
+@using Sep3Blazor.Data.Refresh
+@using Sep3Blazor.Model
+@using Sep3Blazor.Authentication
+@using Sep3Blazor.Data.Notifications
+@using Sep3Blazor.Data.Notifications.NotificationModel
+
+@inject IGroupService _groupService
+@inject IRefreshServiceInvGroup _refreshServiceInvGroup
+@inject IRefreshServiceNavMem _refreshServiceNavMem
+@inject NavigationManager _navigationManager
+@inject IGroupMembersService _groupMembersService
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject NotificationManager _notificationManager
+
+<div class="d-flex flex-column">
+    <div >
+        <h3 class="d-inline">My groups</h3>
+    </div>
+    <div >
+        <button type="button" class="btn btn-primary d-inline " data-bs-toggle="modal" data-bs-target="#exampleAddModal"><i class="oi oi-plus"></i> Create group</button>
+        <div class="modal fade" id="exampleAddModal" tabindex="-1" aria-labelledby="exampleAddModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="background-color:white">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleAddModalLabel">Create new group</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+                    </div>
+                    <div class="modal-body">
+                        <EditForm Model="@groupModel" OnValidSubmit="SubmitAddGroup">
+                            <DataAnnotationsValidator/>
+                            <ValidationSummary/>
+                            <p>
+                                <label>
+                                    Name:
+                                    <InputText @bind-Value="groupModel.name"/>
+                                </label>
+                            </p>
+                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </EditForm>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    @if (GroupList == null)
+    {
+        <progress></progress>
+    }
+    else if (GroupList.Count == 0)
+    {
+        <p>
+            You are not part of any group.
+            <br>
+            You can create group Here or accept invitation on the right
+        </p>
+    }
+    else
+    {
+        <div class="col-sm-6" style="display:inline">
+            <ul class="list-group">
+                @foreach (var group in GroupList)
+                {
+                    <li class="list-group-item onHoverChange" @onclick="@(() => ChangeSelectedGroup(group))">
+                        <u>@group.name group</u>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+</div>
+
+
+@code {
+    // Parameter to specify which user opens the groupList component
+    [Parameter]
+    public string UserId { get; set; }
+
+    // GroupList showing the groups the user with user id equal to previous variable is in.
+    public IList<Group> GroupList { get; set; }
+
+    // Group object to use in the <EditForm> component from Blazor.
+    private Group groupModel = new Group(0, "");
+
+    // Method that is first to run when component is initialized.
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        _refreshServiceInvGroup.RefreshRequested += RefreshState;
+        GroupList = await _groupService.GetGroupList(Convert.ToInt32(UserId));
+    }
+
+    // Method to navigate to a specific group instead of a list of the groups.
+    private void ChangeSelectedGroup(Group group)
+    {
+        _navigationManager.NavigateTo("/GroupPage/" + group.id + "/" + group.name);
+    }
+
+    // Method to refresh the component contents. Such as when changes are made to the user's groups.
+    public async void RefreshState()
+    {
+        GroupList = await _groupService.GetGroupList(Convert.ToInt32(UserId));
+        StateHasChanged();
+    }
+
+    // Method used by <EditForm> component to add a group.
+    private async void SubmitAddGroup()
+    {
+        Notification notification = await _groupService.AddGroup(groupModel.name, ((CustomAuthenticationStateProvider) _authenticationStateProvider).CachedUser.id);
+        _notificationManager.Show(notification);
+        await ((CustomAuthenticationStateProvider) _authenticationStateProvider).ModifyClaims();
+        RefreshState();
+        _refreshServiceNavMem.CallRequestRefresh();
+    }
+
+}

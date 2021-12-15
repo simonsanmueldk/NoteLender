@@ -5,6 +5,15 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="obj\obj\**" />
+      <Content Remove="obj\obj\**" />
+      <EmbeddedResource Remove="obj\obj\**" />
+      <None Remove="obj\obj\**" />
+      <Content Remove="Shared\Components\Notifications\NotificationComponent.razor" />
+      <Content Remove="Shared\Components\NavMenu\NavMenu.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="Google.Protobuf" Version="3.19.1" />
       <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
       <PackageReference Include="Grpc.Net.Client" Version="2.40.0" />
@@ -12,6 +21,8 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+      <PackageReference Include="Quick.AspNetCore.Components.Web.Extensions" Version="5.0.0" />
+      <PackageReference Include="Syncfusion.Blazor.SplitButtons" Version="19.3.0.56" />
     </ItemGroup>
     
     <ItemGroup>
@@ -19,7 +30,17 @@
     </ItemGroup>
     
     <ItemGroup>
-      <Folder Include="obj\Debug\net5.0\Protos" />
+      <Content Remove="Shared\SurveyPrompt.razor" />
+      <Content Remove="Pages\FetchData.razor" />
+      <Content Remove="Pages\Counter.razor" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\images\IMG_1551.JPG" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="obj\" />
     </ItemGroup>
 
 </Project>

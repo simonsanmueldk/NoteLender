@@ -42,9 +42,70 @@ a, .btn-link {
     z-index: 1000;
 }
 
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
-    }
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
+
+.labelAcc {
+    color: #B4886B;
+    font-weight: bold;
+    font-size: 15px;
+
+}
+
+.onHoverChange:hover{
+    background: steelblue;
+}
+
+.overflowOptionScroll{
+    max-height: 994px;
+    overflow-y: scroll;
+}
+
+.iconClass{
+    height: 16px;
+    width: 16px;
+}
+
+.height100{
+    height: 100%;
+}
+
+.textCenterer{
+    display: flex;
+    align-items: center;
+}
+
+.navBorder{
+    border-left:  5px outset rgba(0, 0, 255, .375);
+    border-right:  5px outset rgba(0, 0, 255, .375);
+}
+
+.btn-special {
+    color: rgba(255, 255, 255, .55);
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+    border: 0 #6c757d;
+}
+
+.btn-special:hover {
+    color: #fff;
+    background-color: #5c636a;
+    border: 0 #565e64
+}
+.btnn {
+    background-color: palevioletred;
+    border: none;
+    color: white;
+    padding: 12px 16px;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+/* Darker background on mouse-over */
+.btnn:hover {
+    background-color: indianred;
+}

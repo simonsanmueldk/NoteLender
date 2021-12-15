@@ -1,16 +1,40 @@
 syntax = "proto3";
-import "google/protobuf/any.proto";
+
 
 option csharp_namespace = "GrpcService";
 
 package BusinessServ;
 
-// The greeting service definition.
+// The business service definition.
 service BusinessServer {
-  // Sends a greeting
-  rpc GetGroup (Request) returns (Reply);
-  rpc GetNote (Request) returns (Reply);
-  rpc PostGroup (Request) returns (Reply);
+  //Note
+  rpc GetNoteList (Request) returns (Reply);
+  rpc PostNote (NoteRequest) returns (Reply);
+  rpc PutNote (NoteRequest) returns (Reply);
+  rpc DeleteNote (Request) returns (Reply);
+  
+  //Group
+  rpc GetGroupList (Request) returns (Reply);
+  rpc PostGroup (PostGroupRequest) returns (Reply);
+  rpc DeleteGroup  (Request) returns (Reply);
+ 
+  //GroupMember
+  rpc GetGroupMemberList (Request) returns (Reply);
+  rpc AddGroupMember(AddGroupMemberRequest) returns (Reply);
+  rpc DeleteGroupMember(UserRequest) returns (Reply);
+  rpc LeaveGroup(DeleteGroupMemberRequest) returns (Reply);
+   
+  //User 
+  rpc ValidateUser(Request) returns (Reply);
+  rpc RegisterUser(RegisterRequest) returns (RegisterReply);
+  rpc GetUserList(GetUserRequest) returns  (Reply);
+  rpc EditUser(EditUserRequest) returns (Reply);
+  rpc DeleteUser(UserRequest) returns (Reply);
+   
+  //Invitation 
+  rpc GetInvitationList(Request) returns (Reply);
+  rpc PostInvitation(PostInvitationRequest) returns (Reply);
+  rpc DeleteInvitation(Request) returns (Reply);
 }
 
 
@@ -20,8 +44,89 @@ message Request {
   string type = 2;
 }
 
+message PostGroupRequest {
+  string groupName = 1;
+  int32 memberId = 2;
+}
+
+message GetUserRequest{
+  int32 id = 1;
+  string username = 2;
+}
+
+message UserRequest{
+  int32 id = 1;
+}
+
+message EditUserRequest {
+  int32 id = 1;
+  string newPassword = 2;
+  string message = 3;
+}
+
+message AddGroupMemberRequest {
+  int32 groupId = 1;
+  int32 userId = 2;
+}
+
+message DeleteGroupMemberRequest {
+  int32 groupId = 1;
+  int32 userId = 2;
+}
+
+message PostInvitationRequest  {
+  int32 id = 1;
+  int32 invitorId = 2;
+  int32 inviteeId = 3;
+  int32 groupId = 4;
+}
+
+// The request message containing the user's name.
+message RegisterRequest {
+  string firstName = 1;
+  string lastName = 2;
+  string username = 3;
+  string password = 4;
+}
+
+message NoteRequest {
+  int32 noteId = 1;
+  int32 groupId = 2;
+  int32 week = 3;
+  int32 year = 4;
+  string name = 5;
+  string status = 6;
+  string text = 7;
+}
+
 // The response message containing the greetings.
 message Reply {
   string message = 1;
   string type = 2;
+}
+
+// The request message containing the user's name.
+message RegisterReply {
+  string message = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string username = 4;
+  string password = 5;
+}
+
+message RegisterNoteReply {
+  int32 noteId = 1;
+  int32 groupId = 2;
+  int32 week = 3;
+  int32 year = 4;
+  string name = 5;
+  string status = 6;
+  string text = 7;
+}
+
+message RegisterInvitationReply {
+  int32 id = 1;
+  int32 invitorId = 2;
+  int32 inviteeId = 3;
+  int32 groupId = 4;
 }

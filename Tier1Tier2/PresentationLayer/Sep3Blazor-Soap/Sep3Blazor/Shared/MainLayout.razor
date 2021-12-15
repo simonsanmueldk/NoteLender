@@ -1,17 +1,15 @@
+@inject AuthenticationStateProvider _authenticationStateProvider;
+@inject NavigationManager _navigationManager
+@using Sep3Blazor.Authentication
 @inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu/>
-    </div>
+<body>
+<AuthorizeView>
+    <NavMenu/>
+</AuthorizeView>
 
-    <div class="main">
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
-        <div class="content px-4">
-            @Body
-        </div>
-    </div>
+<div class="container">
+    @Body
 </div>
+<NotificationComponent/>
+</body>

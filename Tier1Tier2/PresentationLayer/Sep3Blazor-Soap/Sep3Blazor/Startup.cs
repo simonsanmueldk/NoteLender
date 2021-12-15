@@ -1,15 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Sep3Blazor.Data;
+using Sep3Blazor.Authentication;
+using Sep3Blazor.Data.GroupData;
+using Sep3Blazor.Data.GroupMembersData;
+using Sep3Blazor.Data.InvitationData;
+using Sep3Blazor.Data.NoteData;
+using Sep3Blazor.Data.Notifications;
+using Sep3Blazor.Data.Refresh;
+using Sep3Blazor.Data.UserData;
+
 
 namespace Sep3Blazor
 {
@@ -28,7 +31,16 @@ namespace Sep3Blazor
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             services.AddScoped<IGroupService, GroupService>();
+            services.AddScoped<INoteService, NoteService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IInvitationService, InvitationService>();
+            services.AddScoped<IGroupMembersService, GroupMembersService>();
+            services.AddScoped<IRefreshServiceInvGroup, RefreshServiceInvGroup>();
+            services.AddScoped<IRefreshServiceNavMem, RefreshServiceNavMem>();
+            services.AddSingleton<NotificationManager>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

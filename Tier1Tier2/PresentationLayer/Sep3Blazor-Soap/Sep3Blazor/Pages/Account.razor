@@ -1,0 +1,138 @@
+﻿@page "/Account"
+@using Microsoft.AspNetCore.Components
+@using Sep3Blazor.Model
+@using Sep3Blazor.Authentication
+@using Sep3Blazor.Data.Notifications
+@using Sep3Blazor.Data.Notifications.NotificationModel
+@using Sep3Blazor.Data.UserData
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject NavigationManager _navigationManager
+@inject IUserService _userService
+@inject NotificationManager _notificationManager
+
+<AuthorizeView>
+    <div class="d-flex justify-content-center">
+        <aside class="col-sm-4 " style="alignment: center">
+            <div class="card" style="border-radius: 15px;">
+                <article class="card-body text-center">
+                    <header class="card-header">
+                        <h4 class="card-title mt-4">
+                            <b>Account Information</b>
+                        </h4>
+                    </header>
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="mt-3 mb-4">
+                            <img src="images/avatar.png" class="rounded-circle img-fluid" style="width: 100px;" alt="It's not loaded"/>
+                        </div>
+                        <div class="col form-group">
+                            <h2>
+                                <b>@context.User.FindFirst("FirstName").Value @context.User.FindFirst("LastName").Value</b>
+                            </h2>
+
+                        </div>
+                        <div class="col form-group">
+                            <label class="labelAcc">Username :</label>
+                            <p>
+                                <i> @context.User.Identity.Name</i>
+                            </p>
+                        </div>
+                        <div class=" form-group" style="display:@_temp">
+                            <label class="labelAcc">Password :</label>
+                            <input class="form-control" type="password" @bind-value="@_password"/>
+                        </div>
+                        <div class=" form-group" style="display:@_temp">
+                            <div class="">
+                                <label class="labelAcc">New password :</label>
+                                <input class="form-control" type="password" @bind-value="@_changedPassword"/>
+                            </div>
+                        </div>
+                        <div class="form-group" style="display:@_temp">
+                            <label class="labelAcc">Confirm new password :</label>
+                            <input class="form-control" type="password" @bind-value="@_confirmedPassword"/>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block" @onclick="Change" style="display:@_temp2 ">Edit account</button>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block" @onclick="EditAccount" style="display:@_temp ">Save changes</button>
+                        </div>
+                        <br/>
+                        <div class="form-group" style="display:@_temp">
+                            <button class="btnn" data-bs-toggle="modal" data-bs-target="#deleteAccount"><i class="fa fa-trash"></i> Delete Account</button>
+                        </div>
+                        <div class="modal fade" id="deleteAccount" tabindex="-1" role="dialog" aria-labelledby="deleteAccountCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content" style="background-color: white">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteAccountCenterTitle">Are you sure you want to delete your account?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @onclick="@(DeleteAccount)">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </aside>
+    </div>
+</AuthorizeView>
+
+@code {
+    private string _temp = "none";
+    private string _temp2 = "block";
+    private string _password = "";
+    private string _changedPassword = "";
+    private string _confirmedPassword = "";
+    private User _cachedUser;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _cachedUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).CachedUser;
+    }
+
+    private void Change()
+    {
+        _temp2 = "none";
+        _temp = "block";
+    }
+
+    private async Task EditAccount()
+    {
+        if (!string.IsNullOrEmpty(_changedPassword) || !string.IsNullOrEmpty(_confirmedPassword))
+        {
+            if (_cachedUser.password.Equals(_password))
+            {
+                if (_changedPassword == _confirmedPassword)
+                {
+                    Notification notification = await _userService.EditUser(_cachedUser.id, _changedPassword);
+                    _notificationManager.Show(notification);
+                    _navigationManager.NavigateTo("/");
+                }
+                else
+                {
+                    _notificationManager.Show(new Notification("Error", "Provide the new password doesn't match it's confirmation password", NotificationType.Info));
+                }
+            }
+            else
+            {
+                _notificationManager.Show(new Notification("Error", "Input your password", NotificationType.Info));
+            }
+        }
+        else
+        {
+            _notificationManager.Show(new Notification("Error", "Input your new password", NotificationType.Info));
+        }
+    }
+
+    private async Task DeleteAccount()
+    {
+        await _userService.DeleteUser(_cachedUser.id);
+        ((CustomAuthenticationStateProvider) _authenticationStateProvider).LogOut();
+        _navigationManager.NavigateTo("/");
+    }
+
+}

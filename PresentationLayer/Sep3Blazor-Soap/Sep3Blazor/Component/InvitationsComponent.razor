@@ -1,0 +1,86 @@
+@using System.Drawing
+@using Sep3Blazor.Authentication
+@using Sep3Blazor.Data
+@using Sep3Blazor.Data.GroupMembersData
+@using Sep3Blazor.Data.InvitationData
+@using Sep3Blazor.Data.Notifications
+@using Sep3Blazor.Data.Notifications.NotificationModel
+@using Sep3Blazor.Data.Refresh
+@using Sep3Blazor.Model
+
+@inject IInvitationService _invitationService
+@inject IRefreshServiceInvGroup _refreshServiceInvGroup
+@inject IGroupMembersService _groupMembersService
+@inject NotificationManager _notificationManager
+@inject AuthenticationStateProvider _authenticationStateProvider
+
+<h3>Pending invitations</h3>
+
+@if (InvitationList == null)
+{
+    <progress></progress>
+}
+else if (InvitationList.Count == 0)
+{
+    <p>
+        You don't have any invitations yet.
+        <br>
+        You can wait for other users to invite or you can create group on the left
+    </p>
+}
+else
+{
+    foreach (Invitation invitation in InvitationList)
+    {
+        <div class="card mb-2">
+            <div class="card-header container">
+                User <b>@invitation.invitorName</b> wants you to be apart of group <b>@invitation.groupName</b>
+            </div>
+            <div class="card-body row">
+                <button type="button" class="col-6" style="background-color: darkgreen "
+                        @onclick="@(() => AcceptInvitation(invitation.inviteeId, invitation.groupId, invitation.id))">
+                    Accept
+                </button>
+                <button type="button" class="col-6" style="background-color: red" @onclick="@(() => RemoveInvitation(invitation.id))">Decline</button>
+            </div>
+        </div>
+    }
+
+}
+
+
+
+@code {
+    // Parameter to specify which user opens the InvitationsComponent component
+    [Parameter]
+    public String UserId { get; set; }
+
+    // List of invitations where the user which opened the component is the invitee of.
+    public IList<Invitation> InvitationList { get; set; }
+
+    // Method that is first to run when component is initialized.
+    protected override async Task OnInitializedAsync()
+    {
+        InvitationList = await _invitationService.GetInvitationList(int.Parse(UserId));
+    }
+
+    // Method used by <EditForm> component to remove an invitation.
+    private async Task RemoveInvitation(int id)
+    {
+        Notification notification = await _invitationService.DeleteInvitation(id);
+        await _notificationManager.Show(notification);
+        InvitationList = await _invitationService.GetInvitationList(int.Parse(UserId));
+    }
+
+    // Method used by <EditForm> component to accept an invitation.
+    private async Task AcceptInvitation(int groupId, int userId, int invitationId)
+    {
+        Notification notification = await _groupMembersService.AddGroupMember(groupId, userId);
+        _notificationManager.Show(notification);
+        _refreshServiceInvGroup.CallRequestRefresh();
+        await ((CustomAuthenticationStateProvider) _authenticationStateProvider).ModifyClaims();
+        await _invitationService.DeleteInvitation(invitationId);
+        InvitationList = await _invitationService.GetInvitationList(int.Parse(UserId));
+    }
+
+}
