@@ -1,0 +1,42 @@
+@page "/"
+
+@using Sep3Blazor.Component
+@using Sep3Blazor.Data.GroupData
+@using Sep3Blazor.Data.NoteData
+@using Sep3Blazor.Data.Notifications
+@using Microsoft.AspNetCore.Components.Web.Extensions.Head
+@using Sep3Blazor.Data.InvitationData
+
+@inject IGroupService _groupService
+@inject IInvitationService _invitationService
+@inject INoteService _noteService
+@inject NavigationManager _navigationManager;
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject NotificationManager _notificationManager
+
+<Title Value="Homepage"></Title>
+
+<LoginComponent></LoginComponent>
+<AuthorizeView >
+    <div class="row d-flex justify-content-between">
+        <div class="col-sm-5" style="background-color: white">
+            <GroupListComponent UserID=@context.User.FindFirst("id").Value></GroupListComponent>
+            <br>
+        </div>
+        <div class="col-sm-5" style="background-color: white">
+            <InvitationsComponent UserId=@context.User.FindFirst("id").Value></InvitationsComponent>
+        </div>
+    </div>
+    <br/>
+</AuthorizeView>
+
+@code
+{
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthStat { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+}

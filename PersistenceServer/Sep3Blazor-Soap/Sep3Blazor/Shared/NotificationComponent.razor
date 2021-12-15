@@ -1,0 +1,10 @@
+@inherits NotificationBase
+
+<div class="notification-body @(IsVisible ? "notification-visible" : "notification-hidden")">
+    <div class="notification-title" style="color: @Color">
+        @Title
+    </div>
+    <div class="notification-content">
+        @Content
+    </div>
+</div>
