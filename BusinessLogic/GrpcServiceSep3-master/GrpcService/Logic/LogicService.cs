@@ -26,7 +26,13 @@ namespace GrpcService.Logic
             _client = new HttpClient();
         }
 
- 
+        /// <summary>
+        /// GetNoteList
+        /// Method sends GET request to persistence layer
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="context"></param>
+        /// <returns>Exception or reply message</returns>
         public async Task<Reply> GetNoteList(Request request, ServerCallContext context)
         {
             HttpResponseMessage responseMessage = await _client.GetAsync(uri + "/notes/" + request.Name);
@@ -40,6 +46,13 @@ namespace GrpcService.Logic
         }
 
      
+        /// <summary>
+        /// PostNote
+        /// Method sends POST request to persistence layer
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="context"></param>
+        /// <returns>Exception or reply message</returns>
         public async Task<Reply> PostNote(NoteRequest request, ServerCallContext context)
         {
             Note note = new Note(request.NoteId, request.GroupId, request.Week, request.Year, request.Name,
@@ -57,6 +70,13 @@ namespace GrpcService.Logic
         }
 
      
+        /// <summary>
+        /// PutNote
+        /// Method sends PUT request to persistence layer
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="context"></param>
+        /// <returns>Exception or reply message</returns>
         public async Task<Reply> PutNote(NoteRequest request, ServerCallContext context)
         {
             Note note = new Note(request.NoteId, request.GroupId, request.Week, request.Year, request.Name,
@@ -74,6 +94,13 @@ namespace GrpcService.Logic
         }
 
    
+        /// <summary>
+        /// DeleteNote
+        /// Method sends DELETE request to persistence layer
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="context"></param>
+        /// <returns>Exception or reply message</returns>
         public async Task<Reply> DeleteNote(Request request, ServerCallContext context)
         {
             HttpResponseMessage responseMessage = await _client.DeleteAsync(uri + "/note/" + request.Name);
@@ -86,7 +113,13 @@ namespace GrpcService.Logic
             return await Task.FromResult(new Reply {Message = message});
         }
 
-       
+        /// <summary>
+        /// GetGroupList
+        /// Method sends GET request to persistence layer
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="context"></param>
+        /// <returns>Exception or reply message</returns>
         public async Task<Reply> GetGroupList(Request request, ServerCallContext context)
         {
             HttpResponseMessage responseMessage = await _client.GetAsync(uri + "/groups/" + request.Name);
@@ -99,7 +132,13 @@ namespace GrpcService.Logic
             return await Task.FromResult(new Reply {Message = message});
         }
 
-        
+        /// <summary>
+        /// PostGroup
+        /// Method sends POST request to persistence layer
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="context"></param>
+        /// <returns>Exception or reply message</returns>
         public async Task<Reply> PostGroup(PostGroupRequest request, ServerCallContext context)
         {
             HttpContent content = new StringContent(request.GroupName, Encoding.UTF8, "application/json");
@@ -114,6 +153,13 @@ namespace GrpcService.Logic
         }
 
 
+        /// <summary>
+        /// DeleteGroup
+        /// Method sends DELETE request to persistence layer
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="context"></param>
+        /// <returns>Exception or reply message</returns>
         public async Task<Reply> DeleteGroup(Request request, ServerCallContext context)
         {
             HttpResponseMessage responseMessage = await _client.DeleteAsync(uri + "/group/" + request.Name);
@@ -128,6 +174,13 @@ namespace GrpcService.Logic
 
    
     
+        /// <summary>
+        /// GetGroupMemberList
+        /// Method sends GET request to persistence layer
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="context"></param>
+        /// <returns>Exception or reply message</returns>
         public async Task<Reply> GetGroupMemberList(Request request, ServerCallContext context)
         {
             HttpResponseMessage responseMessage = await _client.GetAsync(uri + "/groupmemberslist/" + request.Name);
@@ -141,6 +194,13 @@ namespace GrpcService.Logic
         }
 
      
+        /// <summary>
+        /// AddGroupMember
+        /// Method sends POST request to persistence layer
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="context"></param>
+        /// <returns>Exception or reply message</returns>
         public async Task<Reply> AddGroupMember(AddGroupMemberRequest request, ServerCallContext context)
         {
             GroupMembers temp = new GroupMembers(0, request.GroupId, null, request.UserId);
@@ -156,7 +216,13 @@ namespace GrpcService.Logic
             return await Task.FromResult(new Reply() {Message = message});
         }
 
-       
+       /// <summary>
+       /// DeleteGroupMember
+       /// Method sends DELETE request to persistence layer
+       /// </summary>
+       /// <param name="request"></param>
+       /// <param name="context"></param>
+       /// <returns>Exception or reply message</returns>
         public async Task<Reply> DeleteGroupMember(UserRequest request, ServerCallContext context)
         {
             HttpResponseMessage responseMessage = await _client.DeleteAsync(uri + "/groupmembers/" + request.Id);
@@ -170,6 +236,13 @@ namespace GrpcService.Logic
         }
 
    
+       /// <summary>
+       /// LeaveGroup
+       /// Method sends POST request to persistence layer
+       /// </summary>
+       /// <param name="request"></param>
+       /// <param name="context"></param>
+       /// <returns>Exception or reply message</returns>
         public async Task<Reply> LeaveGroup(DeleteGroupMemberRequest request, ServerCallContext context)
         {
             HttpContent content = new StringContent(request.UserId.ToString(), Encoding.UTF8, "application/json");
@@ -185,6 +258,13 @@ namespace GrpcService.Logic
         }
 
        
+       /// <summary>
+       /// ValidateUser
+       /// Method sends POST request to persistence layer
+       /// </summary>
+       /// <param name="request"></param>
+       /// <param name="context"></param>
+       /// <returns>Exception or reply message</returns>
         public async Task<Reply> ValidateUser(Request request, ServerCallContext context)
         {
             User temp = new User(0, "", "", request.Name, request.Type);
@@ -209,6 +289,13 @@ namespace GrpcService.Logic
         }
 
    
+       /// <summary>
+       /// RegisterUser
+       /// Method sends POST request to persistence layer
+       /// </summary>
+       /// <param name="request"></param>
+       /// <param name="context"></param>
+       /// <returns>Exception or reply message</returns>
         public async Task<RegisterReply> RegisterUser(RegisterRequest request, ServerCallContext context)
         {
             User temp = new User(0, request.FirstName, request.LastName, request.Username, request.Password);
@@ -225,6 +312,13 @@ namespace GrpcService.Logic
         }
 
      
+       /// <summary>
+       /// GetUserList
+       /// Method sends GET request to persistence layer
+       /// </summary>
+       /// <param name="request"></param>
+       /// <param name="context"></param>
+       /// <returns>Exception or reply message</returns>
         public async Task<Reply> GetUserList(GetUserRequest request, ServerCallContext context)
         {
             HttpResponseMessage responseMessage = await _client.GetAsync(uri + "/users/" + request.Username);
@@ -238,6 +332,13 @@ namespace GrpcService.Logic
         }
 
      
+       /// <summary>
+       /// EditUser
+       /// Method sends POST request to persistence layer
+       /// </summary>
+       /// <param name="request"></param>
+       /// <param name="context"></param>
+       /// <returns>Exception or reply message</returns>
         public async Task<Reply> EditUser(EditUserRequest request, ServerCallContext context)
         {
             User temp = new User(request.Id, "", "", "", request.NewPassword);
@@ -254,6 +355,13 @@ namespace GrpcService.Logic
         }
 
    
+       /// <summary>
+       /// DeleteUser
+       /// Method sends DELETE request to persistence layer
+       /// </summary>
+       /// <param name="request"></param>
+       /// <param name="context"></param>
+       /// <returns>Exception or reply message</returns>
         public async Task<Reply> DeleteUser(UserRequest request, ServerCallContext context)
         {
             HttpResponseMessage responseMessage = await _client.DeleteAsync(uri + "/user/" + request.Id);
@@ -267,6 +375,13 @@ namespace GrpcService.Logic
         }
 
        
+       /// <summary>
+       /// GetInvitationList
+       /// Method sends GET request to persistence layer
+       /// </summary>
+       /// <param name="request"></param>
+       /// <param name="context"></param>
+       /// <returns>Exception or reply message</returns>
         public async Task<Reply> GetInvitationList(Request request, ServerCallContext context)
         {
             HttpResponseMessage responseMessage = await _client.GetAsync(uri + "/invitations/" + request.Name);
@@ -279,7 +394,13 @@ namespace GrpcService.Logic
             return await Task.FromResult(new Reply {Message = message});
         }
 
-       
+       /// <summary>
+       /// PostInvitation
+       /// Method sends POST request to persistence layer
+       /// </summary>
+       /// <param name="request"></param>
+       /// <param name="context"></param>
+       /// <returns>Exception or reply message</returns>
         public async Task<Reply> PostInvitation(PostInvitationRequest request, ServerCallContext context)
         {
             Invitation invitation = new Invitation(request.Id, request.GroupId, null, request.InviteeId, null,
@@ -296,7 +417,13 @@ namespace GrpcService.Logic
             return await Task.FromResult(new Reply {Message = message});
         }
 
-       
+       /// <summary>
+       /// DeleteInvitation
+       /// Method sends DELETE request to persistence layer
+       /// </summary>
+       /// <param name="request"></param>
+       /// <param name="context"></param>
+       /// <returns>Exception or reply message</returns>
         public async Task<Reply> DeleteInvitation(Request request, ServerCallContext context)
         {
             HttpResponseMessage responseMessage = await _client.DeleteAsync(uri + "/invitation/" + request.Name);
