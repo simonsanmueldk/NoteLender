@@ -12,13 +12,18 @@ import java.util.List;
 
 @Service
 public class PersistenceService implements IPersistenceService {
-
+    /**
+     * Instance variables
+     */
     private static final Gson gson = new Gson();
     private final String URL = "jdbc:postgresql://tai.db.elephantsql.com:5432/seitjdhj";
     private final String USER = "seitjdhj";
     private final String PASSWORD = "9LEmAjua_Uo0YR5sGqAFHn0Kgm9DDKu1";
     private Connection connection;
 
+    /**
+     * Constructor, throws exception if it is not connected.
+     */
     public PersistenceService() {
         try {
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -27,6 +32,11 @@ public class PersistenceService implements IPersistenceService {
         }
     }
 
+    /**
+     * Edit note by updating the table notes in the database
+     * @param note
+     * @return
+     */
     @Override
     public ResponseEntity<Void> editNote(String note) {
 
@@ -48,6 +58,11 @@ public class PersistenceService implements IPersistenceService {
         }
     }
 
+    /**
+     * Add note by inserting a new note inside the table of notes in the database
+     * @param note
+     * @return
+     */
     @Override
     public ResponseEntity<Void> addNote(String note) {
         Note temp = gson.fromJson(note, Note.class);
@@ -68,6 +83,12 @@ public class PersistenceService implements IPersistenceService {
         }
     }
 
+    /**
+     * Method which takes notes from the list by group id
+     * and stores them in NoteList
+     * @param id
+     * @return Notelist and HttpStatus.OK status, or HttpStatus.BAD_REQUEST
+     */
     @Override
     public ResponseEntity<List<Note>> getNoteList(int id) {
         List<Note> NoteList = new ArrayList<>();
@@ -90,6 +111,13 @@ public class PersistenceService implements IPersistenceService {
         }
     }
 
+    /**
+     * Add Group adds new group to both the table groups,
+     * and groupmembers in database
+     * @param name
+     * @param memberId
+     * @return HttpStatus.OK or  HttpStatus.BAD_REQUEST
+     */
     @Override
     public ResponseEntity<Void> postGroup(String name, int memberId) {
         String sqlStatement = "WITH groupcreation AS ( INSERT INTO notelender.groups (groupname) VALUES (?) " +
@@ -109,6 +137,12 @@ public class PersistenceService implements IPersistenceService {
         }
     }
 
+    /**
+     * Method which takes groups from the table groupmembers and groups
+     * and stores them in GroupList to retrieve them
+     * @param id
+     * @return GroupList, HttpStatus.OK or HttpStatus.BAD_REQUEST
+     */
     @Override
     public ResponseEntity<List<Group>> getGroupList(int id) {
         List<Group> GroupList = new ArrayList<>();
@@ -129,6 +163,11 @@ public class PersistenceService implements IPersistenceService {
         }
     }
 
+    /**
+     * Delete group from table groups in database.
+     * @param group_id
+     * @return HttpStatus.OK or HttpStatus.BAD_REQUEST
+     */
     @Override
     public ResponseEntity<Void> deleteGroup(int group_id) {
         String sqlStatement = "DELETE FROM notelender.groups WHERE id= ?";
@@ -142,13 +181,20 @@ public class PersistenceService implements IPersistenceService {
         }
     }
 
+    /**
+     * Method leaveGroup removes group_id and user_id from groupmembers table
+     * in the database.
+     * @param id
+     * @param json
+     * @return HttpStatus.OK or HttpStatus.BAD_REQUEST
+     */
     @Override
-    public ResponseEntity<Void> leaveGroup(int id, String groupMember) {
+    public ResponseEntity<Void> leaveGroup(int id, String json) {
         String sqlStatement = "DELETE FROM notelender.groupmembers WHERE group_id = ? AND user_id = ?";
         try {
             PreparedStatement deleteGroupMember = connection.prepareStatement(sqlStatement);
             deleteGroupMember.setInt(1, id);
-            deleteGroupMember.setInt(2, Integer.parseInt(groupMember));
+            deleteGroupMember.setInt(2, Integer.parseInt(json));
             deleteGroupMember.executeUpdate();
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
@@ -156,8 +202,15 @@ public class PersistenceService implements IPersistenceService {
         }
     }
 
+    /**
+     * Method which takes users from the table users
+     * and stores them in userList to retrieve them
+     * @param usersName
+     * @return userList, HttpStatus.OK or HttpStatus.BAD_REQUEST
+     */
     @Override
     public ResponseEntity<List<User>> getUserList(String usersName) {
+
         try {
             List<User> userList = new ArrayList<>();
             String sqlStatement = "SELECT * FROM notelender.users WHERE username LIKE ?";
@@ -173,8 +226,14 @@ public class PersistenceService implements IPersistenceService {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
     }
 
+    /**
+     * Method validates user by checking username from useres table in database
+     * @param user
+     * @return validatedUser, HttpStatus.OK or HttpStatus.BAD_REQUEST
+     */
     @Override
     public ResponseEntity<User> validateUser(String user) {
         User validatedUser = null;
@@ -196,6 +255,11 @@ public class PersistenceService implements IPersistenceService {
         }
     }
 
+    /**
+     * Method adds new user in useres table in database
+     * @param user
+     * @return HttpStatus.OK or HttpStatus.BAD_REQUEST
+     */
     @Override
     public ResponseEntity<Void> registerUser(String user) {
         User temp = gson.fromJson(user, User.class);
@@ -214,6 +278,12 @@ public class PersistenceService implements IPersistenceService {
         }
     }
 
+    /**
+     * Method can edit user by updating password in users table in database
+     * @param user
+     * @param user_id
+     * @return HttpStatus.OK or HttpStatus.BAD_REQUEST
+     */
     @Override
     public ResponseEntity<Void> editUser(String user, int user_id) {
         User temp = gson.fromJson(user, User.class);
@@ -230,6 +300,11 @@ public class PersistenceService implements IPersistenceService {
         }
     }
 
+    /**
+     * Removes user from useres table in database using id
+     * @param userId
+     * @return HttpStatus.OK or HttpStatus.BAD_REQUEST
+     */
     @Override
     public ResponseEntity<Void> deleteUser(int userId) {
         String sqlStatement = "DELETE FROM notelender.users WHERE id = ?";
@@ -244,6 +319,12 @@ public class PersistenceService implements IPersistenceService {
         }
     }
 
+    /**
+     * Method which gets from the table groupmembers
+     * and stores them in GroupMembersList to retrieve them
+     * @param id
+     * @return GroupMembersList, HttpStatus.OK or HttpStatus.BAD_REQUEST
+     */
     @Override
     public ResponseEntity<List<GroupMembers>> getGroupMemberList(int id) {
         List<GroupMembers> GroupMembersList = new ArrayList<>();
@@ -266,7 +347,11 @@ public class PersistenceService implements IPersistenceService {
         }
     }
 
-
+    /**
+     * Method adds new groupmember to groupmembers table in database
+     * @param groupMember
+     * @return HttpStatus.OK or HttpStatus.BAD_REQUEST
+     */
     @Override
     public ResponseEntity<Void> addGroupMember(String groupMember) {
         String sqlStatement = "INSERT INTO notelender.groupmembers (user_id,group_id) VALUES (?,?)";
@@ -281,7 +366,11 @@ public class PersistenceService implements IPersistenceService {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
+    /**
+     * Removes group members from groupmembers table in database using id
+     * @param id
+     * @return HttpStatus.OK or HttpStatus.BAD_REQUEST
+     */
     @Override
     public ResponseEntity<Void> deleteGroupMember(int id) {
         String sqlStatement = "DELETE FROM notelender.groupmembers WHERE id=?";
@@ -294,7 +383,11 @@ public class PersistenceService implements IPersistenceService {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
+    /**
+     * Removes note from notes table in database using id
+     * @param noteId
+     * @return HttpStatus.OK or HttpStatus.BAD_REQUEST
+     */
     @Override
     public ResponseEntity<Void> deleteNote(int noteId) {
         String sqlStatement = "DELETE FROM notelender.notes WHERE id = ?";
@@ -308,7 +401,11 @@ public class PersistenceService implements IPersistenceService {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
+    /**
+     * Inserts new invitation in invitations table in database
+     * @param invitation
+     * @return HttpStatus.OK or HttpStatus.BAD_REQUEST
+     */
     @Override
     public ResponseEntity<Void> addInvitation(String invitation) {
         {
@@ -328,7 +425,11 @@ public class PersistenceService implements IPersistenceService {
             }
         }
     }
-
+    /**
+     * Removes invitation from invitations table in database
+     * @param id
+     * @return HttpStatus.OK or HttpStatus.BAD_REQUEST
+     */
     @Override
     public ResponseEntity<Void> deleteInvitation(int id) {
         String sqlStatement = "DELETE FROM notelender.invitations WHERE id= ?";
@@ -342,7 +443,12 @@ public class PersistenceService implements IPersistenceService {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
+    /**
+     * Method which gets from the table groupmembers
+     * and stores them in InvitationList to retrieve the invitations
+     * @param id
+     * @return
+     */
     @Override
     public ResponseEntity<List<Invitation>> getInvitationList(int id) {
         List<Invitation> InvitationList = new ArrayList<>();
