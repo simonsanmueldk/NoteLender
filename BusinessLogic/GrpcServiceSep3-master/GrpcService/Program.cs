@@ -10,21 +10,14 @@ namespace GrpcService
 {
     public class Program
     {
-        /// <summary>
-        /// Main method
-        /// </summary>
-        /// <param name="args"></param>
         public static void Main(string[] args)
         {
-        
+            //dorin
             CreateHostBuilder(args).Build().Run();
         }
-        
-        /// <summary>
-        /// Static method creates a Generic Host
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+
+        // Additional configuration is required to successfully run gRPC on macOS.
+        // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
