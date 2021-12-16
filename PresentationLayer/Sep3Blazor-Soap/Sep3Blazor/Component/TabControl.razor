@@ -17,13 +17,15 @@
     // Next line is needed so we are able to add <TabPage> components inside
     [Parameter]
     public RenderFragment ChildContent { get; set; }
-
+    
+    //Instance variables
     [Parameter]
     public int Page { get; set; }
 
     public TabPage ActivePage { get; set; }
     public List<TabPage> Pages = new List<TabPage>();
 
+    //Method adds page
     internal void AddPage(TabPage tabPage)
     {
         Pages.Add(tabPage);
@@ -31,16 +33,20 @@
             ActivePage = tabPage;
         StateHasChanged();
     }
-
+    
+    //Defined button for if tabPage is ActivePage or not
     string GetButtonClass(TabPage page)
     {
         return page == ActivePage ? "btn-primary" : "btn-secondary";
     }
 
+    //Definition of ActivatePage
     void ActivatePage(TabPage page)
     {
         ActivePage = page;
     }
+
+    //This method notifies the component that its state has changed.
 
     protected override void OnParametersSet()
     {

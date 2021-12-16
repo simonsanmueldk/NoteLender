@@ -9,10 +9,18 @@ using Sep3Blazor.Model;
 
 namespace Sep3Blazor.Data.GroupData
 {
-    public class GroupService : IGroupService
+    public class GroupService : IGroupService 
     {
+        /// <summary>
+        /// Instance variables, uri defines localhost
+        /// </summary>
         private readonly String URL = "https://localhost:5004";
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <returns></returns>
         public async Task<IList<Group>> GetGroupList(int groupId)
         {
             using var channel = GrpcChannel.ForAddress(URL);

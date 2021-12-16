@@ -32,9 +32,11 @@
 
 @code
 {
+    //Instance variables
     [CascadingParameter]
     protected Task<AuthenticationState> AuthStat { get; set; }
     
+    // Method to run, when user enters this page.
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();

@@ -73,33 +73,35 @@
 
 @code {
 
+    //Instance variables
     [Parameter]
     public int Id { get; set; }
-
     [Parameter]
     public string? GroupName { get; set; }
-
     [Parameter]
     public int Page { get; set; }
-
     [CascadingParameter]
     protected Task<AuthenticationState> AuthStat { get; set; }
-
+    
     public IList<Note> Notes { get; set; }
     public IList<GroupMembers> GroupMembersList { get; set; }
 
+    // Method to run, when user enters this page.
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine(GroupName);
         Notes = await _noteService.GetNoteList(Id.ToString());
         GroupMembersList = await _groupMembersService.GetGroupMemberList(Id);
     }
+    
+    //This method notifies the component that its state has changed.
 
     protected override void OnParametersSet()
     {
         StateHasChanged();
     }
 
+    //Method removes group
     private async void RemoveGroup()
     {
         Notification notification = await _groupService.DeleteGroup(Id.ToString());

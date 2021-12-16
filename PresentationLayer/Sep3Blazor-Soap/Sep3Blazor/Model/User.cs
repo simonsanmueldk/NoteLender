@@ -6,6 +6,9 @@ namespace Sep3Blazor.Model
 {
     public class User
     {
+        /// <summary>
+        /// Instance variables with get and set
+        /// </summary>
         public int id { get; set; }
         [Required] [StringLength(20)] 
         public String firstName { get; set; }
@@ -19,6 +22,14 @@ namespace Sep3Blazor.Model
             ErrorMessage = "Last name should be between 7 and 15 characters")]
         public String password { get; set; }
         
+         /// <summary>
+        /// 5-argument constructor
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
         public User(int id, string firstName, string lastName, string username, string password)
         {
             this.id = id;

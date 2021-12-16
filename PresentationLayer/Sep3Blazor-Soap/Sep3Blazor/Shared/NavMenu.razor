@@ -82,16 +82,14 @@
 </nav>
 
 @code {
+    //Instance variables
     private bool _show = false;
-
     bool _collapseNavMenu = true;
-
     string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
-
     public IList<Group> GroupList { get; set; }
-    
     private User _cachedUser;
     
+    //Activated for dropdown toggler
     private async Task OutFocus()
     {
         _collapseNavMenu = true;
@@ -99,16 +97,19 @@
         _show = false;
     }
 
+    //Method to activate the navMenu toggler 
     void ToggleNavMenu()
     {
         _collapseNavMenu = !_collapseNavMenu;
     }
 
+    // Method for grouping and hiding navbar contents
     void CollapseNavMenu()
     {
         _collapseNavMenu = true;
     }
     
+    // Method to run, when user enters this page.
     protected override async Task OnInitializedAsync()
     {
         base.OnInitializedAsync();
@@ -117,12 +118,14 @@
         GroupList = await _groupService.GetGroupList(_cachedUser.id);
     }
 
+    //Method shows list of groups
     public async void RefreshState()
     {
         GroupList = await _groupService.GetGroupList(_cachedUser.id);
         StateHasChanged();
     }
 
+    //Method will log the user out of the system when used
     public async Task PerformLogout()
     {
         try

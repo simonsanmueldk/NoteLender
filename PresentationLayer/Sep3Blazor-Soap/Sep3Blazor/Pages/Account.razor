@@ -82,6 +82,7 @@
 </AuthorizeView>
 
 @code {
+    //Instance variables
     private string _temp = "none";
     private string _temp2 = "block";
     private string _password = "";
@@ -89,17 +90,21 @@
     private string _confirmedPassword = "";
     private User _cachedUser;
 
+    // Method to run, when user enters this page.
+
     protected override async Task OnInitializedAsync()
     {
         _cachedUser = ((CustomAuthenticationStateProvider) _authenticationStateProvider).CachedUser;
     }
 
+    //On click opens edit account
     private void Change()
     {
         _temp2 = "none";
         _temp = "block";
     }
 
+    //Method for edit account, to change password 
     private async Task EditAccount()
     {
         if (!string.IsNullOrEmpty(_changedPassword) || !string.IsNullOrEmpty(_confirmedPassword))
@@ -128,6 +133,7 @@
         }
     }
 
+    //Method to delete account from database
     private async Task DeleteAccount()
     {
         await _userService.DeleteUser(_cachedUser.id);

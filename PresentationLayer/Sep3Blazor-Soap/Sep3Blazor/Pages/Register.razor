@@ -79,8 +79,10 @@
 
 
 @code {
+    //Instance variables sets user to null
     private User user = new User(0, "", "", "", "");
 
+    //Method to register user, using UserService
     private async Task RegisterUser()
     {
         Notification notification = await _userService.RegisterUser(user);
@@ -95,6 +97,7 @@
          _notificationManager.Show(notification);
     }
 
+    //Method to go back to the index page
     private void Back()
     {
         _navigationManager.NavigateTo("/");

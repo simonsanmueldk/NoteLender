@@ -158,21 +158,25 @@
 </div>
 
 @code{
+    // Parameter to specify what Group and GroupName object is in focus.
     [Parameter]
     public int GroupId { get; set; }
 
     [Parameter]
     public string GroupName { get; set; }
 
+    //To make use of cascading values we declare cascading parameter
     [CascadingParameter]
     protected Task<AuthenticationState> AuthStat { get; set; }
     
+    //Instance variables
     private int _searchedWeek;
     private int _searchedYear;
     
     private IList<Note> NoteList { get; set; }
     private DateTime _time = DateTime.Today;
 
+    // Note object to be used 
     private Note _template = new Note(0, 0, 0, 0, "", "", "");
 
     private User _loggedInUser;
@@ -192,6 +196,7 @@
         _template = new Note(0, GroupId, GetIsoWeekOfYear(_time), GetIsoYear(_time), "", "Not started", "");
     }
 
+    //This method notifies the component that its state has changed.
     protected override async void OnParametersSet()
     {
         NoteList = await _noteService.GetNoteList(GroupId.ToString());
@@ -223,16 +228,19 @@
         return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
     }
 
+    //Used to define the year in calander
     private static int GetIsoYear(DateTime time)
     {
         return CultureInfo.InvariantCulture.Calendar.GetYear(time);
     }
 
+    //Method to get the date
     async Task ClickHandler()
     {
         NoteList = await _noteService.GetNoteList(GroupId.ToString());
     }
 
+    //Method adds note
     private async Task SubmitAddNote()
     {
         if (_template.name.Equals("") || _template.name.Equals(null))
@@ -245,6 +253,7 @@
         _notificationManager.Show(notification);
     }
 
+    //Method search by week and year
     private void Search()
     {
         if (_searchedWeek < 0)
@@ -259,6 +268,7 @@
         _time = temp;
     }
 
+    //Defines first date of the week in a new year
     public static DateTime FirstDateOfWeek(int year, int weekOfYear)
     {
         DateTime jan1 = new DateTime(year, 1, 1);

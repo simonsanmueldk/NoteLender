@@ -13,17 +13,25 @@ namespace Sep3Blazor.Pages
     [IgnoreAntiforgeryToken]
     public class ErrorModel : PageModel
     {
+        /// <summary>
+        /// Instance variables
+        /// </summary>
         public string RequestId { get; set; }
-
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
-
         private readonly ILogger<ErrorModel> _logger;
 
+        /// <summary>
+        /// 1-argument constructor
+        /// </summary>
+        /// <param name="logger"></param>
         public ErrorModel(ILogger<ErrorModel> logger)
         {
             _logger = logger;
         }
 
+        /// <summary>
+        /// Error method
+        /// </summary>
         public void OnGet()
         {
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;

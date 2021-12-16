@@ -53,14 +53,17 @@
 </AuthorizeView>
 
 @code {
+    //Declaring instance variables
     private string _username;
     private string _password;
     
+    // To perform an asynchronous operation we override OnInitializedAsync 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
     }
 
+    //Method for pefroming login
     public async Task PerformLogin()
     {
         Notification notification = await ((CustomAuthenticationStateProvider) _authenticationStateProvider).ValidateLogin(_username, _password);
@@ -70,6 +73,7 @@
         _password = "";
     }
 
+    //Navigate to new page to register
     public void Register()
     {
         _navigationManager.NavigateTo("/Register");

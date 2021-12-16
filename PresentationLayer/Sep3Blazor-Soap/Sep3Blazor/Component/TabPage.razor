@@ -4,15 +4,18 @@
 }
 
 @code {
+    //To make use of cascading values we declare cascading parameter
     [CascadingParameter]
     private TabControl Parent { get; set; }
 
+    //Instance variables
     [Parameter]
     public RenderFragment ChildContent { get; set; }
     
     [Parameter]
     public string Text { get; set; }
 
+    // Method to run, when user enters this page.
     protected override void OnInitialized()
     {
         if (Parent == null)
