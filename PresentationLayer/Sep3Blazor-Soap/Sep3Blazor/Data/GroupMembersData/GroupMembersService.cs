@@ -11,8 +11,17 @@ namespace Sep3Blazor.Data.GroupMembersData
 {
     public class GroupMembersService : IGroupMembersService
     {
+        /// <summary>
+        /// Instance variables, uri defines localhost
+        /// </summary>
         private readonly String URL = "https://localhost:5004";
 
+        /// <summary>
+        /// Method leaveGroup removes user from group using the businessServer
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <param name="userId"></param>
+        /// <returns>Notification</returns>
         public async Task<Notification> LeaveGroup(int groupId, int userId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -32,6 +41,11 @@ namespace Sep3Blazor.Data.GroupMembersData
                     "User with Id= " + userId + " failed to leave group with Id = " + groupId, NotificationType.Error);
             }
         }
+        /// <summary>
+        /// Method shows group members using GetGroupMemberListAsync from businessServer
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <returns>Notification</returns>
         public async Task<IList<GroupMembers>> GetGroupMemberList(int groupId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -49,6 +63,12 @@ namespace Sep3Blazor.Data.GroupMembersData
             }
         }
 
+        /// <summary>
+        /// Method adds group member, using AddGroupMemberAsync in businessServer
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<Notification> AddGroupMember(int groupId, int userId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -68,6 +88,11 @@ namespace Sep3Blazor.Data.GroupMembersData
 
        
 
+        /// <summary>
+        /// Method removes group member using DeleteGroupMemberAsync from businessServer
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<Notification> DeleteGroupMember(int id)
         {
             using var channel = GrpcChannel.ForAddress(URL);

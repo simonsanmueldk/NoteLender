@@ -17,10 +17,10 @@ namespace Sep3Blazor.Data.GroupData
         private readonly String URL = "https://localhost:5004";
 
         /// <summary>
-        /// 
+        /// Method gets GroupList from the businessServer
         /// </summary>
         /// <param name="groupId"></param>
-        /// <returns></returns>
+        /// <returns>List of groups</returns>
         public async Task<IList<Group>> GetGroupList(int groupId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -37,6 +37,13 @@ namespace Sep3Blazor.Data.GroupData
                 return null;
             }
         }
+        
+        /// <summary>
+        /// Method adds group, and uses PostGroupAsync in the businessServer to save it.
+        /// </summary>
+        /// <param name="groupName"></param>
+        /// <param name="memberId"></param>
+        /// <returns>Notification</returns>
         public async Task<Notification> AddGroup(string groupName, int memberId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -60,6 +67,11 @@ namespace Sep3Blazor.Data.GroupData
             }
         }
         
+        /// <summary>
+        /// Method removes group and uses DeleteGroupAsync from the businessServer
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns>Notification</returns>
         public async Task<Notification> DeleteGroup(string s)
         {
             using var channel = GrpcChannel.ForAddress(URL);

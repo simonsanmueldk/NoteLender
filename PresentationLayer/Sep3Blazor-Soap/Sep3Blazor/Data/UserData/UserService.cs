@@ -11,8 +11,17 @@ namespace Sep3Blazor.Data.UserData
 {
     public class UserService : IUserService
     {
+        /// <summary>
+        /// Instance variables, uri defines localhost
+        /// </summary>
         private readonly String URL = "https://localhost:5004";
 
+        /// <summary>
+        /// Method validates user using ValidateUserAsync from the businessServer
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns>Notification</returns>
         public async Task<User> ValidateUser(string username, string password)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -31,6 +40,11 @@ namespace Sep3Blazor.Data.UserData
             }
         }
 
+        /// <summary>
+        /// Method is to register and save an user using RegisterUserAsync from the businessServer
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>Notification</returns>
         public async Task<Notification> RegisterUser(User user)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -53,6 +67,10 @@ namespace Sep3Blazor.Data.UserData
             }
         }
         
+        /// <summary>
+        /// Method shows users, it is using GetUserListAsync from the businessServer
+        /// </summary>
+        /// <param name="username"></param>
         public async Task<List<User>> GetUserList(string username)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -70,6 +88,12 @@ namespace Sep3Blazor.Data.UserData
             }
         }
 
+        /// <summary>
+        /// Method makes it able to edit user using EditUserAsync from the businessServer
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="newPassword"></param>
+        /// <returns>Notification</returns>
         public async Task<Notification> EditUser(int id, string newPassword)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -88,8 +112,11 @@ namespace Sep3Blazor.Data.UserData
             }
         }
 
-        
-
+        /// <summary>
+        /// Method removes user using DeleteUserAsync from the businessServer
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<Notification> DeleteUser(int id)
         {
             using var channel = GrpcChannel.ForAddress(URL);

@@ -5,6 +5,9 @@ using Sep3Blazor.Model;
 
 namespace Sep3Blazor.Data.UserData
 {
+    /// <summary>
+    /// Interface for UserService
+    /// </summary>
     public interface IUserService
     {
         public Task<User> ValidateUser(string username, string password);

@@ -11,8 +11,16 @@ namespace Sep3Blazor.Data.InvitationData
 {
     public class InvitationService : IInvitationService
     {
-        private readonly String URL = "https://localhost:5004";
+        /// <summary>
+        /// Instance variables, uri defines localhost
+        /// </summary>
+        private readonly String URL = "https://localhost:5004 i";
 
+        /// <summary>
+        /// Method shows list of invitations using GetInvitationListAsync from businessServer
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>Notification</returns>
         public async Task<IList<Invitation>> GetInvitationList(int userId)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -29,6 +37,11 @@ namespace Sep3Blazor.Data.InvitationData
                 return null;
             }
         }
+        /// <summary>
+        /// Method adds invitation using PostInvitationAsync from businesServer
+        /// </summary>
+        /// <param name="invitation"></param>
+        /// <returns>Notification</returns>
         public async Task<Notification> AddInvitation(Invitation invitation)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -52,8 +65,11 @@ namespace Sep3Blazor.Data.InvitationData
             }
         }
 
-       
-
+        /// <summary>
+        /// Method invitation removes invitation using DeleteInvitationAsync in the businessServer
+        /// </summary>
+        /// <param name="invitationId"></param>
+        /// <returns>Notification</returns>
         public async Task<Notification> DeleteInvitation(int invitationId)
         {
             using var channel = GrpcChannel.ForAddress(URL);

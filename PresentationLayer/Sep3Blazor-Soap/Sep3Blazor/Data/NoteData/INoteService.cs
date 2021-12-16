@@ -6,6 +6,9 @@ using Sep3Blazor.Model;
 
 namespace Sep3Blazor.Data.NoteData
 {
+    /// <summary>
+    /// Interface for NoteService
+    /// </summary>
     public interface INoteService
     {
         public Task<IList<Note>> GetNoteList(string s);

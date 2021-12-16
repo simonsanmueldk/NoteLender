@@ -5,6 +5,9 @@ using Sep3Blazor.Model;
 
 namespace Sep3Blazor.Data.GroupMembersData
 {
+    /// <summary>
+    /// Interface for GroupMembersService
+    /// </summary>
     public interface IGroupMembersService
     {
         public Task<Notification> AddGroupMember(int groupId, int userId);

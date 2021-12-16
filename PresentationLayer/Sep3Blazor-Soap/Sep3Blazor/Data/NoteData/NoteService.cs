@@ -11,7 +11,17 @@ namespace Sep3Blazor.Data.NoteData
 {
     public class NoteService : INoteService
     {
+        /// <summary>
+        /// Instance variables, uri defines localhost
+        /// </summary>
         private readonly String URL = "https://localhost:5004";
+        
+        
+        /// <summary>
+        /// Method shows notes using GetNoteListAsync from the businessServer
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns>Notification</returns>
         public async Task<IList<Note>> GetNoteList(string s)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -29,6 +39,11 @@ namespace Sep3Blazor.Data.NoteData
             }
         }
 
+        /// <summary>
+        /// Method adds note using PostNoteAsync from the businessServer
+        /// </summary>
+        /// <param name="note"></param>
+        /// <returns>Notification</returns>
         public async Task<Notification> AddNote(Note note)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -58,6 +73,11 @@ namespace Sep3Blazor.Data.NoteData
             }
         }
         
+        /// <summary>
+        /// Method makes the user able to edit note using PutNoteAsync from businessServer
+        /// </summary>
+        /// <param name="note"></param>
+        /// <returns>Notification</returns>
         public async Task<Notification> EditNote(Note note)
         {
             using var channel = GrpcChannel.ForAddress(URL);
@@ -85,6 +105,11 @@ namespace Sep3Blazor.Data.NoteData
             }
         }
 
+        /// <summary>
+        /// Method removes note using DeleteNoteAsync from the businessServer
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns>Notification</returns>
         public async Task<Notification> DeleteNote(int noteId)
         {
             using var channel = GrpcChannel.ForAddress(URL);

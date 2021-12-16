@@ -5,6 +5,9 @@ using Sep3Blazor.Model;
 
 namespace Sep3Blazor.Data.InvitationData
 {
+    /// <summary>
+    /// Interface for InvitationService
+    /// </summary>
     public interface IInvitationService
     {
         public Task<IList<Invitation>> GetInvitationList(int userId);
