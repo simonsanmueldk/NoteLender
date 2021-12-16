@@ -39,8 +39,6 @@ public interface IPersistenceService
 
     ResponseEntity<Void> registerUser(String json);
 
-
-
     ResponseEntity<List<Invitation>> getInvitationList(int id);
 
     ResponseEntity<Void> deleteInvitation(int id);

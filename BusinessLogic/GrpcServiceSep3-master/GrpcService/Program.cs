@@ -16,7 +16,6 @@ namespace GrpcService
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
-            //dorin
             CreateHostBuilder(args).Build().Run();
         }
         

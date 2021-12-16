@@ -14,7 +14,7 @@ namespace Sep3Blazor.Data.InvitationData
         /// <summary>
         /// Instance variables, uri defines localhost
         /// </summary>
-        private readonly String URL = "https://localhost:5004 i";
+        private readonly String URL = "https://localhost:5004";
 
         /// <summary>
         /// Method shows list of invitations using GetInvitationListAsync from businessServer

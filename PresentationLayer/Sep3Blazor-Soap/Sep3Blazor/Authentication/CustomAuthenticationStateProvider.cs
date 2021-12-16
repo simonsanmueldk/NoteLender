@@ -104,6 +104,7 @@ namespace Sep3Blazor.Authentication
         {
             IList<Group> groupList = await _groupService.GetGroupList(CachedUser.id);
             ClaimsIdentity identity = SetupClaimsForUser(CachedUser,groupList);
+            CachedUser = CachedUser;
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity))));
         }
     }

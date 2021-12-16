@@ -89,7 +89,6 @@
     // Method to run, when user enters this page.
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine(GroupName);
         Notes = await _noteService.GetNoteList(Id.ToString());
         GroupMembersList = await _groupMembersService.GetGroupMemberList(Id);
     }

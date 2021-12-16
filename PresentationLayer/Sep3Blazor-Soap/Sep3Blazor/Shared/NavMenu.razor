@@ -109,6 +109,13 @@
         _collapseNavMenu = true;
     }
     
+    
+    protected override async void OnParametersSet()
+    {
+        GroupList = await _groupService.GetGroupList(_cachedUser.id);
+        StateHasChanged();
+    }
+    
     // Method to run, when user enters this page.
     protected override async Task OnInitializedAsync()
     {

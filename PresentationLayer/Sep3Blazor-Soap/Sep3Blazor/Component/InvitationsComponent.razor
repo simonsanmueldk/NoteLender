@@ -9,6 +9,7 @@
 @using Sep3Blazor.Model
 
 @inject IInvitationService _invitationService
+@inject IRefreshServiceNavMem _refreshServiceNavMem
 @inject IRefreshServiceInvGroup _refreshServiceInvGroup
 @inject IGroupMembersService _groupMembersService
 @inject NotificationManager _notificationManager
@@ -76,9 +77,10 @@ else
     private async Task AcceptInvitation(int groupId, int userId, int invitationId)
     {
         Notification notification = await _groupMembersService.AddGroupMember(groupId, userId);
+          await ((CustomAuthenticationStateProvider) _authenticationStateProvider).ModifyClaims();
         _notificationManager.Show(notification);
+        _refreshServiceNavMem.CallRequestRefresh();
         _refreshServiceInvGroup.CallRequestRefresh();
-        await ((CustomAuthenticationStateProvider) _authenticationStateProvider).ModifyClaims();
         await _invitationService.DeleteInvitation(invitationId);
         InvitationList = await _invitationService.GetInvitationList(int.Parse(UserId));
     }
